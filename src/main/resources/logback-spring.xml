@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<configuration>
+
+	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+	<conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+
+	<property name="LOG_FILE" value="elbook"/>
+	<property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+	<property name="FILE_LOG_PATTERN" value="${FILE_LOG_PATTERN:-%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    <property name="MAIL_ENABLE_ERROR_APPENDER" value="${log.mail.enable.error.appender:-false}" />
+    <property name="MAIL_SUBJECT_ADDON" value="${log.mail.subject.addon:-notSet}" />
+    <property name="MAIL_SMTP_HOST" value="${log.mail.smtp.host:-notSet}" />
+    <property name="MAIL_SMTP_PORT" value="${log.mail.smtp.port:-25}" />
+    <property name="MAIL_STARTTLS" value="${log.mail.starttls:-true}" />
+    <property name="MAIL_USERNAME" value="${log.mail.username:-snotSet}" />
+    <property name="MAIL_PASSWORD" value="${log.mail.password:-notSet}" />
+    <property name="MAIL_SEND_FROM" value="${log.mail.send.from:-notSet}" />
+    <property name="MAIL_SEND_TO" value="${log.mail.send.to:-notSet}" />
+
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="dev">
+        <root level="DEBUG" additivity="false">
+            <appender-ref ref="consoleAppender" />
+        </root>
+    </springProfile>
+
+	<springProfile name="!dev">
+        <appender name="mailAppender" class="ch.qos.logback.classic.net.SMTPAppender">
+            <smtpHost>${MAIL_SMTP_HOST}</smtpHost>
+            <smtpPort>${MAIL_SMTP_PORT}</smtpPort>
+            <STARTTLS>${MAIL_STARTTLS}</STARTTLS>
+            <username>${MAIL_USERNAME}</username>
+            <password>${MAIL_PASSWORD}</password>
+            <from>${MAIL_SEND_FROM}</from>
+            <to>${MAIL_SEND_TO}</to>
+            <subject>elBook: ${MAIL_SUBJECT_ADDON}: Fehler: %logger - %m</subject>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+            </layout>
+        </appender>
+
+        <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>logs/${LOG_FILE}.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>logs/${LOG_FILE}_%d{yyyy-MM-dd}.log</fileNamePattern>
+            </rollingPolicy>
+
+            <encoder>
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <if condition='property("MAIL_ENABLE_ERROR_APPENDER").equalsIgnoreCase("true")'>
+            <then>
+                <root level="ERROR" additivity="false">
+                    <appender-ref ref="mailAppender" />
+                </root>
+            </then>
+        </if>
+
+        <root level="INFO" additivity="false">
+            <appender-ref ref="fileAppender" />
+            <appender-ref ref="consoleAppender" />
+        </root>
+	</springProfile>
+
+</configuration>

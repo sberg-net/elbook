@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<fontFamilies>
+
+	<fontFamily name="DejaVu Sans">
+		<normal><![CDATA[fonts/dejavu/DejaVuSans.ttf]]></normal>
+		<bold><![CDATA[fonts/dejavu/DejaVuSans-Bold.ttf]]></bold>
+		<italic><![CDATA[fonts/dejavu/DejaVuSans-Oblique.ttf]]></italic>
+		<boldItalic><![CDATA[fonts/dejavu/DejaVuSans-BoldOblique.ttf]]></boldItalic>
+		<pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+	</fontFamily>
+
+	<fontFamily name="DejaVu Serif">
+		<normal><![CDATA[fonts/dejavu/DejaVuSerif.ttf]]></normal>
+		<bold><![CDATA[fonts/dejavu/DejaVuSerif-Bold.ttf]]></bold>
+		<italic><![CDATA[fonts/dejavu/DejaVuSerif-Italic.ttf]]></italic>
+		<boldItalic><![CDATA[fonts/dejavu/DejaVuSerif-BoldItalic.ttf]]></boldItalic>
+		<pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+	</fontFamily>
+
+	<fontFamily name="DejaVu Sans Mono">
+		<normal>fonts/dejavu/DejaVuSansMono.ttf</normal>
+		<bold>fonts/dejavu/DejaVuSansMono-Bold.ttf</bold>
+		<italic>fonts/dejavu/DejaVuSansMono-Oblique.ttf</italic>
+		<boldItalic>fonts/dejavu/DejaVuSansMono-BoldOblique.ttf</boldItalic>
+		<pdfEncoding>Identity-H</pdfEncoding>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+	</fontFamily>
+
+	<!--
+		Mapping Java logical fonts, for the sake of HTML export only.
+	-->
+	
+	<fontFamily name="SansSerif">
+		<exportFonts>
+			<export key="net.sf.jasperreports.html">'DejaVu Sans', Arial, Helvetica, sans-serif</export>
+		</exportFonts>
+	</fontFamily>
+	<fontFamily name="Serif">
+		<exportFonts>
+			<export key="net.sf.jasperreports.html">'DejaVu Serif', 'Times New Roman', Times, serif</export>
+		</exportFonts>
+	</fontFamily>
+	<fontFamily name="Monospaced">
+		<exportFonts>
+			<export key="net.sf.jasperreports.html">'DejaVu Sans Mono', 'Courier New', Courier, monospace</export>
+		</exportFonts>
+	</fontFamily>
+
+</fontFamilies>

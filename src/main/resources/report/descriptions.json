@@ -1,0 +1,405 @@
+{
+  "eArztausweis" : {
+    "sektor": "ARZTPRAXIS",
+    "type": "HBA",
+    "id": "eArztausweis",
+    "prefix": "1-1",
+    "prefixSubject": "Landesärztekammern",
+    "kuerzel": {
+      "010": {"key": "ÄK Schleswig-Holstein"},
+      "020": {"key": "ÄK Hamburg"},
+      "030": {"key": "ÄK Niedersachsen"},
+      "040": {"key": "ÄK Bremen"},
+      "051": {"key": "ÄK Nordrhein"},
+      "055": {"key": "ÄK Westfalen-Lippe"},
+      "060": {"key": "LÄK Hessen"},
+      "070": {"key": "LÄK Rheinland-Pfalz"},
+      "080": {"key": "LÄK Baden-Württemberg"},
+      "090": {"key": "Bayerische LÄK"},
+      "100": {"key": "ÄK Saarland"},
+      "110": {"key": "ÄK Berlin"},
+      "120": {"key": "ÄK Mecklenburg-Vorpommern"},
+      "130": {"key": "LÄK Brandenburg"},
+      "140": {"key": "ÄK Sachsen-Anhalt"},
+      "150": {"key": "LÄK Thüringen"},
+      "160": {"key": "Sächsische LÄK"}
+    }
+  },
+  "eApothekenausweis": {
+    "sektor": "APOTHEKE",
+    "type": "SMCB",
+    "id": "eApothekenausweis",
+    "prefix": "",
+    "prefixSubject": "Landesapothekerkammern",
+    "kuerzel": {
+      "3-01.2": {"key": "Landesapothekerkammer Baden-Württemberg"},
+      "3-02.2": {"key": "Bayerische Landesapothekerkammer"},
+      "3-03.2": {"key": "Apothekerkammer Berlin"},
+      "3-04.2": {"key": "Landesapothekerkammer Brandenburg"},
+      "3-05.2": {"key": "Apothekerkammer Bremen"},
+      "3-06.2": {"key": "Apothekerkammer Hamburg"},
+      "3-07.2": {"key": "Landesapothekerkammer Hessen"},
+      "3-08.2": {"key": "Apothekerkammer Mecklenburg-Vorpommern"},
+      "3-09.2": {"key": "Apothekerkammer Niedersachsen"},
+      "3-10.2": {"key": "Apothekerkammer Nordrhein"},
+      "3-11.2": {"key": "Landesapothekerkammer Rheinland-Pfalz"},
+      "3-12.2": {"key": "Apothekerkammer des Saarlandes"},
+      "3-13.2": {"key": "Apothekerkammer Sachsen-Anhalt"},
+      "3-14.2": {"key": "Sächsische Landesapothekerkammer"},
+      "3-15.2": {"key": "Apothekerkammer Schleswig-Holstein"},
+      "3-16.2": {"key": "Landesapothekerkammer Thüringen"},
+      "3-17.2": {"key": "Apothekerkammer Westfalen-Lippe"}
+    }
+  },
+  "eApothekerausweis": {
+    "sektor": "APOTHEKE",
+    "type": "HBA",
+    "id": "eApothekerausweis",
+    "prefix": "",
+    "prefixSubject": "Landesapothekerkammern",
+    "kuerzel": {
+      "3-01.3": {"key": "Landesapothekerkammer Baden-Württemberg"},
+      "3-02.3": {"key": "Bayerische Landesapothekerkammer"},
+      "3-03.3": {"key": "Apothekerkammer Berlin"},
+      "3-04.3": {"key": "Landesapothekerkammer Brandenburg"},
+      "3-05.3": {"key": "Apothekerkammer Bremen"},
+      "3-06.3": {"key": "Apothekerkammer Hamburg"},
+      "3-07.3": {"key": "Landesapothekerkammer Hessen"},
+      "3-08.3": {"key": "Apothekerkammer Mecklenburg-Vorpommern"},
+      "3-09.3": {"key": "Apothekerkammer Niedersachsen"},
+      "3-10.3": {"key": "Apothekerkammer Nordrhein"},
+      "3-11.3": {"key": "Landesapothekerkammer Rheinland-Pfalz"},
+      "3-12.3": {"key": "Apothekerkammer des Saarlandes"},
+      "3-13.3": {"key": "Apothekerkammer Sachsen-Anhalt"},
+      "3-14.3": {"key": "Sächsische Landesapothekerkammer"},
+      "3-15.3": {"key": "Apothekerkammer Schleswig-Holstein"},
+      "3-16.3": {"key": "Landesapothekerkammer Thüringen"},
+      "3-17.3": {"key": "Apothekerkammer Westfalen-Lippe"}
+    }
+  },
+  "ePraxisausweis": {
+    "sektor": "ARZTPRAXIS",
+    "type": "SMCB",
+    "id": "ePraxisausweis",
+    "prefix": "1-20",
+    "prefixSubject": "Kassenärztliche Vereinigungen",
+    "kuerzel": {
+      "01": {
+        "subKey": "Schleswig-Holstein",
+        "key": "KV Schleswig-Holstein"
+      },
+      "02": {
+        "subKey": "Hamburg",
+        "key": "KV Hamburg"
+      },
+      "03": {
+        "subKey": "Bremen",
+        "key": "KV Bremen"
+      },
+      "06": {
+        "subKey": "Aurich",
+        "key": "KV Niedersachsen"
+      },
+      "07": {
+        "subKey": "Braunschweig",
+        "key": "KV Niedersachsen"
+      },
+      "08": {
+        "subKey": "Göttingen",
+        "key": "KV Niedersachsen"
+      },
+      "09": {
+        "subKey": "Hannover",
+        "key": "KV Niedersachsen"
+      },
+      "10": {
+        "subKey": "Hildesheim",
+        "key": "KV Niedersachsen"
+      },
+      "11": {
+        "subKey": "Lüneburg",
+        "key": "KV Niedersachsen"
+      },
+      "12": {
+        "subKey": "Oldenburg",
+        "key": "KV Niedersachsen"
+      },
+      "13": {
+        "subKey": "Osnabrück",
+        "key": "KV Niedersachsen"
+      },
+      "14": {
+        "subKey": "Stade",
+        "key": "KV Niedersachsen"
+      },
+      "15": {
+        "subKey": "Verden",
+        "key": "KV Niedersachsen"
+      },
+      "16": {
+        "subKey": "Wilhelmshaven",
+        "key": "KV Niedersachsen"
+      },
+      "17": {
+        "subKey": "Niedersachsen",
+        "key": "KV Niedersachsen"
+      },
+      "18": {
+        "subKey": "Dortmund",
+        "key": "KV Westfalen-Lippe"
+      },
+      "19": {
+        "subKey": "Münster",
+        "key": "KV Westfalen-Lippe"
+      },
+      "20": {
+        "subKey": "Westfalen-Lippe",
+        "key": "KV Westfalen-Lippe"
+      },
+      "20": {
+        "subKey": "Westfalen-Lippe",
+        "key": "KV Westfalen-Lippe"
+      },
+      "21": {
+        "subKey": "Aachen",
+        "key": "KV Nordrhein"
+      },
+      "24": {
+        "subKey": "Düsseldorf",
+        "key": "KV Nordrhein"
+      },
+      "25": {
+        "subKey": "Duisburg",
+        "key": "KV Nordrhein"
+      },
+      "27": {
+        "subKey": "Köln",
+        "key": "KV Nordrhein"
+      },
+      "28": {
+        "subKey": "linker Niederrhein",
+        "key": "KV Nordrhein"
+      },
+      "31": {
+        "subKey": "Ruhr",
+        "key": "KV Nordrhein"
+      },
+      "37": {
+        "subKey": "Bergisch-Land",
+        "key": "KV Nordrhein"
+      },
+      "38": {
+        "subKey": "Nordrhein",
+        "key": "KV Nordrhein"
+      },
+      "39": {
+        "subKey": "Darmstadt",
+        "key": "KV Hessen"
+      },
+      "40": {
+        "subKey": "Frankfurt a. M.",
+        "key": "KV Hessen"
+      },
+      "41": {
+        "subKey": "Gießen",
+        "key": "KV Hessen"
+      },
+      "42": {
+        "subKey": "Kassel",
+        "key": "KV Hessen"
+      },
+      "43": {
+        "subKey": "Limburg",
+        "key": "KV Hessen"
+      },
+      "44": {
+        "subKey": "Marburg",
+        "key": "KV Hessen"
+      },
+      "45": {
+        "subKey": "Wiesbaden",
+        "key": "KV Hessen"
+      },
+      "46": {
+        "subKey": "Hessen",
+        "key": "KV Hessen"
+      },
+      "47": {
+        "subKey": "Koblenz",
+        "key": "KV Rheinland-Pfalz"
+      },
+      "48": {
+        "subKey": "Rheinhessen",
+        "key": "KV Rheinland-Pfalz"
+      },
+      "49": {
+        "subKey": "Pfalz",
+        "key": "KV Rheinland-Pfalz"
+      },
+      "50": {
+        "subKey": "Trier",
+        "key": "KV Rheinland-Pfalz"
+      },
+      "51": {
+        "subKey": "Rheinland-Pfalz",
+        "key": "KV Rheinland-Pfalz"
+      },
+      "52": {
+        "subKey": "Karlsruhe",
+        "key": "KV Baden-Württemberg"
+      },
+      "53": {
+        "subKey": "Mannheim",
+        "key": "KV Baden-Württemberg"
+      },
+      "54": {
+        "subKey": "Pforzheim",
+        "key": "KV Baden-Württemberg"
+      },
+      "55": {
+        "subKey": "Nordbaden",
+        "key": "KV Baden-Württemberg"
+      },
+      "56": {
+        "subKey": "Baden-Baden",
+        "key": "KV Baden-Württemberg"
+      },
+      "57": {
+        "subKey": "Freiburg",
+        "key": "KV Baden-Württemberg"
+      },
+      "58": {
+        "subKey": "Konstanz",
+        "key": "KV Baden-Württemberg"
+      },
+      "59": {
+        "subKey": "Offenburg",
+        "key": "KV Baden-Württemberg"
+      },
+      "60": {
+        "subKey": "Südbaden",
+        "key": "KV Baden-Württemberg"
+      },
+      "61": {
+        "subKey": "Stuttgart",
+        "key": "KV Baden-Württemberg"
+      },
+      "62": {
+        "subKey": "Reutlingen",
+        "key": "KV Baden-Württemberg"
+      },
+      "63": {
+        "subKey": "München",
+        "key": "KV Bayerns"
+      },
+      "64": {
+        "subKey": "Oberbayern",
+        "key": "KV Bayerns"
+      },
+      "65": {
+        "subKey": "Oberfranken",
+        "key": "KV Bayerns"
+      },
+      "66": {
+        "subKey": "Mittelfranken",
+        "key": "KV Bayerns"
+      },
+      "67": {
+        "subKey": "Unterfranken",
+        "key": "KV Bayerns"
+      },
+      "68": {
+        "subKey": "Oberpfalz",
+        "key": "KV Bayerns"
+      },
+      "69": {
+        "subKey": "Niederbayern",
+        "key": "KV Bayerns"
+      },
+      "70": {
+        "subKey": "Schwaben",
+        "key": "KV Bayerns"
+      },
+      "71": {
+        "subKey": "Bayern",
+        "key": "KV Bayerns"
+      },
+      "72": {
+        "subKey": "Berlin",
+        "key": "KV Berlin"
+      },
+      "73": {
+        "subKey": "Saarland",
+        "key": "KV Saarland"
+      },
+      "78": {
+        "subKey": "Mecklenburg-Vorpommern",
+        "key": "KV Mecklenburg-Vorpommern"
+      },
+      "79": {
+        "subKey": "Potsdam",
+        "key": "KV Brandenburg"
+      },
+      "80": {
+        "subKey": "Cottbus",
+        "key": "KV Brandenburg"
+      },
+      "81": {
+        "subKey": "Frankfurt a. d. O.",
+        "key": "KV Brandenburg"
+      },
+      "83": {
+        "subKey": "Brandenburg",
+        "key": "KV Brandenburg"
+      },
+      "85": {
+        "subKey": "Magdeburg",
+        "key": "KV Sachsen-Anhalt"
+      },
+      "86": {
+        "subKey": "Halle",
+        "key": "KV Sachsen-Anhalt"
+      },
+      "87": {
+        "subKey": "Dessau",
+        "key": "KV Sachsen-Anhalt"
+      },
+      "88": {
+        "subKey": "Sachsen-Anhalt",
+        "key": "KV Sachsen-Anhalt"
+      },
+      "89": {
+        "subKey": "Erfurt",
+        "key": "KV Thüringen"
+      },
+      "90": {
+        "subKey": "Gera",
+        "key": "KV Thüringen"
+      },
+      "91": {
+        "subKey": "Suhl",
+        "key": "KV Thüringen"
+      },
+      "93": {
+        "subKey": "Thüringen",
+        "key": "KV Thüringen"
+      },
+      "94": {
+        "subKey": "Chemnitz",
+        "key": "KV Sachsen"
+      },
+      "95": {
+        "subKey": "Dresden",
+        "key": "KV Sachsen"
+      },
+      "96": {
+        "subKey": "Leipzig",
+        "key": "KV Sachsen"
+      },
+      "98": {
+        "subKey": "Sachsen",
+        "key": "KV Sachsen"
+      }
+    }
+  }
+}

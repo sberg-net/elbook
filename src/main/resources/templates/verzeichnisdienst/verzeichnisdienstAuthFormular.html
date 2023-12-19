@@ -1,0 +1,59 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<form id="vzdAuthForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
+
+  <p>Tragen Sie hier die Verzeichnisdienst-Credentials ein, die Ihnen von Arvato-Systems mitgeteilt worden sind. Diese Daten werden aus sicherheitstechnischen
+  Gründen nicht permament gespeichert.</p>
+
+  <input type="hidden" id="id" name="id" th:value="${mandant.id}">
+
+  <div class="form-group needs-validation">
+    <label for="vzdAuthId">VZD-Auth-ID</label>
+    <input type="text" th:value="${mandant.vzdAuthId}" class="form-control" id="vzdAuthId" name="vzdAuthId" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div class="form-group needs-validation">
+    <label for="vzdAuthSecret">VZD-Auth-Secret</label>
+    <input type="password" th:value="${mandant.vzdAuthSecret}" class="form-control" id="vzdAuthSecret" name="vzdAuthSecret" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="passwortCheck" onclick="togglePwdVisibility('vzdAuthSecret')">
+    <label class="form-check-label" for="passwortCheck">Passwort in Klartext anzeigen</label>
+  </div>
+
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="speichereDauerhaft">
+    <label for="speichereDauerhaft">Dauerhaft speichern</label>
+  </div>
+
+  <div class="container-fluid p-0 mb-2">
+    <div class="row justify-content-start">
+      <div class="col-12 col-md-6 col-lg-2 pb-1">
+        <button class="btn btn-primary btn-block" onclick="vzdEintragAuthSpeichern()">Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-danger mt-2 mb-2 text-break" role="alert" style="display:none" id="vzdAuthFormError">
+  </div>
+</form>

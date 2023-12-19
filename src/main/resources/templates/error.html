@@ -1,0 +1,66 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <style>
+    table td{
+      vertical-align:top;
+      border:solid 1px #888;
+      padding:10px;
+    }
+
+  </style>
+  <title>elbook error</title>
+</head>
+<body>
+<h1>Es ist ein Fehler aufgetreten</h1>
+<table>
+  <tr>
+    <td>Date</td>
+    <td th:text="${timestamp}"/>
+  </tr>
+  <tr>
+    <td>Path</td>
+    <td th:text="${path}"/>
+  </tr>
+  <tr>
+    <td>Error</td>
+    <td th:text="${error}"/>
+  </tr>
+  <tr>
+    <td>Status</td>
+    <td th:text="${status}"/>
+  </tr>
+  <tr>
+    <td>Message</td>
+    <td th:text="${message}"/>
+  </tr>
+  <tr>
+    <td>Exception</td>
+    <td th:text="${exception}"/>
+  </tr>
+  <tr>
+    <td>Trace</td>
+    <td>
+      <pre th:text="${trace}"/>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

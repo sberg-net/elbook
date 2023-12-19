@@ -1,0 +1,169 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<form id="mandantForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
+
+  <input type="hidden" id="id" name="id" th:value="${mandant.id}">
+  <input type="hidden" id="mandantId" name="mandantId" th:value="${mandant.mandantId}">
+
+  <div class="form-group needs-validation" th:if="${mandant.mandantId == 0}">
+    <label for="name">Name</label>
+    <input type="text" th:value="${mandant.name}" class="form-control" id="name" name="name" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div class="form-group" th:if="${mandant.mandantId == 0}">
+    <label for="bundesland">Bundesland</label>
+    <select class="form-control" id="bundesland" name="bundesland">
+      <option value="BW" th:attrappend="selected=${mandant.bundesland.name() == 'BW'?'selected':''}">Baden-Württemberg</option>
+      <option value="BAY" th:attrappend="selected=${mandant.bundesland.name() == 'BAY'?'selected':''}">Bayern</option>
+      <option value="B" th:attrappend="selected=${mandant.bundesland.name() == 'B'?'selected':''}">Berlin</option>
+      <option value="BB" th:attrappend="selected=${mandant.bundesland.name() == 'BB'?'selected':''}">Brandenburg</option>
+      <option value="HB" th:attrappend="selected=${mandant.bundesland.name() == 'HB'?'selected':''}">Bremen</option>
+      <option value="HH" th:attrappend="selected=${mandant.bundesland.name() == 'HH'?'selected':''}">Hamburg</option>
+      <option value="HS" th:attrappend="selected=${mandant.bundesland.name() == 'HS'?'selected':''}">Hessen</option>
+      <option value="MV" th:attrappend="selected=${mandant.bundesland.name() == 'MV'?'selected':''}">Mecklenburg-Vorpommern</option>
+      <option value="NDS" th:attrappend="selected=${mandant.bundesland.name() == 'NDS'?'selected':''}">Niedersachsen</option>
+      <option value="NRW" th:attrappend="selected=${mandant.bundesland.name() == 'NRW'?'selected':''}">Nordrhein-Westfalen</option>
+      <option value="RLP" th:attrappend="selected=${mandant.bundesland.name() == 'RLP'?'selected':''}">Rheinland-Pfalz</option>
+      <option value="SAR" th:attrappend="selected=${mandant.bundesland.name() == 'SAR'?'selected':''}">Saarland</option>
+      <option value="SACHSEN" th:attrappend="selected=${mandant.bundesland.name() == 'SACHSEN'?'selected':''}">Sachsen</option>
+      <option value="SACHSENANHALT" th:attrappend="selected=${mandant.bundesland.name() == 'SACHSENANHALT'?'selected':''}">Sachsen-Anhalt</option>
+      <option value="SH" th:attrappend="selected=${mandant.bundesland.name() == 'SH'?'selected':''}">Schleswig-Holstein</option>
+      <option value="TH" th:attrappend="selected=${mandant.bundesland.name() == 'TH'?'selected':''}">Thüringen</option>
+      <option value="UNKNOWN" th:attrappend="selected=${mandant.bundesland.name() == 'UNKNOWN'?'selected':''}">Unbekannt</option>
+    </select>
+  </div>
+
+  <div class="form-group needs-validation">
+    <label for="telematikKuerzel">Telematikkürzel (kommaseparierte Eintragungen möglich)</label>
+    <input type="text" th:value="${mandant.telematikKuerzel}" class="form-control" id="telematikKuerzel" name="telematikKuerzel" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div class="form-group needs-validation">
+    <label for="nutzername">Nutzername</label>
+    <input type="text" th:value="${mandant.nutzername}" class="form-control" id="nutzername" name="nutzername" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div class="form-group needs-validation" th:if="${mandant.id == 0}">
+    <label for="passwort">Passwort (Es ist das Erstpasswort - Es kann vom Nutzer geändert werden)</label>
+    <input type="password" th:value="${mandant.passwort}" class="form-control" id="passwort" name="passwort" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+  <div class="form-group form-check" th:if="${mandant.id == 0}">
+    <input type="checkbox" class="form-check-input" id="passwortCheck" onclick="togglePwdVisibility('passwort')">
+    <label class="form-check-label" for="passwortCheck">Passwort in Klartext anzeigen</label>
+  </div>
+
+  <br th:if="${mandant.mandantId == 0}"/>
+  <div class="form-group form-check" th:if="${mandant.mandantId == 0}">
+    <input type="checkbox" class="form-check-input" id="goldLizenz" th:attrappend="checked=${mandant.goldLizenz?'checked':''}">
+    <label class="form-check-label" for="goldLizenz">Gold-Lizenz</label>
+  </div>
+
+  <br/>
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="bearbeitenEintraege" th:attrappend="checked=${mandant.bearbeitenEintraege?'checked':''}">
+    <label class="form-check-label" for="bearbeitenEintraege">Kann ALLE gefundenen Verzeichnisdiensteinträge / Zertifikate manuell editieren</label>
+  </div>
+
+  <br/>
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="bearbeitenNurFiltereintraege" th:attrappend="checked=${mandant.bearbeitenNurFiltereintraege?'checked':''}">
+    <label class="form-check-label" for="bearbeitenNurFiltereintraege">Kann gefundene Verzeichnisdiensteinträge / Zertifikate manuell editieren (ANHAND DER TELEMATIK_KÜRZEL)</label>
+  </div>
+
+  <br/>
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="filternEintraege" th:attrappend="checked=${mandant.filternEintraege?'checked':''}">
+    <label class="form-check-label" for="filternEintraege">Filtern von Verzeichnisdiensteinträgen (ANHAND DER TELEMATIK_KÜRZEL)</label>
+  </div>
+
+  <div class="form-group needs-validation" th:if="${mandant.mandantId == 0}">
+    <label for="threadAnzahl">Thread-Anzahl</label>
+    <input type="text" th:value="${mandant.threadAnzahl}" class="form-control" id="threadAnzahl" name="threadAnzahl" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div class="form-group needs-validation">
+    <label for="mail">Mailadresse</label>
+    <input type="email" th:value="${mandant.mail}" class="form-control" id="mail" name="mail" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div class="form-group needs-validation">
+    <label for="gueltigBis">Gültig bis</label>
+    <input type="date" th:value="${mandant.gueltigBis}" class="form-control" id="gueltigBis" name="gueltigBis" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div class="form-group" th:if="${mandant.mandantId == 0}">
+    <label for="sektor">Sektor</label>
+    <select class="form-control" id="sektor" name="sektor">
+      <option value="APOTHEKE" th:attrappend="selected=${mandant.sektor.name() == 'APOTHEKE'?'selected':''}">Apotheke</option>
+      <option value="ARZTPRAXIS" th:attrappend="selected=${mandant.sektor.name() == 'ARZTPRAXIS'?'selected':''}">Arztpraxis</option>
+    </select>
+  </div>
+
+  <div class="form-group needs-validation" th:if="${mandant.mandantId == 0}">
+    <label for="vzdResourceUri">VZD-Ressource-URI</label>
+    <input type="text" th:value="${mandant.vzdResourceUri}" class="form-control" id="vzdResourceUri" name="vzdResourceUri" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div class="form-group needs-validation" th:if="${mandant.mandantId == 0}">
+    <label for="vzdTokenUri">VZD-Token-URI</label>
+    <input type="text" th:value="${mandant.vzdTokenUri}" class="form-control" id="vzdTokenUri" name="vzdTokenUri" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div class="container-fluid p-0 mb-2">
+    <div class="row justify-content-start">
+      <div class="col-12 col-md-6 col-lg-2 pb-1">
+        <button class="btn btn-secondary btn-block" type="button" onclick="mandantUebersicht();">Schließen</button>
+      </div>
+      <div class="col-12 col-md-6 col-lg-2">
+        <button class="btn btn-primary btn-block" type="button" onclick="mandantSpeichern()">Speichern</button>
+      </div>
+      <div class="col-12 col-md-6 col-lg-2" th:if="${mandant.id > 0}">
+        <button class="btn btn-primary btn-block" type="button" th:attr="data-mandantid=${mandant.id}" th:attrappend="data-nutzername=${mandant.nutzername}" onclick="passwortZuruecksetzenLaden($(this).attr('data-mandantid'),$(this).attr('data-nutzername'))">Passwort zurücksetzen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-danger mt-2 mb-2 text-break" role="alert" style="display:none" id="mandantFormError">
+  </div>
+</form>

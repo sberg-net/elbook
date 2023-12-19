@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<fontFamilies>
+	<fontFamily name="Arial Unicode MS">
+		<normal><![CDATA[fonts/ArialUnicode/arialuni.ttf]]></normal>
+		<bold><![CDATA[fonts/ArialUnicode/arialuni.ttf]]></bold>
+		<italic><![CDATA[fonts/ArialUnicode/arialuni.ttf]]></italic>
+		<boldItalic><![CDATA[fonts/ArialUnicode/arialuni.ttf]]></boldItalic>
+		<pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+	</fontFamily>
+</fontFamilies>

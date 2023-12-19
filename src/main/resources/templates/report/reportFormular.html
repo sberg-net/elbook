@@ -1,0 +1,93 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<form id="reportForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
+
+  <input type="hidden" id="id" name="id" th:value="${report.id}">
+
+  <div class="form-group">
+    <label for="descriptor">Name</label>
+    <select th:if="${report.editierbar}" class="form-control" id="descriptor" name="descriptor">
+      <option value="eArztausweis" th:attrappend="selected=${report.descriptor.name() == 'eArztausweis'?'selected':''}">Absolute Angaben über Anzahl der VZD-Einträge bzgl. Arztausweise separiert nach Kartenherausgebern</option>
+      <option value="eApothekenausweis" th:attrappend="selected=${report.descriptor.name() == 'eApothekenausweis'?'selected':''}">Absolute Angaben über Anzahl der VZD-Einträge bzgl. Apothekenausweise separiert nach Kartenherausgebern</option>
+      <option value="eApothekerausweis" th:attrappend="selected=${report.descriptor.name() == 'eApothekerausweis'?'selected':''}">Absolute Angaben über Anzahl der VZD-Einträge bzgl. Apothekerausweise separiert nach Kartenherausgebern</option>
+      <option value="ePraxisausweis" th:attrappend="selected=${report.descriptor.name() == 'ePraxisausweis'?'selected':''}">Absolute Angaben über Anzahl der VZD-Einträge bzgl. Praxisausweise separiert nach Kartenherausgebern</option>
+    </select>
+    <select th:if="${!report.editierbar}" disabled class="form-control" name="descriptor">
+      <option value="eArztausweis" th:attrappend="selected=${report.descriptor.name() == 'eArztausweis'?'selected':''}">Absolute Angaben über Anzahl der VZD-Einträge bzgl. Arztausweise separiert nach Kartenherausgebern</option>
+      <option value="eApothekenausweis" th:attrappend="selected=${report.descriptor.name() == 'eApothekenausweis'?'selected':''}">Absolute Angaben über Anzahl der VZD-Einträge bzgl. Apothekenausweise separiert nach Kartenherausgebern</option>
+      <option value="eApothekerausweis" th:attrappend="selected=${report.descriptor.name() == 'eApothekerausweis'?'selected':''}">Absolute Angaben über Anzahl der VZD-Einträge bzgl. Apothekerausweise separiert nach Kartenherausgebern</option>
+      <option value="ePraxisausweis" th:attrappend="selected=${report.descriptor.name() == 'ePraxisausweis'?'selected':''}">Absolute Angaben über Anzahl der VZD-Einträge bzgl. Praxisausweise separiert nach Kartenherausgebern</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="intervall">Intervall der Ausführung</label>
+    <select th:if="${report.editierbar}" class="form-control" id="intervall" name="intervall">
+      <option value="MONTHLY" th:attrappend="selected=${report.intervall.name() == 'MONTHLY'?'selected':''}">Monatlich</option>
+      <option value="WEEKLY" th:attrappend="selected=${report.intervall.name() == 'WEEKLY'?'selected':''}">Wöchentlich</option>
+    </select>
+    <select th:if="${!report.editierbar}" disabled class="form-control" name="intervall">
+      <option value="MONTHLY" th:attrappend="selected=${report.intervall.name() == 'MONTHLY'?'selected':''}">Monatlich</option>
+      <option value="WEEKLY" th:attrappend="selected=${report.intervall.name() == 'WEEKLY'?'selected':''}">Wöchentlich</option>
+    </select>
+  </div>
+
+  <div class="form-group needs-validation">
+    <label for="gueltigBis">Gültig bis</label>
+    <input th:if="${report.editierbar}" type="date" th:value="${report.gueltigBis}" class="form-control" id="gueltigBis" name="gueltigBis" required>
+    <input th:if="${!report.editierbar}" disabled type="date" th:value="${report.gueltigBis}" class="form-control" name="gueltigBis" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div class="row" th:if="${report.id > 0}">
+    <table class="table" id="fileTable" xmlns:th="http://www.thymeleaf.org">
+      <thead>
+      <tr>
+        <th>Generierte Dateien</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:if="${dateien.isEmpty()}">
+        <td colspan="2">Keine Dateien verfügbar</td>
+      </tr>
+      <tr th:each="n : ${dateien}">
+        <td><span th:text="${n.name}">Name</span></td>
+        <td>
+          <a target="_blank" th:href="@{/report/ladedatei/{reportId}/{hash}(reportId=${report.id},hash=${n.hash})}">Herunterladen</a>&nbsp;&nbsp;
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="container-fluid p-0 mb-2">
+    <div class="row justify-content-start">
+      <div class="col-12 col-md-6 col-lg-2 pb-1">
+        <button class="btn btn-secondary btn-block" type="button" onclick="reportUebersicht();">Schließen</button>
+      </div>
+      <div th:if="${report.editierbar}" class="col-12 col-md-6 col-lg-2">
+        <button class="btn btn-primary btn-block" type="button" onclick="reportSpeichern()">Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-danger mt-2 mb-2 text-break" role="alert" style="display:none" id="reportFormError">
+  </div>
+</form>

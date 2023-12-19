@@ -1,0 +1,77 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<div class="alert alert-danger" role="alert" style="display:none" id="reportTableError">
+</div>
+<div class="row" xmlns:th="http://www.thymeleaf.org">
+  <div class="col-sm-6 col-lg-2 mb-3 p-0">
+    <button type="button" id="createUser" class="btn btn-primary btn-block" onclick="reportLaden(-1)">Statistik / Report anlegen</button>
+  </div>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" class="row">
+  <div class="col-md-9 mb-3 font-weight-bolder">
+    <span th:text="${#lists.size(reports)}"></span>&nbsp;Statistiken / Reports vorhanden
+  </div>
+</div>
+<div class="row">
+  <table class="table" id="reportTable" xmlns:th="http://www.thymeleaf.org">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Intervall der Ausführung</th>
+      <th>Ausgeführt</th>
+      <th>Erstellt</th>
+      <th>Geändert</th>
+      <th>Gültig Bis</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${reports.isEmpty()}">
+      <td colspan="2">Keine Statistiken / Reports verfügbar</td>
+    </tr>
+    <tr th:each="n : ${reports}">
+      <td><span th:text="${n.id}">ID</span></td>
+      <td><span class="text-break" th:text="${n.descriptor.getHrText()}">Descriptor</span></td>
+      <td><span class="text-break" th:text="${n.intervall.getHrText()}">Intervall der Ausführung</span></td>
+
+      <td th:if="${n.letzteAusfuehrungAm != null}"><span class="text-break" th:text="${#temporals.format(n.letzteAusfuehrungAm, 'dd-MM-yyyy HH:mm')}">Ausgeführt Am</span></td>
+      <td th:if="${n.letzteAusfuehrungAm == null}"></td>
+
+      <td><span class="text-break" th:text="${#temporals.format(n.erstelltAm, 'dd-MM-yyyy HH:mm')}">Erstellt Am</span></td>
+
+      <td th:if="${n.geaendertAm != null}"><span class="text-break" th:text="${#temporals.format(n.geaendertAm, 'dd-MM-yyyy HH:mm')}">Geändert Am</span></td>
+      <td th:if="${n.geaendertAm == null}"></td>
+
+      <td><span class="text-break" th:text="${#temporals.format(n.gueltigBis, 'dd-MM-yyyy')}">Gültig Bis</span></td>
+
+      <td>
+        <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-id=${n.id}" onclick="reportLaden($(this).attr('data-id'))">
+          <span data-feather="edit"></span>
+        </button>&nbsp;&nbsp;&nbsp;
+        <button th:if="${n.editierbar}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" onclick="elbookContext.toDeleteReport=$(this).attr('data-id');$('#confirmDialog4DeleteReport').modal('show')" >
+          <span data-feather="delete"></span>
+        </button>
+        <a target="_blank" th:href="@{/report/starte/{reportId}(reportId=${n.id})}">Ausführen</a>&nbsp;&nbsp;
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<script>
+  feather.replace();
+</script>

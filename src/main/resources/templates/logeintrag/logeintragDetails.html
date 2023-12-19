@@ -1,0 +1,49 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<div class="row" xmlns:th="http://www.thymeleaf.org">
+  <div class="col-sm-12 col-lg-8 mb-3 p-0 pr-1">
+    <span class="font-weight-bold">Artikel für den Logeintrag mit der TelematikID: </span><span th:text="${eintrag.telematikId}">TelematikId</span>
+  </div>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" class="row">
+  <div class="col-md-9 mb-3 font-weight-bolder">
+    <span th:text="${#lists.size(eintrag.artikel)}"></span>&nbsp;Logeintragartikel vorhanden
+  </div>
+</div>
+<div class="row">
+  <table class="table" id="logeintragTable" xmlns:th="http://www.thymeleaf.org">
+    <thead>
+    <tr>
+      <th>Verzeichnis-UID</th>
+      <th>Verzeichnis-Zertifikats-UID</th>
+      <th>Typ</th>
+      <th>Erstellt Am</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${eintrag.artikel.isEmpty()}">
+      <td colspan="2">Keine Logeintragartikel verfügbar</td>
+    </tr>
+    <tr th:each="n : ${eintrag.artikel}">
+      <td><span class="text-break" th:text="${n.vzdUid}">TelematikId</span></td>
+      <td><span class="text-break" th:text="${n.vzdZertUid}">BusinessId</span></td>
+      <td><span class="text-break" th:text="${n.typ.hrText}">BusinessId</span></td>
+      <td><span class="text-break" th:text="${#temporals.format(n.erstelltAm, 'dd-MM-yyyy HH:mm')}">Erstellt Am</span></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
