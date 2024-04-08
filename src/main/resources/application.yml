@@ -1,0 +1,101 @@
+server:
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      force: true
+  port: 8080
+  error:
+    include-stacktrace: always
+
+
+versions:
+  #elbook version set by pom.xml project version
+  elbook: '@project.version@'
+
+elbook:
+  app:
+    kartendatentrans-base-url: localhost
+  db:
+    host: 127.0.0.1
+    port: 3306
+    name: elbook
+    rootpassword: mrdata123!
+    user: elbook
+    password: elbook
+  encryptionKeys: bravo,delta,tango,27
+  defaultAdminUser: admin
+  defaultAdminPwd: admin
+
+jdbc:
+  elbook:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${elbook.db.host}:${elbook.db.port}/${elbook.db.name}?serverTimezone=Europe/Berlin
+    username: ${elbook.db.user}
+    password: ${elbook.db.password}
+
+mailCreatorAndSenderService:
+  scheduledDef: 0 0 0/1 * * ?
+  testMode: false
+  testRecipients: ch.dethloff@sberg.net
+
+kartendatenTransferService:
+  gueltigBisTage: 90
+  url: https://${elbook.app.kartendatentrans-base-url}/hbakartendaten/
+
+hbaKartendatenTransferJob:
+  scheduledDef: 0 0 1 * * ?
+
+reportJob:
+  scheduledDef: 0 0 5 * * ?
+
+reportService:
+  concurrentMode: false
+  active: false
+
+springdoc:
+  version: '@springdoc.version@'
+  show-actuator: true
+  paths-to-match: /api/**
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger
+    display-request-duration: true
+    disable-swagger-default-url: true
+
+spring:
+  mail:
+    host: notSet
+    port: 465
+    username: notSet
+    password: notSet
+    protocol: smtp
+    properties:
+      mail.smtp.ssl.enable: true
+  flyway:
+    enabled: true
+    user: root
+    password: ${elbook.db.rootpassword}
+    schemas: ${elbook.db.name}
+    url: jdbc:mysql://${elbook.db.host}:${elbook.db.port}?serverTimezone=Europe/Berlin
+    baseline-on-migrate: true
+
+---
+spring:
+  config.activate.on-profile: dev
+
+server:
+  servlet:
+    context-path: /elbook
+  port: 8082
+
+mailCreatorAndSenderService:
+  scheduledDef: 0 0/2 * * * *
+  testMode: true
+
+reportJob:
+  scheduledDef: 0 0/3 * * * ?
+
+kartendatenTransferService:
+  url: http://${elbook.app.kartendatentrans-base-url}:8082/elbook/hbakartendaten/

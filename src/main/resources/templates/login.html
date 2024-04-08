@@ -1,0 +1,124 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Elbook ist ihr einfacher Zugriff auf den Gematik Verzeichnisdienst der Telematikinfrastruktur. Bereitgestellt und entwickelt durch sberg it-systeme GmbH.">
+    <meta name="author" content="sberg">
+    <meta name="google-site-verification" content="V3568f-FQR1tufIDngmUc9pykZ1wFNkx6BpmrOsHMao" />
+    <title>ElBook - Anmelden</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/script_1_8_15.js}"></script>
+    <script type="text/javascript" th:src="@{/js/login_1_8_8.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/feather-icons/dist/feather.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/animate.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"/>
+  </head>
+  <body id="home" data-spy="scroll" data-target="#navbar" data-offset="72" class="position-relative">
+
+    <!-- Hero Area -->
+    <section class="d-flex align-items-start position-relative vh-100 cover hero"
+             style="background-image:url('img/bg.jpg');">
+      <div class="container-fluid">
+        <div class="row m-4">
+          <div class="col-6">
+            <h1 class="text-white font-weight-bold">elBook</h1>
+            <h4 class="text-white">
+              Ihr einfacher Zugriff auf den Gematik Verzeichnisdienst der Telematikinfrastruktur
+            </h4>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Hero Area -->
+
+    <!-- Modal Login -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="document" aria-labelledby="loginModalTitle"
+         aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header p-2">
+            <h5 class="modal-title" id="loginModalTitle">Login</h5>
+          </div>
+          <div class="modal-body">
+            <div id="login">
+              <div class="container">
+                <div class="row">
+                  <div class="col-12">
+                    <form id="login-form" class="form" th:action="@{/login}" method="post" novalidate>
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="form-group">
+                            <input class="form-control" name="username" type="text"
+                                   placeholder="Benutzername" required>
+                            <div class="invalid-feedback">
+                              Bitte Benutzername angeben
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <div class="form-group">
+                            <input class="form-control" name="password" type="password"
+                                   placeholder="Passwort" required>
+                            <div class="invalid-feedback">
+                              Bitte Passwort angeben
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12" id="2fa-group" style="display:none;">
+                          <div class="form-group">
+                            <input id="2fa-input" class="form-control" name="code" type="password" placeholder="2FA Code">
+                            <div class="invalid-feedback">
+                              Bitte 2FA Code angeben
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="form-group">
+                            <div class="button">
+                              <input id="login-submit" type="submit" class="btn btn-block" value="Anmelden">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p id="fehlerText" class="text-danger d-none font-weight-bold">Anmeldedaten falsch</p>
+                  </div>
+                  <div class="col">
+                    <img class="float-right" src="img/logo.png" style="width:200px" alt="sberg Logo">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

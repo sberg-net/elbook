@@ -1,0 +1,385 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Elbook ist ihr einfacher Zugriff auf den Gematik Verzeichnisdienst der Telematikinfrastruktur. Bereitgestellt und entwickelt durch sberg it-systeme GmbH.">
+    <meta name="author" content="sberg">
+    <meta name="google-site-verification" content="V3568f-FQR1tufIDngmUc9pykZ1wFNkx6BpmrOsHMao" />
+    <title>ElBook - HBA Datentransfer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/script_1_8_15.js}"></script>
+    <script type="text/javascript" th:src="@{/js/login_1_8_8.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/feather-icons/dist/feather.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/animate.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"/>
+  </head>
+  <body id="home" data-spy="scroll" data-target="#navbar" data-offset="72" class="position-relative">
+
+    <!-- Header Area -->
+    <header class="fixed-top page-header" >
+      <!-- Header Inner -->
+      <div class="container-fluid container-fluid-max">
+        <nav id="navbar" class="navbar navbar-expand-lg navbar-dark">
+          <div class="logo">
+            <a th:href="@{/login}"><img id="logo" class="ebook-light" src="img/ebook.svg" width="32" height="32" alt="#"></a>
+            <a class="navbar-brand ml-2 font-weight-bold">elBook</a>
+          </div>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-lg-between" id="navbarNav">
+            <ul class="navbar-nav">
+            </ul>
+            <div class="nav-btns text-white p-2 p-lg-0">
+              <a href="mailto:software@sberg.net?subject=elBook" class="mr-2">
+                <i class="fa fa-envelope"></i>
+                <div class="d-none d-lg-inline">Mailen Sie uns</div>
+              </a>
+              <button
+                      type="button"
+                      class="btn login-btn text-white"
+                      data-toggle="modal"
+                      data-target="#loginModal"
+              >
+                <i class="fa fa-sign-in-alt"></i>
+                Anmelden
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <!--/ End Header Inner -->
+    </header>
+    <!-- End Header Area -->
+
+    <!-- Hero Area -->
+    <section class="d-flex align-items-center position-relative vh-40 cover hero" style="background-image:url('img/bg.jpg');">
+      <div class="container-fluid container-fluid-max">
+        <div class="row">
+          <div class="col-12 col-md-8 col-lg-6 mx-auto">
+            <h1 class="text-white font-weight-bold">elBook</h1>
+            <h4 class="text-white">
+              Ihr einfacher Zugriff auf den Gematik Verzeichnisdienst der Telematikinfrastruktur
+            </h4>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Hero Area -->
+
+    <!-- Features -->
+    <section id="features" class="pricing-table section pt-5 pb-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="section-title">
+              <div class="underline">
+                <h2>Features</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="single-table">
+              <div class="my-auto showcase-text">
+                <div class="icon">
+                  <i class="fa fa-user-edit"></i>
+                </div>
+                <h2 class="title">HBA Datentransfer Übersicht</h2>
+                <p class="lead mb-0">
+                  Um den HBA - Datentransfer bundeslandübergreifend zu digitalisieren, stellt die sberg it-systeme GmbH ein neues Modul für die elBook Plattform bereit.
+                  Damit können die nötigen Daten des HBA's digital übermittelt werden. Der absendende Kartenherausgeber kann die
+                  Daten des HBAs auf verschiedenen Wegen der elBook Plattform mitteilen und den empfangenen Kartenherausgeber festlegen, der von der elBook-Plattform per Mail über neue Daten
+                  informiert wird. Diese neuen Datensätze können dann direkt bei elBook abgeholt werden. Nur der Absender der HBA-Daten benötigt eine Lizenz für elBook. Der Empfänger kann die Daten über einen Resourcenlink (eine URL) ohne Lizenz abrufen.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="single-table">
+              <div class="my-auto showcase-text">
+                <div class="icon">
+                  <i class="fa fa-id-card"></i>
+                </div>
+                <h2 class="title">HBA Datentransfer erstellen</h2>
+                <p class="lead mb-0">
+                  Der absendende Kartenherausgeber des Datentransfers erstellt einen HBA-Transfer mit allen nötigen Angaben.
+                  Ein Datentransfer kann manuell über ein Formular oder per REST-API an elBook übergeben werden.
+                  Beim Eingang werden die Daten auf Vollständigkeit geprüft. Per API können auch mehrere Daten in einen Request übergeben werden.
+                  Alle Datentransferanträge werden abgelegt und gespeichert und nach einer bestimmten Zeit aus dem System gelöscht.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="single-table">
+              <div class="my-auto showcase-text">
+                <div class="icon">
+                  <i class="fa fa-file-import"></i>
+                </div>
+                <h2 class="title">HBA Datentransfer erhalten</h2>
+                <p class="lead mb-0">
+                  elBook erstellt aus den Datentransferanträgen einen Resourcenlink und einen Abholcode, verpackt alle Angaben in eine E-Mail und sendet sie an die Empfänger-Adresse, die mit den Anträgen übergeben wurde.
+                  Der Resourcenlink hat eine begrenzte Verfügbarkeit. Wird er geöffnet, wird man auf die elBook Plattform geleitet, die den Code abfragt.
+                  Nach der Verifizierung werden die Daten angezeigt und der Empfänger kann die Daten herunterladen.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="single-table">
+              <div class="my-auto showcase-text">
+                <div class="icon">
+                  <i class="fa fa-file-import"></i>
+                </div>
+                <h2 class="title">UseCases (Fachliche Szenarien)</h2>
+                <p class="lead mb-0">
+                  Im folgenden werden UseCases beschrieben die eine Übermittlung der HBA-Daten nötig machen und
+                  die durch den Einsatz von elBook im Alltag effizienter durchgeführt werden können.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="single-table">
+              <div class="my-auto showcase-text">
+                <div class="icon">
+                  <i class="fa fa-file-import"></i>
+                </div>
+                <h2 class="title">UseCase: Umzug eines HBA Besitzers in ein anderes Bundesland</h2>
+                <p class="lead mb-0">
+                  Zieht ein HBA Besitzer in ein anderes Bundesland, müssen die HBA-Daten an den
+                  neuen Kartenherausgeber übermittelt werden. Der HBA Besitzer bittet den aktuellen Herausgeber, die HBA-Daten an
+                  den neuen Kartenherausgeber zu übermitteln.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="single-table">
+              <div class="my-auto showcase-text">
+                <div class="icon">
+                  <i class="fa fa-file-import"></i>
+                </div>
+                <h2 class="title">UseCase: HBA-Kartenherausgeber befindet sich nicht im Bundesland der SMC-B Beantragung</h2>
+                <p class="lead mb-0">
+                  Wird eine SMC-B beantragt, muss bereits ein HBA vorhanden sein. Ist der Betriebsort für
+                  die SMC-B nicht im gleichen Bundesland kann ggf. kein HBA für diese Person gefunden werden.
+                  In diesem Fall müssen die HBA-Daten vom Kartenherausgeber des HBA's zum Beantragungsort der SMC-B übermittelt werden,
+                  so dass der Kartenherausgeber für die SMC-B die Daten abgleichen kann.
+                  Auch hier kann der HBA Besitzer den Kartenherausgeber des HBA's veranlassen die HBA-Daten an den Kartenherausgeber der SMC-B zu übermitteln.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="single-table">
+              <div class="my-auto showcase-text">
+                <div class="icon">
+                  <i class="fa fa-file-import"></i>
+                </div>
+                <h2 class="title">UseCase: HBA Datensynchronisation zwischen HBA Kartenherausgebern (Ärztekammern) und SMC-B Kartenherausgeber (KVen)</h2>
+                <p class="lead mb-0">
+                  Für Ärzte ist der HBA-Kartenherausgeber die Ärztekammer.
+                  Die SMC-B's werden wiederum durch die kassenärztlichen Vereinigungen herausgegeben. Da für eine
+                  SMC-B Beantragung der HBA nötig ist, kann es hier bei den KVen zu Problemen führen, wenn die HBA-Daten nicht zur Verfügung stehen.
+                  Diese Lücke wird durch elBook geschlossen. Die Ärztekammern können über elBook HBA-Daten an die Kartenherausgeber für die SMC-B (kassenärztliche Vereinigungen) senden.
+                  Somit wird die Informationslücke der KV für die Beantragung der SMC-B geschlossen. elBook ermöglicht das Senden von HBA-Daten auch gesammelt,
+                  womit die Ärztekammer eine große Anzahl von HBA-Daten übertragen kann.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="single-table">
+              <div class="my-auto showcase-text">
+                <div class="icon">
+                  <i class="fa fa-file-import"></i>
+                </div>
+                <h2 class="title">Schematische Darstellung</h2>
+                <p class="lead mb-0"><img th:src="@{/img/HBA-Transfer.svg}"></img></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--/ End Features -->
+
+    <!-- Start Divider -->
+    <div class="section overlay">
+    </div>
+    <!-- End Divider -->
+
+    <!-- Start Ueber Uns choose -->
+    <section id="ueber" class="why-choose section mt-5 mb-5" >
+      <div class="container">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="section-title">
+              <div class="underline">
+                <h2>Über uns</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="choose-left">
+              <a href="http://sberg.net/"><img src="img/logo.png" alt="#"></a>
+              <p>
+                Die sberg it-systeme GmbH basiert auf einem engagierten Team und verfügt über ein gutes Netzwerk sowie ausgezeichnete Partner.<br>
+                Damit setzen wir Aufgaben in Ihrem Rechenzentrum effektiv um.<br>
+                Durch unser professionelles IT Monitoring können Störungen schnell erkannt und gemeldet werden.<br>
+                In Verbindung mit unserem IT Services werden diese schnellstmöglich behoben. Mit unserer Erfahrung im Bereich der IT Sicherheit kümmern wir uns um den Schutz Ihrer Systeme und verschlüsseln Kommunikation.<br>
+              </p>
+              <div class="row">
+                <div class="col-lg-6">
+                  <ul class="list" style="list-style: none">
+                    <li><i class="fa fa-caret-right"></i>IT MONITORING</li>
+                    <li><i class="fa fa-caret-right"></i>IT SICHERHEIT</li>
+                    <li><i class="fa fa-caret-right"></i>IT SERVICES</li>
+                    <li><i class="fa fa-caret-right"></i>ENTWICKLUNG VON BUSINESS APPLIKATIONEN</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <a href="mailto:software@sberg.net?subject=elBook" class="mr-2">
+                    <i class="fa fa-envelope"></i>
+                    <div class="d-inline">software@sberg.net</div>
+                  </a>
+                </div>
+                <div class="col-12">
+                  <a href="http://sberg.net/" target="_blank" class="mr-2">
+                    <i class="fa fa-external-link-alt"></i>
+                    <div class="d-inline">Homepage öffnen</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--/ End Ueber Uns choose -->
+
+    <!-- Footer Area -->
+    <footer id="footer" class="footer">
+      <!-- Copyright -->
+      <div class="copyright">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-12">
+              <div class="copyright-content">
+                <p>
+                  © Copyright <span th:text="${#dates.year(#dates.createNow())}"></span>
+                  <a href="http://sberg.net/" target="_blank">
+                    SBERG IT-SYSTEME GMBH
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/ End Copyright -->
+    </footer>
+
+    <!-- Modal Login -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header p-2">
+            <h5 class="modal-title" id="loginModalTitle">Login</h5>
+            <button id="login-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="login">
+              <div class="container">
+                <div class="row">
+                  <div class="col-12">
+                    <form id="login-form" class="form" th:href="@{/}" method="post" novalidate>
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="form-group">
+                            <input class="form-control" name="username" type="text" placeholder="Benutzername" required>
+                            <div class="invalid-feedback">
+                              Bitte Benutzername angeben
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <div class="form-group">
+                            <input class="form-control" name="password" type="password" placeholder="Passwort" required>
+                            <div class="invalid-feedback">
+                              Bitte Passwort angeben
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="form-group">
+                            <div class="button">
+                              <button id="login-submit" type="submit" class="btn btn-block">Anmelden</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Fehler -->
+    <div class="modal fade" id="fehlerModal" tabindex="-1" role="dialog" aria-labelledby="fehlerModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-danger">
+            <h5 class="modal-title" id="fehlerModalTitle">Fehler</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Es ein Fehler bei der Anmeldung aufgetreten.<br>
+            Bitte versuchen Sie es erneut.
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-danger" data-dismiss="modal" onclick="window.location.href=window.location.href.split('?')[0]" role="button">OK</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

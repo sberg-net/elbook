@@ -1,0 +1,108 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <div th:fragment="menue" class="container-fluid">
+    <div class="row">
+      <nav id="sidebar" class="col-md-2 d-md-block bg-light sidebar navbar-expand-lg collapse navbar-collapse">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/') ? 'active':''}" th:href="@{/}">
+                <span data-feather="home"></span>
+                Start
+              </a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','GOLD_LICENCE_HEAD_OF_DEPT', 'SILVER_LICENCE_HEAD_OF_DEPT')">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/mandant') ? 'active':''}" th:href="@{/mandant}">
+                <span data-feather="users"></span>
+                Nutzer
+              </a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/thread') ? 'active':''}" th:href="@{/thread}">
+                <span data-feather="settings"></span>
+                Threadtest
+              </a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','GOLD_LICENCE_HEAD_OF_DEPT')">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/stammdatencertimport') ? 'active':''}" th:href="@{/stammdatencertimport}">
+                <span data-feather="download-cloud"></span>
+                Stammdaten - Import
+              </a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('GOLD_LICENCE_HEAD_OF_DEPT','SILVER_LICENCE_HEAD_OF_DEPT','GOLD_LICENCE_USER','SILVER_LICENCE_USER')">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/logeintrag') ? 'active':''}" th:href="@{/logeintrag}">
+                <span data-feather="settings"></span>
+                Logeinträge
+              </a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('PHARMACIST')">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/hbakartendatentransfer') ? 'active':''}" th:href="@{/hbakartendatentransfer}">
+                <span data-feather="globe"></span>
+                HBA Kartendatentransfer
+              </a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('GOLD_LICENCE_HEAD_OF_DEPT','SILVER_LICENCE_HEAD_OF_DEPT','GOLD_LICENCE_USER','SILVER_LICENCE_USER')">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/verzeichnisdienst') ? 'active':''}" th:href="@{/verzeichnisdienst}">
+                <span data-feather="book-open"></span>
+                Verzeichnisdienst
+              </a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/clientconnection') ? 'active':''}" th:href="@{/clientconnection}">
+                <span data-feather="share-2"></span>
+                Verzeichnisdienst - Clientverbindung
+              </a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','GOLD_LICENCE_HEAD_OF_DEPT','SILVER_LICENCE_HEAD_OF_DEPT','GOLD_LICENCE_USER','SILVER_LICENCE_USER')">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/mandant/einstellungen') ? 'active':''}" th:href="@{/mandant/einstellungen}">
+                <span data-feather="user"></span>
+                Benutzereinstellungen
+              </a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('GOLD_LICENCE_HEAD_OF_DEPT','SILVER_LICENCE_HEAD_OF_DEPT','GOLD_LICENCE_USER','SILVER_LICENCE_USER')">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/report') ? 'active':''}" th:href="@{/report}">
+                <span data-feather="bar-chart-2"></span>
+                Statistiken / Reports
+              </a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+              <a class="nav-link" href="javascript:{}" onclick="document.getElementById('logout-form').submit();">
+                <span data-feather="log-out"></span>
+                Abmelden
+              </a>
+              <form id="logout-form" th:action="@{/logout}" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+              </form>
+            </li>
+          </ul>
+        </div>
+        <span class="nav-link font-weight-bold">
+          Angemeldeter Nutzer: <span sec:authentication="name">Bob</span>
+        </span>
+      </nav>
+    </div>
+  </div>
+</body>
+</html>

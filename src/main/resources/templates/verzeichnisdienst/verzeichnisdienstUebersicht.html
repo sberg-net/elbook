@@ -1,0 +1,787 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<div th:if="${fehlernachricht == null}" class="alert alert-danger" role="alert" xmlns:th="http://www.thymeleaf.org" style="display:none" id="vzdEintragTableError">
+</div>
+<div th:if="${fehlernachricht != null}" class="alert alert-danger" role="alert" xmlns:th="http://www.thymeleaf.org" th:text="${fehlernachricht}"></div>
+<div th:if='${infoObject != null && !infoObject.getVersion().equals("Version 0")}' class="row" xmlns:th="http://www.thymeleaf.org">
+  <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#infoObjectContainer').is(':visible')){ $('#infoObjectContainer').hide() } else{ $('#infoObjectContainer').show() }">
+    <span class="text-primary" style="cursor: pointer">Zusätzliche Gematik-Verzeichnisdienst-Informationen einblenden/ausblenden - Bitte klicken</span>
+  </div>
+  <div class="col-md-12 mb-3 font-weight-bolder" id="infoObjectContainer" style="display: none">
+    <span>Gematik-Verzeichnisdienst: Version </span>
+    <span th:text="${infoObject.version}"></span><span>&nbsp;&nbsp;</span>
+    <span th:text="${infoObject.description}"></span>
+  </div>
+</div>
+<div class="row" xmlns:th="http://www.thymeleaf.org">
+  <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#configContainer').is(':visible')){ $('#configContainer').hide() } else{ $('#configContainer').show() }">
+    <span class="text-primary" style="cursor: pointer">Konfiguration-Informationen einblenden/ausblenden - Bitte klicken</span>
+  </div>
+  <div class="col-md-12 mb-3 font-weight-bolder" id="configContainer" style="display: none">
+    <span th:if="${filternEintraege}">Es wurde ein Suchfilter in Ihren Mandanteneinstellungen aktiviert. Es werden automatisch ALLE Einträge rausgefiltert, die NICHT mit folgenden Telematik-ID Kürzeln beginnen: <br></span>
+    <span th:if="${filternEintraege}" th:text="${telematikKuerzel}"></span><br th:if="${filternEintraege}">
+    <span th:if="${filternEintraege}"> Änderungen können nur von der Firma sberg it-systeme GmbH vorgenommen werden<br></span>
+    <span th:if="${!filternEintraege}">Sie können auf den kompletten Verzeichnisdienst zugreifen<br></span>
+    <span th:if="${!bearbeitenNurFiltereintraege && !bearbeitenEintraege}">Sie können die gefundenen Verzeichnisdiensteinträge NICHT editieren und löschen<br></span>
+    <span th:if="${bearbeitenNurFiltereintraege && !bearbeitenEintraege}">Sie können die gefundenen Verzeichnisdiensteinträge editieren und löschen, die Ihren hinterlegten Telematik-ID Kürzeln in den Mandanteneinstellungen entsprechen: <br></span>
+    <span th:if="${bearbeitenNurFiltereintraege && !bearbeitenEintraege}" th:text="${telematikKuerzel}"></span><br th:if="${bearbeitenNurFiltereintraege && !bearbeitenEintraege}">
+    <span th:if="${!bearbeitenNurFiltereintraege && bearbeitenEintraege}">Sie können die gefundenen Verzeichnisdiensteinträge editieren und löschen<br></span>
+    <span>Aus Verzeichnisdienst-Performancegründen wird die Such-Ergebnismenge auf 5000 Einträgen beschränkt</span>
+  </div>
+</div>
+<div class="row" xmlns:th="http://www.thymeleaf.org">
+  <div id="vzdSearchForm" class="col-md-12 mb-3">
+
+    <!-- Identifikatoren -->
+    <div class="row mt-2">
+      <div class="col font-weight-bolder">Suchattribute: Identifikatoren</div>
+      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchIdentifierAttrContainer').is(':visible')){ $('#vzdSearchIdentifierAttrContainer').hide() } else{ $('#vzdSearchIdentifierAttrContainer').show() }">
+        <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
+      </div>
+    </div>
+
+    <form id="vzdSearchIdentifierAttrContainer" class="searchAttrContainer" style="display: none">
+      <!-- telematikid -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="telematikId">Telematik-ID</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="telematikId" name="telematikId" aria-describedby="telematikIdHelp">
+          <small id="telematikIdHelp" class="text-muted">
+            Wildcard * am Anfang/Ende benutzbar
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#telematikid">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- uid -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="uid">UUID</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="uid" name="uid">
+        </div>
+      </div>
+
+      <!-- telematikid substr -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="telematikIdSubstr">Substring: Telematik-ID</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="telematikIdSubstr" name="telematikIdSubstr" aria-describedby="telematikIdSubstrHelp">
+          <small id="telematikIdSubstrHelp" class="text-muted">
+            Substring am Anfang - Mehrfachnennungen möglich (mit Komma trennen)
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#telematikid">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- domainid -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="telematikId">Sektor-ID</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="domainId" name="domainId" aria-describedby="domainIdHelp">
+          <small id="domainIdHelp" class="text-muted">
+            Mehrfachnennungen möglich (mit Komma trennen) und Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#domainid">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+    </form>
+
+    <!-- Namen -->
+    <div class="row mt-2">
+      <div class="col font-weight-bolder">Suchattribute: Namen</div>
+      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchNameAttrContainer').is(':visible')){ $('#vzdSearchNameAttrContainer').hide() } else{ $('#vzdSearchNameAttrContainer').show() }">
+        <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
+      </div>
+    </div>
+
+    <form id="vzdSearchNameAttrContainer" class="searchAttrContainer" style="display: none">
+      <!-- displayName -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="displayName">Anzeigename</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="displayName" name="displayName" aria-describedby="displayNameHelp">
+          <small id="displayNameHelp" class="text-muted">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#displayname">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- cn -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="cn">Allgemeiner Name</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="cn" name="cn" aria-describedby="cnHelp">
+          <small id="cnHelp" class="text-muted">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#cn">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- otherName -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="otherName">Anderer Name</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="otherName" name="otherName" aria-describedby="otherNameHelp">
+          <small id="otherNameHelp" class="text-muted">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#othername">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- organization -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="organization">Organisation</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="organization" name="organization" aria-describedby="organizationHelp">
+          <small id="organizationHelp" class="text-muted">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#organization">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- givenName -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="givenName">Vorname</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="givenName" name="givenName" aria-describedby="givenNameHelp">
+          <small id="givenNameHelp" class="text-muted">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#givenname">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- sn -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="sn">Nachname</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="sn" name="sn" aria-describedby="snHelp">
+          <small id="snHelp" class="text-muted">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#sn">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- title -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="title">Titel</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp">
+          <small id="titleHelp" class="text-muted">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#title">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+    </form>
+
+    <!-- Adressdaten -->
+    <div class="row mt-2">
+      <div class="col font-weight-bolder">Suchattribute: Adressdaten</div>
+      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchAddressAttrContainer').is(':visible')){ $('#vzdSearchAddressAttrContainer').hide() } else{ $('#vzdSearchAddressAttrContainer').show() }">
+        <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
+      </div>
+    </div>
+
+    <form id="vzdSearchAddressAttrContainer" class="searchAttrContainer" style="display: none">
+      <!-- streetAddress -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="streetAddress">Strasse und Hausnummer</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="streetAddress" name="streetAddress" aria-describedby="streetAddressHelp">
+          <small id="streetAddressHelp" class="text-muted">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#streetaddress">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- postalCode -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="postalCode">PLZ</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="postalCode" name="postalCode" aria-describedby="postalCodeHelp">
+          <small id="postalCodeHelp" class="text-muted">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#postalcode">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- localityName -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="localityName">Ort</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="localityName" name="localityName" aria-describedby="localityNameHelp">
+          <small id="localityNameHelp" class="text-muted">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#localityname">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- stateOrProvinceName -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="stateOrProvinceName">Bundesland</label>
+        <div class="col-sm-6">
+          <select class="form-control" id="stateOrProvinceName" name="stateOrProvinceName">
+            <option value="" disabled selected>Bitte ein Bundesland auswählen</option>
+            <option value="BW">Baden-Württemberg</option>
+            <option value="BAY">Bayern</option>
+            <option value="B">Berlin</option>
+            <option value="BB">Brandenburg</option>
+            <option value="HB">Bremen</option>
+            <option value="HH">Hamburg</option>
+            <option value="HS">Hessen</option>
+            <option value="MV">Mecklenburg-Vorpommern</option>
+            <option value="NDS">Niedersachsen</option>
+            <option value="NRW">Nordrhein-Westfalen</option>
+            <option value="NRW_NR">Nordrhein</option>
+            <option value="NRW_WL_LIPPE">Westfalen-Lippe</option>
+            <option value="RLP">Rheinland-Pfalz</option>
+            <option value="SAR">Saarland</option>
+            <option value="SACHSEN">Sachsen</option>
+            <option value="SACHSENANHALT">Sachsen-Anhalt</option>
+            <option value="SH">Schleswig-Holstein</option>
+            <option value="TH">Thüringen</option>
+            <option value="UNKNOWN">Unbekanntes Bundesland</option>
+          </select>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#stateorprovincename">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- countryCode -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="countryCode">Ländercode</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="countryCode" name="countryCode" aria-describedby="countryCodeHelp">
+          <small id="countryCodeHelp" class="text-muted">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#countryCode">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+    </form>
+
+    <!-- Berufliche Informationen -->
+    <div class="row mt-2">
+      <div class="col font-weight-bolder">Suchattribute: Berufliche Informationen</div>
+      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchJobAttrContainer').is(':visible')){ $('#vzdSearchJobAttrContainer').hide() } else{ $('#vzdSearchJobAttrContainer').show() }">
+        <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
+      </div>
+    </div>
+
+    <form id="vzdSearchJobAttrContainer" class="searchAttrContainer" style="display: none">
+      <!-- specialization -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="specialization">Spezialisierungen</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="specialization" name="specialization" aria-describedby="specializationHelp">
+          <small id="specializationHelp" class="text-muted">
+            Mehrfachnennungen möglich (mit Komma trennen) und Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#specialization">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- professionOid -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="professionOid">Berufsgruppe oder Betriebsstätten-Typ</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="professionOid" name="professionOid" aria-describedby="professionOidHelp">
+          <small id="professionOidHelp" class="text-muted">
+            Mehrfachnennungen möglich (mit Komma trennen) und Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#professionoid">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- entryType -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="entryType">Eintragstyp</label>
+        <div class="col-sm-6">
+          <select class="form-control" id="entryType" name="entryType">
+            <option value="" disabled selected>Eintragstyp - Bitte einen Wert auswählen</option>
+            <option value="UNKNOWN">Unbekannter Eintragstyp</option>
+            <option value="Berufsgruppe">Berufsgruppe</option>
+            <option value="Versicherte">Versicherte/-r</option>
+            <option value="Leistungserbringerinstitution">Leistungserbringerinstitution</option>
+            <option value="Organisation">Organisation</option>
+            <option value="Krankenkasse">Krankenkasse</option>
+            <option value="Krankenkasse_ePA">Krankenkasse ePA</option>
+            <option value="Kim">KIM-Hersteller und Anbieter</option>
+            <option value="DiGA">DIGA-Hersteller und Anbieter</option>
+          </select>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#entrytype">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+    </form>
+
+    <!-- Systemdaten -->
+    <div class="row mt-2">
+      <div class="col font-weight-bolder">Suchattribute: Systemdaten</div>
+      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchSystemAttrContainer').is(':visible')){ $('#vzdSearchSystemAttrContainer').hide() } else{ $('#vzdSearchSystemAttrContainer').show() }">
+        <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
+      </div>
+    </div>
+
+    <form id="vzdSearchSystemAttrContainer" class="searchAttrContainer" style="display: none">
+      <!-- maxKomLeAdr -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="maxKomLeAdr">Anzahl von KIM-Adressen</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="maxKomLeAdr" name="maxKomLeAdr" aria-describedby="maxKomLeAdrHelp">
+          <small id="maxKomLeAdrHelp" class="text-muted">
+            Maximale Anzahl von mail Adressen in den KIM Fachdaten, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+      </div>
+
+      <!-- holder -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="holder">Besitzer</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="holder" name="holder" aria-describedby="holderHelp">
+          <small id="holderHelp" class="text-muted">
+            Mehrfachnennungen möglich (mit Komma trennen) und Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#holder">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- dataFromAuthority -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="dataFromAuthority">Daten vom Kartenherausgeber</label>
+        <div class="col-sm-6">
+          <select class="form-control" id="dataFromAuthority" name="dataFromAuthority">
+            <option value="" disabled selected>Bitte einen Wert auswählen</option>
+            <option value="YES">Ja - Daten vom Kartenherausgeber</option>
+            <option value="NO">Nein - Daten vom Kartenherausgeber</option>
+            <option value="UNDEFINED">Nicht gesetzt - Daten vom Kartenherausgeber</option>
+          </select>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#datafromauthority">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- personalEntry -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="personalEntry">Persönlicher Eintrag</label>
+        <div class="col-sm-6">
+          <select class="form-control" id="personalEntry" name="personalEntry">
+            <option value="" disabled selected>Bitte einen Wert auswählen</option>
+            <option value="YES">Ja - Persönlicher Eintrag</option>
+            <option value="NO">Nein - Persönlicher Eintrag</option>
+            <option value="UNDEFINED">Nicht gesetzt - Persönlicher Eintrag</option>
+          </select>
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#personalentry">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- active -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="active">Aktiv</label>
+        <div class="col-sm-6">
+          <select class="form-control" id="active" name="active">
+            <option value="" disabled selected>Bitte einen Wert auswählen</option>
+            <option value="YES">Ja - Aktiv</option>
+            <option value="NO">Nein - Aktiv</option>
+            <option value="UNDEFINED">Nicht gesetzt - Aktiv</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- meta -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="meta">Metadaten</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="meta" name="meta" aria-describedby="metaHelp">
+          <small id="metaHelp" class="text-muted">
+            Mehrfachnennungen möglich (mit Komma trennen) und Wildcard * am Anfang/Ende benutzbar
+          </small>
+        </div>
+      </div>
+
+      <!-- changeDateTimeFrom -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="changeDateTimeFrom">Änderung Von</label>
+        <div class="col-sm-6">
+          <input type="datetime-local" class="form-control" id="changeDateTimeFrom" name="changeDateTimeFrom">
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#changedatetime">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+
+      <!-- changeDateTimeTo -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="changeDateTimeTo">Änderung Bis</label>
+        <div class="col-sm-6">
+          <input type="datetime-local" class="form-control" id="changeDateTimeTo" name="changeDateTimeTo">
+        </div>
+        <a class="col-sm-2 mt-2" target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#changedatetime">
+          <span data-feather="help-circle"></span>
+        </a>
+      </div>
+    </form>
+
+    <!-- Fachdaten: mail, komledata, kimdata -->
+    <div class="row mt-2" th:if="${showSearchFAAttributes}">
+      <div class="col font-weight-bolder">Suchattribute: KIM-Fachdaten (Mailadresse, KIM-Version, KIM-Anwendungskennzeichen). Wenn Sie die Attribute in dem Abschnitt belegen, werden ALLE oberen Attribute bei der Suche ignoriert.</div>
+      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchKimFachdatenAttrContainer').is(':visible')){ $('#vzdSearchKimFachdatenAttrContainer').hide() } else{ $('#vzdSearchKimFachdatenAttrContainer').show() }">
+        <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
+      </div>
+    </div>
+
+    <form id="vzdSearchKimFachdatenAttrContainer" class="searchAttrContainer" style="display: none" th:if="${showSearchFAAttributes}">
+      <!-- mail -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="mail">KIM-Mailadresse im Fachdatenattribut mail</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="mail" name="mail" aria-describedby="mailHelp">
+          <small id="mailHelp" class="text-muted">
+            Selektiert alle VZD-Einträge mit oder ohne KIM-Mailadressen. Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+            Bsp.: beispiel@test.kim.telematik oder ** oder *spiel@test*
+          </small>
+        </div>
+      </div>
+
+      <!-- komLeData -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="komLeData">KIM-Mailadresse und KIM-Version im Fachdatenattribut komLeData</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="komLeData" name="komLeData" aria-describedby="komLeDataHelp">
+          <small id="komLeDataHelp" class="text-muted">
+            Selektiert alle VZD-Einträge, deren Attribut FAD1.komLeData den angegebenen String in einem Wert des array's enthält.
+            komLeData enthält die "version" und "mail" durch Komma getrennt in einem array.
+            Beispiel: 1.0,mc_smcb_za@dom1.komle.telematik-test
+            Für diesen Suchparameter kann ein Wildcard genutzt werden. Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+      </div>
+
+      <!-- kimData -->
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="kimData">KIM-Mailadresse, KIM-Version und Anwendungskennzeichen im Fachdatenattribut kimData</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="kimData" name="kimData" aria-describedby="kimDataHelp">
+          <small id="kimDataHelp" class="text-muted">
+            Selektiert alle VZD-Einträge, deren Attribut FAD1.kimData den angegebenen String in einem Wert des array's enthält.
+            kimData enthält die "mail", "version" und "appTags" durch Komma getrennt in einem array.
+            Die appTags werden durch das Pipe Zeichen getrennt.
+            Bitte beachten: Wenn das Pipe Zeichen im Suchstring genutzt wird muss die besondere
+            Bedeutung dieses Zeichens bei der Suche beachtet werden.
+            Beispiel: mz_smcb_za@dom2.kim.telematik-test,1.0,DALE-UV;Einsendung;V1.0|eEB;V1.0
+            Für diesen Suchparameter kann ein Wildcard genutzt werden, z.B. mz_smcb_za@dom2.kim.telematik-test*
+            Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+  <div class="col-md-12 mb-3">
+    <div class="row ml-0 mr-0">
+      <div class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pr-1">
+        <button type="button" id="searchBtn" class="btn btn-primary btn-block" onclick="vzdEintragUebersicht();">Suchen</button>
+      </div>
+      <div th:if="${bearbeitenNurFiltereintraege || bearbeitenEintraege}" class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pr-1">
+        <button type="button" id="createUser" class="btn btn-primary btn-block" onclick="vzdEintragLaden(-1)">Verzeichnisdiensteintrag anlegen</button>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pr-1">
+        <button type="button" class="btn btn-primary btn-block" onclick="$('#confirmDialog4DeleteVzdAuth').modal('show')">Verzeichnisdienst-Anmeldedaten löschen</button>
+      </div>
+      <div th:if="${!vzdeintraege.isEmpty()}" class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pr-1">
+        <button type="button" class="btn btn-primary btn-block" onclick="vzdEintragUebersicht(false,true)">CSV-Export der Uuid und TelematikID</button>
+      </div>
+      <a th:if="${csvExportErstellen && !vzdeintraege.isEmpty()}" style="display: none" target="_blank" id="csvExportErstellen" th:href="@{/verzeichnisdienst/uebersicht/herunterladen/{csvFileUuid}(csvFileUuid=${csvExportUuid})}"></a>
+    </div>
+  </div>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" class="row">
+  <div class="col-md-9 mb-3 font-weight-bolder">
+    <span th:text="${#lists.size(vzdeintraege)}"></span>&nbsp;Verzeichnisdiensteinträge vorhanden
+  </div>
+</div>
+<div id="vzdOverlay">
+  <div id="vzdOverlayText">Bitte warten....</div>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" class="row">
+  <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdColVisibleContainer').is(':visible')){ $('#vzdColVisibleContainer').hide() } else{ $('#vzdColVisibleContainer').show() }">
+    <span class="text-primary" style="cursor: pointer">Spalten einblenden/ausblenden - Bitte klicken</span>
+  </div>
+  <div class="col-md-12 mb-3 font-weight-bolder" id="vzdColVisibleContainer" style="display: none">
+    <div class="row">
+      <!-- vzdentry_col_id-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_id" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_id">UUID</label>
+      </div>
+      <!-- vzdentry_col_tid-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_tid" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_tid">Telematik-ID</label>
+      </div>
+      <!-- vzdentry_col_domainid-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_domainid" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_domainid">Sektor-ID's</label>
+      </div>
+      <!-- vzdentry_col_displayname-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_displayname" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_displayname">Anzeigename</label>
+      </div>
+      <!-- vzdentry_col_cn-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_cn" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_cn">Allgemeiner Name</label>
+      </div>
+      <!-- vzdentry_col_othername-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_othername" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_othername">Anderer Name</label>
+      </div>
+      <!-- vzdentry_col_organization-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_organization" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_organization">Organisation</label>
+      </div>
+      <!-- vzdentry_col_givenname-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_givenname" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_givenname">Vorname</label>
+      </div>
+      <!-- vzdentry_col_sn-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_sn" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_sn">Nachname</label>
+      </div>
+      <!-- vzdentry_col_title-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_title" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_title">Titel</label>
+      </div>
+      <!-- vzdentry_col_streetaddress-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_streetaddress" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_streetaddress">Strasse/Hausnummer</label>
+      </div>
+      <!-- vzdentry_col_postalcode-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_postalcode" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_postalcode">PLZ</label>
+      </div>
+      <!-- vzdentry_col_localityname-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_localityname" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_localityname">Ort</label>
+      </div>
+      <!-- vzdentry_col_stateorprovincename-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_stateorprovincename" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_stateorprovincename">Bundesland/Region</label>
+      </div>
+      <!-- vzdentry_col_countrycode-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_countrycode" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_countrycode">Ländercode</label>
+      </div>
+      <!-- vzdentry_col_specialization-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_specialization" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_specialization">Spezialisierungen</label>
+      </div>
+      <!-- vzdentry_col_professionoid-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_professionoid" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_professionoid">Berufsgruppen/Betriebsstätten</label>
+      </div>
+      <!-- vzdentry_col_entrytype-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_entrytype" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_entrytype">Eintragstyp</label>
+      </div>
+      <!-- vzdentry_col_holder-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_holder" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_holder">Besitzer</label>
+      </div>
+      <!-- vzdentry_col_active-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_active" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_active">Aktiv</label>
+      </div>
+      <!-- vzdentry_col_meta-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_meta" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_meta">Metadaten</label>
+      </div>
+      <!-- vzdentry_col_datafromauthority-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_datafromauthority" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_datafromauthority">Daten vom Kartenherausgeber</label>
+      </div>
+      <!-- vzdentry_col_personalentry-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_personalentry" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_personalentry">Persönlicher Eintrag</label>
+      </div>
+      <!-- vzdentry_col_maxkomleadr-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_maxkomleadr" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_maxkomleadr">Max. Anzahl KIM-Adressen</label>
+      </div>
+      <!-- vzdentry_col_changedatetime-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_changedatetime" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_changedatetime">Geändert Am</label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table" id="vzdEintragTable" xmlns:th="http://www.thymeleaf.org">
+    <thead>
+      <tr>
+        <th class="vzdentry_col_id">ID</th>
+        <th class="vzdentry_col_tid">Telematik-ID</th>
+        <th class="vzdentry_col_domainid">Sektor-ID's</th>
+        <th class="vzdentry_col_displayname">Anzeigename</th>
+        <th class="vzdentry_col_cn">Allgemeiner Name</th>
+        <th class="vzdentry_col_othername">Anderer Name</th>
+        <th class="vzdentry_col_organization">Organisation</th>
+        <th class="vzdentry_col_givenname">Vorname</th>
+        <th class="vzdentry_col_sn">Nachname</th>
+        <th class="vzdentry_col_title">Titel</th>
+        <th class="vzdentry_col_streetaddress">Strasse/Hausnummer</th>
+        <th class="vzdentry_col_postalcode">PLZ</th>
+        <th class="vzdentry_col_localityname">Ort</th>
+        <th class="vzdentry_col_stateorprovincename">Bundesland/Region</th>
+        <th class="vzdentry_col_countrycode">Ländercode</th>
+        <th class="vzdentry_col_specialization">Spezialisierungen</th>
+        <th class="vzdentry_col_professionoid">Berufsgruppen/Betriebsstätten</th>
+        <th class="vzdentry_col_entrytype">Eintragstyp</th>
+        <th class="vzdentry_col_holder">Besitzer</th>
+        <th class="vzdentry_col_active">Aktiv</th>
+        <th class="vzdentry_col_meta">Metadaten</th>
+        <th class="vzdentry_col_datafromauthority">Daten vom Kartenherausgeber</th>
+        <th class="vzdentry_col_personalentry">Persönlicher Eintrag</th>
+        <th class="vzdentry_col_maxkomleadr">Max. Anzahl KIM-Adressen</th>
+        <th class="vzdentry_col_changedatetime">Geändert am</th>
+        <th>Stammdaten-Aktionen</th>
+        <th>Zertifikats-Aktionen</th>
+      </tr>
+    </thead>
+    <tbody id="vzdEintragTableBody">
+      <tr class="font-weight-bolder" th:if="${vzdeintraege.isEmpty() || suchergebnisFehler != null}">
+        <td colspan="2" th:if="${suchergebnisFehler == null}">Keine Einträge verfügbar. Bitte benutzen Sie die Suche.</td>
+        <td colspan="2" th:if="${suchergebnisFehler != null}" th:text="${suchergebnisFehler}"></td>
+      </tr>
+      <tr th:each="n : ${vzdeintraege}" th:attr="id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}">
+        <td class="vzdentry_col_id"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryUid()}">ID</span></td>
+        <td class="vzdentry_col_tid"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()}">TelematikID</span></td>
+        <td class="vzdentry_col_domainid"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryDomainIDAsStr()}">Sektor-IDs</span></td>
+        <td class="vzdentry_col_displayname"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryDisplayName()}">Anzeigename</span></td>
+        <td class="vzdentry_col_cn"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryCn()}">Allgemeiner Name</span></td>
+        <td class="vzdentry_col_othername"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryOtherName()}">Anderer Name</span></td>
+        <td class="vzdentry_col_organization"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryOrganization()}">Organisation</span></td>
+        <td class="vzdentry_col_givenname"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryGivenName()}">Vorname</span></td>
+        <td class="vzdentry_col_sn"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntrySn()}">Nachname</span></td>
+        <td class="vzdentry_col_title"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryTitle()}">Titel</span></td>
+        <td class="vzdentry_col_streetaddress"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryStreetAddress()}">Strasse/Hausnummer</span></td>
+        <td class="vzdentry_col_postalcode"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryPostalCode()}">PLZ</span></td>
+        <td class="vzdentry_col_localityname"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryLocalityName()}">Ort</span></td>
+        <td class="vzdentry_col_stateorprovincename"><span th:text="${n.stateOrProvinceName.hrText}">Bundesland/Region</span></td>
+        <td class="vzdentry_col_countrycode"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryCountryCode()}">Ländercode</span></td>
+        <td class="vzdentry_col_specialization"><span th:text="${n.getSpecializationAsStr()}">Spezialisierungen</span></td>
+        <td class="vzdentry_col_professionoid"><span th:text="${n.getProfessionOIDAsStr()}">Berufsgruppen / Betriebsstätten</span></td>
+        <td class="vzdentry_col_entrytype"><span th:text="${n.entryType.hrText}">Eintragstyp</span></td>
+        <td class="vzdentry_col_holder"><span th:text="${n.getHolderAsStr()}">Besitzer</span></td>
+        <td class="vzdentry_col_meta"><span th:text="${n.getMetaAsStr()}">Meta</span></td>
+        <td class="vzdentry_col_active"><span th:text="${n.active.textValue}">Aktiv</span></td>
+        <td class="vzdentry_col_datafromauthority"><span th:text="${n.dataFromAuthority.textValue}">Daten vom Kartenherausgeber</span></td>
+        <td class="vzdentry_col_personalentry"><span th:text="${n.personalEntry.textValue}">Persönlicher Eintrag</span></td>
+        <td class="vzdentry_col_maxkomleadr"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryMaxKOMLEadr()}">Max. Anzahl KIM-Adressen</span></td>
+        <td class="vzdentry_col_changedatetime"><span class="text-break" th:text="${n.changedDateTime}">Geändert Am</span></td>
+        <td>
+          <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}" onclick="vzdEintragLaden($(this).attr('data-id'))">
+            <span data-feather="edit"></span>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button th:if="${n.editable}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}" th:attrappend="data-telematikId=${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()}" onclick="elbookContext.toDeleteVzdEintrag=$(this).attr('data-id');elbookContext.telematikId=$(this).attr('data-telematikId');$('#confirmDialog4DeleteVzdEintrag').modal('show')" >
+            <span data-feather="delete"></span>
+          </button>
+        </td>
+        <td>
+          <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}" th:attrappend="data-telematikId=${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()}" onclick="vzdEintragZertifikateLaden($(this).attr('data-id'),$(this).attr('data-telematikId'),false,0)">
+            <span data-feather="edit"></span>
+          </button>&nbsp;&nbsp;&nbsp;
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<script>
+  feather.replace();
+</script>

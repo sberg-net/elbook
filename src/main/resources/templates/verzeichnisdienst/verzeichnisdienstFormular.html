@@ -1,0 +1,303 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<tr id="vzdEintragFormRow">
+  <td colspan="4">
+    <form id="vzdEintragForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
+
+      <input type="hidden" th:if="${fehlernachricht == ''}" id="uid" name="uid" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryUid()}">
+      <input type="hidden" id="bearbeitenEintraege" th:value="${vzdeintrag.isEditable()}">
+
+      <!-- Identifikatoren -->
+      <div th:if="${fehlernachricht == ''}" class="form-group needs-validation">
+        <label for="telematikId">Telematik-ID</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#telematikid">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:if="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryUid() == '-1'}" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryTelematikId()}" class="form-control" id="telematikId" name="telematikId" required>
+        <input type="text" th:if="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryUid() != '-1'}" disabled th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryTelematikId()}" class="form-control" name="telematikId" required>
+        <div class="invalid-feedback">
+          Bitte angeben!
+        </div>
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="domainId">Sektor-ID's (kommasepariert eintragen)</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#domainid">
+          <span data-feather="help-circle"></span>
+        </a>
+        <textarea class="form-control" id="domainId" name="domainId" rows="3" th:text="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryDomainIDAsStr()}"></textarea>
+      </div>
+
+      <!-- Namen -->
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="displayName">Anzeigename</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#displayname">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryDisplayName()}" class="form-control" id="displayName" name="displayName">
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group needs-validation">
+        <label for="cn">Allgemeiner Name</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#cn">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryCn()}" class="form-control" id="cn" name="cn" required>
+        <div class="invalid-feedback">
+          Bitte angeben!
+        </div>
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="otherName">Anderer Name</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#othername">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryOtherName()}" class="form-control" id="otherName" name="otherName">
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="organization">Organisation</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#organization">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryOrganization()}" class="form-control" id="organization" name="organization">
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="givenName">Vorname</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#givenname">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryGivenName()}" class="form-control" name="givenName" id="givenName">
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="sn">Nachname</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#sn">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntrySn()}" class="form-control" name="sn" id="sn">
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="title">Titel</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#title">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryTitle()}" class="form-control" id="title" name="title">
+      </div>
+
+      <!-- Adressdaten -->
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="streetAddress">Strasse und Hausnummer</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#streetaddress">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryStreetAddress()}" class="form-control" id="streetAddress" name="streetAddress">
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="postalCode">PLZ</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#postalcode">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryPostalCode()}" class="form-control" id="postalCode" name="postalCode">
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="localityName">Ort</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#localityname">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryLocalityName()}" class="form-control" id="localityName" name="localityName">
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="stateOrProvinceName">Bundesland/Region</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#stateorprovincename">
+          <span data-feather="help-circle"></span>
+        </a>
+        <select class="form-control" id="stateOrProvinceName" name="stateOrProvinceName">
+          <option value="BW" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'BW'?'selected':''}">Baden-Württemberg</option>
+          <option value="BAY" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'BAY'?'selected':''}">Bayern</option>
+          <option value="B" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'B'?'selected':''}">Berlin</option>
+          <option value="BB" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'BB'?'selected':''}">Brandenburg</option>
+          <option value="HB" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'HB'?'selected':''}">Bremen</option>
+          <option value="HH" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'HH'?'selected':''}">Hamburg</option>
+          <option value="HS" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'HS'?'selected':''}">Hessen</option>
+          <option value="MV" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'MV'?'selected':''}">Mecklenburg-Vorpommern</option>
+          <option value="NDS" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'NDS'?'selected':''}">Niedersachsen</option>
+          <option value="NRW" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'NRW'?'selected':''}">Nordrhein-Westfalen</option>
+          <option value="NRW_NR" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'NRW_NR'?'selected':''}">Nordrhein</option>
+          <option value="NRW_WL_LIPPE" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'NRW_WL_LIPPE'?'selected':''}">Westfalen-Lippe</option>
+          <option value="RLP" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'RLP'?'selected':''}">Rheinland-Pfalz</option>
+          <option value="SAR" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'SAR'?'selected':''}">Saarland</option>
+          <option value="SACHSEN" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'SACHSEN'?'selected':''}">Sachsen</option>
+          <option value="SACHSENANHALT" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'SACHSENANHALT'?'selected':''}">Sachsen-Anhalt</option>
+          <option value="SH" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'SH'?'selected':''}">Schleswig-Holstein</option>
+          <option value="TH" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'TH'?'selected':''}">Thüringen</option>
+          <option value="UNKNOWN" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'UNKNOWN'?'selected':''}">Unbekanntes Bundesland</option>
+        </select>
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="countryCode">Ländercode</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#countryCode">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryCountryCode()}" class="form-control" id="countryCode" name="countryCode">
+      </div>
+
+      <!-- Berufliche Informationen -->
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="specialization">Spezialisierungen (kommasepariert eintragen)</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#specialization">
+          <span data-feather="help-circle"></span>
+        </a>
+        <textarea class="form-control" id="specialization" name="specialization" rows="3" th:text="${vzdeintrag.getSpecializationAsStr()}"></textarea>
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="professionOID">Berufsgruppen / Betriebsstätten</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#professionoid">
+          <span data-feather="help-circle"></span>
+        </a>
+        <textarea class="form-control" disabled rows="3" id="professionOID" name="professionOID" th:text="${vzdeintrag.getProfessionOIDAsStr()}"></textarea>
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="entryType">Eintragstyp</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#entrytype">
+          <span data-feather="help-circle"></span>
+        </a>
+        <select class="form-control" id="entryType" name="entryType">
+          <option value="" selected>Eintragstyp - Bitte einen Wert auswählen</option>
+          <option value="UNKNOWN" th:attrappend="selected=${vzdeintrag.getEntryType().name() == 'UNKNOWN'?'selected':''}">Unbekannter Eintragstyp</option>
+          <option value="Berufsgruppe" th:attrappend="selected=${vzdeintrag.getEntryType().name() == 'Berufsgruppe'?'selected':''}">Berufsgruppe</option>
+          <option value="Versicherte" th:attrappend="selected=${vzdeintrag.getEntryType().name() == 'Versicherte'?'selected':''}">Versicherte/-r</option>
+          <option value="Leistungserbringerinstitution" th:attrappend="selected=${vzdeintrag.getEntryType().name() == 'Leistungserbringerinstitution'?'selected':''}">Leistungserbringerinstitution</option>
+          <option value="Organisation" th:attrappend="selected=${vzdeintrag.getEntryType().name() == 'Organisation'?'selected':''}">Organisation</option>
+          <option value="Krankenkasse" th:attrappend="selected=${vzdeintrag.getEntryType().name() == 'Krankenkasse'?'selected':''}">Krankenkasse</option>
+          <option value="Krankenkasse_ePA" th:attrappend="selected=${vzdeintrag.getEntryType().name() == 'Krankenkasse_ePA'?'selected':''}">Krankenkasse ePA</option>
+          <option value="Kim" th:attrappend="selected=${vzdeintrag.getEntryType().name() == 'Kim'?'selected':''}">KIM-Hersteller und Anbieter</option>
+          <option value="DiGA" th:attrappend="selected=${vzdeintrag.getEntryType().name() == 'DiGA'?'selected':''}">DIGA-Hersteller und Anbieter</option>
+        </select>
+      </div>
+
+      <!-- Systemdaten -->
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="holder">Besitzer</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#holder">
+          <span data-feather="help-circle"></span>
+        </a>
+        <textarea class="form-control" disabled rows="3" id="holder" name="holder" th:text="${vzdeintrag.getHolderAsStr()}"></textarea>
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="dataFromAuthority">Daten vom Kartenherausgeber</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#datafromauthority">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.getDataFromAuthority().getTextValue()}" disabled id="dataFromAuthority" name="dataFromAuthority" class="form-control">
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="personalEntry">Persönlicher Eintrag</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#personalentry">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.getPersonalEntry().getTextValue()}" disabled id="personalEntry" name="personalEntry" class="form-control">
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="active">Aktiv</label>
+        <input type="text" th:value="${vzdeintrag.getActive().getTextValue()}" disabled id="active" name="active" class="form-control">
+        <div class="row justify-content-start" th:if="${vzdeintrag.isEditable() && vzdeintrag.vzdEntryWrapper.extractDirectoryEntryUid() != '-1'}">
+          <div th:if="${vzdeintrag.getActive().getTextValue() == 'Ja'}" class="col-12 col-md-6 col-lg-6">
+            <button class="btn btn-primary btn-block" onclick="elbookContext.telematikId=$('#vzdEintragForm input[name=telematikId]').val();elbookContext.baseEntryUid=$('#vzdEintragForm #uid').val();elbookContext.baseEntryActive=false;$('#confirmDialog4BaseEntryDeactivate').modal('show')">Deaktivieren des Basiseintrages</button>
+          </div>
+          <div th:if="${vzdeintrag.getActive().getTextValue() == 'Nein'}" class="col-12 col-md-6 col-lg-6">
+            <button class="btn btn-primary btn-block" onclick="elbookContext.telematikId=$('#vzdEintragForm input[name=telematikId]').val();elbookContext.baseEntryUid=$('#vzdEintragForm #uid').val();elbookContext.baseEntryActive=true;$('#confirmDialog4BaseEntryActivate').modal('show')">Aktivieren des Basiseintrages</button>
+          </div>
+        </div>
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="meta">Metadaten</label>
+        <textarea class="form-control" disabled rows="3" id="meta" name="meta" th:text="${vzdeintrag.getMetaAsStr()}"></textarea>
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label for="maxKomLeAdr">Max. Anzahl KIM-Adressen</label>
+        <input type="text" th:value="${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryMaxKOMLEadr()}" disabled id="maxKomLeAdr" name="maxKomLeAdr" class="form-control">
+      </div>
+
+      <!-- Fachdaten mail,komledata,kimdata -->
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label>KIM-Mailadresse im Fachdatenattribut mail</label>
+        <textarea class="form-control" rows="3" th:text="${vzdeintrag.getFadMailAttrsAsStr()}" disabled></textarea>
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label>KIM-Mailadresse und KIM-Version im Fachdatenattribut komLeData</label>
+        <textarea class="form-control" rows="3" th:text="${vzdeintrag.getFadKomLeDataAttrsAsStr()}" disabled></textarea>
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label>KIM-Mailadresse, KIM-Version und Anwendungskennzeichen im Fachdatenattribut kimData</label>
+        <textarea class="form-control" rows="3" th:text="${vzdeintrag.getFadKimDataAttrsAsStr()}" disabled></textarea>
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label>Geändert Am</label>
+        <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#changedatetime">
+          <span data-feather="help-circle"></span>
+        </a>
+        <input type="text" th:value="${vzdeintrag.getChangedDateTime()}" disabled/>
+      </div>
+
+      <!-- Logs -->
+      <div th:if="${fehlernachricht == ''}" class="form-group">
+        <label>Logeinträge</label>
+        <textarea class="form-control" rows="3" th:text="${vzdeintrag.getLogEntriesAsStr()}" disabled></textarea>
+      </div>
+
+      <div class="form-group" th:if="${fehlernachricht == '' && vzdeintrag.vzdEntryWrapper.extractDirectoryEntryUid() != '-1'}">
+        <a target="_blank" th:href="@{/verzeichnisdienst/herunterladen/{vzdUid}(vzdUid=${vzdeintrag.vzdEntryWrapper.extractDirectoryEntryUid()})}">Als json-Datei herunterladen</a>
+      </div>
+
+      <div class="container-fluid p-0 mb-2">
+        <div class="row justify-content-start">
+          <div class="col-12 col-md-6 col-lg-3 pb-1">
+            <button class="btn btn-secondary btn-block" type="button" onclick="vzdEintragUebersicht(true);">Schließen</button>
+          </div>
+          <div th:if="${fehlernachricht == '' && vzdeintrag.editable}" class="col-12 col-md-6 col-lg-3">
+            <button class="btn btn-primary btn-block" type="button" onclick="vzdEintragSpeichern()">Speichern</button>
+          </div>
+        </div>
+      </div>
+
+      <div th:if="${fehlernachricht == ''}" class="alert alert-danger mt-2 mb-2 text-break" role="alert" style="display:none" id="vzdEintragFormError">
+      </div>
+      <div th:if="${fehlernachricht != null && fehlernachricht != ''}" class="alert alert-danger mt-2 mb-2 text-break" role="alert" th:text="${fehlernachricht}"></div>
+    </form>
+  </td>
+</tr>
+<script>
+  feather.replace();
+</script>

@@ -1,0 +1,79 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<div class="alert alert-danger" role="alert" style="display:none" id="hbakartendatentransferTableError">
+</div>
+<div class="row" xmlns:th="http://www.thymeleaf.org">
+  <div class="col-sm-12 col-lg-12 mb-3 p-0 pr-1">
+    <span class="font-weight-bold">Datentransfer für </span>
+    <span class="font-weight-bold" th:text="${datentransfer.empfaengerKartenherausgeber.hrText}"></span>&nbsp;
+    <a th:href="'mailto:' + ${datentransfer.empfaenger}" th:text="${datentransfer.empfaenger}"></a>
+  </div>
+</div>
+<div class="row" xmlns:th="http://www.thymeleaf.org">
+  <div th:if="${datentransfer.versendetAm == null}" class="col-sm-4 col-lg-3 mb-3 pr-1">
+    <button type="button" id="createUser" th:attr="data-id=${datentransfer.id}" class="btn btn-primary btn-block" onclick="hbakartendatentransferPersonLaden($(this).attr('data-id'),-1)">Person anlegen</button>
+  </div>
+  <div class="col-sm-4 col-lg-3 mb-3 pr-1">
+    <button type="button" th:attr="data-id=${datentransfer.id}" class="btn btn-primary btn-block" onclick="hbakartendatentransferUebersicht()">Zurück zur Übersicht</button>
+  </div>
+  <div th:if="${datentransfer.versendetAm == null && personenAnlegen}" class="col-sm-4 col-lg-3 mb-3 pr-1">
+    <button type="button" th:attr="data-id=${datentransfer.id}" class="btn btn-primary btn-block" onclick="elbookContext.toSendKartendatentransfer=$(this).attr('data-id');$('#confirmDialog4SendKartendatentransfer').modal('show')">Versenden (mit Aktivierungscode in der Mail)</button>
+  </div>
+  <div th:if="${datentransfer.versendetAm == null && personenAnlegen}" class="col-sm-4 col-lg-3 mb-3 pr-1">
+    <button type="button" th:attr="data-id=${datentransfer.id}" class="btn btn-primary btn-block" onclick="elbookContext.toSendKartendatentransfer=$(this).attr('data-id');$('#confirmDialog4SendKartendatentransferWithoutActivationCode').modal('show')">Versenden (ohne Aktivierungscode in der Mail)</button>
+  </div>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" class="row">
+  <div class="col-md-9 mb-3 font-weight-bolder">
+    <span th:text="${#lists.size(personen)}"></span>&nbsp;Personen vorhanden
+  </div>
+</div>
+<div class="row">
+  <table class="table" id="hbakartendatentransferTable" xmlns:th="http://www.thymeleaf.org">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Person</th>
+      <th>Typ</th>
+      <th>Anschrift</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${personen.isEmpty()}">
+      <td colspan="2">Keine Personen verfügbar</td>
+    </tr>
+    <tr th:each="n : ${personen}">
+      <td><span th:text="${n.id}">ID</span></td>
+      <td><span class="text-break" th:text="${n.person}">Person</span></td>
+      <td><span class="text-break" th:text="${n.typ}">Typ</span></td>
+      <td><span class="text-break" th:text="${n.anschrift}">Anschrift</span></td>
+      <td>
+        <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-personid=${n.id}" th:attrappend="data-id=${datentransfer.id}" onclick="hbakartendatentransferPersonLaden($(this).attr('data-id'),$(this).attr('data-personid'))">
+          <span data-feather="edit"></span>
+        </button>
+        <button th:if="${datentransfer.versendetAm == null}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-personid=${n.id}" th:attrappend="data-id=${datentransfer.id}" onclick="elbookContext.toDeleteKartendatentransfer=$(this).attr('data-id');elbookContext.toDeleteKartendatentransferPerson=$(this).attr('data-personid');$('#confirmDialog4DeleteKartendatentransferPerson').modal('show')" >
+          <span data-feather="delete"></span>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<script>
+  feather.replace();
+</script>

@@ -1,0 +1,169 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<form id="hbakartendatentransferForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
+
+  <input type="hidden" id="id" name="id" th:value="${kartendatenTransfer.id}">
+
+  <div class="form-group needs-validation">
+    <label for="absender">Absender-Mailadresse</label>
+    <input th:if="${kartendatenTransfer.versendetAm == null}" type="text" th:value="${kartendatenTransfer.absender}" class="form-control" id="absender" name="absender" required>
+    <input th:if="${kartendatenTransfer.versendetAm != null}" type="text" th:value="${kartendatenTransfer.absender}" class="form-control" name="absender" disabled>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div class="form-group needs-validation">
+    <label for="empfaenger">Empfänger-Mailadresse</label>
+    <input type="text" th:if="${kartendatenTransfer.versendetAm == null}" th:value="${kartendatenTransfer.empfaenger}" class="form-control" id="empfaenger" name="empfaenger" required>
+    <input type="text" th:if="${kartendatenTransfer.versendetAm != null}" th:value="${kartendatenTransfer.empfaenger}" class="form-control" disabled name="empfaenger">
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div class="form-group" th:if="${kartendatenTransfer.id == 0}">
+    <label for="aktivierungsCode">Akivierungscode des Transfers, der für den Empfänger wichtig ist (wird bei Nichteingabe automatisch erstellt)</label>
+    <input type="text" th:value="${kartendatenTransfer.aktivierungsCode}" class="form-control" id="aktivierungsCode" name="aktivierungsCode">
+  </div>
+
+  <div class="form-group">
+    <label for="absenderKartenherausgeber">Absender-Kartenherausgeber</label>
+    <select th:if="${kartendatenTransfer.versendetAm == null}" class="form-control" id="absenderKartenherausgeber" name="absenderKartenherausgeber">
+      <option value="AK3_01" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_01'?'selected':''}">Landesapothekerkammer Baden-Württemberg</option>
+      <option value="AK3_02" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_02'?'selected':''}">Bayerische Landesapothekerkammer</option>
+      <option value="AK3_03" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_03'?'selected':''}">Apothekerkammer Berlin</option>
+      <option value="AK3_04" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_04'?'selected':''}">Landesapothekerkammer Brandenburg</option>
+      <option value="AK3_05" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_05'?'selected':''}">Apothekerkammer Bremen</option>
+      <option value="AK3_06" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_06'?'selected':''}">Apothekerkammer Hamburg</option>
+      <option value="AK3_07" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_07'?'selected':''}">Landesapothekerkammer Hessen</option>
+      <option value="AK3_08" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_08'?'selected':''}">Apothekerkammer Mecklenburg-Vorpommern</option>
+      <option value="AK3_09" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_09'?'selected':''}">Apothekerkammer Niedersachsen</option>
+      <option value="AK3_10" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_10'?'selected':''}">Apothekerkammer Nordrhein</option>
+      <option value="AK3_11" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_11'?'selected':''}">Landesapothekerkammer Rheinland-Pfalz</option>
+      <option value="AK3_12" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_12'?'selected':''}">Apothekerkammer des Saarlandes</option>
+      <option value="AK3_13" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_13'?'selected':''}">Apothekerkammer Sachsen-Anhalt</option>
+      <option value="AK3_14" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_14'?'selected':''}">Sächsische Landesapothekerkammer</option>
+      <option value="AK3_15" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_15'?'selected':''}">Apothekerkammer Schleswig-Holstein</option>
+      <option value="AK3_16" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_16'?'selected':''}">Landesapothekerkammer Thüringen</option>
+      <option value="AK3_17" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_17'?'selected':''}">Apothekerkammer Westfalen-Lippe</option>
+    </select>
+    <select th:if="${kartendatenTransfer.versendetAm != null}" class="form-control" disabled name="absenderKartenherausgeber">
+      <option value="AK3_01" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_01'?'selected':''}">Landesapothekerkammer Baden-Württemberg</option>
+      <option value="AK3_02" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_02'?'selected':''}">Bayerische Landesapothekerkammer</option>
+      <option value="AK3_03" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_03'?'selected':''}">Apothekerkammer Berlin</option>
+      <option value="AK3_04" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_04'?'selected':''}">Landesapothekerkammer Brandenburg</option>
+      <option value="AK3_05" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_05'?'selected':''}">Apothekerkammer Bremen</option>
+      <option value="AK3_06" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_06'?'selected':''}">Apothekerkammer Hamburg</option>
+      <option value="AK3_07" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_07'?'selected':''}">Landesapothekerkammer Hessen</option>
+      <option value="AK3_08" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_08'?'selected':''}">Apothekerkammer Mecklenburg-Vorpommern</option>
+      <option value="AK3_09" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_09'?'selected':''}">Apothekerkammer Niedersachsen</option>
+      <option value="AK3_10" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_10'?'selected':''}">Apothekerkammer Nordrhein</option>
+      <option value="AK3_11" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_11'?'selected':''}">Landesapothekerkammer Rheinland-Pfalz</option>
+      <option value="AK3_12" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_12'?'selected':''}">Apothekerkammer des Saarlandes</option>
+      <option value="AK3_13" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_13'?'selected':''}">Apothekerkammer Sachsen-Anhalt</option>
+      <option value="AK3_14" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_14'?'selected':''}">Sächsische Landesapothekerkammer</option>
+      <option value="AK3_15" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_15'?'selected':''}">Apothekerkammer Schleswig-Holstein</option>
+      <option value="AK3_16" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_16'?'selected':''}">Landesapothekerkammer Thüringen</option>
+      <option value="AK3_17" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_17'?'selected':''}">Apothekerkammer Westfalen-Lippe</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="empfaengerKartenherausgeber">Empfänger-Kartenherausgeber</label>
+    <select th:if="${kartendatenTransfer.versendetAm == null}" class="form-control" id="empfaengerKartenherausgeber" name="empfaengerKartenherausgeber">
+      <option value="AK3_01" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_01'?'selected':''}">Landesapothekerkammer Baden-Württemberg</option>
+      <option value="AK3_02" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_02'?'selected':''}">Bayerische Landesapothekerkammer</option>
+      <option value="AK3_03" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_03'?'selected':''}">Apothekerkammer Berlin</option>
+      <option value="AK3_04" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_04'?'selected':''}">Landesapothekerkammer Brandenburg</option>
+      <option value="AK3_05" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_05'?'selected':''}">Apothekerkammer Bremen</option>
+      <option value="AK3_06" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_06'?'selected':''}">Apothekerkammer Hamburg</option>
+      <option value="AK3_07" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_07'?'selected':''}">Landesapothekerkammer Hessen</option>
+      <option value="AK3_08" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_08'?'selected':''}">Apothekerkammer Mecklenburg-Vorpommern</option>
+      <option value="AK3_09" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_09'?'selected':''}">Apothekerkammer Niedersachsen</option>
+      <option value="AK3_10" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_10'?'selected':''}">Apothekerkammer Nordrhein</option>
+      <option value="AK3_11" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_11'?'selected':''}">Landesapothekerkammer Rheinland-Pfalz</option>
+      <option value="AK3_12" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_12'?'selected':''}">Apothekerkammer des Saarlandes</option>
+      <option value="AK3_13" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_13'?'selected':''}">Apothekerkammer Sachsen-Anhalt</option>
+      <option value="AK3_14" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_14'?'selected':''}">Sächsische Landesapothekerkammer</option>
+      <option value="AK3_15" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_15'?'selected':''}">Apothekerkammer Schleswig-Holstein</option>
+      <option value="AK3_16" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_16'?'selected':''}">Landesapothekerkammer Thüringen</option>
+      <option value="AK3_17" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_17'?'selected':''}">Apothekerkammer Westfalen-Lippe</option>
+    </select>
+    <select th:if="${kartendatenTransfer.versendetAm != null}" class="form-control" disabled name="empfaengerKartenherausgeber">
+      <option value="AK3_01" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_01'?'selected':''}">Landesapothekerkammer Baden-Württemberg</option>
+      <option value="AK3_02" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_02'?'selected':''}">Bayerische Landesapothekerkammer</option>
+      <option value="AK3_03" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_03'?'selected':''}">Apothekerkammer Berlin</option>
+      <option value="AK3_04" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_04'?'selected':''}">Landesapothekerkammer Brandenburg</option>
+      <option value="AK3_05" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_05'?'selected':''}">Apothekerkammer Bremen</option>
+      <option value="AK3_06" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_06'?'selected':''}">Apothekerkammer Hamburg</option>
+      <option value="AK3_07" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_07'?'selected':''}">Landesapothekerkammer Hessen</option>
+      <option value="AK3_08" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_08'?'selected':''}">Apothekerkammer Mecklenburg-Vorpommern</option>
+      <option value="AK3_09" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_09'?'selected':''}">Apothekerkammer Niedersachsen</option>
+      <option value="AK3_10" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_10'?'selected':''}">Apothekerkammer Nordrhein</option>
+      <option value="AK3_11" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_11'?'selected':''}">Landesapothekerkammer Rheinland-Pfalz</option>
+      <option value="AK3_12" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_12'?'selected':''}">Apothekerkammer des Saarlandes</option>
+      <option value="AK3_13" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_13'?'selected':''}">Apothekerkammer Sachsen-Anhalt</option>
+      <option value="AK3_14" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_14'?'selected':''}">Sächsische Landesapothekerkammer</option>
+      <option value="AK3_15" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_15'?'selected':''}">Apothekerkammer Schleswig-Holstein</option>
+      <option value="AK3_16" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_16'?'selected':''}">Landesapothekerkammer Thüringen</option>
+      <option value="AK3_17" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_17'?'selected':''}">Apothekerkammer Westfalen-Lippe</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="erstelltAm">Erstellt Am</label>
+    <input type="text" id ="erstelltAm" name="erstelltAm" th:value="${#temporals.format(kartendatenTransfer.erstelltAm, 'dd-MM-yyyy HH:mm:ss')}" disabled/>
+  </div>
+
+  <div class="form-group">
+    <label for="gelesenAm">Gelesen Am</label>
+    <input type="text" id ="gelesenAm" name="gelesenAm" th:value="${#temporals.format(kartendatenTransfer.gelesenAm, 'dd-MM-yyyy HH:mm:ss')}" disabled/>
+  </div>
+
+  <div class="form-group">
+    <label for="versendetAm">Versendet Am</label>
+    <input type="text" id ="versendetAm" name="versendetAm" th:value="${#temporals.format(kartendatenTransfer.versendetAm, 'dd-MM-yyyy HH:mm:ss')}" disabled/>
+  </div>
+
+  <div class="form-group">
+    <label for="gueltigBis">Gültig Bis</label>
+    <input type="text" id ="gueltigBis" name="gueltigBis" th:value="${#temporals.format(kartendatenTransfer.gueltigBis, 'dd-MM-yyyy HH:mm:ss')}" disabled/>
+  </div>
+
+  <div class="form-group" th:if="${kartendatenTransfer.id > 0}">
+    <label class="font-weight-bold">Informationen für den empfangenen Kartenherausgeber: </label>
+    <br/>
+    <span class="font-weight-bold">URL: </span><a th:href="${url}" target="_blank" th:text="${url}">url</a>
+    <br/>
+    <span class="font-weight-bold">Aktivierungscode: </span><span th:text="${kartendatenTransfer.aktivierungsCode}">aktivierungsCode</span>
+  </div>
+
+  <div class="container-fluid p-0 mb-2">
+    <div class="row justify-content-start">
+      <div class="col-12 col-md-6 col-lg-2 pb-1">
+        <button class="btn btn-secondary btn-block" type="button" onclick="hbakartendatentransferUebersicht();">Schließen</button>
+      </div>
+      <div th:if="${kartendatenTransfer.versendetAm == null}" class="col-12 col-md-6 col-lg-2">
+        <button class="btn btn-primary btn-block" type="button" onclick="hbakartendatentransferSpeichern()">Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-danger mt-2 mb-2 text-break" role="alert" style="display:none" id="hbakartendatentransferFormError">
+  </div>
+</form>

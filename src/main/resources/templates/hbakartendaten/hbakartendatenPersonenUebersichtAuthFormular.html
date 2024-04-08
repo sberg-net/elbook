@@ -1,0 +1,43 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<form id="aktivierungsCodeForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
+
+  <div th:if="${!ungueltig}" class="form-group needs-validation">
+    <label for="aktivierungsCode">Aktivierungscode</label>
+    <input type="text" class="form-control" id="aktivierungsCode" name="aktivierungsCode" required>
+    <div class="invalid-feedback">
+      Bitte angeben!
+    </div>
+  </div>
+
+  <div th:if="${!ungueltig}" class="container-fluid p-0 mb-2">
+    <div class="row justify-content-start">
+      <div class="col-12 col-md-6 col-lg-2 pb-1">
+        <button class="btn btn-primary btn-block" onclick="hbakartendatenPersonenUebersicht($(this).attr('data-hashCode'), $('#aktivierungsCode').val())" th:attr="data-hashCode=${hashCode}">Freischalten</button>
+      </div>
+    </div>
+  </div>
+
+  <div th:if="${!ungueltig}" class="alert alert-danger mt-2 mb-2 text-break" role="alert" style="display:none" id="aktivierungsCodeFormError">
+  </div>
+
+  <div th:if="${fehlerNachricht != null}" th:text="${fehlerNachricht}" class="alert alert-danger mt-2 mb-2 text-break" role="alert"></div>
+
+  <div th:if="${ungueltig}" class="alert alert-danger mt-2 mb-2 text-break" role="alert">
+    Die Daten sind nicht mehr gültig und können nicht mehr abgerufen werden
+  </div>
+</form>

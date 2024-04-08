@@ -1,0 +1,267 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="sberg">
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+  <title>ElBook - Nutzer Einstellungen</title>
+  <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+  <script type="text/javascript" th:src="@{/js/script_1_8_15.js}"></script>
+  <script type="text/javascript" th:src="@{/webjars/feather-icons/dist/feather.min.js}"></script>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" th:href="@{/css/dashboard.css}"/>
+</head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<div th:replace="~{fragments/menue :: menue}"></div>
+<main role="main" class="col-md-10 ml-sm-auto pt-3 px-1 px-md-4">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Benutzereinstellungen</h1>
+  </div>
+  <div class="spinner-border" id="elbook-spinner" role="status" style="display: none">
+    <span class="sr-only">Laden...</span>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5 class="card-title">Passwort ändern</h5>
+          <div class="container-fluid" id="passwortAendernFormContainer" th:action="@{/}">
+            <form id="passwortAendernForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
+
+              <div class="form-group needs-validation">
+                <label for="altesPasswort">Altes Passwort</label>
+                <input type="password" class="form-control" id="altesPasswort" name="altesPasswort" required>
+                <div class="invalid-feedback">
+                  Bitte angeben!
+                </div>
+              </div>
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="altesPasswortCheck" onclick="togglePwdVisibility('altesPasswort')">
+                <label class="form-check-label" for="altesPasswortCheck">Altes Passwort in Klartext anzeigen</label>
+              </div>
+              <br/>
+
+              <div class="form-group needs-validation">
+                <label for="neuesPasswort">Neues Passwort</label>
+                <input type="password" class="form-control" id="neuesPasswort" name="neuesPasswort" required>
+                <div class="invalid-feedback">
+                  Bitte angeben!
+                </div>
+              </div>
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="neuesPasswortCheck" onclick="togglePwdVisibility('neuesPasswort')">
+                <label class="form-check-label" for="neuesPasswortCheck">Neues Passwort in Klartext anzeigen</label>
+              </div>
+              <br/>
+
+              <div class="container-fluid p-0 mb-2">
+                <div class="row justify-content-start">
+                  <div class="col-12 col-md-6 col-lg-6">
+                    <button class="btn btn-primary btn-block" type="button" onclick="$('#confirmDialog4AendernPasswort').modal('show')">Ändern</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert alert-danger mt-2 mb-2 text-break" role="alert" style="display:none" id="passwortAendernFormError">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5 class="card-title">2-Faktor Anmeldung</h5>
+          <div class="container-fluid" id="modify2FAContainer" th:action="@{/}">
+            <!-- disable 2fa -->
+            <div th:if="${#authentication.principal.mandant.using2FA}">
+              <p>Die 2 Faktor Anmeldung ist aktuell aktiviert!</p>
+              <div class="alert alert-danger mt-2 mb-2 text-break" role="alert" style="display:none" id="deactivate2FAContainerFormError">
+              </div>
+              <div class="container-fluid p-0 mb-2">
+                <div class="row justify-content-start">
+                  <div class="col-12 col-md-12">
+                    <form id="deactivate2FAContainerForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
+                      <div class="form-group needs-validation">
+                        <label for="elbookPwd4Deactivate">Aktuelles elBook-Passwort</label>
+                        <input type="password" class="form-control" id="elbookPwd4Deactivate" name="elbookPwd4Deactivate" required>
+                        <div class="invalid-feedback">
+                          Bitte angeben!
+                        </div>
+                      </div>
+                      <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="elbookPwdCheck4Deactivate" onclick="togglePwdVisibility('elbookPwd4Deactivate')">
+                        <label class="form-check-label" for="elbookPwdCheck4Deactivate">Passwort in Klartext anzeigen</label>
+                      </div>
+                      <div class="container-fluid p-0 mb-2">
+                        <div class="row justify-content-start">
+                          <div class="col-12 col-md-6 col-lg-6">
+                            <button class="btn btn-primary btn-block" type="button" onclick="$('#confirmDialog4Deactivate2FA').modal('show')">2-Faktor Anmeldung Deaktivieren</button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- enable 2fa -->
+            <div th:if="${! #authentication.principal.mandant.using2FA}">
+              <p>Die 2 Faktor Anmeldung ist aktuell nicht aktiviert! Benutzen Sie eine App (wir empfehlen Authy und Google Authenticator) auf Ihrem Smartphone, um die 2-Faktor-Anmeldung zu aktivieren</p>
+              <p>Wenn Sie den unteren Button betätigen, erscheint ein QR-Code, welchen Sie mit der App auf Ihrem Smartphone scannen müssen. Geben Sie in die unteren Textfelder
+                Ihr aktuelles elBook-Passwort und die erste 6-stellige Zahl (TOTP - time based one time passwort -> einmaliges zeitbasiertes Passwort), welches von Ihrer ausgewählten App
+                ausgegeben wurde.</p>
+              <div class="alert alert-danger mt-2 mb-2 text-break" role="alert" style="display:none" id="activate2FAContainerFormError">
+              </div>
+              <div class="container-fluid p-0 mb-2" id="activate2FAContainerFormContainer" style="display:none;">
+                <div class="row justify-content-start">
+                  <div class="col-12 col-md-12">
+                    <form id="activate2FAContainerForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
+                      <input type="hidden" id="secret2FA" name="secret2FA"/>
+                      <div class="form-group needs-validation">
+                        <label for="elbookPwd4Activate">Aktuelles elBook-Passwort</label>
+                        <input type="password" class="form-control" id="elbookPwd4Activate" name="elbookPwd4Activate" required>
+                        <div class="invalid-feedback">
+                          Bitte angeben!
+                        </div>
+                      </div>
+                      <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="elbookPwd4ActivateCheck" onclick="togglePwdVisibility('elbookPwd4Activate')">
+                        <label class="form-check-label" for="elbookPwd4ActivateCheck">Passwort in Klartext anzeigen</label>
+                      </div>
+                      <br/>
+                      <div class="form-group needs-validation">
+                        <label for="neuesPasswort">2FA Code</label>
+                        <input id="2faCode" class="form-control" name="2faCode" type="password" required>
+                        <div class="invalid-feedback">
+                          Bitte 2FA Code angeben
+                        </div>
+                      </div>
+                      <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="2faCodeCheck" onclick="togglePwdVisibility('2faCode')">
+                        <label class="form-check-label" for="2faCodeCheck">2FA Code in Klartext anzeigen</label>
+                      </div>
+                      <div class="container-fluid p-0 mb-2">
+                        <div class="row justify-content-start">
+                          <div class="col-12 col-md-6 col-lg-6">
+                            <button class="btn btn-primary btn-block" type="button" onclick="enableFinish2FA();">2-Faktor Anmeldung Abschliessen</button>
+                          </div>
+                          <div class="col-12 col-md-6 col-lg-6">
+                            <button class="btn btn-primary btn-block" type="button" onclick="enableCancel2FA();">2-Faktor Anmeldung Abbrechen</button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="container-fluid p-0 mb-2">
+                <div class="row justify-content-start">
+                  <div class="col-12 col-md-6 col-lg-6">
+                    <button class="btn btn-primary btn-block" type="button" id="activate2FAButton" onclick="$('#confirmDialog4Activate2FA').modal('show')">2-Faktor Anmeldung Aktivieren</button>
+                  </div>
+                </div>
+              </div>
+              <div class="container-fluid" id="qrCode2FA">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Bestätigungsdialog Passwort ändern -->
+<div class="modal fade" id="confirmDialog4AendernPasswort" tabindex="-1" role="dialog" aria-labelledby="confirmDialog4AendernPasswortLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDialog4AendernPasswortLabel">Passwort ändern</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Wollen Sie das Passwort wirklich ändern? Sie werden nach erfolgreicher Änderung automatisch vom System abgemeldet.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+        <button type="button" class="btn btn-primary" onclick="passwortAendern()">Ändern</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Bestätigungsdialog 2-Faktor Anmeldung Aktivieren -->
+<div class="modal fade" id="confirmDialog4Activate2FA" tabindex="-1" role="dialog" aria-labelledby="confirmDialog4Activate2FALabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDialog4Activate2FALabel">2-Faktor Anmeldung Aktivieren</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Wollen Sie die 2-Faktor Anmeldung wirklich aktivieren?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+        <button type="button" class="btn btn-primary" onclick="enable2FA()">Aktivieren</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Bestätigungsdialog 2-Faktor Anmeldung Deaktivieren -->
+<div class="modal fade" id="confirmDialog4Deactivate2FA" tabindex="-1" role="dialog" aria-labelledby="confirmDialog4Deactivate2FALabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDialog4Deactivate2FALabel">2-Faktor Anmeldung Deaktivieren</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Wollen Sie die 2-Faktor Anmeldung wirklich deaktivieren?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+        <button type="button" class="btn btn-primary" onclick="disableFinish2FA()">Deaktivieren</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $( document ).ready(function() {
+    feather.replace();
+  });
+</script>
+</body>
+</html>

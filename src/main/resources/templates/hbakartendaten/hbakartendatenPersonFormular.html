@@ -1,0 +1,310 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<div class="row" xmlns:th="http://www.thymeleaf.org">
+  <div class="col-sm-12 col-lg-12 mb-3 p-0 pr-1">
+    <span class="font-weight-bold">Datentransfer von </span>
+    <span class="font-weight-bold" th:text="${datentransfer.absenderKartenherausgeber.hrText}"></span>&nbsp;
+    <a th:href="'mailto:' + ${datentransfer.absender}" th:text="${datentransfer.absender}"></a><br/>
+    <span class="font-weight-bold"> Daten abrufbar bis </span>
+    <span th:text="${#temporals.format(datentransfer.gueltigBis, 'dd-MM-yyyy HH:mm')}">Gültig Bis</span> Uhr
+  </div>
+</div>
+
+<form id="hbakartendatenForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
+
+  <div class="form-group">
+    <label>Art des Datentransfers</label>
+    <select class="form-control" disabled name="typ">
+      <option value="ABGEBEND" th:attrappend="selected=${person.typ.name() == 'ABGEBEND'?'selected':''}">Abgebend</option>
+      <option value="MITZUSTAENDIG" th:attrappend="selected=${person.typ.name() == 'MITZUSTAENDIG'?'selected':''}">Mitzuständig</option>
+    </select>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-lg-12">
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5 class="card-title">Persönliche Daten</h5>
+
+          <div class="form-group needs-validation">
+            <label>Vorname</label>
+            <input type="text" th:value="${person.vorname}" class="form-control" name="vorname" disabled>
+          </div>
+
+          <div class="form-group needs-validation">
+            <label>Nachname</label>
+            <input type="text" th:value="${person.nachname}" class="form-control" name="nachname" disabled>
+          </div>
+
+          <div class="form-group">
+            <label>Akademischer Grad</label>
+            <select class="form-control" disabled name="akademischerGrad">
+              <option value="" th:attrappend="selected=${person.akademischerGrad == ''?'selected':''}"></option>
+              <option value="Dr." th:attrappend="selected=${person.akademischerGrad == 'Dr.'?'selected':''}">Doktor</option>
+              <option value="Prof." th:attrappend="selected=${person.akademischerGrad == 'Prof.'?'selected':''}">Professor</option>
+            </select>
+          </div>
+
+          <div class="form-group needs-validation">
+            <label>Geburtsdatum</label>
+            <input type="date" th:value="${person.geburtsdatum}" class="form-control" name="geburtsdatum" disabled>
+          </div>
+
+          <div class="form-group needs-validation">
+            <label>Geburtsort</label>
+            <input type="text" th:value="${person.geburtsort}" class="form-control" name="geburtsort" disabled>
+          </div>
+
+          <div class="form-group">
+            <label>Zur Approbation</label>
+            <select class="form-control" disabled name="approbationStatus">
+              <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumApprobationStatus).UNBEKANNT.getHrText()}" th:attrappend="selected=${person.approbationStatus.name() == 'UNBEKANNT'?'selected':''}"></option>
+              <option value="BESTEHT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumApprobationStatus).BESTEHT.getHrText()}" th:attrappend="selected=${person.approbationStatus.name() == 'BESTEHT'?'selected':''}"></option>
+              <option value="RUHT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumApprobationStatus).RUHT.getHrText()}" th:attrappend="selected=${person.approbationStatus.name() == 'RUHT'?'selected':''}"></option>
+              <option value="ZURUECKGENOMMEN" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumApprobationStatus).ZURUECKGENOMMEN.getHrText()}" th:attrappend="selected=${person.approbationStatus.name() == 'ZURUECKGENOMMEN'?'selected':''}">Professor</option>
+              <option value="WIDERRUFEN" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumApprobationStatus).WIDERRUFEN.getHrText()}" th:attrappend="selected=${person.approbationStatus.name() == 'WIDERRUFEN'?'selected':''}"></option>
+              <option value="ENTFALLEN" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumApprobationStatus).ENTFALLEN.getHrText()}" th:attrappend="selected=${person.approbationStatus.name() == 'ENTFALLEN'?'selected':''}"></option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Zur Kammermitgliedschaft</label>
+            <select class="form-control" disabled name="approbationStatus">
+              <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKammermitgliedschaftStatus).UNBEKANNT.getHrText()}" th:attrappend="selected=${person.kammermitgliedschaftStatus.name() == 'UNBEKANNT'?'selected':''}"></option>
+              <option value="ABGEHEND_GRUND_BERUF" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKammermitgliedschaftStatus).ABGEHEND_GRUND_BERUF.getHrText()}" th:attrappend="selected=${person.kammermitgliedschaftStatus.name() == 'ABGEHEND_GRUND_BERUF'?'selected':''}"></option>
+              <option value="ABGEHEND_GRUND_SONSTIGER" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKammermitgliedschaftStatus).ABGEHEND_GRUND_SONSTIGER.getHrText()}" th:attrappend="selected=${person.kammermitgliedschaftStatus.name() == 'ABGEHEND_GRUND_SONSTIGER'?'selected':''}"></option>
+              <option value="ABGEHEND_KEIN" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKammermitgliedschaftStatus).ABGEHEND_KEIN.getHrText()}" th:attrappend="selected=${person.kammermitgliedschaftStatus.name() == 'ABGEHEND_KEIN'?'selected':''}"></option>
+              <option value="EMPFANGEND_GRUND_BERUF_SONSTIGER" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKammermitgliedschaftStatus).EMPFANGEND_GRUND_BERUF_SONSTIGER.getHrText()}" th:attrappend="selected=${person.kammermitgliedschaftStatus.name() == 'EMPFANGEND_GRUND_BERUF_SONSTIGER'?'selected':''}"></option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-lg-12">
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5 class="card-title">Zur Wohnanschrift des Berufsangehörigen</h5>
+
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" name="unbekanntVerzogen" disabled th:attr="checked=${person.isUnbekanntVerzogen()?'true':'false'}" id="unbekanntVerzogen" onclick="toggleDeacivate('unbekanntVerzogen', ['strasse', 'hausnummer', 'anschriftenzusatz', 'postleitzahl', 'wohnort'])">
+            <label class="form-check-label" for="unbekanntVerzogen">Unbekannt verzogen</label>
+          </div>
+
+          <div class="form-group">
+            <label>Strasse</label>
+            <input type="text" th:value="${person.strasse}" class="form-control" name="strasse" disabled>
+          </div>
+
+          <div class="form-group">
+            <label>Hausnummer</label>
+            <input type="text" th:value="${person.hausnummer}" class="form-control" name="hausnummer" disabled>
+          </div>
+
+          <div class="form-group">
+            <label>Anschriftenzusatz</label>
+            <input type="text" th:value="${person.anschriftenzusatz}" class="form-control" disabled name="anschriftenzusatz">
+          </div>
+
+          <div class="form-group">
+            <label>PLZ</label>
+            <input type="text" th:value="${person.postleitzahl}" class="form-control" name="postleitzahl" disabled>
+          </div>
+
+          <div class="form-group">
+            <label>Wohnort</label>
+            <input type="text" th:value="${person.wohnort}" class="form-control" name="wohnort" disabled>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-lg-12">
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5 class="card-title">Zum Heilberufsausweis (HBA)</h5>
+
+          <div class="form-group">
+            <label>Anzahl der Ausweise</label>
+            <input type="number" th:value="${person.anzahlAusweise}" class="form-control" name="anzahlAusweise" disabled>
+          </div>
+
+          <!-- Ausweis 1-->
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title">Ausweis 1</h5>
+              <div class="form-group">
+                <label>QVDA/TSP</label>
+                <select class="form-control" disabled name="qvda">
+                  <option value="BUNDESDRUCKEREI" th:attrappend="selected=${person.qvda.name() == 'BUNDESDRUCKEREI'?'selected':''}">Bundesdruckerei</option>
+                  <option value="MEDISIGN" th:attrappend="selected=${person.qvda.name() == 'MEDISIGN'?'selected':''}">Medisign</option>
+                  <option value="SHC" th:attrappend="selected=${person.qvda.name() == 'SHC'?'selected':''}">Stolle & Heinz</option>
+                  <option value="TSYSTEMS" th:attrappend="selected=${person.qvda.name() == 'TSYSTEMS'?'selected':''}">T-Systems</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Ausweisnummer (ICCSN Nummer)</label>
+                <input type="text" th:value="${person.ausweisnummer}" class="form-control" name="ausweisnummer" disabled>
+              </div>
+              <div class="form-group">
+                <label>Ausweisstatus</label>
+                <select class="form-control" disabled name="kartenStatus">
+                  <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).UNBEKANNT.value()}" th:attrappend="selected=${(person.kartenStatus == null || person.kartenStatus.name() == 'UNBEKANNT')?'selected':''}"></option>
+                  <option value="AUSLIEFERUNG" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).AUSLIEFERUNG.value()}" th:attrappend="selected=${person.kartenStatus != null && person.kartenStatus.name() == 'AUSLIEFERUNG'?'selected':''}"></option>
+                  <option value="FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG.value()}" th:attrappend="selected=${person.kartenStatus != null && person.kartenStatus.name() == 'FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG'?'selected':''}"></option>
+                  <option value="KARTE_AUSGELIEFERT" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).KARTE_AUSGELIEFERT.value()}" th:attrappend="selected=${person.kartenStatus != null && person.kartenStatus.name() == 'KARTE_AUSGELIEFERT'?'selected':''}"></option>
+                  <option value="KARTE_UNZUSTELLBAR_ZURUECK" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).KARTE_UNZUSTELLBAR_ZURUECK.value()}" th:attrappend="selected=${person.kartenStatus != null && person.kartenStatus.name() == 'KARTE_UNZUSTELLBAR_ZURUECK'?'selected':''}"></option>
+                  <option value="SPERRUNG_BEANTRAGT" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).SPERRUNG_BEANTRAGT.value()}" th:attrappend="selected=${person.kartenStatus != null && person.kartenStatus.name() == 'SPERRUNG_BEANTRAGT'?'selected':''}"></option>
+                  <option value="ZERTIFIKATE_ABGELAUFEN" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).ZERTIFIKATE_ABGELAUFEN.value()}" th:attrappend="selected=${person.kartenStatus != null && person.kartenStatus.name() == 'ZERTIFIKATE_ABGELAUFEN'?'selected':''}"></option>
+                  <option value="ZERTIFIKATE_ENDGUELTIG_NICHT_FREIGESCHALTET" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).ZERTIFIKATE_ENDGUELTIG_NICHT_FREIGESCHALTET.value()}" th:attrappend="selected=${person.kartenStatus != null && person.kartenStatus.name() == 'ZERTIFIKATE_ENDGUELTIG_NICHT_FREIGESCHALTET'?'selected':''}"></option>
+                  <option value="ZERTIFIKATE_FREIGESCHALTET" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).ZERTIFIKATE_FREIGESCHALTET.value()}" th:attrappend="selected=${person.kartenStatus != null && person.kartenStatus.name() == 'ZERTIFIKATE_FREIGESCHALTET'?'selected':''}"></option>
+                  <option value="ZERTIFIKATE_GESPERRT" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).ZERTIFIKATE_GESPERRT.value()}" th:attrappend="selected=${person.kartenStatus != null && person.kartenStatus.name() == 'ZERTIFIKATE_GESPERRT'?'selected':''}"></option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>TelematikID</label>
+                <input type="text" th:value="${person.telematikId}" class="form-control" name="telematikId" disabled>
+              </div>
+              <div class="form-group">
+                <label>Karte gültig von</label>
+                <input type="date" th:value="${person.gueltigVon}" class="form-control" name="gueltigVon" disabled>
+              </div>
+              <div class="form-group">
+                <label>Karte gültig bis</label>
+                <input type="date" th:value="${person.gueltigBis}" class="form-control" name="gueltigBis" disabled>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ausweis 2-->
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title">Ausweis 2</h5>
+              <div class="form-group">
+                <label>QVDA/TSP</label>
+                <select class="form-control" disabled name="qvda2">
+                  <option value="BUNDESDRUCKEREI" th:attrappend="selected=${person.qvda2.name() == 'BUNDESDRUCKEREI'?'selected':''}">Bundesdruckerei</option>
+                  <option value="MEDISIGN" th:attrappend="selected=${person.qvda2.name() == 'MEDISIGN'?'selected':''}">Medisign</option>
+                  <option value="SHC" th:attrappend="selected=${person.qvda2.name() == 'SHC'?'selected':''}">Stolle & Heinz</option>
+                  <option value="TSYSTEMS" th:attrappend="selected=${person.qvda2.name() == 'TSYSTEMS'?'selected':''}">T-Systems</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Ausweisnummer (ICCSN Nummer)</label>
+                <input type="text" th:value="${person.ausweisnummer2}" class="form-control" name="ausweisnummer2" disabled>
+              </div>
+              <div class="form-group">
+                <label>Ausweisstatus</label>
+                <select class="form-control" disabled name="kartenStatus2">
+                  <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).UNBEKANNT.value()}" th:attrappend="selected=${(person.kartenStatus2 == null || person.kartenStatus2.name() == 'UNBEKANNT')?'selected':''}"></option>
+                  <option value="AUSLIEFERUNG" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).AUSLIEFERUNG.value()}" th:attrappend="selected=${person.kartenStatus2 != null && person.kartenStatus2.name() == 'AUSLIEFERUNG'?'selected':''}"></option>
+                  <option value="FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG.value()}" th:attrappend="selected=${person.kartenStatus2 != null && person.kartenStatus2.name() == 'FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG'?'selected':''}"></option>
+                  <option value="KARTE_AUSGELIEFERT" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).KARTE_AUSGELIEFERT.value()}" th:attrappend="selected=${person.kartenStatus2 != null && person.kartenStatus2.name() == 'KARTE_AUSGELIEFERT'?'selected':''}"></option>
+                  <option value="KARTE_UNZUSTELLBAR_ZURUECK" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).KARTE_UNZUSTELLBAR_ZURUECK.value()}" th:attrappend="selected=${person.kartenStatus2 != null && person.kartenStatus2.name() == 'KARTE_UNZUSTELLBAR_ZURUECK'?'selected':''}"></option>
+                  <option value="SPERRUNG_BEANTRAGT" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).SPERRUNG_BEANTRAGT.value()}" th:attrappend="selected=${person.kartenStatus2 != null && person.kartenStatus2.name() == 'SPERRUNG_BEANTRAGT'?'selected':''}"></option>
+                  <option value="ZERTIFIKATE_ABGELAUFEN" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).ZERTIFIKATE_ABGELAUFEN.value()}" th:attrappend="selected=${person.kartenStatus2 != null && person.kartenStatus2.name() == 'ZERTIFIKATE_ABGELAUFEN'?'selected':''}"></option>
+                  <option value="ZERTIFIKATE_ENDGUELTIG_NICHT_FREIGESCHALTET" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).ZERTIFIKATE_ENDGUELTIG_NICHT_FREIGESCHALTET.value()}" th:attrappend="selected=${person.kartenStatus2 != null && person.kartenStatus2.name() == 'ZERTIFIKATE_ENDGUELTIG_NICHT_FREIGESCHALTET'?'selected':''}"></option>
+                  <option value="ZERTIFIKATE_FREIGESCHALTET" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).ZERTIFIKATE_FREIGESCHALTET.value()}" th:attrappend="selected=${person.kartenStatus2 != null && person.kartenStatus2.name() == 'ZERTIFIKATE_FREIGESCHALTET'?'selected':''}"></option>
+                  <option value="ZERTIFIKATE_GESPERRT" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).ZERTIFIKATE_GESPERRT.value()}" th:attrappend="selected=${person.kartenStatus2 != null && person.kartenStatus2.name() == 'ZERTIFIKATE_GESPERRT'?'selected':''}"></option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>TelematikID</label>
+                <input type="text" th:value="${person.telematikId2}" class="form-control" name="telematikId2" disabled>
+              </div>
+              <div class="form-group">
+                <label>Karte gültig von</label>
+                <input type="date" th:value="${person.gueltigVon2}" class="form-control" name="gueltigVon2" disabled>
+              </div>
+              <div class="form-group">
+                <label>Karte gültig bis</label>
+                <input type="date" th:value="${person.gueltigBis2}" class="form-control" name="gueltigBis2" disabled>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ausweis 3-->
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title">Ausweis 3</h5>
+              <div class="form-group">
+                <label>QVDA/TSP</label>
+                <select class="form-control" disabled name="qvda3">
+                  <option value="BUNDESDRUCKEREI" th:attrappend="selected=${person.qvda3.name() == 'BUNDESDRUCKEREI'?'selected':''}">Bundesdruckerei</option>
+                  <option value="MEDISIGN" th:attrappend="selected=${person.qvda3.name() == 'MEDISIGN'?'selected':''}">Medisign</option>
+                  <option value="SHC" th:attrappend="selected=${person.qvda3.name() == 'SHC'?'selected':''}">Stolle & Heinz</option>
+                  <option value="TSYSTEMS" th:attrappend="selected=${person.qvda3.name() == 'TSYSTEMS'?'selected':''}">T-Systems</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Ausweisnummer (ICCSN Nummer)</label>
+                <input type="text" th:value="${person.ausweisnummer3}" class="form-control" name="ausweisnummer3" disabled>
+              </div>
+              <div class="form-group">
+                <label>Ausweisstatus</label>
+                <select class="form-control" disabled name="kartenStatus3">
+                  <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).UNBEKANNT.value()}" th:attrappend="selected=${(person.kartenStatus3 == null || person.kartenStatus3.name() == 'UNBEKANNT')?'selected':''}"></option>
+                  <option value="AUSLIEFERUNG" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).AUSLIEFERUNG.value()}" th:attrappend="selected=${person.kartenStatus3 != null && person.kartenStatus3.name() == 'AUSLIEFERUNG'?'selected':''}"></option>
+                  <option value="FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG.value()}" th:attrappend="selected=${person.kartenStatus3 != null && person.kartenStatus3.name() == 'FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG'?'selected':''}"></option>
+                  <option value="KARTE_AUSGELIEFERT" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).KARTE_AUSGELIEFERT.value()}" th:attrappend="selected=${person.kartenStatus3 != null && person.kartenStatus3.name() == 'KARTE_AUSGELIEFERT'?'selected':''}"></option>
+                  <option value="KARTE_UNZUSTELLBAR_ZURUECK" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).KARTE_UNZUSTELLBAR_ZURUECK.value()}" th:attrappend="selected=${person.kartenStatus3 != null && person.kartenStatus3.name() == 'KARTE_UNZUSTELLBAR_ZURUECK'?'selected':''}"></option>
+                  <option value="SPERRUNG_BEANTRAGT" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).SPERRUNG_BEANTRAGT.value()}" th:attrappend="selected=${person.kartenStatus3 != null && person.kartenStatus3.name() == 'SPERRUNG_BEANTRAGT'?'selected':''}"></option>
+                  <option value="ZERTIFIKATE_ABGELAUFEN" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).ZERTIFIKATE_ABGELAUFEN.value()}" th:attrappend="selected=${person.kartenStatus3 != null && person.kartenStatus3.name() == 'ZERTIFIKATE_ABGELAUFEN'?'selected':''}"></option>
+                  <option value="ZERTIFIKATE_ENDGUELTIG_NICHT_FREIGESCHALTET" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).ZERTIFIKATE_ENDGUELTIG_NICHT_FREIGESCHALTET.value()}" th:attrappend="selected=${person.kartenStatus3 != null && person.kartenStatus3.name() == 'ZERTIFIKATE_ENDGUELTIG_NICHT_FREIGESCHALTET'?'selected':''}"></option>
+                  <option value="ZERTIFIKATE_FREIGESCHALTET" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).ZERTIFIKATE_FREIGESCHALTET.value()}" th:attrappend="selected=${person.kartenStatus3 != null && person.kartenStatus3.name() == 'ZERTIFIKATE_FREIGESCHALTET'?'selected':''}"></option>
+                  <option value="ZERTIFIKATE_GESPERRT" th:text="${T(net.sberg.elbook.kartendatentransfer.KartenStatusKey).ZERTIFIKATE_GESPERRT.value()}" th:attrappend="selected=${person.kartenStatus3 != null && person.kartenStatus3.name() == 'ZERTIFIKATE_GESPERRT'?'selected':''}"></option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>TelematikID</label>
+                <input type="text" th:value="${person.telematikId3}" class="form-control" name="telematikId3" disabled>
+              </div>
+              <div class="form-group">
+                <label>Karte gültig von</label>
+                <input type="date" th:value="${person.gueltigVon3}" class="form-control" name="gueltigVon3" disabled>
+              </div>
+              <div class="form-group">
+                <label>Karte gültig bis</label>
+                <input type="date" th:value="${person.gueltigBis3}" class="form-control" name="gueltigBis3" disabled>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Bemerkung</label>
+    <textarea class="form-control" name="bemerkung" disabled rows="3" th:text="${person.bemerkung}"></textarea>
+  </div>
+
+  <div class="container-fluid p-0 mb-2">
+    <div class="row justify-content-start">
+      <div class="col-12 col-md-6 col-lg-2 pb-1">
+        <button class="btn btn-secondary btn-block" th:attr="data-hashcode=${datentransfer.hashCode}" th:attrappend="data-aktivierungsCode=${datentransfer.aktivierungsCode}" type="button" onclick="hbakartendatenPersonenUebersicht($(this).attr('data-hashcode'),$(this).attr('data-aktivierungsCode'));">Schließen</button>
+      </div>
+    </div>
+  </div>
+</form>
