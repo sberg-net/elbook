@@ -251,8 +251,9 @@ function vzdEintragUebersicht(showCache,makeCSVExport) {
     });
 
     Object.keys(elbookContext.searchData.readDirSyncEntryFaAttributesCommand).forEach(function(key,index) {
-      elbookContext.searchData.readDirSyncEntryFaAttributesCommand[key] = $('#' + key).val().trim();
-
+      if ($('#' + key).val()) {
+        elbookContext.searchData.readDirSyncEntryFaAttributesCommand[key] = $('#' + key).val().trim();
+      }
       if (elbookContext.searchData.readDirSyncEntryFaAttributesCommand[key] === '') {
         elbookContext.searchData.readDirSyncEntryFaAttributesCommand[key] = null;
       }

@@ -19,3 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update aller Komponenten
 - Umstellung auf openSource EUPL 1.2
 - Änderungen für die Rest-API-Version 1.12.5
+
+## [2.0.1]
+
+### Fixed
+- FIX beim null-check der Suche nach den KIM-Adressen in den Fachdaten
