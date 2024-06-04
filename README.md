@@ -2,6 +2,9 @@
 
 ## elbook springboot Docker Container
 
+Docker Container für alle elBook Releases für AMD64 & ARM64 werden auf Docker Hub zur Verfügung gestellt.
+https://hub.docker.com/r/sbergit/elbook
+
 ### Environment Variables
 
 Folgenden Environment Variablen können am Container gesetzt werden. Werden sie nicht gesetzt ziehen die default Values.
