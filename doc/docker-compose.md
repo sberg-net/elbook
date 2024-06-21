@@ -1,3 +1,10 @@
+# Docker Compose
+
+## Beispiel docker compose File
+Das Beispiel zeigt ein Basis-Compose-File für elbook.
+Für Details müssen die Parameter aus [README.md](..%2FREADME.md) beachtet werden.
+
+`docker-compose.yml`
 ```dockerfile
 version: '3.3'
 services:
