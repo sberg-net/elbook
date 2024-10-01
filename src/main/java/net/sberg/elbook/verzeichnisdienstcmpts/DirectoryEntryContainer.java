@@ -61,8 +61,8 @@ public class DirectoryEntryContainer {
         this.notAvailable = false;
     }
 
-    public DirectoryEntryContainer(boolean notAvailble, String telematikId, List kuerzelL, Mandant mandant) {
-        this.notAvailable = notAvailble;
+    public DirectoryEntryContainer(boolean notAvailable, String telematikId, List kuerzelL, Mandant mandant) {
+        this.notAvailable = notAvailable;
         checkSuccess = check(telematikId, kuerzelL, mandant);
     }
 
@@ -108,7 +108,7 @@ public class DirectoryEntryContainer {
             setEditable(false);
         }
 
-        if (!notAvailable && !vzdEntryWrapper.checkDirectoryEntryHolder(mandant.getVzdAuthId())) {
+        if (!notAvailable && vzdEntryWrapper.checkDirectoryEntryHolder(mandant.getVzdAuthId())) {
             setEditable(false);
         }
 

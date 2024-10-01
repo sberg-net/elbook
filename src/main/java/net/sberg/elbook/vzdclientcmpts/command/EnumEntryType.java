@@ -12,7 +12,9 @@ public enum EnumEntryType {
     Krankenkasse("5","Krankenkasse"),
     Krankenkasse_ePA("6","Krankenkasse ePA"),
     Kim("7","KIM-Hersteller und Anbieter"),
-    DiGA("9","DIGA-Hersteller und Anbieter");
+    Tim("8","TIM-Hersteller und Anbieter"),
+    DiGA("9","DIGA-Hersteller und Anbieter"),
+    Ombudsstelle("10","Ombudsstelle eines Kostenträgers");
 
     private String id;
     private String hrText;
@@ -53,8 +55,14 @@ public enum EnumEntryType {
         if (id.equals(EnumEntryType.Kim.id)) {
             return EnumEntryType.Kim;
         }
+        if (id.equals(EnumEntryType.Tim.id)) {
+            return EnumEntryType.Tim;
+        }
         if (id.equals(EnumEntryType.DiGA.id)) {
             return EnumEntryType.DiGA;
+        }
+        if (id.equals(EnumEntryType.Ombudsstelle.id)) {
+            return EnumEntryType.Ombudsstelle;
         }
         if (id.equals(EnumEntryType.UNKNOWN.id)) {
             return EnumEntryType.UNKNOWN;

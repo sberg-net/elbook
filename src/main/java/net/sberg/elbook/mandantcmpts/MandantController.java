@@ -388,9 +388,8 @@ public class MandantController extends AbstractWebController {
     }
 
     private String generateQRUrl(String nutzerName, String secret2FA) throws UnsupportedEncodingException {
-        final String QR_PREFIX = "https://chart.googleapis.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=";
+        final String QR_PREFIX = "https://quickchart.io/chart?cht=qr&chs=200x200&chl=";
         final String APP_NAME = "elBook";
-        return QR_PREFIX + URLEncoder.encode(String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s",
-                APP_NAME, nutzerName, secret2FA, APP_NAME),"UTF-8");
+        return QR_PREFIX + URLEncoder.encode(String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s", APP_NAME, nutzerName, secret2FA, APP_NAME),"UTF-8");
     }
 }

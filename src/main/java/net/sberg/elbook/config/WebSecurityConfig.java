@@ -95,6 +95,7 @@ public class WebSecurityConfig {
                                 antMatcher("/mandant/enableFinish2FA/**"),
                                 antMatcher("/mandant/disableFinish2FA/**"),
                                 antMatcher("/verzeichnisdienst/**"),
+                                antMatcher("/logeintrag/**"),
                                 antMatcher("/report/**")
                         ).hasAnyRole(EnumAuthRole.ROLE_ADMIN.getSuffix(),
                                 EnumAuthRole.ROLE_GOLD_LICENCE_HEAD_OF_DEPT.getSuffix(),
@@ -113,10 +114,6 @@ public class WebSecurityConfig {
                                 antMatcher("/api/**")
                         ).hasAnyRole(EnumAuthRole.ROLE_ADMIN.getSuffix(),
                                 EnumAuthRole.ROLE_GOLD_LICENCE_HEAD_OF_DEPT.getSuffix())
-
-                        .requestMatchers(
-                                antMatcher("/logeintrag/**")
-                        ).hasAnyRole(EnumAuthRole.ROLE_GOLD_LICENCE_HEAD_OF_DEPT.getSuffix())
 
                         .requestMatchers(
                                 antMatcher("/hbakartendatentransfer/**")

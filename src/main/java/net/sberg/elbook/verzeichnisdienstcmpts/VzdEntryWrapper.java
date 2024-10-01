@@ -472,10 +472,10 @@ public class VzdEntryWrapper {
 
     public boolean checkDirectoryEntryHolder(String holder) {
         if (this.directoryV1_9_5Entry != null) {
-            return !this.directoryV1_9_5Entry.getDirectoryEntryBase().getHolder().isEmpty() && this.directoryV1_9_5Entry.getDirectoryEntryBase().getHolder().contains(holder);
+            return !this.directoryV1_9_5Entry.getDirectoryEntryBase().getHolder().isEmpty() && !this.directoryV1_9_5Entry.getDirectoryEntryBase().getHolder().contains(holder);
         }
         else if (this.directoryV1_12_6Entry != null) {
-            return !this.directoryV1_12_6Entry.getDirectoryEntryBase().getHolder().isEmpty() && this.directoryV1_12_6Entry.getDirectoryEntryBase().getHolder().contains(holder);
+            return !this.directoryV1_12_6Entry.getDirectoryEntryBase().getHolder().isEmpty() && !this.directoryV1_12_6Entry.getDirectoryEntryBase().getHolder().contains(holder);
         }
         throw new IllegalStateException("no directory entry found");
     }
