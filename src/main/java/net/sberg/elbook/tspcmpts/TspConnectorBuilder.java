@@ -1,6 +1,20 @@
+/*
+ *  Copyright (C) 2023 sberg it-systeme GmbH
+ *
+ *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ *  European Commission - subsequent versions of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at:
+ *
+ * https://joinup.ec.europa.eu/software/page/eupl
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ */
 package net.sberg.elbook.tspcmpts;
 
-import de.datec.hba.properties.HbaProperties;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -22,53 +36,18 @@ import java.util.stream.Collectors;
 public class TspConnectorBuilder {
 
     private Jaxb2Marshaller marshaller;
-    private HbaProperties hbaProperties;
-    private HbaModelMapper hbaModelMapper;
 
     public TspConnectorBuilder() {
         marshaller = new Jaxb2Marshaller();
         marshaller.setPackagesToScan("de.gematik.ws.cm.pers.hba_smc_b.v1", "de.gematik.ws.sst.v1", "org.w3._2000._09.xmldsig_");
-        hbaModelMapper = new HbaModelMapper();
     }
 
-    public TspConnectorBuilder(HbaProperties hbaProperties) {
-        this();
-        this.hbaProperties = hbaProperties;
+    public TspConnector build(TspProperties tspProperties, QVDA qvda, EnumAntragTyp typ) throws Exception {
+        return hbaConnector(tspProperties.getQvdaProperties(qvda), typ);
     }
 
-    private WebServiceMessageSender createWebServiceMessageSender(int connectionTimeout, int readTimeout) {
-        HttpComponentsMessageSender httpComponentsMessageSender = new HttpComponentsMessageSender();
-        httpComponentsMessageSender.setConnectionTimeout(connectionTimeout);
-        httpComponentsMessageSender.setReadTimeout(readTimeout);
-        return httpComponentsMessageSender;
-    }
-
-    public List<QvdaFrontendProperties> getFrontendQvdaProperties() {
-        return getFrontendQvdaProperties(hbaProperties);
-    }
-
-    public List<QvdaFrontendProperties> getFrontendQvdaProperties(HbaProperties hbaProperties) {
-        return hbaProperties.getQvdas().stream().map(item -> new QvdaFrontendProperties(
-                item.getName(),
-                item.getFrontendString(),
-                item.getAntragsPortal(),
-                item.getHba(),
-                item.getSmcb())).collect(Collectors.toList());
-    }
-
-    public TspConnector build(QVDA qvda, EnumAntragTyp typ) throws Exception {
-        return build(hbaProperties, qvda, typ);
-    }
-
-    public TspConnector build(HbaProperties hbaProperties, QVDA qvda, EnumAntragTyp typ) throws Exception {
-        QvdaProperties qvdaProperties = hbaProperties.getQvdaProperties(qvda);
-        return hbaConnector(hbaProperties, qvdaProperties, typ);
-    }
-
-    private TspConnector hbaConnector(HbaProperties hbaProperties, QvdaProperties qvdaProperties, EnumAntragTyp typ) throws Exception {
-        hbaModelMapper.setHbaProperties(hbaProperties);
-
-        TspConnector connector = new TspConnector(hbaModelMapper);
+    private TspConnector hbaConnector(QvdaProperties qvdaProperties, EnumAntragTyp typ) throws Exception {
+        TspConnector connector = new TspConnector();
         connector.setMessageSender(messageSender(qvdaProperties.getConnection().get(typ)));
         connector.setDefaultUri(qvdaProperties.getConnection().get(typ).getDefaultUri());
         connector.setMarshaller(marshaller);
@@ -82,21 +61,21 @@ public class TspConnectorBuilder {
 
         if (connectionProperties.getTimeout() > 0) {
             RequestConfig config = RequestConfig.custom()
-                    .setConnectTimeout(connectionProperties.getTimeout())
-                    .setConnectionRequestTimeout(connectionProperties.getTimeout())
-                    .setSocketTimeout(connectionProperties.getTimeout()).build();
+                .setConnectTimeout(connectionProperties.getTimeout())
+                .setConnectionRequestTimeout(connectionProperties.getTimeout())
+                .setSocketTimeout(connectionProperties.getTimeout()).build();
             HttpClient httpCLient = HttpClientBuilder.create()
-                    .setDefaultRequestConfig(config)
-                    .addInterceptorFirst(new HttpComponentsMessageSender.RemoveSoapHeadersInterceptor())
-                    .setSSLContext(sslContext(connectionProperties))
-                    .build();
+                .setDefaultRequestConfig(config)
+                .addInterceptorFirst(new HttpComponentsMessageSender.RemoveSoapHeadersInterceptor())
+                .setSSLContext(sslContext(connectionProperties))
+                .build();
             messageSender.setHttpClient(httpCLient);
         }
         else {
             HttpClient httpCLient = HttpClientBuilder.create()
-                    .addInterceptorFirst(new HttpComponentsMessageSender.RemoveSoapHeadersInterceptor())
-                    .setSSLContext(sslContext(connectionProperties))
-                    .build();
+                .addInterceptorFirst(new HttpComponentsMessageSender.RemoveSoapHeadersInterceptor())
+                .setSSLContext(sslContext(connectionProperties))
+                .build();
             messageSender.setHttpClient(httpCLient);
         }
 

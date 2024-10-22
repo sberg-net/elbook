@@ -15,32 +15,94 @@
  */
 package net.sberg.elbook.mandantcmpts;
 
+import net.sberg.elbook.tspcmpts.EnumAntragTyp;
 import net.sberg.elbook.vzdclientcmpts.command.EnumEntryType;
 
 public enum EnumSektor {
 
-    APOTHEKE(EnumEntryType.Leistungserbringerinstitution),
-    APOTHEKER(EnumEntryType.Berufsgruppe),
-    ARZT(EnumEntryType.Berufsgruppe),
-    ARZTPRAXIS(EnumEntryType.Leistungserbringerinstitution),
-    ZAHNARZT(EnumEntryType.Berufsgruppe),
-    ZAHNARZTPRAXIS(EnumEntryType.Leistungserbringerinstitution),
-    PSYCHOTHERAPEUTH(EnumEntryType.Berufsgruppe),
-    KRANKENHAUS(EnumEntryType.Leistungserbringerinstitution),
-    GKV(EnumEntryType.Krankenkasse),
-    GKV_EPA(EnumEntryType.Krankenkasse_ePA),
-    HBAGEMATIK(EnumEntryType.Berufsgruppe),
-    SMCBGEMATIK(EnumEntryType.Organisation),
-    HBAEGBR(EnumEntryType.Berufsgruppe),
-    SMCBEGBR(EnumEntryType.Leistungserbringerinstitution);
+    APOTHEKE(EnumEntryType.Leistungserbringerinstitution, EnumAntragTyp.SMCB) {
+        public String getBusinessId(String telematikId) {
+            return String.valueOf(Integer.parseInt(telematikId.split("\\.")[2]));
+        }
+    },
+    APOTHEKER(EnumEntryType.Berufsgruppe, EnumAntragTyp.HBA){
+        public String getBusinessId(String telematikId) {
+            return String.valueOf(Integer.parseInt(telematikId.split("\\.")[2]));
+        }
+    },
+    ARZT(EnumEntryType.Berufsgruppe, EnumAntragTyp.HBA){
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    ARZTPRAXIS(EnumEntryType.Leistungserbringerinstitution, EnumAntragTyp.SMCB){
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    ZAHNARZT(EnumEntryType.Berufsgruppe, EnumAntragTyp.HBA){
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    ZAHNARZTPRAXIS(EnumEntryType.Leistungserbringerinstitution, EnumAntragTyp.SMCB){
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    PSYCHOTHERAPEUTH(EnumEntryType.Berufsgruppe, EnumAntragTyp.HBA){
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    KRANKENHAUS(EnumEntryType.Leistungserbringerinstitution, EnumAntragTyp.SMCB){
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    GKV(EnumEntryType.Krankenkasse, EnumAntragTyp.SMCB){
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    GKV_EPA(EnumEntryType.Krankenkasse_ePA, EnumAntragTyp.SMCB){
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    HBAGEMATIK(EnumEntryType.Berufsgruppe, EnumAntragTyp.HBA){
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    SMCBGEMATIK(EnumEntryType.Organisation, EnumAntragTyp.SMCB){
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    HBAEGBR(EnumEntryType.Berufsgruppe, EnumAntragTyp.HBA){
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    SMCBEGBR(EnumEntryType.Leistungserbringerinstitution, EnumAntragTyp.SMCB){
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    };
 
     private EnumEntryType entryType;
+    private EnumAntragTyp antragTyp;
 
-    private EnumSektor(EnumEntryType entryType) {
+    private EnumSektor(EnumEntryType entryType, EnumAntragTyp antragTyp) {
         this.entryType = entryType;
+        this.antragTyp = antragTyp;
     }
 
     public EnumEntryType getEntryType() {
         return entryType;
     }
+    public EnumAntragTyp getAntragTyp() { return antragTyp; }
+
+    public abstract String getBusinessId(String telematikId);
 }

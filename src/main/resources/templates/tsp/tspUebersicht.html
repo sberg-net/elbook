@@ -1,0 +1,59 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<div class="alert alert-danger" role="alert" style="display:none" id="tspTableError">
+</div>
+<div class="row" xmlns:th="http://www.thymeleaf.org">
+  <div class="col-sm-3 col-lg-2 mb-3 p-0">
+    <button type="button" id="createUser" class="btn btn-primary btn-block" onclick="tspLaden(-1)">TSP anlegen</button>
+  </div>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" class="row">
+  <div class="col-md-9 mb-3 font-weight-bolder">
+    <span th:text="${#lists.size(tspen)}"></span>&nbsp;TSP's vorhanden
+  </div>
+</div>
+<div class="row">
+  <table class="table" id="tspTable" xmlns:th="http://www.thymeleaf.org">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${tspen.isEmpty()}">
+      <td colspan="2">Keine TSP's verfügbar</td>
+    </tr>
+    <tr th:each="n : ${tspen}">
+      <td><span th:text="${n.id}">ID</span></td>
+      <td><span class="text-break" th:text="${n.tspName.getHrText()}">Name</span></td>
+      <td>
+        <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-id=${n.id}" onclick="tspLaden($(this).attr('data-id'))">
+          <span data-feather="edit"></span>
+        </button>&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" onclick="elbookContext.toDeleteTsp=$(this).attr('data-id');$('#confirmDialog4DeleteTsp').modal('show')" >
+          <span data-feather="delete"></span>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<script>
+  feather.replace();
+</script>

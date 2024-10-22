@@ -62,6 +62,8 @@ public class VerzeichnisdienstImportErgebnis {
     private boolean update = false;
     private boolean certUpdate = false;
     private boolean delete = false;
+    private boolean silentMode = false;
+    private boolean ignore = false;
 
     public void fill(VerzeichnisdienstImportCommand command) {
 
@@ -89,6 +91,8 @@ public class VerzeichnisdienstImportErgebnis {
 
         setMaxKomLeAdr(command.getMaxKomLeAdr());
         setAktiv(command.getAktiv());
+
+        setIgnore(command.isToIgnore());
     }
 
 }

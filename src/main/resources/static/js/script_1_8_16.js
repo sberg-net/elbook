@@ -1383,6 +1383,20 @@ function tspSpeichern() {
   });
 }
 
+function tspLoadAllRequest(tspId, antragTyp, aTagId) {
+  var aHrefTag = $('#'+aTagId).attr("href");
+  aHrefTag = aHrefTag + "/" + tspId + "/" + antragTyp;
+  $('#'+aTagId).attr("href", aHrefTag);
+  document.getElementById(aTagId).click();
+}
+
+function tspLoadRequest(tspId, vorgangsnummer, aTagId) {
+  var aHrefTag = $('#'+aTagId).attr("href");
+  aHrefTag = aHrefTag + "/" + tspId + "/" + vorgangsnummer;
+  $('#'+aTagId).attr("href", aHrefTag);
+  document.getElementById(aTagId).click();
+}
+
 function tspCheck(tspId) {
   $("#tspFormError").attr("style", "display:none");
   $("#tspFormSucces").attr("style", "display:none");
@@ -1506,72 +1520,6 @@ function logeintragUebersicht(searchValue) {
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
       $("#logeintragTableContainer").append(jqXHR.responseText);
-    }
-  });
-}
-
-function tspantragexportUebersicht() {
-  $("#elbook-spinner").attr("style", "");
-  $("#tspantragexportTableContainer").attr("style", "");
-  $("#tspantragexportTableContainer").empty();
-  $.ajax({
-    type: "GET",
-    url: $("#tspantragexportTableContainer").attr("action")+'tspantragexport/smcb/uebersicht',
-    success: function(data) {
-      $("#elbook-spinner").attr("style", "display:none");
-      $("#tspantragexportTableContainer").append(data);
-    },
-    error: function(jqXHR,textStatus,errorThrown) {
-      $("#elbook-spinner").attr("style", "display:none");
-      $("#tspantragexportTableContainer").append(jqXHR.responseText);
-    }
-  });
-}
-
-function tspantragexportStart() {
-  if (limit && parseInt(limit) < 0) {
-    return;
-  }
-  const limit = elbookContext.tspantragexportDataLimit;
-  $("#elbook-spinner").attr("style", "");
-  $.ajax({
-    type: "GET",
-    url: $("#tspantragexportTableContainer").attr("action")+'tspantragexport/smcb/starten/async/'+(!limit?-1:limit),
-    success: function(data) {
-      $("#elbook-spinner").attr("style", "display:none");
-      setTimeout(tspantragexportUebersicht,0);
-    },
-    error: function(jqXHR,textStatus,errorThrown) {
-      $("#elbook-spinner").attr("style", "display:none");
-      $("#tspantragexportTableError").append(jqXHR.responseText);
-    }
-  });
-}
-
-function tspantragexportZusammenfassung(jobId) {
-  $("#elbook-spinner").attr("style", "");
-  $.ajax({
-    type: "GET",
-    url: $("#stammdatencertimportTableContainer").attr("action")+'tspantragexport/zusammenfassen/ergebnisse/' + jobId,
-    success: function(data) {
-      $("#elbook-spinner").attr("style", "display:none");
-      $('#showDialog4ResultSummary').modal('show');
-      $('#showDialog4ResultSummary #loadError').text('');
-      $('#showDialog4ResultSummary #errorCount').text(data.errorCount+' Fehler');
-      $('#showDialog4ResultSummary #insertCount').text(data.insertCount+' Einfügungen');
-      $('#showDialog4ResultSummary #updateCount').text(data.updateCount+' Änderungen');
-      $('#showDialog4ResultSummary #certUpdateCount').text(data.certUpdateCount+' Zertifikatsaktualisierungen');
-      $('#showDialog4ResultSummary #deleteCount').text(data.deleteCount+' Löschungen');
-    },
-    error: function(jqXHR,textStatus,errorThrown) {
-      $("#elbook-spinner").attr("style", "display:none");
-      $('#showDialog4ResultSummary').modal('show');
-      $('#showDialog4ResultSummary #loadError').text(jqXHR.responseText);
-      $('#showDialog4ResultSummary #errorCount').text('0 Fehler');
-      $('#showDialog4ResultSummary #insertCount').text('0 Einfügungen');
-      $('#showDialog4ResultSummary #updateCount').text('0 Änderungen');
-      $('#showDialog4ResultSummary #certUpdateCount').text('0 Zertifikatsaktualisierungen');
-      $('#showDialog4ResultSummary #deleteCount').text('0 Löschungen');
     }
   });
 }

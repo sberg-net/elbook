@@ -23,6 +23,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 import net.sberg.elbook.jdbc.DaoDescriptorClass;
 import net.sberg.elbook.jdbc.DaoDescriptorElement;
+import net.sberg.elbook.tspcmpts.EnumAntragTyp;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

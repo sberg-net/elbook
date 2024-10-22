@@ -63,6 +63,12 @@
                 HBA Kartendatentransfer
               </a>
             </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('GOLD_LICENCE_HEAD_OF_DEPT','SILVER_LICENCE_HEAD_OF_DEPT')">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/tsp') ? 'active':''}" th:href="@{/tsp}">
+                <span data-feather="settings"></span>
+                Trust Service Provider
+              </a>
+            </li>
             <li class="nav-item" sec:authorize="hasAnyRole('GOLD_LICENCE_HEAD_OF_DEPT','SILVER_LICENCE_HEAD_OF_DEPT','GOLD_LICENCE_USER','SILVER_LICENCE_USER')">
               <a class="nav-link" th:classappend="${requestPath.endsWith('/verzeichnisdienst') ? 'active':''}" th:href="@{/verzeichnisdienst}">
                 <span data-feather="book-open"></span>

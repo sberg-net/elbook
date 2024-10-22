@@ -18,9 +18,12 @@ package net.sberg.elbook.kartendatentransfer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import de.gematik.ws.cm.pers.hba_smc_b.v1.KartenStatusKey;
+import de.gematik.ws.cm.pers.hba_smc_b.v1.ProfessionItemKey;
 import lombok.Data;
 import net.sberg.elbook.common.LocalDateSecondsDeserializer;
 import net.sberg.elbook.common.LocalDateSecondsSerializer;
+import net.sberg.elbook.tspcmpts.QVDA;
 
 import java.time.LocalDate;
 
@@ -66,7 +69,7 @@ public class HbaKartendatenTransferCommand {
     private QVDA qvda = QVDA.BUNDESDRUCKEREI;
     private String ausweisnummer;
     private String telematikId;
-    private KartenStatusKey kartenStatus = KartenStatusKey.UNBEKANNT;
+    private EnumKartenStatusKey kartenStatus = EnumKartenStatusKey.UNBEKANNT;
 
     //ausweis 2
     @JsonDeserialize(using = LocalDateSecondsDeserializer.class)
@@ -80,7 +83,7 @@ public class HbaKartendatenTransferCommand {
     private QVDA qvda2 = QVDA.BUNDESDRUCKEREI;
     private String ausweisnummer2;
     private String telematikId2;
-    private KartenStatusKey kartenStatus2 = KartenStatusKey.UNBEKANNT;
+    private EnumKartenStatusKey kartenStatus2 = EnumKartenStatusKey.UNBEKANNT;
 
     //ausweis 3
     @JsonDeserialize(using = LocalDateSecondsDeserializer.class)
@@ -94,6 +97,6 @@ public class HbaKartendatenTransferCommand {
     private QVDA qvda3 = QVDA.BUNDESDRUCKEREI;
     private String ausweisnummer3;
     private String telematikId3;
-    private KartenStatusKey kartenStatus3 = KartenStatusKey.UNBEKANNT;
+    private EnumKartenStatusKey kartenStatus3 = EnumKartenStatusKey.UNBEKANNT;
 
 }

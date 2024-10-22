@@ -30,7 +30,7 @@
     <field name="vorname" class="java.lang.String"></field>
     <field name="nachname" class="java.lang.String"></field>
     <field name="geburtsdatum" class="java.time.LocalDate"></field>
-    <field name="berufsgruppe" class="net.sberg.elbook.kartendatentransfer.ProfessionItemKey"></field>
+    <field name="berufsgruppe" class="de.gematik.ws.cm.pers.hba_smc_b.v1.ProfessionItemKey"></field>
     <field name="akademischerGrad" class="java.lang.String"></field>
     <field name="approbationStatus" class="net.sberg.elbook.kartendatentransfer.EnumApprobationStatus"></field>
     <field name="kammermitgliedschaftStatus" class="net.sberg.elbook.kartendatentransfer.EnumKammermitgliedschaftStatus"></field>
@@ -49,24 +49,24 @@
 
     <field name="gueltigVon" class="java.time.LocalDate"></field>
     <field name="gueltigBis" class="java.time.LocalDate"></field>
-    <field name="qvda" class="net.sberg.elbook.kartendatentransfer.QVDA"></field>
+    <field name="qvda" class="net.sberg.elbook.tspcmpts.QVDA"></field>
     <field name="ausweisnummer" class="java.lang.String"></field>
     <field name="telematikId" class="java.lang.String"></field>
-    <field name="kartenStatus" class="net.sberg.elbook.kartendatentransfer.KartenStatusKey"></field>
+    <field name="kartenStatus" class="net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey"></field>
 
     <field name="gueltigVon2" class="java.time.LocalDate"></field>
     <field name="gueltigBis2" class="java.time.LocalDate"></field>
-    <field name="qvda2" class="net.sberg.elbook.kartendatentransfer.QVDA"></field>
+    <field name="qvda2" class="net.sberg.elbook.tspcmpts.QVDA"></field>
     <field name="ausweisnummer2" class="java.lang.String"></field>
     <field name="telematikId2" class="java.lang.String"></field>
-    <field name="kartenStatus2" class="net.sberg.elbook.kartendatentransfer.KartenStatusKey"></field>
+    <field name="kartenStatus2" class="net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey"></field>
 
     <field name="gueltigVon3" class="java.time.LocalDate"></field>
     <field name="gueltigBis3" class="java.time.LocalDate"></field>
-    <field name="qvda3" class="net.sberg.elbook.kartendatentransfer.QVDA"></field>
+    <field name="qvda3" class="net.sberg.elbook.tspcmpts.QVDA"></field>
     <field name="ausweisnummer3" class="java.lang.String"></field>
     <field name="telematikId3" class="java.lang.String"></field>
-    <field name="kartenStatus3" class="net.sberg.elbook.kartendatentransfer.KartenStatusKey"></field>
+    <field name="kartenStatus3" class="net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey"></field>
 
     <background>
         <band splitType="Stretch"/>

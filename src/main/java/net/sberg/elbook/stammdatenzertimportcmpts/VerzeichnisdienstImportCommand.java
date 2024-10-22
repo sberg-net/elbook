@@ -63,6 +63,7 @@ public class VerzeichnisdienstImportCommand {
     private List<EncZertifikat> encZertifikat = new ArrayList<>();
 
     private boolean toDelete;
+    private boolean toIgnore;
 
     public static VerzeichnisdienstImportCommand merge(VerzeichnisdienstImportCommand src, VerzeichnisdienstImportCommand dest) {
         VerzeichnisdienstImportCommand res = new VerzeichnisdienstImportCommand();

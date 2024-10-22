@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [2.1.0]
+
+### Added
+- Pflege von TSP's / QVDA's
+- Abgleich der VZD-Einträge erweitert um Abgleich der HBA- und SMCB-Kartendateninformationen für die Zertifikate
+
+### Changed
+- Update des Mysql-JDBC-Treibers 
+
 ## [2.0.2]
 
 ### Fixed

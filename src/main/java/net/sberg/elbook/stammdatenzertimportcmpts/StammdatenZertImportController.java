@@ -43,6 +43,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -175,6 +176,16 @@ public class StammdatenZertImportController extends AbstractWebController {
     public List<VerzeichnisdienstImportErgebnis> apiStartenSync(Authentication authentication, @RequestBody VerzeichnisdienstImportCommandContainer verzeichnisdienstImportCommandContainer) throws Exception {
         AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
         log.info("apiStartenSync execute 4: "+authUserDetails.getMandant().getId()+" - "+authUserDetails.getMandant().getName());
+
+        if (verzeichnisdienstImportCommandContainer.isSyncWithTsps()) {
+            List<VerzeichnisdienstImportErgebnis> result = new ArrayList<>();
+            VerzeichnisdienstImportErgebnis verzeichnisdienstImportErgebnis = new VerzeichnisdienstImportErgebnis();
+            verzeichnisdienstImportErgebnis.setError(true);
+            verzeichnisdienstImportErgebnis.getLog().add("Es soll mit den Tsp's ein sync durchgeführt werden. Aus Performancegründen nutzen Sie bitte den async-Request.");
+            result.add(verzeichnisdienstImportErgebnis);
+            return result;
+        }
+
         return stammdatenZertImportService.importieren(authUserDetails.getMandant(), verzeichnisdienstImportCommandContainer);
     }
 

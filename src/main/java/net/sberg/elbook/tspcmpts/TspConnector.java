@@ -1,90 +1,61 @@
+/*
+ *  Copyright (C) 2023 sberg it-systeme GmbH
+ *
+ *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ *  European Commission - subsequent versions of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at:
+ *
+ * https://joinup.ec.europa.eu/software/page/eupl
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ */
 package net.sberg.elbook.tspcmpts;
 
-import de.datec.hba.bean.Antrag;
 import de.gematik.ws.cm.pers.hba_smc_b.v1.*;
 import de.gematik.ws.sst.v1.ObjectFactory;
 import de.gematik.ws.sst.v1.*;
+import jakarta.xml.bind.JAXBElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
-import javax.xml.bind.JAXBElement;
-import java.util.List;
-
 public class TspConnector extends WebServiceGatewaySupport {
 
-    private HbaModelMapper hbaModelMapper;
-
     private Logger log = LoggerFactory.getLogger(TspConnector.class);
-
     private ObjectFactory oFactory = new ObjectFactory();
 
-    public TspConnector(HbaModelMapper hbaModelMapper) {
-        this.hbaModelMapper = hbaModelMapper;
-    }
-
-    public String sendAntrag(Antrag antrag) throws Exception {
-        if (antrag.getTyp().equals(EnumAntragTyp.HBA)) {
-            return HbaUtils.getVorgangsNr(addHbaVorbefuellungen(hbaModelMapper.hbaVorbefuellungenFromAntrag(antrag)));
-        }
-        else if (antrag.getTyp().equals(EnumAntragTyp.SMCB)) {
-            return HbaUtils.getVorgangsNr(addSmcbVorbefuellungen(hbaModelMapper.smcbVorbefuellungenFromAntrag(antrag)));
-        }
-        else {
-            throw new IllegalStateException("Unbekannter Antragstyp " + antrag.getTyp() + "(antrag-id: " + antrag.getId());
-        }
-    }
-
-    public GetSmcbAntraegeExportResponseType getSmcbAntraegeExportByStatusKey(AntragStatusKey statusKey, boolean overview)  {
+    public GetHbaAntraegeExportResponseType getHbaAntrag(String vorgangsNr) {
         AntraegeExportRequestType antraegeExportRequest = new AntraegeExportRequestType();
-        antraegeExportRequest.setAntragsStatus(statusKey);
-        antraegeExportRequest.setUeberblicksanfrage(overview);
-        return (GetSmcbAntraegeExportResponseType)getSoapResponse(oFactory.createGetSmcbAntraegeExportRequest(antraegeExportRequest));
-    }
-
-    public GetSmcbAntraegeExportResponseType getSmcbAntraegeExportByKartenStatusKey(KartenStatusKey statusKey, boolean overview)  {
-        AntraegeExportRequestType antraegeExportRequest = new AntraegeExportRequestType();
-        antraegeExportRequest.setKarteStatus(statusKey);
-        antraegeExportRequest.setUeberblicksanfrage(overview);
-        return (GetSmcbAntraegeExportResponseType)getSoapResponse(oFactory.createGetSmcbAntraegeExportRequest(antraegeExportRequest));
-    }
-
-    public GetSmcbAntraegeExportResponseType getSmcbAntraegeExportByVorgangsnummer(String vorgangsnummer) {
-        AntraegeExportRequestType antraegeExportRequest = new AntraegeExportRequestType();
-        antraegeExportRequest.setVorgangsNr(vorgangsnummer);
-        antraegeExportRequest.setUeberblicksanfrage(false);
-        return (GetSmcbAntraegeExportResponseType)getSoapResponse(oFactory.createGetSmcbAntraegeExportRequest(antraegeExportRequest));
-    }
-
-    public GetHbaAntraegeExportResponseType getHbaAntraegeExportByKartenStatusKey(KartenStatusKey statusKey, boolean overview) {
-        AntraegeExportRequestType antraegeExportRequest = new AntraegeExportRequestType();
-        antraegeExportRequest.setKarteStatus(statusKey);
-        antraegeExportRequest.setUeberblicksanfrage(overview);
+        antraegeExportRequest.setVorgangsNr(vorgangsNr);
         return (GetHbaAntraegeExportResponseType)getSoapResponse(oFactory.createGetHbaAntraegeExportRequest(antraegeExportRequest));
     }
 
-    public GetHbaAntraegeExportResponseType getHbaAntraegeExportByStatusKey(AntragStatusKey statusKey, boolean overview) {
+    public GetSmcbAntraegeExportResponseType getSmcbAntrag(String vorgangsNr) {
         AntraegeExportRequestType antraegeExportRequest = new AntraegeExportRequestType();
-        antraegeExportRequest.setAntragsStatus(statusKey);
+        antraegeExportRequest.setVorgangsNr(vorgangsNr);
+        return (GetSmcbAntraegeExportResponseType)getSoapResponse(oFactory.createGetSmcbAntraegeExportRequest(antraegeExportRequest));
+    }
+
+    public GetHbaAntraegeExportResponseType getHbaAntraegeZertifikateFreigeschaltet(boolean overview, int limit, int offset) {
+        AntraegeExportRequestType antraegeExportRequest = new AntraegeExportRequestType();
         antraegeExportRequest.setUeberblicksanfrage(overview);
+        antraegeExportRequest.setKarteStatus(KartenStatusKey.ZERTIFIKATE_FREIGESCHALTET);
+        antraegeExportRequest.setAnfrageLimit(limit);
+        antraegeExportRequest.setAnfrageOffset(offset);
         return (GetHbaAntraegeExportResponseType)getSoapResponse(oFactory.createGetHbaAntraegeExportRequest(antraegeExportRequest));
     }
 
-    public GetHbaAntraegeExportResponseType getHbaAntraegeExportByVorgangsnummer(String vorgangsnummer) {
+    public GetSmcbAntraegeExportResponseType getSmcbAntraegeZertifikateFreigeschaltet(boolean overview, int limit, int offset) {
         AntraegeExportRequestType antraegeExportRequest = new AntraegeExportRequestType();
-        antraegeExportRequest.setVorgangsNr(vorgangsnummer);
-        antraegeExportRequest.setUeberblicksanfrage(false);
-        return (GetHbaAntraegeExportResponseType)getSoapResponse(oFactory.createGetHbaAntraegeExportRequest(antraegeExportRequest));
-    }
-
-    public AddHbaVorbefuellungenResponseType addHbaVorbefuellungen(List<HbaVorbefuellung> hbaVorbefuellungCollection) {
-        HbaVorbefuellungen hbaVorbefuellungen = new HbaVorbefuellungen(hbaVorbefuellungCollection);
-        return (AddHbaVorbefuellungenResponseType)getSoapResponse(hbaVorbefuellungen);
-    }
-
-    public AddSmcbVorbefuellungenResponseType addSmcbVorbefuellungen(List<SmcbVorbefuellung> smcbVorbefuellungCollection)  {
-        SmcbVorbefuellungen smcbVorbefuellungen = new SmcbVorbefuellungen(smcbVorbefuellungCollection);
-        return (AddSmcbVorbefuellungenResponseType)getSoapResponse(smcbVorbefuellungen);
+        antraegeExportRequest.setUeberblicksanfrage(overview);
+        antraegeExportRequest.setAnfrageLimit(limit);
+        antraegeExportRequest.setKarteStatus(KartenStatusKey.ZERTIFIKATE_FREIGESCHALTET);
+        antraegeExportRequest.setAnfrageOffset(offset);
+        return (GetSmcbAntraegeExportResponseType)getSoapResponse(oFactory.createGetSmcbAntraegeExportRequest(antraegeExportRequest));
     }
 
     private GeneralResponseType getSoapResponse(Object requestPayload) {

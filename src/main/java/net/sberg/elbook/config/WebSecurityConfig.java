@@ -116,6 +116,10 @@ public class WebSecurityConfig {
                                 EnumAuthRole.ROLE_GOLD_LICENCE_HEAD_OF_DEPT.getSuffix())
 
                         .requestMatchers(
+                                antMatcher("/tsp/**")
+                        ).hasAnyRole(EnumAuthRole.ROLE_GOLD_LICENCE_HEAD_OF_DEPT.getSuffix())
+
+                        .requestMatchers(
                                 antMatcher("/hbakartendatentransfer/**")
                         ).hasAnyRole(EnumAuthRole.ROLE_PHARMACIST.getSuffix())
                 )

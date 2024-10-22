@@ -28,6 +28,7 @@ import net.sberg.elbook.common.FileUtils;
 import net.sberg.elbook.common.ICommonConstants;
 import net.sberg.elbook.jdbc.DaoPlaceholderProperty;
 import net.sberg.elbook.jdbc.JdbcGenericDao;
+import net.sberg.elbook.tspcmpts.EnumAntragTyp;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;

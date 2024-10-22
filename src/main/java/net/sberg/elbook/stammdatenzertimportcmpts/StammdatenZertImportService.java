@@ -16,22 +16,29 @@
 package net.sberg.elbook.stammdatenzertimportcmpts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.gematik.ws.cm.pers.hba_smc_b.v1.HbaAntragExport;
+import de.gematik.ws.cm.pers.hba_smc_b.v1.SmcbAntragExport;
+import de.gematik.ws.sst.v1.GetHbaAntraegeExportResponseType;
+import de.gematik.ws.sst.v1.GetSmcbAntraegeExportResponseType;
 import net.sberg.elbook.batchjobcmpts.BatchJob;
 import net.sberg.elbook.batchjobcmpts.EnumBatchJobName;
 import net.sberg.elbook.batchjobcmpts.EnumBatchJobStatusCode;
 import net.sberg.elbook.common.FileUtils;
 import net.sberg.elbook.common.ICommonConstants;
 import net.sberg.elbook.common.MailCreatorAndSender;
+import net.sberg.elbook.jdbc.DaoPlaceholderProperty;
 import net.sberg.elbook.jdbc.JdbcGenericDao;
 import net.sberg.elbook.logeintragcmpts.EnumLogEintragArtikelTyp;
 import net.sberg.elbook.logeintragcmpts.LogEintragService;
 import net.sberg.elbook.mandantcmpts.Mandant;
+import net.sberg.elbook.tspcmpts.*;
 import net.sberg.elbook.verzeichnisdienstcmpts.VerzeichnisdienstService;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +63,8 @@ public class StammdatenZertImportService {
     private LogEintragService logEintragService;
     @Autowired
     private MailCreatorAndSender mailCreatorAndSender;
+    @Value("${elbook.encryptionKeys}")
+    private String[] ENC_KEYS;
 
     private void createBatchJobMail(BatchJob batchJob, Mandant mandant) throws Exception {
         SimpleMailMessage msg = new SimpleMailMessage();
@@ -113,8 +122,14 @@ public class StammdatenZertImportService {
             verzeichnisdienstImportCommand.setBundesland(mandant.getBundesland());
             VerzeichnisdienstImportErgebnis verzeichnisdienstImportErgebnis = new VerzeichnisdienstImportErgebnis();
             verzeichnisdienstImportErgebnis.fill(verzeichnisdienstImportCommand);
+            verzeichnisdienstImportErgebnis.setSilentMode(verzeichnisdienstImportCommandContainer.isSilentMode());
 
             try {
+
+                if (verzeichnisdienstImportErgebnis.isIgnore()) {
+                    verzeichnisdienstImportErgebnis.getLog().add("eintrag wird ignoriert");
+                    return verzeichnisdienstImportErgebnis;
+                }
 
                 boolean emptyVzdUid = verzeichnisdienstImportCommand.getVzdUid() == null || verzeichnisdienstImportCommand.getVzdUid().trim().isEmpty();
                 String telematikId = verzeichnisdienstImportCommand.getTelematikID();
@@ -157,18 +172,25 @@ public class StammdatenZertImportService {
                         verzeichnisdienstImportErgebnis.setError(true);
                     }
                     else {
-                        verzeichnisdienstService.loeschen(mandant, tiVZDProperties, vzdObject.extractDirectoryEntryUid());
+                        if (!verzeichnisdienstImportErgebnis.isSilentMode()) {
+                            verzeichnisdienstService.loeschen(mandant, tiVZDProperties, vzdObject.extractDirectoryEntryUid());
 
-                        verzeichnisdienstImportErgebnis.setVzdUid(vzdObject.extractDirectoryEntryUid());
+                            verzeichnisdienstImportErgebnis.setVzdUid(vzdObject.extractDirectoryEntryUid());
 
-                        logEintragService.handle(
+                            logEintragService.handle(
                                 mandant,
                                 vzdObject.extractDirectoryEntryTelematikId(),
                                 emptyBusinessId ? "" : verzeichnisdienstImportCommand.getVerwaltungsId(),
                                 vzdObject.extractDirectoryEntryUid(),
                                 null,
                                 EnumLogEintragArtikelTyp.CARD_ISSUER_DELETE
-                        );
+                            );
+
+                            verzeichnisdienstImportErgebnis.getLog().add("verzeichnisdienseintrag wurde gelöscht mit der id=" + vzdObject.extractDirectoryEntryUid() + " und der telematikid=" + vzdObject.extractDirectoryEntryTelematikId());
+                        }
+                        else {
+                            verzeichnisdienstImportErgebnis.getLog().add("SILENTMODE -> verzeichnisdienseintrag wurde gelöscht mit der id=" + vzdObject.extractDirectoryEntryUid() + " und der telematikid=" + vzdObject.extractDirectoryEntryTelematikId());
+                        }
                     }
 
                     log.info("END - handle the verzeichnisdienstImportCommand for the batchjob " + batchJob.getId() + ", mandantId: " + mandant.getId() + ", Verwaltungs-ID: " + verzeichnisdienstImportCommand.getVerwaltungsId());
@@ -177,23 +199,24 @@ public class StammdatenZertImportService {
 
                 //INSERT
                 if (verzeichnisdienstImportErgebnis.isInsert()) {
-                    List dnNameL = verzeichnisdienstService.speichern(tiVZDProperties, verzeichnisdienstImportCommand.createAddDirEntryCommand(tiVZDProperties, verzeichnisdienstImportCommandContainer.getSektor()));
-                    VzdEntryWrapper distinguishedName = (VzdEntryWrapper) dnNameL.get(0);
+                    if (!verzeichnisdienstImportErgebnis.isSilentMode()) {
+                        List dnNameL = verzeichnisdienstService.speichern(tiVZDProperties, verzeichnisdienstImportCommand.createAddDirEntryCommand(tiVZDProperties, verzeichnisdienstImportCommandContainer.getSektor()));
+                        VzdEntryWrapper distinguishedName = (VzdEntryWrapper) dnNameL.get(0);
 
-                    verzeichnisdienstImportErgebnis.getLog().add("verzeichnisdienseintrag wurde eingefügt mit der id=" + distinguishedName.extractDistinguishedNameUid() + " und der telematikid=" + verzeichnisdienstImportCommand.getTelematikID());
-                    verzeichnisdienstImportErgebnis.setVzdUid(distinguishedName.extractDistinguishedNameUid());
+                        verzeichnisdienstImportErgebnis.getLog().add("verzeichnisdienseintrag wurde eingefügt mit der id=" + distinguishedName.extractDistinguishedNameUid() + " und der telematikid=" + verzeichnisdienstImportCommand.getTelematikID());
+                        verzeichnisdienstImportErgebnis.setVzdUid(distinguishedName.extractDistinguishedNameUid());
 
-                    logEintragService.handle(
+                        logEintragService.handle(
                             mandant,
                             verzeichnisdienstImportCommand.getTelematikID(),
                             emptyBusinessId ? "" : verzeichnisdienstImportCommand.getVerwaltungsId(),
                             distinguishedName.extractDistinguishedNameUid(),
                             null,
                             EnumLogEintragArtikelTyp.CARD_ISSUER_INSERT
-                    );
+                        );
 
-                    if (!verzeichnisdienstImportCommand.getEncZertifikat().isEmpty()) {
-                        verzeichnisdienstService.pruefeZertifikate(
+                        if (!verzeichnisdienstImportCommand.getEncZertifikat().isEmpty()) {
+                            verzeichnisdienstService.pruefeZertifikate(
                                 mandant,
                                 tiVZDProperties,
                                 distinguishedName.extractDistinguishedNameUid(),
@@ -203,7 +226,11 @@ public class StammdatenZertImportService {
                                 new ArrayList<>(),
                                 verzeichnisdienstImportErgebnis,
                                 EnumLogEintragArtikelTyp.CARD_ISSUER_CERT_INSERT
-                        );
+                            );
+                        }
+                    }
+                    else {
+                        verzeichnisdienstImportErgebnis.getLog().add("SILENTMODE -> verzeichnisdienseintrag wurde eingefügt mit der telematikid=" + verzeichnisdienstImportCommand.getTelematikID());
                     }
 
                     log.info("END - handle the verzeichnisdienstImportCommand for the batchjob " + batchJob.getId() + ", mandantId: " + mandant.getId() + ", Verwaltungs-ID: " + verzeichnisdienstImportCommand.getVerwaltungsId());
@@ -217,34 +244,42 @@ public class StammdatenZertImportService {
 
                     verzeichnisdienstImportCommand.setVzdUid(vzdObject.extractDirectoryEntryUid());
                     verzeichnisdienstImportCommand.setTelematikID(vzdObject.extractDirectoryEntryTelematikId());
-                    verzeichnisdienstService.speichern(tiVZDProperties, verzeichnisdienstImportCommand.createModDirEntryCommand(tiVZDProperties, verzeichnisdienstImportCommandContainer.getSektor(), vzdObject, log));
 
-                    verzeichnisdienstImportErgebnis.getLog().add("verzeichnisdienseintrag wurde geändert mit der id=" + verzeichnisdienstImportCommand.getVzdUid() + " und der telematikid=" + verzeichnisdienstImportCommand.getTelematikID());
+                    if (!verzeichnisdienstImportErgebnis.isSilentMode()) {
+                        verzeichnisdienstService.speichern(tiVZDProperties, verzeichnisdienstImportCommand.createModDirEntryCommand(tiVZDProperties, verzeichnisdienstImportCommandContainer.getSektor(), vzdObject, log));
+                        verzeichnisdienstImportErgebnis.getLog().add("verzeichnisdienseintrag wurde geändert mit der id=" + verzeichnisdienstImportCommand.getVzdUid() + " und der telematikid=" + verzeichnisdienstImportCommand.getTelematikID());
+                    }
+                    else {
+                        verzeichnisdienstImportErgebnis.getLog().add("SILENTMODE -> verzeichnisdienseintrag wurde geändert mit der id=" + verzeichnisdienstImportCommand.getVzdUid() + " und der telematikid=" + verzeichnisdienstImportCommand.getTelematikID());
+                    }
+
                     verzeichnisdienstImportErgebnis.setTelematikID(vzdObject.extractDirectoryEntryTelematikId());
                     verzeichnisdienstImportErgebnis.setVzdUid(vzdObject.extractDirectoryEntryUid());
 
-                    logEintragService.handle(
+                    if (!verzeichnisdienstImportErgebnis.isSilentMode()) {
+                        logEintragService.handle(
                             mandant,
                             vzdObject.extractDirectoryEntryTelematikId(),
                             emptyBusinessId ? "" : verzeichnisdienstImportCommand.getVerwaltungsId(),
                             vzdObject.extractDirectoryEntryUid(),
                             null,
                             EnumLogEintragArtikelTyp.CARD_ISSUER_UPDATE
-                    );
+                        );
+                    }
 
-                    if (!verzeichnisdienstImportCommand.getEncZertifikat().isEmpty()) {
+                    if (!verzeichnisdienstImportErgebnis.isSilentMode() && !verzeichnisdienstImportCommand.getEncZertifikat().isEmpty()) {
                         List<VzdEntryWrapper> vzdCerts = verzeichnisdienstService.ladeZertifikate(tiVZDProperties, vzdObject.extractDirectoryEntryUid());
 
                         verzeichnisdienstService.pruefeZertifikate(
-                                mandant,
-                                tiVZDProperties,
-                                vzdObject.extractDirectoryEntryUid(),
-                                vzdObject.extractDirectoryEntryTelematikId(),
-                                emptyBusinessId ? "" : verzeichnisdienstImportCommand.getVerwaltungsId(),
-                                verzeichnisdienstImportCommand.getEncZertifikat().stream().map(EncZertifikat::getContent).collect(Collectors.toList()),
-                                vzdCerts,
-                                verzeichnisdienstImportErgebnis,
-                                EnumLogEintragArtikelTyp.CARD_ISSUER_CERT_INSERT
+                            mandant,
+                            tiVZDProperties,
+                            vzdObject.extractDirectoryEntryUid(),
+                            vzdObject.extractDirectoryEntryTelematikId(),
+                            emptyBusinessId ? "" : verzeichnisdienstImportCommand.getVerwaltungsId(),
+                            verzeichnisdienstImportCommand.getEncZertifikat().stream().map(EncZertifikat::getContent).collect(Collectors.toList()),
+                            vzdCerts,
+                            verzeichnisdienstImportErgebnis,
+                            EnumLogEintragArtikelTyp.CARD_ISSUER_CERT_INSERT
                         );
 
                     }
@@ -280,6 +315,63 @@ public class StammdatenZertImportService {
             log.info("END - handle the verzeichnisdienstImportCommand for the batchjob " + batchJob.getId() + ", mandantId: " + mandant.getId() + ", Verwaltungs-ID: " + verzeichnisdienstImportCommand.getVerwaltungsId());
             return verzeichnisdienstImportErgebnis;
         }, executorService);
+    }
+
+    private VerzeichnisdienstImportCommandContainer handleTspSync(Mandant mandant, VerzeichnisdienstImportCommandContainer verzeichnisdienstImportCommandContainer) throws Exception {
+        if (!verzeichnisdienstImportCommandContainer.isSyncWithTsps()) {
+            return verzeichnisdienstImportCommandContainer;
+        }
+        verzeichnisdienstImportCommandContainer.getCommands().forEach(verzeichnisdienstImportCommand -> verzeichnisdienstImportCommand.setToIgnore(true));
+
+        List<Tsp> tsps = genericDao.selectMany(
+            Tsp.class.getName(),
+            null,
+            List.of(
+                new DaoPlaceholderProperty("mandantId", mandant.getId())
+            )
+        );
+
+        for (Iterator<Tsp> iterator = tsps.iterator(); iterator.hasNext(); ) {
+            Tsp tsp = iterator.next();
+            tsp.decrypt(ENC_KEYS);
+
+            int limit = 100;
+
+            if (verzeichnisdienstImportCommandContainer.getSektor().getAntragTyp().equals(EnumAntragTyp.SMCB)) {
+                TspProperties tspProperties = tsp.create(EnumAntragTyp.SMCB);
+                TspConnector tspConnector = new TspConnectorBuilder().build(tspProperties, tsp.getTspName().getQvda(), EnumAntragTyp.SMCB);
+
+                int offset = 0;
+                List<SmcbAntragExport> smcbAntragExports = new ArrayList<>();
+                while (true) {
+                    GetSmcbAntraegeExportResponseType getSmcbAntraegeExportResponseType = tspConnector.getSmcbAntraegeZertifikateFreigeschaltet(false, limit, offset);
+                    smcbAntragExports.addAll(getSmcbAntraegeExportResponseType.getSmcbAntraegeExport().getSmcbAntragExport());
+                    if (!getSmcbAntraegeExportResponseType.isAntraegeExportWeitereTreffer()) {
+                        break;
+                    }
+                    offset = offset + limit;
+                }
+                verzeichnisdienstImportCommandContainer.syncSmcb(smcbAntragExports);
+            }
+            else {
+                TspProperties tspProperties = tsp.create(EnumAntragTyp.HBA);
+                TspConnector tspConnector = new TspConnectorBuilder().build(tspProperties, tsp.getTspName().getQvda(), EnumAntragTyp.HBA);
+
+                int offset = 0;
+                List<HbaAntragExport> hbaAntragExports = new ArrayList<>();
+                while (true) {
+                    GetHbaAntraegeExportResponseType getHbaAntraegeExportResponseType = tspConnector.getHbaAntraegeZertifikateFreigeschaltet(false, limit, offset);
+                    hbaAntragExports.addAll(getHbaAntraegeExportResponseType.getHbaAntraegeExport().getHbaAntragExport());
+                    if (!getHbaAntraegeExportResponseType.isAntraegeExportWeitereTreffer()) {
+                        break;
+                    }
+                    offset = offset + limit;
+                }
+                verzeichnisdienstImportCommandContainer.syncHba(hbaAntragExports);
+            }
+
+        }
+        return verzeichnisdienstImportCommandContainer;
     }
 
     public List<VerzeichnisdienstImportErgebnis> importieren(Mandant mandant, VerzeichnisdienstImportCommandContainer verzeichnisdienstImportCommandContainer) {
@@ -323,7 +415,9 @@ public class StammdatenZertImportService {
         }
 
         try {
-            verzeichnisdienstImportCommandContainer.merge();
+            if (!verzeichnisdienstImportCommandContainer.isSyncWithTsps()) {
+                verzeichnisdienstImportCommandContainer.merge();
+            }
         }
         catch (Exception e) {
             log.error("error on importing / merge the commands with the size: "+verzeichnisdienstImportCommandContainer.getCommands().size()+ " - mandant: "+mandant.getId(), e);
@@ -352,43 +446,57 @@ public class StammdatenZertImportService {
             return result;
         }
 
-        List futureList = Collections.synchronizedList(new ArrayList());
-        log.info("START - handle all verzeichnisdienstImportCommands for the batchjob: " + batchJob.getId() + ", mandantId: " + mandant.getId());
-
-        int threadAnzahl = mandant.getThreadAnzahl() > 0?mandant.getThreadAnzahl():3;
-        ExecutorService executorService = Executors.newFixedThreadPool(threadAnzahl);
-
-        Object mutex = new Object();
-        List<Integer> finished = Collections.synchronizedList(new ArrayList<>());
-
-        for (Iterator<VerzeichnisdienstImportCommand> iterator = verzeichnisdienstImportCommandContainer.getCommands().iterator(); iterator.hasNext(); ) {
-            VerzeichnisdienstImportCommand verzeichnisdienstImportCommand = iterator.next();
-
-            futureList.add(importieren(
-                batchJob,
-                verzeichnisdienstImportCommandContainer,
-                verzeichnisdienstImportCommand,
-                mandant,
-                tiVZDProperties,
-                mutex,
-                finished,
-                executorService
-            ));
+        boolean tspSyncSuccess = true;
+        try {
+            verzeichnisdienstImportCommandContainer = handleTspSync(mandant, verzeichnisdienstImportCommandContainer);
+        }
+        catch (Exception e) {
+            log.error("error on importing the commands with the size: "+verzeichnisdienstImportCommandContainer.getCommands().size()+ " - mandant: "+mandant.getId()+" - tsp sync failed", e);
+            VerzeichnisdienstImportErgebnis verzeichnisdienstImportErgebnis = new VerzeichnisdienstImportErgebnis();
+            verzeichnisdienstImportErgebnis.setError(true);
+            verzeichnisdienstImportErgebnis.getLog().add("TSP Sync ist fehlgeschlagen");
+            result.add(verzeichnisdienstImportErgebnis);
+            tspSyncSuccess = false;
         }
 
-        CompletableFuture<VerzeichnisdienstImportErgebnis>[] arr = new CompletableFuture[futureList.size()];
-        CompletableFuture.allOf((CompletableFuture<VerzeichnisdienstImportErgebnis>[])futureList.toArray(arr)).join();
-        executorService.shutdown();
+        if (!verzeichnisdienstImportCommandContainer.isSyncWithTsps() || tspSyncSuccess) {
+            List futureList = Collections.synchronizedList(new ArrayList());
+            log.info("START - handle all verzeichnisdienstImportCommands for the batchjob: " + batchJob.getId() + ", mandantId: " + mandant.getId());
 
-        result = (List<VerzeichnisdienstImportErgebnis>)futureList.stream().map(f -> {
-            try {
-                return ((CompletableFuture)f).get();
+            int threadAnzahl = mandant.getThreadAnzahl() > 0 ? mandant.getThreadAnzahl() : 3;
+            ExecutorService executorService = Executors.newFixedThreadPool(threadAnzahl);
+
+            Object mutex = new Object();
+            List<Integer> finished = Collections.synchronizedList(new ArrayList<>());
+
+            for (Iterator<VerzeichnisdienstImportCommand> iterator = verzeichnisdienstImportCommandContainer.getCommands().iterator(); iterator.hasNext(); ) {
+                VerzeichnisdienstImportCommand verzeichnisdienstImportCommand = iterator.next();
+
+                futureList.add(importieren(
+                    batchJob,
+                    verzeichnisdienstImportCommandContainer,
+                    verzeichnisdienstImportCommand,
+                    mandant,
+                    tiVZDProperties,
+                    mutex,
+                    finished,
+                    executorService
+                ));
             }
-            catch (Exception e) {
-                log.error("error on handle the completable-futures for the STAMMDATEN_CERT_IMPORT-batchjob with the id: "+batchJob.getId(), e);
-            }
-            return null;
-        }).collect(Collectors.toList());
+
+            CompletableFuture<VerzeichnisdienstImportErgebnis>[] arr = new CompletableFuture[futureList.size()];
+            CompletableFuture.allOf((CompletableFuture<VerzeichnisdienstImportErgebnis>[]) futureList.toArray(arr)).join();
+            executorService.shutdown();
+
+            result = (List<VerzeichnisdienstImportErgebnis>) futureList.stream().map(f -> {
+                try {
+                    return ((CompletableFuture) f).get();
+                } catch (Exception e) {
+                    log.error("error on handle the completable-futures for the STAMMDATEN_CERT_IMPORT-batchjob with the id: " + batchJob.getId(), e);
+                }
+                return null;
+            }).collect(Collectors.toList());
+        }
 
         log.info("END - handle all verzeichnisdienstImportCommands for the batchjob: " + batchJob.getId() + ", mandantId: " + mandant.getId());
 

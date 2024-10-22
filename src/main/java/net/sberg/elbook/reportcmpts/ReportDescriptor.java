@@ -16,8 +16,8 @@
 package net.sberg.elbook.reportcmpts;
 
 import lombok.Data;
-import net.sberg.elbook.kartendatentransfer.EnumAntragTyp;
 import net.sberg.elbook.mandantcmpts.EnumSektor;
+import net.sberg.elbook.tspcmpts.EnumAntragTyp;
 
 import java.util.HashMap;
 import java.util.Map;
