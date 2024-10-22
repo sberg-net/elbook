@@ -12,14 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Fixed
-- fehlende Container Parameter der README hinzugefügt
 
 ## [2.0.2]
 
 ### Fixed
-- FIX Menüpunkt "Logeinträge" für Nutzer der 3.Ebene sichtbar und nutzbar
-- FIX Auswertung der Rechtematrix -> Bearbeiten von VZD-Einträgen
-- FIX Anzeige des QR-Codes für die 2-Faktor-Authentifizierung
+- Menüpunkt "Logeinträge" für Nutzer der 3.Ebene sichtbar und nutzbar
+- Auswertung der Rechtematrix -> Bearbeiten von VZD-Einträgen
+- Anzeige des QR-Codes für die 2-Faktor-Authentifizierung
+- fehlende Container Parameter der README hinzugefügt
 
 ## [2.0.1]
 
