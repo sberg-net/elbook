@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Version 1.5 (patch 4), Stand 21.05.2024 -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gematik="http://ws.gematik.de/cm/pers/HBA_SMC-B/v1.5" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:lat="http://xoev.de/latinchars/1_1/datatypes" targetNamespace="http://ws.gematik.de/cm/pers/HBA_SMC-B/v1.5" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.5.0">
+	<annotation>
+		<documentation xml:lang="de">
+			Definition der Datentypen für die Datenübergabe zwischen attribubestätigender Stelle und TSP
+		</documentation>
+	</annotation>
+	<simpleType name="GeschlechtKeyKey">
+		<annotation>
+			<documentation xml:lang="de">Schlüssel für das Geschlecht einer Person</documentation>
+		</annotation>
+		<restriction base="string">
+			<length value="1"/>
+			<enumeration value="0">
+				<annotation>
+					<documentation>unbekannt oder Institution</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="1">
+				<annotation>
+					<documentation>männlich</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="2">
+				<annotation>
+					<documentation>weiblich</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="3">
+				<annotation>
+					<documentation>divers</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+	<simpleType name="AntragsArt">
+		<annotation>
+			<documentation>Liste der Antragsarten</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Erstantrag"/>
+			<enumeration value="Folgeantrag"/>
+			<enumeration value="Austauschausweis">
+				<annotation>
+					<documentation>Reklamation eines bereits freigegebenen Ausweises (in Prodresult)</documentation>
+				</annotation>
+			</enumeration>
+			<!--<enumeration value="Folgeantrag mit Reservekarte"/>-->
+		</restriction>
+	</simpleType>
+	<simpleType name="AntragStatusKey">
+		<annotation>
+			<documentation>Liste der Status, die für den Lifecycle des Antrags gemeldet werden können</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Antrag vorbefüllt"/>
+			<enumeration value="Antrag in Bearbeitung / zwischengespeichert"/>
+			<enumeration value="Antrag verworfen (Antragsteller)"/>
+			<enumeration value="Antrag verworfen (TSP)"/>
+			<enumeration value="Bearbeitung beendet"/>
+			<enumeration value="Eingang Antragsunterlagen"/>
+			<enumeration value="Freigabe abgelehnt (TSP)"/>
+			<enumeration value="Freigabe abgelehnt (Kartenherausgeber)"/>
+			<enumeration value="Freigegeben (Kartenherausgeber)"/>
+			<enumeration value="Rückfrage beim Antragsteller (TSP)"/>
+			<enumeration value="Zur Freigabe (Kartenherausgeber)"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="AusweisArt">
+		<annotation>
+			<documentation>(deprecated) HBA und/oder Ersatzausweis.
+			Alle LEOs haben beschlossen, statt des Ersatzausweises eine Anzahl von HBAs zu ermöglichen. Damit soll künftig der Ersatzausweis nicht mehr relevant sein. In alten Anträgen muss diese Information weiterhin übermittelt werden. Ggf kann dieses Element in Schemaversionen ab 1.6 komplett entfernt werden</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="HBA"/>
+			<enumeration value="Ersatzausweis"/>
+			<enumeration value="HBA und Ersatzausweis"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="CertificateRefKey">
+		<annotation>
+			<documentation>Zertifikatsreferenzen für alle Kartentypen</documentation>
+		</annotation>
+		<union memberTypes="gematik:SmcbCertRef gematik:HbaCertRef"/>
+	</simpleType>
+	<simpleType name="HbaCertRef">
+		<annotation>
+			<documentation>Namen der X.509-Zertifikate eines HBA</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="C.HP.QES.AktuelleGeneration"/>
+			<enumeration value="C.HP.AUT.AktuelleGeneration"/>
+			<enumeration value="C.HP.ENC.AktuelleGeneration"/>
+			<enumeration value="C.HP.AUTO1.AktuelleGeneration"/>
+			<enumeration value="C.HP.AUTO2.AktuelleGeneration"/>
+			<enumeration value="C.HP.QES.VorherigeGeneration"/>
+			<enumeration value="C.HP.AUT.VorherigeGeneration"/>
+			<enumeration value="C.HP.ENC.VorherigeGeneration"/>
+			<enumeration value="C.HP.AUTO1.VorherigeGeneration"/>
+			<enumeration value="C.HP.AUTO2.VorherigeGeneration"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="InstProfessionItemKey">
+		<annotation>
+			<documentation>ProfessionItem einer Einrichtung des Gesundheitswesens (Eweiterung um neue Angaben nach "gemSpec_OID_V3.12.2" Kapitel "3.5.1.3 OID-Festlegung für Institutionstypen für die SMC-B")</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Betriebsstätte Arzt"/>
+			<enumeration value="Zahnarztpraxis"/>
+			<enumeration value="Betriebsstätte Psychotherapeut"/>
+			<enumeration value="Krankenhaus"/>
+			<enumeration value="Öffentliche Apotheke"/>
+			<enumeration value="Krankenhausapotheke"/>
+			<enumeration value="Bundeswehrapotheke"/>
+			<enumeration value="Betriebsstätte Mobile Einrichtung Rettungsdienst"/>
+			<enumeration value="Betriebsstätte gematik"/>
+			<enumeration value="Betriebsstätte Kostenträger"/>
+			<enumeration value="Betriebsstätte Leistungserbringerorganisation Vertragszahnärzte"/>
+			<enumeration value="AdV-Umgebung bei Kostenträger"/>
+			<enumeration value="Betriebsstätte Leistungserbringerorganisation Kassenärztliche Vereinigung"/>
+			<enumeration value="Betriebsstätte GKV-Spitzenverband"/>
+			<enumeration value="Betriebsstätte Mitgliedsverband der Krankenhäuser"/>
+			<enumeration value="Betriebsstätte der Deutsche Krankenhaus TrustCenter und Informationsverarbeitung GmbH"/>
+			<enumeration value="Betriebsstätte der Deutschen Krankenhausgesellschaft"/>
+			<enumeration value="Betriebsstätte Apothekerverband"/>
+			<enumeration value="Betriebsstätte Deutscher Apothekerverband"/>
+			<enumeration value="Betriebsstätte der Bundesärztekammer"/>
+			<enumeration value="Betriebsstätte einer Ärztekammer"/>
+			<enumeration value="Betriebsstätte einer Landeszahnärztekammer"/>
+			<enumeration value="Betriebsstätte der Kassenärztlichen Bundesvereinigung"/>
+			<enumeration value="Betriebsstätte der Bundeszahnärztekammer"/>
+			<enumeration value="Betriebsstätte der Kassenzahnärztlichen Bundesvereinigung"/>
+			<enumeration value="Betriebsstätte Gesundheits-, Kranken- und Altenpflege"/>
+			<enumeration value="Betriebsstätte Geburtshilfe"/>
+			<enumeration value="Betriebsstätte Physiotherapie"/>
+			<enumeration value="Betriebsstätte Augenoptiker"/>
+			<enumeration value="Betriebsstätte Hörakustiker"/>
+			<enumeration value="Betriebsstätte Orthopädieschuhmacher"/>
+			<enumeration value="Betriebsstätte Orthopädietechniker"/>
+			<enumeration value="Betriebsstätte Zahntechniker"/>
+			<enumeration value="Rettungsleitstelle"/>
+			<enumeration value="Betriebsstätte Sanitätsdienst Bundeswehr"/>
+			<enumeration value="Betriebsstätte Öffentlicher Gesundheitsdienst"/>
+			<enumeration value="Betriebsstätte Arbeitsmedizin"/>
+			<enumeration value="Betriebsstätte Vorsorge- und Rehabilitation"/>
+			<enumeration value="ePA KTR-Zugriffsautorisierung"/>
+			<enumeration value="Betriebsstätte Pflegeberatung nach § 7a SGB XI"/>
+			<enumeration value="Betriebsstätte Psychotherapeutenkammer"/>
+			<enumeration value="Betriebsstätte Bundespsychotherapeutenkammer"/>
+			<enumeration value="Betriebsstätte Landesapothekerkammer"/>
+			<enumeration value="Betriebsstätte Bundesapothekerkammer"/>
+			<enumeration value="Betriebsstätte elektronisches Gesundheitsberuferegister"/>
+			<enumeration value="Betriebsstätte Handwerkskammer"/>
+			<enumeration value="Betriebsstätte Register für Gesundheitsdaten"/>
+			<enumeration value="Betriebsstätte Abrechnungsdienstleister"/>
+			<enumeration value="Betriebsstätte PKV-Verband"/>
+			<enumeration value="Ergotherapiepraxis"/>
+			<enumeration value="Logopaedische Praxis"/>
+			<enumeration value="Podologiepraxis"/>
+			<enumeration value="Ernährungstherapeutische Praxis"/>
+			<enumeration value="Betriebsstätte Weitere Kostenträger im Gesundheitswesen"/>
+			<enumeration value="Weitere Organisationen der Gesundheitsversorgung"/>
+			<enumeration value="KIM-Hersteller und -Anbieter"/>
+			<enumeration value="DIGA-Hersteller und Anbieter"/>
+			<enumeration value="TIM-Hersteller und -Anbieter"/>
+			<enumeration value="NCPeH Fachdienst"/>
+			<enumeration value="Ombudsstelle eines Kostenträgers"/>
+			<enumeration value="Betriebsstätte Augenoptiker und Hörakustiker"/>
+			<enumeration value="Betriebsstätte Orthopädieschuhmacher und Orthopädietechniker"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="KartenStatusKey">
+		<annotation>
+			<documentation>Liste der Status, die für den Lifecycle der Karte gemeldet werden können</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Auslieferung"/>
+			<enumeration value="Fristüberschreitung Empfangsbestätigung"/>
+			<enumeration value="Karte ausgeliefert"/>
+			<enumeration value="Karte unzustellbar zurück"/>
+			<enumeration value="Sperrung beantragt"/>
+			<enumeration value="Zertifikate abgelaufen"/>
+			<enumeration value="Zertifikate endgültig nicht freigeschaltet"/>
+			<enumeration value="Zertifikate freigeschaltet"/>
+			<enumeration value="Zertifikate gesperrt"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="KVBereichKey">
+		<annotation>
+			<documentation>Kammer-, KV- oder KZV-Bereich</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Baden-Württemberg"/>
+			<enumeration value="Bayerns"/>
+			<enumeration value="Berlin"/>
+			<enumeration value="Brandenburg"/>
+			<enumeration value="Bremen"/>
+			<enumeration value="Hamburg"/>
+			<enumeration value="Hessen"/>
+			<enumeration value="Mecklenburg-Vorpommern"/>
+			<enumeration value="Niedersachsen"/>
+			<enumeration value="Nordrhein"/>
+			<enumeration value="Rheinland-Pfalz"/>
+			<enumeration value="Saarland"/>
+			<enumeration value="Sachsen"/>
+			<enumeration value="Sachsen-Anhalt"/>
+			<enumeration value="Schleswig-Holstein"/>
+			<enumeration value="Thüringen"/>
+			<enumeration value="Westfalen-Lippe"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="OrgFormKey">
+		<annotation>
+			<documentation>Organisationsform einer Einrichtung des Gesundheitswesens</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="EP">
+				<annotation>
+					<documentation>Einzelpraxis</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="BAG"/>
+			<enumeration value="ÜBAG">
+				<annotation>
+					<documentation>Praxiskette, überörtliche Berufsausübungsgemeinschaft</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="KÜBAG"/>
+			<enumeration value="MVZ"/>
+			<enumeration value="Krankenhaus"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="ProfessionItemKey">
+		<annotation>
+			<documentation>Liste der Berufsgruppen (Eweiterung um neue Angaben nach "gemSpec_OID_V3.12.2" Kapitel "3.5.1.1 OID-Festlegung Rolle für Berufsgruppen")</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Ärztin/Arzt"/>
+			<enumeration value="Zahnärztin/Zahnarzt"/>
+			<enumeration value="Apotheker/-in"/>
+			<enumeration value="Apothekerassistent/-in"/>
+			<enumeration value="Pharmazieingenieur/-in"/>
+			<enumeration value="pharmazeutisch-technische/-r Assistent/-in"/>
+			<enumeration value="pharmazeutisch-kaufmännische/-r Angestellte"/>
+			<enumeration value="Apothekenhelfer/-in"/>
+			<enumeration value="Apothekenassistent/-in"/>
+			<enumeration value="Pharmazeutische/-r Assistent/-in"/>
+			<enumeration value="Apothekenfacharbeiter/-in"/>
+			<enumeration value="Pharmaziepraktikant/-in"/>
+			<enumeration value="Stud.pharm. oder Famulant/-in"/>
+			<enumeration value="PTA-Praktikant/-in"/>
+			<enumeration value="PKA Auszubildende/-r"/>
+			<enumeration value="Psychotherapeut/-in"/>
+			<enumeration value="Psychologische/-r Psychotherapeut/-in"/>
+			<enumeration value="Kinder- und Jugendlichenpsychotherapeut/-in"/>
+			<enumeration value="Rettungsassistent/-in"/>
+			<enumeration value="Versicherte/-r"/>
+			<enumeration value="Notfallsanitäter/-in"/>
+			<enumeration value="Gesundheits- und Krankenpfleger/-in, Gesundheits- und Kinderkrankenpfleger/-in"/>
+			<enumeration value="Altenpfleger/-in"/>
+			<enumeration value="Pflegefachfrauen und Pflegefachmänner"/>
+			<enumeration value="Hebamme"/>
+			<enumeration value="Physiotherapeut/-in"/>
+			<enumeration value="Augenoptiker/-in und Optometrist/-in"/>
+			<enumeration value="Hörakustiker/-in"/>
+			<enumeration value="Orthopädieschuhmacher/-in"/>
+			<enumeration value="Orthopädietechniker/-in"/>
+			<enumeration value="Zahntechniker/-in"/>
+			<enumeration value="Ergotherapeut/-in"/>
+			<enumeration value="Logopäde/Logopädin"/>
+			<enumeration value="Podologe/Podologin"/>
+			<enumeration value="Ernährungstherapeut/-in"/>
+			<enumeration value="Augenoptiker/-in, Optometrist/-in und Hörakustiker/-in"/>
+			<enumeration value="Orthopädieschuhmacher/-in und Orthopädietechniker/-in"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="SmcbCertRef">
+		<annotation>
+			<documentation xml:lang="de">Name eines Zertifikats auf der SMC-B</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="C.HCI.OSIG.AktuelleGeneration"/>
+			<enumeration value="C.HCI.AUT.AktuelleGeneration"/>
+			<enumeration value="C.HCI.ENC.AktuelleGeneration"/>
+			<enumeration value="C.HCI.OSIG.VorherigeGeneration"/>
+			<enumeration value="C.HCI.AUT.VorherigeGeneration"/>
+			<enumeration value="C.HCI.ENC.VorherigeGeneration"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="ISO-3166Key">
+		<annotation>
+			<documentation xml:lang="de">Ländercode / Vervollständigung 09.02.2018</documentation>
+			<documentation xml:lang="de">Ländercode / Beibehaltung veralteter Codes wg. Kompatibiliät 14.02.2018</documentation>
+		</annotation>
+		<restriction base="string">
+			<length value="2"/>
+			<enumeration value="AD"/>
+			<enumeration value="AE"/>
+			<enumeration value="AF"/>
+			<enumeration value="AG"/>
+			<enumeration value="AI"/>
+			<enumeration value="AL"/>
+			<enumeration value="AM"/>
+			<enumeration value="AN"/>
+			<enumeration value="AO"/>
+			<enumeration value="AQ"/>
+			<enumeration value="AR"/>
+			<enumeration value="AS"/>
+			<enumeration value="AT"/>
+			<enumeration value="AU"/>
+			<enumeration value="AW"/>
+			<enumeration value="AX"/>
+			<enumeration value="AZ"/>
+			<enumeration value="BA"/>
+			<enumeration value="BB"/>
+			<enumeration value="BD"/>
+			<enumeration value="BE"/>
+			<enumeration value="BF"/>
+			<enumeration value="BG"/>
+			<enumeration value="BH"/>
+			<enumeration value="BI"/>
+			<enumeration value="BJ"/>
+			<enumeration value="BL"/>
+			<enumeration value="BM"/>
+			<enumeration value="BN"/>
+			<enumeration value="BO"/>
+			<enumeration value="BQ"/>
+			<enumeration value="BR"/>
+			<enumeration value="BS"/>
+			<enumeration value="BT"/>
+			<enumeration value="BV"/>
+			<enumeration value="BW"/>
+			<enumeration value="BY"/>
+			<enumeration value="BZ"/>
+			<enumeration value="CA"/>
+			<enumeration value="CC"/>
+			<enumeration value="CD"/>
+			<enumeration value="CF"/>
+			<enumeration value="CG"/>
+			<enumeration value="CH"/>
+			<enumeration value="CI"/>
+			<enumeration value="CK"/>
+			<enumeration value="CL"/>
+			<enumeration value="CM"/>
+			<enumeration value="CN"/>
+			<enumeration value="CO"/>
+			<enumeration value="CR"/>
+			<enumeration value="CU"/>
+			<enumeration value="CV"/>
+			<enumeration value="CW"/>
+			<enumeration value="CX"/>
+			<enumeration value="CY"/>
+			<enumeration value="CZ"/>
+			<enumeration value="DE"/>
+			<enumeration value="DJ"/>
+			<enumeration value="DK"/>
+			<enumeration value="DM"/>
+			<enumeration value="DO"/>
+			<enumeration value="DZ"/>
+			<enumeration value="EC"/>
+			<enumeration value="EE"/>
+			<enumeration value="EG"/>
+			<enumeration value="EH"/>
+			<enumeration value="ER"/>
+			<enumeration value="ES"/>
+			<enumeration value="ET"/>
+			<enumeration value="FI"/>
+			<enumeration value="FJ"/>
+			<enumeration value="FK"/>
+			<enumeration value="FM"/>
+			<enumeration value="FO"/>
+			<enumeration value="FR"/>
+			<enumeration value="GA"/>
+			<enumeration value="GB"/>
+			<enumeration value="GD"/>
+			<enumeration value="GE"/>
+			<enumeration value="GF"/>
+			<enumeration value="GG"/>
+			<enumeration value="GH"/>
+			<enumeration value="GI"/>
+			<enumeration value="GL"/>
+			<enumeration value="GM"/>
+			<enumeration value="GN"/>
+			<enumeration value="GP"/>
+			<enumeration value="GQ"/>
+			<enumeration value="GR"/>
+			<enumeration value="GS"/>
+			<enumeration value="GT"/>
+			<enumeration value="GU"/>
+			<enumeration value="GW"/>
+			<enumeration value="GY"/>
+			<enumeration value="HK"/>
+			<enumeration value="HM"/>
+			<enumeration value="HN"/>
+			<enumeration value="HR"/>
+			<enumeration value="HT"/>
+			<enumeration value="HU"/>
+			<enumeration value="ID"/>
+			<enumeration value="IE"/>
+			<enumeration value="IL"/>
+			<enumeration value="IM"/>
+			<enumeration value="IN"/>
+			<enumeration value="IO"/>
+			<enumeration value="IQ"/>
+			<enumeration value="IR"/>
+			<enumeration value="IS"/>
+			<enumeration value="IT"/>
+			<enumeration value="JE"/>
+			<enumeration value="JM"/>
+			<enumeration value="JO"/>
+			<enumeration value="JP"/>
+			<enumeration value="KE"/>
+			<enumeration value="KG"/>
+			<enumeration value="KH"/>
+			<enumeration value="KI"/>
+			<enumeration value="KM"/>
+			<enumeration value="KN"/>
+			<enumeration value="KP"/>
+			<enumeration value="KR"/>
+			<enumeration value="KW"/>
+			<enumeration value="KY"/>
+			<enumeration value="KZ"/>
+			<enumeration value="LA"/>
+			<enumeration value="LB"/>
+			<enumeration value="LC"/>
+			<enumeration value="LI"/>
+			<enumeration value="LK"/>
+			<enumeration value="LR"/>
+			<enumeration value="LS"/>
+			<enumeration value="LT"/>
+			<enumeration value="LU"/>
+			<enumeration value="LV"/>
+			<enumeration value="LY"/>
+			<enumeration value="MA"/>
+			<enumeration value="MC"/>
+			<enumeration value="MD"/>
+			<enumeration value="ME"/>
+			<enumeration value="MF"/>
+			<enumeration value="MG"/>
+			<enumeration value="MH"/>
+			<enumeration value="MK"/>
+			<enumeration value="ML"/>
+			<enumeration value="MM"/>
+			<enumeration value="MN"/>
+			<enumeration value="MO"/>
+			<enumeration value="MP"/>
+			<enumeration value="MQ"/>
+			<enumeration value="MR"/>
+			<enumeration value="MS"/>
+			<enumeration value="MT"/>
+			<enumeration value="MU"/>
+			<enumeration value="MV"/>
+			<enumeration value="MW"/>
+			<enumeration value="MX"/>
+			<enumeration value="MY"/>
+			<enumeration value="MZ"/>
+			<enumeration value="NA"/>
+			<enumeration value="NC"/>
+			<enumeration value="NE"/>
+			<enumeration value="NF"/>
+			<enumeration value="NG"/>
+			<enumeration value="NI"/>
+			<enumeration value="NL"/>
+			<enumeration value="NO"/>
+			<enumeration value="NP"/>
+			<enumeration value="NR"/>
+			<enumeration value="NU"/>
+			<enumeration value="NZ"/>
+			<enumeration value="OM"/>
+			<enumeration value="PA"/>
+			<enumeration value="PE"/>
+			<enumeration value="PF"/>
+			<enumeration value="PG"/>
+			<enumeration value="PH"/>
+			<enumeration value="PK"/>
+			<enumeration value="PL"/>
+			<enumeration value="PM"/>
+			<enumeration value="PN"/>
+			<enumeration value="PR"/>
+			<enumeration value="PS"/>
+			<enumeration value="PT"/>
+			<enumeration value="PW"/>
+			<enumeration value="PY"/>
+			<enumeration value="QA"/>
+			<enumeration value="QQ"/>
+			<enumeration value="QU"/>
+			<enumeration value="RE"/>
+			<enumeration value="RO"/>
+			<enumeration value="RS"/>
+			<enumeration value="RU"/>
+			<enumeration value="RW"/>
+			<enumeration value="SA"/>
+			<enumeration value="SB"/>
+			<enumeration value="SC"/>
+			<enumeration value="SD"/>
+			<enumeration value="SE"/>
+			<enumeration value="SG"/>
+			<enumeration value="SH"/>
+			<enumeration value="SI"/>
+			<enumeration value="SJ"/>
+			<enumeration value="SK"/>
+			<enumeration value="SL"/>
+			<enumeration value="SM"/>
+			<enumeration value="SN"/>
+			<enumeration value="SO"/>
+			<enumeration value="SR"/>
+			<enumeration value="SS"/>
+			<enumeration value="ST"/>
+			<enumeration value="SV"/>
+			<enumeration value="SX"/>
+			<enumeration value="SY"/>
+			<enumeration value="SZ"/>
+			<enumeration value="TC"/>
+			<enumeration value="TD"/>
+			<enumeration value="TF"/>
+			<enumeration value="TG"/>
+			<enumeration value="TH"/>
+			<enumeration value="TJ"/>
+			<enumeration value="TK"/>
+			<enumeration value="TM"/>
+			<enumeration value="TN"/>
+			<enumeration value="TO"/>
+			<enumeration value="TP"/>
+			<enumeration value="TR"/>
+			<enumeration value="TT"/>
+			<enumeration value="TV"/>
+			<enumeration value="TW"/>
+			<enumeration value="TZ"/>
+			<enumeration value="UA"/>
+			<enumeration value="UG"/>
+			<enumeration value="UM"/>
+			<enumeration value="US"/>
+			<enumeration value="UY"/>
+			<enumeration value="UZ"/>
+			<enumeration value="VA"/>
+			<enumeration value="VC"/>
+			<enumeration value="VE"/>
+			<enumeration value="VG"/>
+			<enumeration value="VI"/>
+			<enumeration value="VN"/>
+			<enumeration value="VU"/>
+			<enumeration value="WF"/>
+			<enumeration value="WS"/>
+			<enumeration value="XA"/>
+			<enumeration value="XC"/>
+			<enumeration value="XK"/>
+			<enumeration value="XL"/>
+			<enumeration value="YE"/>
+			<enumeration value="YT"/>
+			<enumeration value="YU"/>
+			<enumeration value="ZA"/>
+			<enumeration value="ZM"/>
+			<enumeration value="ZW"/>
+		</restriction>
+	</simpleType>
+</schema>
