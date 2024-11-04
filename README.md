@@ -2,7 +2,7 @@
 
 ## elbook springboot Docker Container
 
-Docker Container für alle elBook Releases für AMD64 & ARM64 werden auf Docker Hub zur Verfügung gestellt.
+Docker Container für alle elBook Releases für AMD64 & ARM64 werden auf Docker Hub zur Verfügung gestellt. f
 https://hub.docker.com/r/sbergit/elbook
 
 ### Environment Variables
