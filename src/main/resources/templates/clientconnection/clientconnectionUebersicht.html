@@ -18,10 +18,10 @@
 </div>
 <div th:if="${fehlernachricht != null}" class="alert alert-danger" role="alert" xmlns:th="http://www.thymeleaf.org" th:text="${fehlernachricht}"></div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-sm-12 col-lg-10 mb-3 p-0 pr-1">
-    <input type="text" class="form-control pr-0" id="search" placeholder="Suchbegriff">
+  <div class="col-sm-12 col-lg-10 mb-3 p-0 pe-1">
+    <input type="text" class="form-control pe-0" id="search" placeholder="Suchbegriff">
   </div>
-  <div class="col-sm-12 col-lg-2 mb-3 p-0 pr-1">
+  <div class="col-sm-12 col-lg-2 mb-3 p-0 pe-1">
     <button type="button" id="searchBtn" class="btn btn-primary btn-block" onclick="vzdConnectionUebersicht($('#search').val());">Suchen</button>
   </div>
 </div>

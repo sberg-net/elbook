@@ -19,7 +19,7 @@
   <input type="hidden" id="id" name="id" th:value="${mandant.id}">
   <input type="hidden" id="mandantId" name="mandantId" th:value="${mandant.mandantId}">
 
-  <div class="form-group needs-validation" th:if="${mandant.mandantId == 0}">
+  <div class="mb-3 needs-validation" th:if="${mandant.mandantId == 0}">
     <label for="name">Name</label>
     <input type="text" th:value="${mandant.name}" class="form-control" id="name" name="name" required>
     <div class="invalid-feedback">
@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div class="form-group" th:if="${mandant.mandantId == 0}">
+  <div class="mb-3" th:if="${mandant.mandantId == 0}">
     <label for="bundesland">Bundesland</label>
     <select class="form-control" id="bundesland" name="bundesland">
       <option value="BW" th:attrappend="selected=${mandant.bundesland.name() == 'BW'?'selected':''}">Baden-Württemberg</option>
@@ -50,7 +50,7 @@
     </select>
   </div>
 
-  <div class="form-group needs-validation">
+  <div class="mb-3 needs-validation">
     <label for="telematikKuerzel">Telematikkürzel (kommaseparierte Eintragungen möglich)</label>
     <input type="text" th:value="${mandant.telematikKuerzel}" class="form-control" id="telematikKuerzel" name="telematikKuerzel" required>
     <div class="invalid-feedback">
@@ -58,7 +58,7 @@
     </div>
   </div>
 
-  <div class="form-group needs-validation">
+  <div class="mb-3 needs-validation">
     <label for="nutzername">Nutzername</label>
     <input type="text" th:value="${mandant.nutzername}" class="form-control" id="nutzername" name="nutzername" required>
     <div class="invalid-feedback">
@@ -66,43 +66,43 @@
     </div>
   </div>
 
-  <div class="form-group needs-validation" th:if="${mandant.id == 0}">
+  <div class="mb-3 needs-validation" th:if="${mandant.id == 0}">
     <label for="passwort">Passwort (Es ist das Erstpasswort - Es kann vom Nutzer geändert werden)</label>
     <input type="password" th:value="${mandant.passwort}" class="form-control" id="passwort" name="passwort" required>
     <div class="invalid-feedback">
       Bitte angeben!
     </div>
   </div>
-  <div class="form-group form-check" th:if="${mandant.id == 0}">
+  <div class="mb-3 form-check" th:if="${mandant.id == 0}">
     <input type="checkbox" class="form-check-input" id="passwortCheck" onclick="togglePwdVisibility('passwort')">
     <label class="form-check-label" for="passwortCheck">Passwort in Klartext anzeigen</label>
   </div>
 
   <br th:if="${mandant.mandantId == 0}"/>
-  <div class="form-group form-check" th:if="${mandant.mandantId == 0}">
+  <div class="mb-3 form-check" th:if="${mandant.mandantId == 0}">
     <input type="checkbox" class="form-check-input" id="goldLizenz" th:attrappend="checked=${mandant.goldLizenz?'checked':''}">
     <label class="form-check-label" for="goldLizenz">Gold-Lizenz</label>
   </div>
 
   <br/>
-  <div class="form-group form-check">
+  <div class="mb-3 form-check">
     <input type="checkbox" class="form-check-input" id="bearbeitenEintraege" th:attrappend="checked=${mandant.bearbeitenEintraege?'checked':''}">
     <label class="form-check-label" for="bearbeitenEintraege">Kann ALLE gefundenen Verzeichnisdiensteinträge / Zertifikate manuell editieren</label>
   </div>
 
   <br/>
-  <div class="form-group form-check">
+  <div class="mb-3 form-check">
     <input type="checkbox" class="form-check-input" id="bearbeitenNurFiltereintraege" th:attrappend="checked=${mandant.bearbeitenNurFiltereintraege?'checked':''}">
     <label class="form-check-label" for="bearbeitenNurFiltereintraege">Kann gefundene Verzeichnisdiensteinträge / Zertifikate manuell editieren (ANHAND DER TELEMATIK_KÜRZEL)</label>
   </div>
 
   <br/>
-  <div class="form-group form-check">
+  <div class="mb-3 form-check">
     <input type="checkbox" class="form-check-input" id="filternEintraege" th:attrappend="checked=${mandant.filternEintraege?'checked':''}">
     <label class="form-check-label" for="filternEintraege">Filtern von Verzeichnisdiensteinträgen (ANHAND DER TELEMATIK_KÜRZEL)</label>
   </div>
 
-  <div class="form-group needs-validation" th:if="${mandant.mandantId == 0}">
+  <div class="mb-3 needs-validation" th:if="${mandant.mandantId == 0}">
     <label for="threadAnzahl">Thread-Anzahl</label>
     <input type="text" th:value="${mandant.threadAnzahl}" class="form-control" id="threadAnzahl" name="threadAnzahl" required>
     <div class="invalid-feedback">
@@ -110,7 +110,7 @@
     </div>
   </div>
 
-  <div class="form-group needs-validation">
+  <div class="mb-3 needs-validation">
     <label for="mail">Mailadresse</label>
     <input type="email" th:value="${mandant.mail}" class="form-control" id="mail" name="mail" required>
     <div class="invalid-feedback">
@@ -118,7 +118,7 @@
     </div>
   </div>
 
-  <div class="form-group needs-validation">
+  <div class="mb-3 needs-validation">
     <label for="gueltigBis">Gültig bis</label>
     <input type="date" th:value="${mandant.gueltigBis}" class="form-control" id="gueltigBis" name="gueltigBis" required>
     <div class="invalid-feedback">
@@ -126,7 +126,7 @@
     </div>
   </div>
 
-  <div class="form-group" th:if="${mandant.mandantId == 0}">
+  <div class="mb-3" th:if="${mandant.mandantId == 0}">
     <label for="sektor">Sektor</label>
     <select class="form-control" id="sektor" name="sektor">
       <option value="APOTHEKE" th:attrappend="selected=${mandant.sektor.name() == 'APOTHEKE'?'selected':''}">Apotheke</option>
@@ -134,7 +134,7 @@
     </select>
   </div>
 
-  <div class="form-group needs-validation" th:if="${mandant.mandantId == 0}">
+  <div class="mb-3 needs-validation" th:if="${mandant.mandantId == 0}">
     <label for="vzdResourceUri">VZD-Ressource-URI</label>
     <input type="text" th:value="${mandant.vzdResourceUri}" class="form-control" id="vzdResourceUri" name="vzdResourceUri" required>
     <div class="invalid-feedback">
@@ -142,7 +142,7 @@
     </div>
   </div>
 
-  <div class="form-group needs-validation" th:if="${mandant.mandantId == 0}">
+  <div class="mb-3 needs-validation" th:if="${mandant.mandantId == 0}">
     <label for="vzdTokenUri">VZD-Token-URI</label>
     <input type="text" th:value="${mandant.vzdTokenUri}" class="form-control" id="vzdTokenUri" name="vzdTokenUri" required>
     <div class="invalid-feedback">

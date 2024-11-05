@@ -16,7 +16,7 @@
 
 <form id="aktivierungsCodeForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
 
-  <div th:if="${!ungueltig}" class="form-group needs-validation">
+  <div th:if="${!ungueltig}" class="mb-3 needs-validation">
     <label for="aktivierungsCode">Aktivierungscode</label>
     <input type="text" class="form-control" id="aktivierungsCode" name="aktivierungsCode" required>
     <div class="invalid-feedback">

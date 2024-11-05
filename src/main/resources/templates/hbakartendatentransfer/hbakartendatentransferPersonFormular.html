@@ -16,7 +16,7 @@
 
 <form id="hbakartendatentransferForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
 
-  <div class="form-group">
+  <div class="mb-3">
     <label for="typ">Art des Datentransfers</label>
     <select th:if="${datentransfer.versendetAm == null}" class="form-control" id="typ" name="typ">
       <option value="ABGEBEND" th:attrappend="selected=${person.typ.name() == 'ABGEBEND'?'selected':''}">Abgebend</option>
@@ -34,7 +34,7 @@
         <div class="card-body">
           <h5 class="card-title">Persönliche Daten</h5>
 
-          <div class="form-group needs-validation">
+          <div class="mb-3 needs-validation">
             <label for="vorname">Vorname</label>
             <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.vorname}" class="form-control" id="vorname" name="vorname" required>
             <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.vorname}" class="form-control" name="vorname" disabled>
@@ -43,7 +43,7 @@
             </div>
           </div>
 
-          <div class="form-group needs-validation">
+          <div class="mb-3 needs-validation">
             <label for="nachname">Nachname</label>
             <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.nachname}" class="form-control" id="nachname" name="nachname" required>
             <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.nachname}" class="form-control" name="nachname" disabled>
@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="mb-3">
             <label for="akademischerGrad">Akademischer Grad</label>
             <select th:if="${datentransfer.versendetAm == null}" class="form-control" id="akademischerGrad" name="akademischerGrad">
               <option value="" th:attrappend="selected=${person.akademischerGrad == ''?'selected':''}"></option>
@@ -66,7 +66,7 @@
             </select>
           </div>
 
-          <div class="form-group needs-validation">
+          <div class="mb-3 needs-validation">
             <label for="geburtsdatum">Geburtsdatum</label>
             <input th:if="${datentransfer.versendetAm == null}" type="date" th:value="${person.geburtsdatum}" class="form-control" id="geburtsdatum" name="geburtsdatum" required>
             <input th:if="${datentransfer.versendetAm != null}" type="date" th:value="${person.geburtsdatum}" class="form-control" name="geburtsdatum" disabled>
@@ -75,7 +75,7 @@
             </div>
           </div>
 
-          <div class="form-group needs-validation">
+          <div class="mb-3 needs-validation">
             <label for="geburtsort">Geburtsort</label>
             <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.geburtsort}" class="form-control" id="geburtsort" name="geburtsort" required>
             <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.geburtsort}" class="form-control" name="geburtsort" disabled>
@@ -84,7 +84,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="mb-3">
             <label for="approbationStatus">Zur Approbation</label>
             <select th:if="${datentransfer.versendetAm == null}" class="form-control" id="approbationStatus" name="approbationStatus">
               <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumApprobationStatus).UNBEKANNT.getHrText()}" th:attrappend="selected=${person.approbationStatus.name() == 'UNBEKANNT'?'selected':''}"></option>
@@ -104,7 +104,7 @@
             </select>
           </div>
 
-          <div class="form-group">
+          <div class="mb-3">
             <label for="kammermitgliedschaftStatus">Zur Kammermitgliedschaft</label>
             <select th:if="${datentransfer.versendetAm == null}" class="form-control" id="kammermitgliedschaftStatus" name="kammermitgliedschaftStatus">
               <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKammermitgliedschaftStatus).UNBEKANNT.getHrText()}" th:attrappend="selected=${person.kammermitgliedschaftStatus.name() == 'UNBEKANNT'?'selected':''}"></option>
@@ -133,37 +133,37 @@
         <div class="card-body">
           <h5 class="card-title">Zur Wohnanschrift des Berufsangehörigen</h5>
 
-          <div class="form-group form-check">
+          <div class="mb-3 form-check">
             <input type="checkbox" th:if="${datentransfer.versendetAm == null}" class="form-check-input" name="unbekanntVerzogen" th:attr="checked=${person.isUnbekanntVerzogen()?'true':'false'}" id="unbekanntVerzogen" onclick="toggleDeacivate('unbekanntVerzogen', ['strasse', 'hausnummer', 'anschriftenzusatz', 'postleitzahl', 'wohnort'])">
             <input type="checkbox" th:if="${datentransfer.versendetAm != null}" disabled class="form-check-input" name="unbekanntVerzogen" th:attr="checked=${person.isUnbekanntVerzogen()?'true':'false'}">
             <label class="form-check-label" for="unbekanntVerzogen">Unbekannt verzogen</label>
           </div>
 
-          <div class="form-group">
+          <div class="mb-3">
             <label for="strasse">Strasse</label>
             <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.strasse}" class="form-control" id="strasse" name="strasse">
             <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.strasse}" class="form-control" name="strasse" disabled>
           </div>
 
-          <div class="form-group">
+          <div class="mb-3">
             <label for="hausnummer">Hausnummer</label>
             <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.hausnummer}" class="form-control" id="hausnummer" name="hausnummer">
             <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.hausnummer}" class="form-control" name="hausnummer" disabled>
           </div>
 
-          <div class="form-group">
+          <div class="mb-3">
             <label for="anschriftenzusatz">Anschriftenzusatz</label>
             <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.anschriftenzusatz}" class="form-control" id="anschriftenzusatz" name="anschriftenzusatz">
             <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.anschriftenzusatz}" class="form-control" disabled name="anschriftenzusatz">
           </div>
 
-          <div class="form-group">
+          <div class="mb-3">
             <label for="postleitzahl">PLZ</label>
             <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.postleitzahl}" class="form-control" id="postleitzahl" name="postleitzahl">
             <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.postleitzahl}" class="form-control" name="postleitzahl" disabled>
           </div>
 
-          <div class="form-group">
+          <div class="mb-3">
             <label for="wohnort">Wohnort</label>
             <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.wohnort}" class="form-control" id="wohnort" name="wohnort">
             <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.wohnort}" class="form-control" name="wohnort" disabled>
@@ -180,7 +180,7 @@
         <div class="card-body">
           <h5 class="card-title">Zum Heilberufsausweis (HBA)</h5>
 
-          <div class="form-group">
+          <div class="mb-3">
             <label for="anzahlAusweise">Anzahl der Ausweise</label>
             <input th:if="${datentransfer.versendetAm == null}" type="number" th:value="${person.anzahlAusweise}" class="form-control" id="anzahlAusweise" name="anzahlAusweise">
             <input th:if="${datentransfer.versendetAm != null}" type="number" th:value="${person.anzahlAusweise}" class="form-control" name="anzahlAusweise" disabled>
@@ -190,7 +190,7 @@
           <div class="card mb-2">
             <div class="card-body">
               <h5 class="card-title">Ausweis 1</h5>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="qvda">QVDA/TSP</label>
                 <select th:if="${datentransfer.versendetAm == null}" class="form-control" id="qvda" name="qvda">
                   <option value="BUNDESDRUCKEREI" th:attrappend="selected=${person.qvda.name() == 'BUNDESDRUCKEREI'?'selected':''}">Bundesdruckerei</option>
@@ -205,12 +205,12 @@
                   <option value="TSYSTEMS" th:attrappend="selected=${person.qvda.name() == 'TSYSTEMS'?'selected':''}">T-Systems</option>
                 </select>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="ausweisnummer">Ausweisnummer (ICCSN Nummer)</label>
                 <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.ausweisnummer}" class="form-control" id="ausweisnummer" name="ausweisnummer">
                 <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.ausweisnummer}" class="form-control" name="ausweisnummer" disabled>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="qvda">Ausweisstatus</label>
                 <select th:if="${datentransfer.versendetAm == null}" class="form-control" id="kartenStatus" name="kartenStatus">
                   <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).UNBEKANNT.value()}" th:attrappend="selected=${(person.kartenStatus == null || person.kartenStatus.name() == 'UNBEKANNT')?'selected':''}"></option>
@@ -237,17 +237,17 @@
                   <option value="ZERTIFIKATE_GESPERRT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).ZERTIFIKATE_GESPERRT.value()}" th:attrappend="selected=${person.kartenStatus != null && person.kartenStatus.name() == 'ZERTIFIKATE_GESPERRT'?'selected':''}"></option>
                 </select>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="telematikId">TelematikID</label>
                 <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.telematikId}" class="form-control" id="telematikId" name="telematikId">
                 <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.telematikId}" class="form-control" name="telematikId" disabled>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="gueltigVon">Karte gültig von</label>
                 <input th:if="${datentransfer.versendetAm == null}" type="date" th:value="${person.gueltigVon}" class="form-control" id="gueltigVon" name="gueltigVon">
                 <input th:if="${datentransfer.versendetAm != null}" type="date" th:value="${person.gueltigVon}" class="form-control" name="gueltigVon" disabled>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="gueltigBis">Karte gültig bis</label>
                 <input th:if="${datentransfer.versendetAm == null}" type="date" th:value="${person.gueltigBis}" class="form-control" id="gueltigBis" name="gueltigBis">
                 <input th:if="${datentransfer.versendetAm != null}" type="date" th:value="${person.gueltigBis}" class="form-control" name="gueltigBis" disabled>
@@ -259,7 +259,7 @@
           <div class="card mb-2">
             <div class="card-body">
               <h5 class="card-title">Ausweis 2</h5>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="qvda2">QVDA/TSP</label>
                 <select th:if="${datentransfer.versendetAm == null}" class="form-control" id="qvda2" name="qvda2">
                   <option value="BUNDESDRUCKEREI" th:attrappend="selected=${person.qvda2.name() == 'BUNDESDRUCKEREI'?'selected':''}">Bundesdruckerei</option>
@@ -274,12 +274,12 @@
                   <option value="TSYSTEMS" th:attrappend="selected=${person.qvda2.name() == 'TSYSTEMS'?'selected':''}">T-Systems</option>
                 </select>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="ausweisnummer2">Ausweisnummer (ICCSN Nummer)</label>
                 <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.ausweisnummer2}" class="form-control" id="ausweisnummer2" name="ausweisnummer2">
                 <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.ausweisnummer2}" class="form-control" name="ausweisnummer2" disabled>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="qvda">Ausweisstatus</label>
                 <select th:if="${datentransfer.versendetAm == null}" class="form-control" id="kartenStatus2" name="kartenStatus2">
                   <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).UNBEKANNT.value()}" th:attrappend="selected=${(person.kartenStatus2 == null || person.kartenStatus2.name() == 'UNBEKANNT')?'selected':''}"></option>
@@ -306,17 +306,17 @@
                   <option value="ZERTIFIKATE_GESPERRT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).ZERTIFIKATE_GESPERRT.value()}" th:attrappend="selected=${person.kartenStatus2 != null && person.kartenStatus2.name() == 'ZERTIFIKATE_GESPERRT'?'selected':''}"></option>
                 </select>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="telematikId2">TelematikID</label>
                 <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.telematikId2}" class="form-control" id="telematikId2" name="telematikId2">
                 <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.telematikId2}" class="form-control" name="telematikId2" disabled>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="gueltigVon2">Karte gültig von</label>
                 <input th:if="${datentransfer.versendetAm == null}" type="date" th:value="${person.gueltigVon2}" class="form-control" id="gueltigVon2" name="gueltigVon2">
                 <input th:if="${datentransfer.versendetAm != null}" type="date" th:value="${person.gueltigVon2}" class="form-control" name="gueltigVon2" disabled>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="gueltigBis2">Karte gültig bis</label>
                 <input th:if="${datentransfer.versendetAm == null}" type="date" th:value="${person.gueltigBis2}" class="form-control" id="gueltigBis2" name="gueltigBis2">
                 <input th:if="${datentransfer.versendetAm != null}" type="date" th:value="${person.gueltigBis2}" class="form-control" name="gueltigBis2" disabled>
@@ -328,7 +328,7 @@
           <div class="card mb-2">
             <div class="card-body">
               <h5 class="card-title">Ausweis 3</h5>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="qvda3">QVDA/TSP</label>
                 <select th:if="${datentransfer.versendetAm == null}" class="form-control" id="qvda3" name="qvda3">
                   <option value="BUNDESDRUCKEREI" th:attrappend="selected=${person.qvda3.name() == 'BUNDESDRUCKEREI'?'selected':''}">Bundesdruckerei</option>
@@ -343,12 +343,12 @@
                   <option value="TSYSTEMS" th:attrappend="selected=${person.qvda3.name() == 'TSYSTEMS'?'selected':''}">T-Systems</option>
                 </select>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="ausweisnummer3">Ausweisnummer (ICCSN Nummer)</label>
                 <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.ausweisnummer3}" class="form-control" id="ausweisnummer3" name="ausweisnummer3">
                 <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.ausweisnummer3}" class="form-control" name="ausweisnummer3" disabled>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="qvda">Ausweisstatus</label>
                 <select th:if="${datentransfer.versendetAm == null}" class="form-control" id="kartenStatus3" name="kartenStatus3">
                   <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).UNBEKANNT.value()}" th:attrappend="selected=${(person.kartenStatus3 == null || person.kartenStatus3.name() == 'UNBEKANNT')?'selected':''}"></option>
@@ -375,17 +375,17 @@
                   <option value="ZERTIFIKATE_GESPERRT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).ZERTIFIKATE_GESPERRT.value()}" th:attrappend="selected=${person.kartenStatus3 != null && person.kartenStatus3.name() == 'ZERTIFIKATE_GESPERRT'?'selected':''}"></option>
                 </select>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="telematikId3">TelematikID</label>
                 <input th:if="${datentransfer.versendetAm == null}" type="text" th:value="${person.telematikId3}" class="form-control" id="telematikId3" name="telematikId3">
                 <input th:if="${datentransfer.versendetAm != null}" type="text" th:value="${person.telematikId3}" class="form-control" name="telematikId3" disabled>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="gueltigVon3">Karte gültig von</label>
                 <input th:if="${datentransfer.versendetAm == null}" type="date" th:value="${person.gueltigVon3}" class="form-control" id="gueltigVon3" name="gueltigVon3">
                 <input th:if="${datentransfer.versendetAm != null}" type="date" th:value="${person.gueltigVon3}" class="form-control" name="gueltigVon3" disabled>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="gueltigBis3">Karte gültig bis</label>
                 <input th:if="${datentransfer.versendetAm == null}" type="date" th:value="${person.gueltigBis3}" class="form-control" id="gueltigBis3" name="gueltigBis3">
                 <input th:if="${datentransfer.versendetAm != null}" type="date" th:value="${person.gueltigBis3}" class="form-control" name="gueltigBis3" disabled>
@@ -398,7 +398,7 @@
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="mb-3">
     <label for="bemerkung">Bemerkung</label>
     <textarea th:if="${datentransfer.versendetAm == null}" class="form-control" name="bemerkung" id="bemerkung" rows="3" th:text="${person.bemerkung}"></textarea>
     <textarea th:if="${datentransfer.versendetAm != null}" class="form-control" name="bemerkung" disabled rows="3" th:text="${person.bemerkung}"></textarea>

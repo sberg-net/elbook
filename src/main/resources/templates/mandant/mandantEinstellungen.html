@@ -34,7 +34,7 @@
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
 <div th:replace="~{fragments/menue :: menue}"></div>
-<main role="main" class="col-md-10 ml-sm-auto pt-3 px-1 px-md-4">
+<main role="main" class="col-md-10 ms-sm-auto pt-3 px-1 px-md-4">
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     <h1 class="h2">Benutzereinstellungen</h1>
   </div>
@@ -50,27 +50,27 @@
           <div class="container-fluid" id="passwortAendernFormContainer" th:action="@{/}">
             <form id="passwortAendernForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
 
-              <div class="form-group needs-validation">
+              <div class="mb-3 needs-validation">
                 <label for="altesPasswort">Altes Passwort</label>
                 <input type="password" class="form-control" id="altesPasswort" name="altesPasswort" required>
                 <div class="invalid-feedback">
                   Bitte angeben!
                 </div>
               </div>
-              <div class="form-group form-check">
+              <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="altesPasswortCheck" onclick="togglePwdVisibility('altesPasswort')">
                 <label class="form-check-label" for="altesPasswortCheck">Altes Passwort in Klartext anzeigen</label>
               </div>
               <br/>
 
-              <div class="form-group needs-validation">
+              <div class="mb-3 needs-validation">
                 <label for="neuesPasswort">Neues Passwort</label>
                 <input type="password" class="form-control" id="neuesPasswort" name="neuesPasswort" required>
                 <div class="invalid-feedback">
                   Bitte angeben!
                 </div>
               </div>
-              <div class="form-group form-check">
+              <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="neuesPasswortCheck" onclick="togglePwdVisibility('neuesPasswort')">
                 <label class="form-check-label" for="neuesPasswortCheck">Neues Passwort in Klartext anzeigen</label>
               </div>
@@ -108,14 +108,14 @@
                 <div class="row justify-content-start">
                   <div class="col-12 col-md-12">
                     <form id="deactivate2FAContainerForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
-                      <div class="form-group needs-validation">
+                      <div class="mb-3 needs-validation">
                         <label for="elbookPwd4Deactivate">Aktuelles elBook-Passwort</label>
                         <input type="password" class="form-control" id="elbookPwd4Deactivate" name="elbookPwd4Deactivate" required>
                         <div class="invalid-feedback">
                           Bitte angeben!
                         </div>
                       </div>
-                      <div class="form-group form-check">
+                      <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="elbookPwdCheck4Deactivate" onclick="togglePwdVisibility('elbookPwd4Deactivate')">
                         <label class="form-check-label" for="elbookPwdCheck4Deactivate">Passwort in Klartext anzeigen</label>
                       </div>
@@ -144,26 +144,26 @@
                   <div class="col-12 col-md-12">
                     <form id="activate2FAContainerForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
                       <input type="hidden" id="secret2FA" name="secret2FA"/>
-                      <div class="form-group needs-validation">
+                      <div class="mb-3 needs-validation">
                         <label for="elbookPwd4Activate">Aktuelles elBook-Passwort</label>
                         <input type="password" class="form-control" id="elbookPwd4Activate" name="elbookPwd4Activate" required>
                         <div class="invalid-feedback">
                           Bitte angeben!
                         </div>
                       </div>
-                      <div class="form-group form-check">
+                      <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="elbookPwd4ActivateCheck" onclick="togglePwdVisibility('elbookPwd4Activate')">
                         <label class="form-check-label" for="elbookPwd4ActivateCheck">Passwort in Klartext anzeigen</label>
                       </div>
                       <br/>
-                      <div class="form-group needs-validation">
+                      <div class="mb-3 needs-validation">
                         <label for="neuesPasswort">2FA Code</label>
                         <input id="2faCode" class="form-control" name="2faCode" type="password" required>
                         <div class="invalid-feedback">
                           Bitte 2FA Code angeben
                         </div>
                       </div>
-                      <div class="form-group form-check">
+                      <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="2faCodeCheck" onclick="togglePwdVisibility('2faCode')">
                         <label class="form-check-label" for="2faCodeCheck">2FA Code in Klartext anzeigen</label>
                       </div>

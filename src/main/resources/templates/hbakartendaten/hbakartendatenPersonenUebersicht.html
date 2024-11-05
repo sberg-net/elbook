@@ -17,7 +17,7 @@
 <div class="alert alert-danger" role="alert" style="display:none" id="hbakartendatenTableError">
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-sm-12 col-lg-12 mb-3 p-0 pr-1">
+  <div class="col-sm-12 col-lg-12 mb-3 p-0 pe-1">
     <span class="font-weight-bold">Datentransfer von </span>
     <span class="font-weight-bold" th:text="${absenderKartenherausgeber.hrText}"></span>&nbsp;
     <a th:href="'mailto:' + ${datentransfer.absender}" th:text="${datentransfer.absender}"></a><br/>
@@ -26,10 +26,10 @@
   </div>
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-sm-4 col-lg-3 mb-3 pr-1">
+  <div class="col-sm-4 col-lg-3 mb-3 pe-1">
     <a target="_blank" th:href="@{/hbakartendaten/herunterladen/{hashCode}/{aktivierungsCode}(aktivierungsCode=${datentransfer.aktivierungsCode},hashCode=${datentransfer.hashCode})}">Als json-Datei herunterladen</a>
   </div>
-  <div class="col-sm-4 col-lg-3 mb-3 pr-1">
+  <div class="col-sm-4 col-lg-3 mb-3 pe-1">
     <a target="_blank" th:href="@{/hbakartendaten/report/{hashCode}/{aktivierungsCode}(aktivierungsCode=${datentransfer.aktivierungsCode},hashCode=${datentransfer.hashCode})}">Als PDF herunterladen</a>
   </div>
 </div>

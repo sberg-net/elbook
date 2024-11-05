@@ -23,12 +23,12 @@
 <body>
   <nav id="navbar" th:fragment="navbar" class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 navbar-top">
     <div class="logo">
-      <a class="navbar-brand ml-2" th:href="@{/}">
+      <a class="navbar-brand ms-2 d-inline-block" th:href="@{/}">
         elBook <span th:text="${@environment.getProperty('versions.elbook')}"></span>
       </a>
     </div>
     <button
-            class="navbar-toggler d-md-none mr-2"
+            class="navbar-toggler d-md-none me-2"
             type="button"
             data-toggle="collapse"
             data-target="#sidebar"

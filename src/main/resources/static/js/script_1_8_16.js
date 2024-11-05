@@ -387,14 +387,16 @@ function vzdEintragLoeschen() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4DeleteVzdEintrag').modal('hide');
+      //$('#confirmDialog4DeleteVzdEintrag').modal('hide');
+      confirmDialog4DeleteVzdEintragModal.hide();
       setTimeout(vzdEintragUebersicht,0);
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
       $("#vzdEintragTableError").attr("style", "");
       $("#vzdEintragTableError").append("Beim Löschen des Eintrages ist ein Fehler aufgetreten.");
-      $('#confirmDialog4DeleteVzdEintrag').modal('hide');
+      //$('#confirmDialog4DeleteVzdEintrag').modal('hide');
+      confirmDialog4DeleteVzdEintragModal.hide();
     }
   });
 }

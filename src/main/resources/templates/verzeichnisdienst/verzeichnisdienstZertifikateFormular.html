@@ -31,15 +31,15 @@
             <div class="card-title">
               <span class="font-weight-bold">Verschlüsselungs-Zertifikat <span th:text="${zertStat.index+1}"></span></span>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
               <label>CN des Verschlüsselungs-Zertifikats (wenn das Textfeld leer ist, ist das Verschlüsselungs-Zertifikat nicht im Verzeichnisdienst gespeichert.)</label>
               <input type="text" class="form-control" disabled th:value="${zert.extractUserCertificateDnCn()}">
             </div>
-            <div th:if="${zert.extractUserCertificateDnCn() == ''}" class="form-group">
+            <div th:if="${zert.extractUserCertificateDnCn() == ''}" class="mb-3">
               <label>Inhalt des Verschlüsselungs-Zertifikats (DER- oder BASE64-kodiert)</label>
               <textarea class="form-control" name="content" rows="3" th:text="${zert.extractUserCertificateContent()}"></textarea>
             </div>
-            <div th:if="${zert.extractUserCertificateDnCn() != ''}" class="form-group">
+            <div th:if="${zert.extractUserCertificateDnCn() != ''}" class="mb-3">
               <span class="font-weight-bold">Gültig Von: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).gueltigVon}"></span><br/>
               <span class="font-weight-bold">Gültig Bis: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).gueltigBis}"></span><br/>
               <span class="font-weight-bold">Seriennummer: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).serienNummer}"></span><br/>

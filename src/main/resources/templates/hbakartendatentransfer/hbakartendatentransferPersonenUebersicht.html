@@ -17,23 +17,23 @@
 <div class="alert alert-danger" role="alert" style="display:none" id="hbakartendatentransferTableError">
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-sm-12 col-lg-12 mb-3 p-0 pr-1">
+  <div class="col-sm-12 col-lg-12 mb-3 p-0 pe-1">
     <span class="font-weight-bold">Datentransfer für </span>
     <span class="font-weight-bold" th:text="${datentransfer.empfaengerKartenherausgeber.hrText}"></span>&nbsp;
     <a th:href="'mailto:' + ${datentransfer.empfaenger}" th:text="${datentransfer.empfaenger}"></a>
   </div>
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div th:if="${datentransfer.versendetAm == null}" class="col-sm-4 col-lg-3 mb-3 pr-1">
+  <div th:if="${datentransfer.versendetAm == null}" class="col-sm-4 col-lg-3 mb-3 pe-1">
     <button type="button" id="createUser" th:attr="data-id=${datentransfer.id}" class="btn btn-primary btn-block" onclick="hbakartendatentransferPersonLaden($(this).attr('data-id'),-1)">Person anlegen</button>
   </div>
-  <div class="col-sm-4 col-lg-3 mb-3 pr-1">
+  <div class="col-sm-4 col-lg-3 mb-3 pe-1">
     <button type="button" th:attr="data-id=${datentransfer.id}" class="btn btn-primary btn-block" onclick="hbakartendatentransferUebersicht()">Zurück zur Übersicht</button>
   </div>
-  <div th:if="${datentransfer.versendetAm == null && personenAnlegen}" class="col-sm-4 col-lg-3 mb-3 pr-1">
+  <div th:if="${datentransfer.versendetAm == null && personenAnlegen}" class="col-sm-4 col-lg-3 mb-3 pe-1">
     <button type="button" th:attr="data-id=${datentransfer.id}" class="btn btn-primary btn-block" onclick="elbookContext.toSendKartendatentransfer=$(this).attr('data-id');$('#confirmDialog4SendKartendatentransfer').modal('show')">Versenden (mit Aktivierungscode in der Mail)</button>
   </div>
-  <div th:if="${datentransfer.versendetAm == null && personenAnlegen}" class="col-sm-4 col-lg-3 mb-3 pr-1">
+  <div th:if="${datentransfer.versendetAm == null && personenAnlegen}" class="col-sm-4 col-lg-3 mb-3 pe-1">
     <button type="button" th:attr="data-id=${datentransfer.id}" class="btn btn-primary btn-block" onclick="elbookContext.toSendKartendatentransfer=$(this).attr('data-id');$('#confirmDialog4SendKartendatentransferWithoutActivationCode').modal('show')">Versenden (ohne Aktivierungscode in der Mail)</button>
   </div>
 </div>

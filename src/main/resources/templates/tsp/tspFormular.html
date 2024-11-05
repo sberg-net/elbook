@@ -18,7 +18,7 @@
 
   <input type="hidden" id="id" name="id" th:value="${tsp.id}">
 
-  <div class="form-group">
+  <div class="mb-3">
     <label for="tspName">TSP-Name</label>
     <select class="form-control" id="tspName" name="tspName" required th:attrappend="disabled=${tsp.id > 0?'true':''}">
       <option value="BUNDESDRUCKEREI" th:attrappend="selected=${tsp.tspName.name() == 'BUNDESDRUCKEREI'?'selected':''}">Bundesdruckerei</option>
@@ -28,7 +28,7 @@
     </select>
   </div>
 
-  <div class="form-group needs-validation">
+  <div class="mb-3 needs-validation">
     <label for="hbaUri">HBA-Soap-URL</label>
     <input type="text" th:value="${tsp.hbaUri}" class="form-control" id="hbaUri" name="hbaUri" required>
     <div class="invalid-feedback">
@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <div class="form-group needs-validation">
+  <div class="mb-3 needs-validation">
     <label for="smcbUri">SMCB-Soap-URL</label>
     <input type="text" th:value="${tsp.smcbUri}" class="form-control" id="smcbUri" name="smcbUri" required>
     <div class="invalid-feedback">
@@ -44,26 +44,26 @@
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="mb-3">
     <label for="keystoreType">TSP-Keystore-Typ</label>
     <select class="form-control" id="keystoreType" name="keystoreType" required>
       <option value="PKCS12" th:attrappend="selected=${tsp.keystoreType.name() == 'PKCS12'?'selected':''}">PKCS12</option>
     </select>
   </div>
 
-  <div class="form-group needs-validation">
+  <div class="mb-3 needs-validation">
     <label for="keystorePass">TSP-Keystore-Passwort</label>
     <input type="password" th:value="${tsp.keystorePass}" class="form-control" id="keystorePass" name="keystorePass" required>
     <div class="invalid-feedback">
       Bitte angeben!
     </div>
   </div>
-  <div class="form-group form-check">
+  <div class="mb-3 form-check">
     <input type="checkbox" class="form-check-input" id="keystorePassCheck" onclick="togglePwdVisibility('keystorePass')">
     <label class="form-check-label" for="keystorePassCheck">Passwort in Klartext anzeigen</label>
   </div>
 
-  <div class="form-group needs-validation">
+  <div class="mb-3 needs-validation">
     <label for="keystoreFile">TSP-Keystore-Datei</label>
     <input th:if="${tsp.id == 0}" type="file" class="form-control-file" id="keystoreFile" name="keystoreFile" required>
     <span th:if="${tsp.id > 0}" th:text="${tsp.keystoreFile}">dateiname</span>
@@ -75,14 +75,14 @@
   <div class="card mb-2">
     <div class="card-body" th:if="${tsp.id > 0}">
       <h5 class="card-title">Testen und Daten laden</h5>
-      <div class="form-group">
+      <div class="mb-3">
         <label for="smcbVorgangsnummer">SMCB-Vorgangsnummer</label>
         <input type="text" class="form-control col-lg-3" id="smcbVorgangsnummer">
         <button th:attr="data-id=${tsp.id}" class="btn btn-primary" onclick="tspLoadRequest($(this).attr('data-id'), $('#smcbVorgangsnummer').val(), 'loadSmcbReq')">Kompletten SMCB-Antrag laden</button>
         <a th:href="@{/tsp/loadsmcb}" target="_blank" id="loadSmcbReq"></a>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label for="hbaVorgangsnummer">HBA-Vorgangsnummer</label>
         <input type="text" class="form-control col-lg-3" id="hbaVorgangsnummer">
         <button th:attr="data-id=${tsp.id}" class="btn btn-primary" onclick="tspLoadRequest($(this).attr('data-id'), $('#hbaVorgangsnummer').val(), 'loadHbaReq')">Kompletten HBA-Antrag laden</button>

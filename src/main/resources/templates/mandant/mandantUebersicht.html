@@ -17,14 +17,18 @@
 <div class="alert alert-danger" role="alert" style="display:none" id="mandantTableError">
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-sm-12 col-lg-8 mb-3 p-0 pr-1">
-    <input type="text" class="form-control pr-0" id="search" placeholder="Suchbegriff">
+  <div class="col-sm-12 col-lg-8 mb-3 p-0 pe-1">
+    <input type="text" class="form-control pe-0" id="search" placeholder="Suchbegriff">
   </div>
-  <div class="col-sm-6 col-lg-2 mb-3 p-0 pr-1">
-    <button type="button" id="searchBtn" class="btn btn-primary btn-block" onclick="mandantUebersicht($('#search').val());">Suchen</button>
+  <div class="col-sm-6 col-lg-2 mb-3 p-0 pe-1">
+    <div class="d-grid gap-2">
+    <button type="button" id="searchBtn" class="btn btn-primary" onclick="mandantUebersicht($('#search').val());">Suchen</button>
+  </div>
   </div>
   <div class="col-sm-6 col-lg-2 mb-3 p-0">
-    <button type="button" id="createUser" class="btn btn-primary btn-block" onclick="mandantLaden(-1)">Nutzer anlegen</button>
+    <div class="d-grid gap-2">
+    <button type="button" id="createUser" class="btn btn-primary" onclick="mandantLaden(-1)">Nutzer anlegen</button>
+  </div>
   </div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">

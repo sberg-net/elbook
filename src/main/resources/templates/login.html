@@ -68,7 +68,7 @@
                     <form id="login-form" class="form" th:action="@{/login}" method="post" novalidate>
                       <div class="row">
                         <div class="col-12">
-                          <div class="form-group">
+                          <div class="mb-3">
                             <input class="form-control" name="username" type="text"
                                    placeholder="Benutzername" required>
                             <div class="invalid-feedback">
@@ -77,7 +77,7 @@
                           </div>
                         </div>
                         <div class="col-12">
-                          <div class="form-group">
+                          <div class="mb-3">
                             <input class="form-control" name="password" type="password"
                                    placeholder="Passwort" required>
                             <div class="invalid-feedback">
@@ -86,7 +86,7 @@
                           </div>
                         </div>
                         <div class="col-12" id="2fa-group" style="display:none;">
-                          <div class="form-group">
+                          <div class="mb-3">
                             <input id="2fa-input" class="form-control" name="code" type="password" placeholder="2FA Code">
                             <div class="invalid-feedback">
                               Bitte 2FA Code angeben
@@ -96,9 +96,9 @@
                       </div>
                       <div class="row">
                         <div class="col-12">
-                          <div class="form-group">
-                            <div class="button">
-                              <input id="login-submit" type="submit" class="btn btn-block" value="Anmelden">
+                          <div class="mb-3">
+                            <div class="d-grid gap-2">
+                              <input id="login-submit" type="submit" class="btn btn-primary" value="Anmelden">
                             </div>
                           </div>
                         </div>
