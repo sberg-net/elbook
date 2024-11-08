@@ -18,27 +18,35 @@
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
   <div class="col-sm-12 col-lg-12 mb-3 p-0 pe-1">
-    <span class="font-weight-bold">Datentransfer für </span>
-    <span class="font-weight-bold" th:text="${datentransfer.empfaengerKartenherausgeber.hrText}"></span>&nbsp;
+    <span class="fw-bold">Datentransfer für </span>
+    <span class="fw-bold" th:text="${datentransfer.empfaengerKartenherausgeber.hrText}"></span>&nbsp;
     <a th:href="'mailto:' + ${datentransfer.empfaenger}" th:text="${datentransfer.empfaenger}"></a>
   </div>
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
   <div th:if="${datentransfer.versendetAm == null}" class="col-sm-4 col-lg-3 mb-3 pe-1">
-    <button type="button" id="createUser" th:attr="data-id=${datentransfer.id}" class="btn btn-primary btn-block" onclick="hbakartendatentransferPersonLaden($(this).attr('data-id'),-1)">Person anlegen</button>
+    <div class="d-grid gap-2">
+      <button type="button" id="createUser" th:attr="data-id=${datentransfer.id}" class="btn btn-primary" onclick="hbakartendatentransferPersonLaden($(this).attr('data-id'),-1)">Person anlegen</button>
+    </div>
   </div>
   <div class="col-sm-4 col-lg-3 mb-3 pe-1">
-    <button type="button" th:attr="data-id=${datentransfer.id}" class="btn btn-primary btn-block" onclick="hbakartendatentransferUebersicht()">Zurück zur Übersicht</button>
+    <div class="d-grid gap-2">
+      <button type="button" th:attr="data-id=${datentransfer.id}" class="btn btn-primary" onclick="hbakartendatentransferUebersicht()">Zurück zur Übersicht</button>
+    </div>
   </div>
   <div th:if="${datentransfer.versendetAm == null && personenAnlegen}" class="col-sm-4 col-lg-3 mb-3 pe-1">
-    <button type="button" th:attr="data-id=${datentransfer.id}" class="btn btn-primary btn-block" onclick="elbookContext.toSendKartendatentransfer=$(this).attr('data-id');$('#confirmDialog4SendKartendatentransfer').modal('show')">Versenden (mit Aktivierungscode in der Mail)</button>
+    <div class="d-grid gap-2">
+      <button type="button" th:attr="data-id=${datentransfer.id}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmDialog4SendKartendatentransfer" onclick="elbookContext.toSendKartendatentransfer=$(this).attr('data-id');">Versenden (mit Aktivierungscode in der Mail)</button>
+    </div>
   </div>
   <div th:if="${datentransfer.versendetAm == null && personenAnlegen}" class="col-sm-4 col-lg-3 mb-3 pe-1">
-    <button type="button" th:attr="data-id=${datentransfer.id}" class="btn btn-primary btn-block" onclick="elbookContext.toSendKartendatentransfer=$(this).attr('data-id');$('#confirmDialog4SendKartendatentransferWithoutActivationCode').modal('show')">Versenden (ohne Aktivierungscode in der Mail)</button>
+    <div class="d-grid gap-2">
+      <button type="button" th:attr="data-id=${datentransfer.id}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmDialog4SendKartendatentransferWithoutActivationCode" onclick="elbookContext.toSendKartendatentransfer=$(this).attr('data-id');">Versenden (ohne Aktivierungscode in der Mail)</button>
+    </div>
   </div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-9 mb-3 font-weight-bolder">
+  <div class="col-md-9 mb-3 fw-bolder">
     <span th:text="${#lists.size(personen)}"></span>&nbsp;Personen vorhanden
   </div>
 </div>
@@ -66,7 +74,7 @@
         <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-personid=${n.id}" th:attrappend="data-id=${datentransfer.id}" onclick="hbakartendatentransferPersonLaden($(this).attr('data-id'),$(this).attr('data-personid'))">
           <span data-feather="edit"></span>
         </button>
-        <button th:if="${datentransfer.versendetAm == null}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-personid=${n.id}" th:attrappend="data-id=${datentransfer.id}" onclick="elbookContext.toDeleteKartendatentransfer=$(this).attr('data-id');elbookContext.toDeleteKartendatentransferPerson=$(this).attr('data-personid');$('#confirmDialog4DeleteKartendatentransferPerson').modal('show')" >
+        <button th:if="${datentransfer.versendetAm == null}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-personid=${n.id}" th:attrappend="data-id=${datentransfer.id}" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteKartendatentransferPerson" onclick="elbookContext.toDeleteKartendatentransfer=$(this).attr('data-id');elbookContext.toDeleteKartendatentransferPerson=$(this).attr('data-personid');" >
           <span data-feather="delete"></span>
         </button>
       </td>

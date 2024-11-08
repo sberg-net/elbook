@@ -22,17 +22,17 @@
   </div>
   <div class="col-sm-6 col-lg-2 mb-3 p-0 pe-1">
     <div class="d-grid gap-2">
-    <button type="button" id="searchBtn" class="btn btn-primary" onclick="mandantUebersicht($('#search').val());">Suchen</button>
-  </div>
+      <button type="button" id="searchBtn" class="btn btn-primary" onclick="mandantUebersicht($('#search').val());">Suchen</button>
+    </div>
   </div>
   <div class="col-sm-6 col-lg-2 mb-3 p-0">
     <div class="d-grid gap-2">
-    <button type="button" id="createUser" class="btn btn-primary" onclick="mandantLaden(-1)">Nutzer anlegen</button>
-  </div>
+      <button type="button" id="createUser" class="btn btn-primary" onclick="mandantLaden(-1)">Nutzer anlegen</button>
+    </div>
   </div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-9 mb-3 font-weight-bolder">
+  <div class="col-md-9 mb-3 fw-bolder">
     <span th:text="${#lists.size(mandanten)}"></span>&nbsp;Nutzer vorhanden
   </div>
 </div>
@@ -68,7 +68,7 @@
         <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-id=${n.id}" onclick="mandantLaden($(this).attr('data-id'))">
           <span data-feather="edit"></span>
         </button>&nbsp;&nbsp;&nbsp;
-        <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" onclick="elbookContext.toDeleteMandant=$(this).attr('data-id');$('#confirmDialog4DeleteMandant').modal('show')" >
+        <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteMandant" onclick="elbookContext.toDeleteMandant=$(this).attr('data-id');">
           <span data-feather="delete"></span>
         </button>
       </td>
@@ -80,7 +80,7 @@
         <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-id=${n.id}" onclick="mandantLaden($(this).attr('data-id'))">
           <span data-feather="edit"></span>
         </button>&nbsp;&nbsp;&nbsp;
-        <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" onclick="elbookContext.toDeleteMandant=$(this).attr('data-id');$('#confirmDialog4DeleteMandant').modal('show')" >
+        <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteMandant" onclick="elbookContext.toDeleteMandant=$(this).attr('data-id');">
           <span data-feather="delete"></span>
         </button>
       </td>

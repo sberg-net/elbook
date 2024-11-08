@@ -19,17 +19,17 @@
     <div xmlns:th="http://www.thymeleaf.org">
       <div th:if="${fehlernachricht == null}" class="alert alert-danger" role="alert" style="display:none" id="vzdZertifikatEintragFormError"></div>
       <div th:if="${fehlernachricht != null}" class="alert alert-danger" role="alert" th:text="${fehlernachricht}"></div>
-      <span class="font-weight-bold">Eintrag mit der UID </span><span id="uid" th:attr="data-id=${uid}" th:text="${uid}"></span>
+      <span class="fw-bold">Eintrag mit der UID </span><span id="uid" th:attr="data-id=${uid}" th:text="${uid}"></span>
       <br/>
-      <span class="font-weight-bold">und der TelematikID </span><span id="telematikId" th:attr="data-telematikId=${telematikId}" th:text="${telematikId}"></span>
+      <span class="fw-bold">und der TelematikID </span><span id="telematikId" th:attr="data-telematikId=${telematikId}" th:text="${telematikId}"></span>
       <br/>
-      <span th:if="${vzdeintragZertikate.isEmpty()}" class="font-weight-bold">Keine Verschlüsselungs-Zertifikate vorhanden</span>
+      <span th:if="${vzdeintragZertikate.isEmpty()}" class="fw-bold">Keine Verschlüsselungs-Zertifikate vorhanden</span>
       <br/>
       <div class="mb-2" th:each="zert : ${vzdeintragZertikate}" th:attr="data-idx=${zertStat.index}">
         <div class="card">
           <div class="card-body">
             <div class="card-title">
-              <span class="font-weight-bold">Verschlüsselungs-Zertifikat <span th:text="${zertStat.index+1}"></span></span>
+              <span class="fw-bold">Verschlüsselungs-Zertifikat <span th:text="${zertStat.index+1}"></span></span>
             </div>
             <div class="mb-3">
               <label>CN des Verschlüsselungs-Zertifikats (wenn das Textfeld leer ist, ist das Verschlüsselungs-Zertifikat nicht im Verzeichnisdienst gespeichert.)</label>
@@ -40,14 +40,14 @@
               <textarea class="form-control" name="content" rows="3" th:text="${zert.extractUserCertificateContent()}"></textarea>
             </div>
             <div th:if="${zert.extractUserCertificateDnCn() != ''}" class="mb-3">
-              <span class="font-weight-bold">Gültig Von: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).gueltigVon}"></span><br/>
-              <span class="font-weight-bold">Gültig Bis: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).gueltigBis}"></span><br/>
-              <span class="font-weight-bold">Seriennummer: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).serienNummer}"></span><br/>
-              <span class="font-weight-bold">Version: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).version}"></span><br/>
-              <span class="font-weight-bold">Aussteller: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).aussteller}"></span><br/>
-              <span class="font-weight-bold">Inhaber: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).inhaber}"></span><br/>
-              <span class="font-weight-bold">Telematik-ID: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).telematikId}"></span><br/>
-              <span class="font-weight-bold">Aktiv: </span><span th:if="${zert.extractUserCertificateActive()}">Ja</span><span th:if="${!zert.extractUserCertificateActive()}">Nein</span><br/>
+              <span class="fw-bold">Gültig Von: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).gueltigVon}"></span><br/>
+              <span class="fw-bold">Gültig Bis: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).gueltigBis}"></span><br/>
+              <span class="fw-bold">Seriennummer: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).serienNummer}"></span><br/>
+              <span class="fw-bold">Version: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).version}"></span><br/>
+              <span class="fw-bold">Aussteller: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).aussteller}"></span><br/>
+              <span class="fw-bold">Inhaber: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).inhaber}"></span><br/>
+              <span class="fw-bold">Telematik-ID: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).telematikId}"></span><br/>
+              <span class="fw-bold">Aktiv: </span><span th:if="${zert.extractUserCertificateActive()}">Ja</span><span th:if="${!zert.extractUserCertificateActive()}">Nein</span><br/>
               <a target="_blank" th:href="@{/verzeichnisdienst/herunterladen/zertifikat/{vzdUid}/{certUid}(vzdUid=${uid}, certUid=${zert.extractUserCertificateDnCn()})}">Als crt-Datei herunterladen</a>
             </div>
             <br/>
@@ -55,13 +55,19 @@
             <div class="container-fluid p-0 mb-2">
               <div class="row justify-content-start">
                 <div th:if="${zert.extractUserCertificateDnCn() == ''}" class="col-12 col-md-6 col-lg-3 pb-1">
-                  <button class="btn btn-danger btn-block" disabled>Löschen</button>
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-danger" disabled>Löschen</button>
+                  </div>
                 </div>
                 <div th:if="${zert.extractUserCertificateDnCn() != '' && editierbar}" class="col-12 col-md-6 col-lg-3 pb-1">
-                  <button class="btn btn-danger btn-block" th:attr="data-idx=${zertStat.index}" onclick="elbookContext.certUid=$('#vzdEintragZertRow #uid').attr('data-id');elbookContext.telematikId=$('#vzdEintragZertRow #telematikId').attr('data-telematikId');elbookContext.certCn=$('div[data-idx='+$(this).attr('data-idx')+']').find('input')[0].value;$('#confirmDialog4DeleteVzdEintragZert').modal('show')">Löschen</button>
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-danger" th:attr="data-idx=${zertStat.index}" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteVzdEintragZert" onclick="elbookContext.certUid=$('#vzdEintragZertRow #uid').attr('data-id');elbookContext.telematikId=$('#vzdEintragZertRow #telematikId').attr('data-telematikId');elbookContext.certCn=$('div[data-idx='+$(this).attr('data-idx')+']').find('input')[0].value;">Löschen</button>
+                  </div>
                 </div>
                 <div th:if="${zert.extractUserCertificateContent() == null && editierbar}" class="col-12 col-md-6 col-lg-3">
-                  <button class="btn btn-primary btn-block" th:attr="data-idx=${zertStat.index}" onclick="vzdZertifikatEintragSpeichern($('#vzdEintragZertRow #uid').attr('data-id'),$('#vzdEintragZertRow #telematikId').attr('data-telematikId'),$(this).attr('data-idx'))">Speichern</button>
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-primary" th:attr="data-idx=${zertStat.index}" onclick="vzdZertifikatEintragSpeichern($('#vzdEintragZertRow #uid').attr('data-id'),$('#vzdEintragZertRow #telematikId').attr('data-telematikId'),$(this).attr('data-idx'))">Speichern</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -73,10 +79,14 @@
       <div class="container-fluid p-0 mb-2">
         <div class="row justify-content-start">
           <div class="col-12 col-md-6 col-lg-3 pb-1">
-            <button class="btn btn-secondary btn-block" type="button" onclick="vzdEintragUebersicht(true);">Schließen</button>
+            <div class="d-grid gap-2">
+              <button class="btn btn-secondary" type="button" onclick="vzdEintragUebersicht(true);">Schließen</button>
+            </div>
           </div>
           <div th:if="${editierbar}" class="col-12 col-md-6 col-lg-8">
-            <button class="btn btn-primary btn-block" type="button" th:attr="data-size=${#lists.size(vzdeintragZertikate)}" th:attrappend="data-id=${uid}" onclick="vzdEintragZertifikateLaden($(this).attr('data-id'),$('#vzdEintragZertRow #telematikId').attr('data-telematikId'),true,$(this).attr('data-size'))">Neues Verschlüsselungs-Zertifikat hinzufügen</button>
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary" type="button" th:attr="data-size=${#lists.size(vzdeintragZertikate)}" th:attrappend="data-id=${uid}" onclick="vzdEintragZertifikateLaden($(this).attr('data-id'),$('#vzdEintragZertRow #telematikId').attr('data-telematikId'),true,$(this).attr('data-size'))">Neues Verschlüsselungs-Zertifikat hinzufügen</button>
+            </div>
           </div>
         </div>
       </div>

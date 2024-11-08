@@ -407,10 +407,14 @@
   <div class="container-fluid p-0 mb-2">
     <div class="row justify-content-start">
       <div class="col-12 col-md-6 col-lg-2 pb-1">
-        <button class="btn btn-secondary btn-block" th:attr="data-id=${datentransfer.id}" type="button" onclick="hbakartendatentransferPersonenUebersicht($(this).attr('data-id'));">Schließen</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-secondary" th:attr="data-id=${datentransfer.id}" type="button" onclick="hbakartendatentransferPersonenUebersicht($(this).attr('data-id'));">Schließen</button>
+        </div>
       </div>
       <div th:if="${datentransfer.versendetAm == null}" class="col-12 col-md-6 col-lg-2">
-        <button class="btn btn-primary btn-block" type="button" th:attr="data-personid=${personId}" th:attrappend="data-id=${datentransfer.id}" onclick="hbakartendatentransferPersonSpeichern($(this).attr('data-id'), $(this).attr('data-personid'))">Speichern</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="button" th:attr="data-personid=${personId}" th:attrappend="data-id=${datentransfer.id}" onclick="hbakartendatentransferPersonSpeichern($(this).attr('data-id'), $(this).attr('data-personid'))">Speichern</button>
+        </div>
       </div>
     </div>
   </div>

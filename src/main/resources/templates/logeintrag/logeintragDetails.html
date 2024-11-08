@@ -16,11 +16,11 @@
 
 <div class="row" xmlns:th="http://www.thymeleaf.org">
   <div class="col-sm-12 col-lg-8 mb-3 p-0 pe-1">
-    <span class="font-weight-bold">Artikel für den Logeintrag mit der TelematikID: </span><span th:text="${eintrag.telematikId}">TelematikId</span>
+    <span class="fw-bold">Artikel für den Logeintrag mit der TelematikID: </span><span th:text="${eintrag.telematikId}">TelematikId</span>
   </div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-9 mb-3 font-weight-bolder">
+  <div class="col-md-9 mb-3 fw-bolder">
     <span th:text="${#lists.size(eintrag.artikel)}"></span>&nbsp;Logeintragartikel vorhanden
   </div>
 </div>

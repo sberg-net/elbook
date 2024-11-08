@@ -43,7 +43,7 @@
         <nav id="navbar" class="navbar navbar-expand-lg navbar-dark">
           <div class="logo">
             <a th:href="@{/login}"><img id="logo" class="ebook-light" src="img/ebook.svg" width="32" height="32" alt="#"></a>
-            <a class="navbar-brand ms-2 font-weight-bold">elBook</a>
+            <a class="navbar-brand ms-2 fw-bold">elBook</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -78,7 +78,7 @@
       <div class="container-fluid container-fluid-max">
         <div class="row">
           <div class="col-12 col-md-8 col-lg-6 mx-auto">
-            <h1 class="text-white font-weight-bold">elBook</h1>
+            <h1 class="text-white fw-bold">elBook</h1>
             <h4 class="text-white">
               Ihr einfacher Zugriff auf den Gematik Verzeichnisdienst der Telematikinfrastruktur
             </h4>
@@ -314,9 +314,7 @@
         <div class="modal-content">
           <div class="modal-header p-2">
             <h5 class="modal-title" id="loginModalTitle">Login</h5>
-            <button id="login-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <button id="login-close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
           </div>
           <div class="modal-body">
             <div id="login">
@@ -367,16 +365,14 @@
         <div class="modal-content">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="fehlerModalTitle">Fehler</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
           </div>
           <div class="modal-body">
             Es ein Fehler bei der Anmeldung aufgetreten.<br>
             Bitte versuchen Sie es erneut.
           </div>
           <div class="modal-footer">
-            <a class="btn btn-danger" data-dismiss="modal" onclick="window.location.href=window.location.href.split('?')[0]" role="button">OK</a>
+            <a class="btn btn-danger" data-bs-dismiss="modal" onclick="window.location.href=window.location.href.split('?')[0]" role="button">OK</a>
           </div>
         </div>
       </div>

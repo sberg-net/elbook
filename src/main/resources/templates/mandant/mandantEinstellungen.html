@@ -79,7 +79,9 @@
               <div class="container-fluid p-0 mb-2">
                 <div class="row justify-content-start">
                   <div class="col-12 col-md-6 col-lg-6">
-                    <button class="btn btn-primary btn-block" type="button" onclick="$('#confirmDialog4AendernPasswort').modal('show')">Ändern</button>
+                    <div class="d-grid gap-2">
+                      <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#confirmDialog4AendernPasswort">Ändern</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -122,7 +124,9 @@
                       <div class="container-fluid p-0 mb-2">
                         <div class="row justify-content-start">
                           <div class="col-12 col-md-6 col-lg-6">
-                            <button class="btn btn-primary btn-block" type="button" onclick="$('#confirmDialog4Deactivate2FA').modal('show')">2-Faktor Anmeldung Deaktivieren</button>
+                            <div class="d-grid gap-2">
+                              <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#confirmDialog4Deactivate2FA">2-Faktor Anmeldung Deaktivieren</button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -170,10 +174,14 @@
                       <div class="container-fluid p-0 mb-2">
                         <div class="row justify-content-start">
                           <div class="col-12 col-md-6 col-lg-6">
-                            <button class="btn btn-primary btn-block" type="button" onclick="enableFinish2FA();">2-Faktor Anmeldung Abschliessen</button>
+                            <div class="d-grid gap-2">
+                              <button class="btn btn-primary" type="button" onclick="enableFinish2FA();">2-Faktor Anmeldung Abschliessen</button>
+                            </div>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6">
-                            <button class="btn btn-primary btn-block" type="button" onclick="enableCancel2FA();">2-Faktor Anmeldung Abbrechen</button>
+                            <div class="d-grid gap-2">
+                              <button class="btn btn-primary" type="button" onclick="enableCancel2FA();">2-Faktor Anmeldung Abbrechen</button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -184,7 +192,9 @@
               <div class="container-fluid p-0 mb-2">
                 <div class="row justify-content-start">
                   <div class="col-12 col-md-6 col-lg-6">
-                    <button class="btn btn-primary btn-block" type="button" id="activate2FAButton" onclick="$('#confirmDialog4Activate2FA').modal('show')">2-Faktor Anmeldung Aktivieren</button>
+                    <div class="d-grid gap-2">
+                      <button class="btn btn-primary" type="button" id="activate2FAButton" data-bs-toggle="modal" data-bs-target="#confirmDialog4Activate2FA">2-Faktor Anmeldung Aktivieren</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -204,15 +214,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="confirmDialog4AendernPasswortLabel">Passwort ändern</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
       </div>
       <div class="modal-body">
         Wollen Sie das Passwort wirklich ändern? Sie werden nach erfolgreicher Änderung automatisch vom System abgemeldet.
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
         <button type="button" class="btn btn-primary" onclick="passwortAendern()">Ändern</button>
       </div>
     </div>
@@ -224,15 +232,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="confirmDialog4Activate2FALabel">2-Faktor Anmeldung Aktivieren</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
       </div>
       <div class="modal-body">
         Wollen Sie die 2-Faktor Anmeldung wirklich aktivieren?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
         <button type="button" class="btn btn-primary" onclick="enable2FA()">Aktivieren</button>
       </div>
     </div>
@@ -244,15 +250,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="confirmDialog4Deactivate2FALabel">2-Faktor Anmeldung Deaktivieren</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
       </div>
       <div class="modal-body">
         Wollen Sie die 2-Faktor Anmeldung wirklich deaktivieren?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
         <button type="button" class="btn btn-primary" onclick="disableFinish2FA()">Deaktivieren</button>
       </div>
     </div>

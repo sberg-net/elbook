@@ -153,13 +153,19 @@
   <div class="container-fluid p-0 mb-2">
     <div class="row justify-content-start">
       <div class="col-12 col-md-6 col-lg-2 pb-1">
-        <button class="btn btn-secondary btn-block" type="button" onclick="mandantUebersicht();">Schließen</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-secondary" type="button" onclick="mandantUebersicht();">Schließen</button>
+        </div>
       </div>
       <div class="col-12 col-md-6 col-lg-2">
-        <button class="btn btn-primary btn-block" type="button" onclick="mandantSpeichern()">Speichern</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="button" onclick="mandantSpeichern()">Speichern</button>
+        </div>
       </div>
       <div class="col-12 col-md-6 col-lg-2" th:if="${mandant.id > 0}">
-        <button class="btn btn-primary btn-block" type="button" th:attr="data-mandantid=${mandant.id}" th:attrappend="data-nutzername=${mandant.nutzername}" onclick="passwortZuruecksetzenLaden($(this).attr('data-mandantid'),$(this).attr('data-nutzername'))">Passwort zurücksetzen</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="button" th:attr="data-mandantid=${mandant.id}" th:attrappend="data-nutzername=${mandant.nutzername}" onclick="passwortZuruecksetzenLaden($(this).attr('data-mandantid'),$(this).attr('data-nutzername'))">Passwort zurücksetzen</button>
+        </div>
       </div>
     </div>
   </div>

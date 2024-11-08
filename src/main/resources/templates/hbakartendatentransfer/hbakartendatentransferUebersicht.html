@@ -21,14 +21,18 @@
     <input type="text" class="form-control pe-0" id="search" placeholder="Suche nach dem Aktivierungscode">
   </div>
   <div class="col-sm-6 col-lg-2 mb-3 p-0 pe-1">
-    <button type="button" id="searchBtn" class="btn btn-primary btn-block" onclick="hbakartendatentransferUebersicht($('#search').val());">Suchen</button>
+    <div class="d-grid gap-2">
+      <button type="button" id="searchBtn" class="btn btn-primary" onclick="hbakartendatentransferUebersicht($('#search').val());">Suchen</button>
+    </div>
   </div>
   <div class="col-sm-6 col-lg-4 mb-3 p-0">
-    <button type="button" id="create" class="btn btn-primary btn-block" onclick="hbakartendatentransferLaden(-1)">HBA Kartendatentransferdaten anlegen</button>
+    <div class="d-grid gap-2">
+      <button type="button" id="create" class="btn btn-primary" onclick="hbakartendatentransferLaden(-1)">HBA Kartendatentransferdaten anlegen</button>
+    </div>
   </div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-9 mb-3 font-weight-bolder">
+  <div class="col-md-9 mb-3 fw-bolder">
     <span th:text="${#lists.size(datentransfer)}"></span>&nbsp;HBA Kartendatentransferdaten vorhanden
   </div>
 </div>
@@ -65,7 +69,7 @@
         <button th:if="${n.abgelaufen == 0}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Personenübersicht" th:attr="data-id=${n.id}" onclick="hbakartendatentransferPersonenUebersicht($(this).attr('data-id'))">
           <span data-feather="user"></span>
         </button>&nbsp;&nbsp;&nbsp;
-        <button th:if="${n.abgelaufen == 0 && n.versendetAm == null}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" onclick="elbookContext.toDeleteKartendatentransfer=$(this).attr('data-id');$('#confirmDialog4DeleteKartendatentransfer').modal('show')" >
+        <button th:if="${n.abgelaufen == 0 && n.versendetAm == null}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteKartendatentransfer" onclick="elbookContext.toDeleteKartendatentransfer=$(this).attr('data-id');" >
           <span data-feather="delete"></span>
         </button>
       </td>

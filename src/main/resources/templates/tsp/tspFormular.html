@@ -92,7 +92,9 @@
       <div class="container-fluid p-0 mb-2">
         <div class="row justify-content-start">
           <div class="col-12 col-md-6 col-lg-2">
-            <button th:attr="data-id=${tsp.id}" class="btn btn-primary btn-block" onclick="tspCheck($(this).attr('data-id'))">Gesp. Daten testen</button>
+            <div class="d-grid gap-2">
+              <button th:attr="data-id=${tsp.id}" class="btn btn-primary" onclick="tspCheck($(this).attr('data-id'))">Gesp. Daten testen</button>
+            </div>
           </div>
           <div class="col-12 col-md-6 col-lg-4">
             <button th:attr="data-id=${tsp.id}" class="btn btn-primary btn-block" onclick="tspLoadAllRequest($(this).attr('data-id'), 'SMCB', 'loadAllSmcb')">Alle SMCB - Daten (Zertifikate freigeschaltet) laden</button>
@@ -110,10 +112,14 @@
   <div class="container-fluid p-0 mb-2">
     <div class="row justify-content-start">
       <div class="col-12 col-md-6 col-lg-2 pb-1">
-        <button class="btn btn-secondary btn-block" type="button" onclick="tspUebersicht();">Schließen</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-secondary" type="button" onclick="tspUebersicht();">Schließen</button>
+        </div>
       </div>
       <div class="col-12 col-md-6 col-lg-2">
-        <button class="btn btn-primary btn-block" type="button" onclick="tspSpeichern()">Speichern</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="button" onclick="tspSpeichern()">Speichern</button>
+        </div>
       </div>
     </div>
   </div>

@@ -16,10 +16,10 @@
 
 <div class="row" xmlns:th="http://www.thymeleaf.org">
   <div class="col-sm-12 col-lg-12 mb-3 p-0 pe-1">
-    <span class="font-weight-bold">Datentransfer von </span>
-    <span class="font-weight-bold" th:text="${datentransfer.absenderKartenherausgeber.hrText}"></span>&nbsp;
+    <span class="fw-bold">Datentransfer von </span>
+    <span class="fw-bold" th:text="${datentransfer.absenderKartenherausgeber.hrText}"></span>&nbsp;
     <a th:href="'mailto:' + ${datentransfer.absender}" th:text="${datentransfer.absender}"></a><br/>
-    <span class="font-weight-bold"> Daten abrufbar bis </span>
+    <span class="fw-bold"> Daten abrufbar bis </span>
     <span th:text="${#temporals.format(datentransfer.gueltigBis, 'dd-MM-yyyy HH:mm')}">Gültig Bis</span> Uhr
   </div>
 </div>
@@ -303,7 +303,9 @@
   <div class="container-fluid p-0 mb-2">
     <div class="row justify-content-start">
       <div class="col-12 col-md-6 col-lg-2 pb-1">
-        <button class="btn btn-secondary btn-block" th:attr="data-hashcode=${datentransfer.hashCode}" th:attrappend="data-aktivierungsCode=${datentransfer.aktivierungsCode}" type="button" onclick="hbakartendatenPersonenUebersicht($(this).attr('data-hashcode'),$(this).attr('data-aktivierungsCode'));">Schließen</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-secondary" th:attr="data-hashcode=${datentransfer.hashCode}" th:attrappend="data-aktivierungsCode=${datentransfer.aktivierungsCode}" type="button" onclick="hbakartendatenPersonenUebersicht($(this).attr('data-hashcode'),$(this).attr('data-aktivierungsCode'));">Schließen</button>
+        </div>
       </div>
     </div>
   </div>

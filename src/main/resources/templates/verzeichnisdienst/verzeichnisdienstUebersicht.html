@@ -18,20 +18,20 @@
 </div>
 <div th:if="${fehlernachricht != null}" class="alert alert-danger" role="alert" xmlns:th="http://www.thymeleaf.org" th:text="${fehlernachricht}"></div>
 <div th:if='${infoObject != null && !infoObject.getVersion().equals("Version 0")}' class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#infoObjectContainer').is(':visible')){ $('#infoObjectContainer').hide() } else{ $('#infoObjectContainer').show() }">
+  <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#infoObjectContainer').is(':visible')){ $('#infoObjectContainer').hide() } else{ $('#infoObjectContainer').show() }">
     <span class="text-primary" style="cursor: pointer">Zusätzliche Gematik-Verzeichnisdienst-Informationen einblenden/ausblenden - Bitte klicken</span>
   </div>
-  <div class="col-md-12 mb-3 font-weight-bolder" id="infoObjectContainer" style="display: none">
+  <div class="col-md-12 mb-3 fw-bolder" id="infoObjectContainer" style="display: none">
     <span>Gematik-Verzeichnisdienst: Version </span>
     <span th:text="${infoObject.version}"></span><span>&nbsp;&nbsp;</span>
     <span th:text="${infoObject.description}"></span>
   </div>
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#configContainer').is(':visible')){ $('#configContainer').hide() } else{ $('#configContainer').show() }">
+  <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#configContainer').is(':visible')){ $('#configContainer').hide() } else{ $('#configContainer').show() }">
     <span class="text-primary" style="cursor: pointer">Konfiguration-Informationen einblenden/ausblenden - Bitte klicken</span>
   </div>
-  <div class="col-md-12 mb-3 font-weight-bolder" id="configContainer" style="display: none">
+  <div class="col-md-12 mb-3 fw-bolder" id="configContainer" style="display: none">
     <span th:if="${filternEintraege}">Es wurde ein Suchfilter in Ihren Mandanteneinstellungen aktiviert. Es werden automatisch ALLE Einträge rausgefiltert, die NICHT mit folgenden Telematik-ID Kürzeln beginnen: <br></span>
     <span th:if="${filternEintraege}" th:text="${telematikKuerzel}"></span><br th:if="${filternEintraege}">
     <span th:if="${filternEintraege}"> Änderungen können nur von der Firma sberg it-systeme GmbH vorgenommen werden<br></span>
@@ -48,8 +48,8 @@
 
     <!-- Identifikatoren -->
     <div class="row mt-2">
-      <div class="col font-weight-bolder">Suchattribute: Identifikatoren</div>
-      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchIdentifierAttrContainer').is(':visible')){ $('#vzdSearchIdentifierAttrContainer').hide() } else{ $('#vzdSearchIdentifierAttrContainer').show() }">
+      <div class="col fw-bolder">Suchattribute: Identifikatoren</div>
+      <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchIdentifierAttrContainer').is(':visible')){ $('#vzdSearchIdentifierAttrContainer').hide() } else{ $('#vzdSearchIdentifierAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
@@ -108,8 +108,8 @@
 
     <!-- Namen -->
     <div class="row mt-2">
-      <div class="col font-weight-bolder">Suchattribute: Namen</div>
-      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchNameAttrContainer').is(':visible')){ $('#vzdSearchNameAttrContainer').hide() } else{ $('#vzdSearchNameAttrContainer').show() }">
+      <div class="col fw-bolder">Suchattribute: Namen</div>
+      <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchNameAttrContainer').is(':visible')){ $('#vzdSearchNameAttrContainer').hide() } else{ $('#vzdSearchNameAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
@@ -216,8 +216,8 @@
 
     <!-- Adressdaten -->
     <div class="row mt-2">
-      <div class="col font-weight-bolder">Suchattribute: Adressdaten</div>
-      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchAddressAttrContainer').is(':visible')){ $('#vzdSearchAddressAttrContainer').hide() } else{ $('#vzdSearchAddressAttrContainer').show() }">
+      <div class="col fw-bolder">Suchattribute: Adressdaten</div>
+      <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchAddressAttrContainer').is(':visible')){ $('#vzdSearchAddressAttrContainer').hide() } else{ $('#vzdSearchAddressAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
@@ -314,8 +314,8 @@
 
     <!-- Berufliche Informationen -->
     <div class="row mt-2">
-      <div class="col font-weight-bolder">Suchattribute: Berufliche Informationen</div>
-      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchJobAttrContainer').is(':visible')){ $('#vzdSearchJobAttrContainer').hide() } else{ $('#vzdSearchJobAttrContainer').show() }">
+      <div class="col fw-bolder">Suchattribute: Berufliche Informationen</div>
+      <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchJobAttrContainer').is(':visible')){ $('#vzdSearchJobAttrContainer').hide() } else{ $('#vzdSearchJobAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
@@ -374,8 +374,8 @@
 
     <!-- Systemdaten -->
     <div class="row mt-2">
-      <div class="col font-weight-bolder">Suchattribute: Systemdaten</div>
-      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchSystemAttrContainer').is(':visible')){ $('#vzdSearchSystemAttrContainer').hide() } else{ $('#vzdSearchSystemAttrContainer').show() }">
+      <div class="col fw-bolder">Suchattribute: Systemdaten</div>
+      <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchSystemAttrContainer').is(':visible')){ $('#vzdSearchSystemAttrContainer').hide() } else{ $('#vzdSearchSystemAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
@@ -487,8 +487,8 @@
 
     <!-- Fachdaten: mail, komledata, kimdata -->
     <div class="row mt-2" th:if="${showSearchFAAttributes}">
-      <div class="col font-weight-bolder">Suchattribute: KIM-Fachdaten (Mailadresse, KIM-Version, KIM-Anwendungskennzeichen). Wenn Sie die Attribute in dem Abschnitt belegen, werden ALLE oberen Attribute bei der Suche ignoriert.</div>
-      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchKimFachdatenAttrContainer').is(':visible')){ $('#vzdSearchKimFachdatenAttrContainer').hide() } else{ $('#vzdSearchKimFachdatenAttrContainer').show() }">
+      <div class="col fw-bolder">Suchattribute: KIM-Fachdaten (Mailadresse, KIM-Version, KIM-Anwendungskennzeichen). Wenn Sie die Attribute in dem Abschnitt belegen, werden ALLE oberen Attribute bei der Suche ignoriert.</div>
+      <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchKimFachdatenAttrContainer').is(':visible')){ $('#vzdSearchKimFachdatenAttrContainer').hide() } else{ $('#vzdSearchKimFachdatenAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
@@ -544,23 +544,31 @@
   <div class="col-md-12 mb-3">
     <div class="row ms-0 me-0">
       <div class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pe-1">
-        <button type="button" id="searchBtn" class="btn btn-primary btn-block" onclick="vzdEintragUebersicht();">Suchen</button>
+        <div class="d-grid gap-2">
+          <button type="button" id="searchBtn" class="btn btn-primary" onclick="vzdEintragUebersicht();">Suchen</button>
+        </div>
       </div>
       <div th:if="${bearbeitenNurFiltereintraege || bearbeitenEintraege}" class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pe-1">
-        <button type="button" id="createUser" class="btn btn-primary btn-block" onclick="vzdEintragLaden(-1)">Verzeichnisdiensteintrag anlegen</button>
+        <div class="d-grid gap-2">
+          <button type="button" id="createUser" class="btn btn-primary" onclick="vzdEintragLaden(-1)">Verzeichnisdiensteintrag anlegen</button>
+        </div>
       </div>
       <div class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pe-1">
-        <button type="button" class="btn btn-primary btn-block" onclick="$('#confirmDialog4DeleteVzdAuth').modal('show')">Verzeichnisdienst-Anmeldedaten löschen</button>
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteVzdAuth">Verzeichnisdienst-Anmeldedaten löschen</button>
+        </div>
       </div>
       <div th:if="${!vzdeintraege.isEmpty()}" class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pe-1">
-        <button type="button" class="btn btn-primary btn-block" onclick="vzdEintragUebersicht(false,true)">CSV-Export der Uuid und TelematikID</button>
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-primary" onclick="vzdEintragUebersicht(false,true)">CSV-Export der Uuid und TelematikID</button>
+        </div>
       </div>
       <a th:if="${csvExportErstellen && !vzdeintraege.isEmpty()}" style="display: none" target="_blank" id="csvExportErstellen" th:href="@{/verzeichnisdienst/uebersicht/herunterladen/{csvFileUuid}(csvFileUuid=${csvExportUuid})}"></a>
     </div>
   </div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-9 mb-3 font-weight-bolder">
+  <div class="col-md-9 mb-3 fw-bolder">
     <span th:text="${#lists.size(vzdeintraege)}"></span>&nbsp;Verzeichnisdiensteinträge vorhanden
   </div>
 </div>
@@ -568,10 +576,10 @@
   <div id="vzdOverlayText">Bitte warten....</div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdColVisibleContainer').is(':visible')){ $('#vzdColVisibleContainer').hide() } else{ $('#vzdColVisibleContainer').show() }">
+  <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdColVisibleContainer').is(':visible')){ $('#vzdColVisibleContainer').hide() } else{ $('#vzdColVisibleContainer').show() }">
     <span class="text-primary" style="cursor: pointer">Spalten einblenden/ausblenden - Bitte klicken</span>
   </div>
-  <div class="col-md-12 mb-3 font-weight-bolder" id="vzdColVisibleContainer" style="display: none">
+  <div class="col-md-12 mb-3 fw-bolder" id="vzdColVisibleContainer" style="display: none">
     <div class="row">
       <!-- vzdentry_col_id-->
       <div class="col-sm-3">
@@ -735,7 +743,7 @@
       </tr>
     </thead>
     <tbody id="vzdEintragTableBody">
-      <tr class="font-weight-bolder" th:if="${vzdeintraege.isEmpty() || suchergebnisFehler != null}">
+      <tr class="fw-bolder" th:if="${vzdeintraege.isEmpty() || suchergebnisFehler != null}">
         <td colspan="2" th:if="${suchergebnisFehler == null}">Keine Einträge verfügbar. Bitte benutzen Sie die Suche.</td>
         <td colspan="2" th:if="${suchergebnisFehler != null}" th:text="${suchergebnisFehler}"></td>
       </tr>
@@ -769,7 +777,7 @@
           <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}" onclick="vzdEintragLaden($(this).attr('data-id'))">
             <span data-feather="edit"></span>
           </button>&nbsp;&nbsp;&nbsp;
-          <button th:if="${n.editable}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}" th:attrappend="data-telematikId=${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()}" onclick="elbookContext.toDeleteVzdEintrag=$(this).attr('data-id');elbookContext.telematikId=$(this).attr('data-telematikId');$('#confirmDialog4DeleteVzdEintrag').modal('show')" >
+          <button th:if="${n.editable}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}" th:attrappend="data-telematikId=${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()}" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteVzdEintrag" onclick="elbookContext.toDeleteVzdEintrag=$(this).attr('data-id');elbookContext.telematikId=$(this).attr('data-telematikId');" >
             <span data-feather="delete"></span>
           </button>
         </td>

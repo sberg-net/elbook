@@ -229,10 +229,14 @@
         <input type="text" th:value="${vzdeintrag.getActive().getTextValue()}" disabled id="active" name="active" class="form-control">
         <div class="row justify-content-start" th:if="${vzdeintrag.isEditable() && vzdeintrag.vzdEntryWrapper.extractDirectoryEntryUid() != '-1'}">
           <div th:if="${vzdeintrag.getActive().getTextValue() == 'Ja'}" class="col-12 col-md-6 col-lg-6">
-            <button class="btn btn-primary btn-block" onclick="elbookContext.telematikId=$('#vzdEintragForm input[name=telematikId]').val();elbookContext.baseEntryUid=$('#vzdEintragForm #uid').val();elbookContext.baseEntryActive=false;$('#confirmDialog4BaseEntryDeactivate').modal('show')">Deaktivieren des Basiseintrages</button>
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmDialog4BaseEntryDeactivate" onclick="elbookContext.telematikId=$('#vzdEintragForm input[name=telematikId]').val();elbookContext.baseEntryUid=$('#vzdEintragForm #uid').val();elbookContext.baseEntryActive=false;">Deaktivieren des Basiseintrages</button>
+            </div>
           </div>
           <div th:if="${vzdeintrag.getActive().getTextValue() == 'Nein'}" class="col-12 col-md-6 col-lg-6">
-            <button class="btn btn-primary btn-block" onclick="elbookContext.telematikId=$('#vzdEintragForm input[name=telematikId]').val();elbookContext.baseEntryUid=$('#vzdEintragForm #uid').val();elbookContext.baseEntryActive=true;$('#confirmDialog4BaseEntryActivate').modal('show')">Aktivieren des Basiseintrages</button>
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmDialog4BaseEntryActivate" onclick="elbookContext.telematikId=$('#vzdEintragForm input[name=telematikId]').val();elbookContext.baseEntryUid=$('#vzdEintragForm #uid').val();elbookContext.baseEntryActive=true;">Aktivieren des Basiseintrages</button>
+            </div>
           </div>
         </div>
       </div>
@@ -284,10 +288,14 @@
       <div class="container-fluid p-0 mb-2">
         <div class="row justify-content-start">
           <div class="col-12 col-md-6 col-lg-3 pb-1">
-            <button class="btn btn-secondary btn-block" type="button" onclick="vzdEintragUebersicht(true);">Schließen</button>
+            <div class="d-grid gap-2">
+              <button class="btn btn-secondary" type="button" onclick="vzdEintragUebersicht(true);">Schließen</button>
+            </div>
           </div>
           <div th:if="${fehlernachricht == '' && vzdeintrag.editable}" class="col-12 col-md-6 col-lg-3">
-            <button class="btn btn-primary btn-block" type="button" onclick="vzdEintragSpeichern()">Speichern</button>
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary" type="button" onclick="vzdEintragSpeichern()">Speichern</button>
+            </div>
           </div>
         </div>
       </div>
