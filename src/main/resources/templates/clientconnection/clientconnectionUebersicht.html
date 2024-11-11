@@ -46,7 +46,7 @@
     </thead>
     <tbody>
     <tr th:if="${connections.isEmpty()}">
-      <td colspan="4">Keine Clientverbindungen verfügbar.</td>
+      <td colspan="6">Keine Clientverbindungen verfügbar.</td>
     </tr>
     <tr th:each="n : ${connections}">
       <td><span th:text="${n.id}">ID</span></td>

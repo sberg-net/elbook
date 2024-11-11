@@ -45,17 +45,18 @@
         <th>Bundesland</th>
         <th>Nutzername</th>
         <th>Sektor</th>
-        <th></th>
       </tr>
       <tr th:if="${superUser}">
         <th>Nutzername</th>
         <th>E-Mail</th>
         <th></th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
     <tr th:if="${mandanten.isEmpty()}">
-      <td colspan="2">Keine Nutzer verfügbar</td>
+      <td colspan="5">Keine Nutzer verfügbar</td>
     </tr>
     <tr th:if="${!superUser}" th:each="n : ${mandanten}">
       <td><span th:text="${n.id}">ID</span></td>

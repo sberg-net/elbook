@@ -744,8 +744,8 @@
     </thead>
     <tbody id="vzdEintragTableBody">
       <tr class="fw-bolder" th:if="${vzdeintraege.isEmpty() || suchergebnisFehler != null}">
-        <td colspan="2" th:if="${suchergebnisFehler == null}">Keine Einträge verfügbar. Bitte benutzen Sie die Suche.</td>
-        <td colspan="2" th:if="${suchergebnisFehler != null}" th:text="${suchergebnisFehler}"></td>
+        <td colspan="27" th:if="${suchergebnisFehler == null}">Keine Einträge verfügbar. Bitte benutzen Sie die Suche.</td>
+        <td colspan="27" th:if="${suchergebnisFehler != null}" th:text="${suchergebnisFehler}"></td>
       </tr>
       <tr th:each="n : ${vzdeintraege}" th:attr="id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}">
         <td class="vzdentry_col_id"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryUid()}">ID</span></td>

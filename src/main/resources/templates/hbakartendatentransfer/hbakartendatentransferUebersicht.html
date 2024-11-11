@@ -47,12 +47,11 @@
       <th>Gelesen Am</th>
       <th>Versendet Am</th>
       <th>Gültig Bis</th>
-      <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:if="${datentransfer.isEmpty()}">
-      <td colspan="2">Keine HBA Kartendatentransferdaten verfügbar</td>
+      <td colspan="7">Keine HBA Kartendatentransferdaten verfügbar</td>
     </tr>
     <tr th:each="n : ${datentransfer}">
       <td><span th:text="${n.id}">ID</span></td>

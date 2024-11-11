@@ -58,12 +58,11 @@
       <th>Person</th>
       <th>Typ</th>
       <th>Anschrift</th>
-      <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:if="${personen.isEmpty()}">
-      <td colspan="2">Keine Personen verfügbar</td>
+      <td colspan="4">Keine Personen verfügbar</td>
     </tr>
     <tr th:each="n : ${personen}">
       <td><span th:text="${n.id}">ID</span></td>

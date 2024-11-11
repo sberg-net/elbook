@@ -36,7 +36,7 @@
     </thead>
     <tbody>
     <tr th:if="${eintrag.artikel.isEmpty()}">
-      <td colspan="2">Keine Logeintragartikel verfügbar</td>
+      <td colspan="4">Keine Logeintragartikel verfügbar</td>
     </tr>
     <tr th:each="n : ${eintrag.artikel}">
       <td><span class="text-break" th:text="${n.vzdUid}">TelematikId</span></td>

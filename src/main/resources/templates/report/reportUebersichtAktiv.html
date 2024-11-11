@@ -39,12 +39,11 @@
       <th>Erstellt</th>
       <th>Geändert</th>
       <th>Gültig Bis</th>
-      <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:if="${reports.isEmpty()}">
-      <td colspan="2">Keine Statistiken / Reports verfügbar</td>
+      <td colspan="7">Keine Statistiken / Reports verfügbar</td>
     </tr>
     <tr th:each="n : ${reports}">
       <td><span th:text="${n.id}">ID</span></td>

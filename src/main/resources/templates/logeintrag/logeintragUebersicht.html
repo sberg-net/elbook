@@ -66,12 +66,11 @@
       <th>TelematikId</th>
       <th>BusinessId</th>
       <th>Erstellt Am</th>
-      <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:if="${eintraege.isEmpty()}">
-      <td colspan="2">Keine Logeinträge verfügbar</td>
+      <td colspan="3">Keine Logeinträge verfügbar</td>
     </tr>
     <tr th:each="n : ${eintraege}">
       <td><span class="text-break" th:text="${n.telematikId}">TelematikId</span></td>

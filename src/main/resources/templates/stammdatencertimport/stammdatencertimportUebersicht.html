@@ -34,7 +34,7 @@
     </thead>
     <tbody>
     <tr th:if="${jobs.isEmpty()}">
-      <td colspan="2">Keine Importvorgänge verfügbar</td>
+      <td colspan="7">Keine Importvorgänge verfügbar</td>
     </tr>
     <tr th:each="n : ${jobs}">
       <td><span class="text-break" th:text="${n.id}">ID</span></td>

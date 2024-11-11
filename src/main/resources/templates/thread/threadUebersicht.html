@@ -47,7 +47,7 @@
     </thead>
     <tbody>
     <tr th:if="${result.isEmpty()}">
-      <td colspan="2">Keine Threads verfügbar</td>
+      <td colspan="5">Keine Threads verfügbar</td>
     </tr>
     <tr th:each="n : ${result}">
       <td><span th:text="${n.name}">Name</span></td>
