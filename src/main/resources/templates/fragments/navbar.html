@@ -21,7 +21,7 @@
   <title>Title</title>
 </head>
 <body>
-  <nav id="navbar" th:fragment="navbar" class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 navbar-top">
+  <nav id="navbar" th:fragment="navbar" class="navbar sticky-top bg-dark flex-md-nowrap p-0 navbar-top" data-bs-theme="dark">
     <div class="logo">
       <a class="navbar-brand ms-2 d-inline-block" th:href="@{/}">
         elBook <span th:text="${@environment.getProperty('versions.elbook')}"></span>
