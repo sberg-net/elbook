@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/animate.min.css}"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"/>
   </head>
-  <body id="home" data-spy="scroll" data-target="#navbar" data-offset="72" class="position-relative">
+  <body id="home" data-spy="scroll" data-bs-target="#navbar" data-offset="72" class="position-relative">
 
     <!-- Header Area -->
     <header class="fixed-top page-header" >
@@ -45,7 +45,7 @@
             <a th:href="@{/login}"><img id="logo" class="ebook-light" src="img/ebook.svg" width="32" height="32" alt="#"></a>
             <a class="navbar-brand ms-2 fw-bold">elBook</a>
           </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-lg-between" id="navbarNav">
@@ -59,8 +59,8 @@
               <button
                       type="button"
                       class="btn login-btn text-white"
-                      data-toggle="modal"
-                      data-target="#loginModal"
+                      data-bs-toggle="modal"
+                      data-bs-target="#loginModal"
               >
                 <i class="fa fa-sign-in-alt"></i>
                 Anmelden

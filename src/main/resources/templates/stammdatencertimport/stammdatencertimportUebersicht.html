@@ -44,7 +44,7 @@
       <td><span class="text-break" th:text="${#temporals.format(n.gestartetAm, 'dd-MM-yyyy HH:mm:ss')}">Gestartet Am</span></td>
       <td><span class="text-break" th:text="${#temporals.format(n.beendetAm, 'dd-MM-yyyy HH:mm:ss')}">Beendet Am</span></td>
       <td>
-        <a th:if="${n.statusCode.name() == 'SUCCESS'}" target="_blank" th:href="@{/stammdatencertimport/herunterladen/ergebnisse/{id}(id=${n.id})}">Ergebnisse</a>&nbsp;&nbsp;
+        <a th:if="${n.statusCode.name() == 'SUCCESS'}" target="_blank" th:href="@{/stammdatencertimport/herunterladen/ergebnisse/{id}(id=${n.id})}" class="text-decoration-none">Ergebnisse</a>&nbsp;&nbsp;
         <a th:if="${n.statusCode.name() == 'SUCCESS'}" style="cursor: pointer; color: #007bff" th:onclick="|stammdatencertimportZusammenfassung(${n.id})|">Zusammenfassung</a>
       </td>
     </tr>
