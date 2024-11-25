@@ -25,74 +25,14 @@ import java.util.List;
 
 @Data
 public class HolderAttrErgebnis {
-
-    // id attributes
-    private String verwaltungsId;
-    private String vzdUid;
     private String telematikID;
-    private List<String> sektorIds;
-
-    // name attributes
-    private String vorname;
-    private String nachname;
-    private String allgemeinerName;
-    private String andererName;
-    private String titel;
-    private String anzeigeName;
-    private String organisation;
-
-    // address attributes
-    private String strasseUndHausnummer;
-    private String plz;
-    private String ort;
-    private EnumStateOrProvinceName bundesland;
-    private String laenderCode;
-
-    // profession attributes
-    private List<String> fachrichtungen;
-    private EnumEntryType eintragstyp;
-
-    // system attributes
-    private String maxKomLeAdr;
-    private EnumTriValue aktiv;
-
+    private List<String> holder;
     private List<String> log = new ArrayList<>();
     private boolean error = false;
-    private boolean insert = false;
-    private boolean update = false;
-    private boolean certUpdate = false;
-    private boolean delete = false;
-    private boolean silentMode = false;
-    private boolean ignore = false;
 
     public void fill(HolderAttrCommand command) {
-
-        setVerwaltungsId(command.getVerwaltungsId());
         setTelematikID(command.getTelematikID());
-        setVzdUid(command.getVzdUid());
-        setSektorIds(command.getSektorIds());
-
-        setVorname(command.getVorname());
-        setNachname(command.getNachname());
-        setAllgemeinerName(command.getAllgemeinerName());
-        setAndererName(command.getAndererName());
-        setTitel(command.getTitel());
-        setAnzeigeName(command.getAnzeigeName());
-        setOrganisation(command.getOrganisation());
-
-        setStrasseUndHausnummer(command.getStrasseUndHausnummer());
-        setOrt(command.getOrt());
-        setPlz(command.getPlz());
-        setBundesland(command.getBundesland());
-        setLaenderCode(command.getLaenderCode());
-
-        setFachrichtungen(command.getFachrichtungen());
-        setEintragstyp(command.getEintragsTyp());
-
-        setMaxKomLeAdr(command.getMaxKomLeAdr());
-        setAktiv(command.getAktiv());
-
-        setIgnore(command.isToIgnore());
+        setHolder(command.getHolder());
     }
 
 }

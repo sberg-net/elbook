@@ -8,7 +8,6 @@ server:
   error:
     include-stacktrace: always
 
-
 versions:
   #elbook version set by pom.xml project version
   elbook: '@project.version@'

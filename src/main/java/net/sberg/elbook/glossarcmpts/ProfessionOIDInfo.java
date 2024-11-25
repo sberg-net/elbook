@@ -1,6 +1,7 @@
 package net.sberg.elbook.glossarcmpts;
 
 import lombok.Data;
+import net.sberg.elbook.tspcmpts.EnumAntragTyp;
 import net.sberg.elbook.vzdclientcmpts.command.EnumEntryType;
 
 @Data
@@ -10,4 +11,7 @@ public class ProfessionOIDInfo {
     private EnumEntryType entryType;
     private String entryTypeId;
     private String entryTypeText;
+    private boolean organization;
+    private boolean practitionier;
+    private EnumAntragTyp tspAntragTyp;
 }

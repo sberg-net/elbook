@@ -26,7 +26,8 @@ public enum EnumLogEintragArtikelTyp {
     CARD_ISSUER_INSERT("Kartenherausgeber / Eingefügt"),
     CARD_ISSUER_UPDATE("Kartenherausgeber / Geändert"),
     CARD_ISSUER_DELETE("Kartenherausgeber / Gelöscht"),
-    CARD_ISSUER_CERT_INSERT("Kartenherausgeber / Zertifikat Eingefügt");
+    CARD_ISSUER_CERT_INSERT("Kartenherausgeber / Zertifikat Eingefügt"),
+    VZD_HOLDER_CHANGED("Holder geändert");
 
     private String hrText;
     private EnumLogEintragArtikelTyp(String hrText) {

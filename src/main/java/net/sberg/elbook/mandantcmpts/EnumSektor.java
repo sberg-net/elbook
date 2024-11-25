@@ -15,94 +15,98 @@
  */
 package net.sberg.elbook.mandantcmpts;
 
-import net.sberg.elbook.tspcmpts.EnumAntragTyp;
-import net.sberg.elbook.vzdclientcmpts.command.EnumEntryType;
-
 public enum EnumSektor {
 
-    APOTHEKE(EnumEntryType.Leistungserbringerinstitution, EnumAntragTyp.SMCB) {
+    APOTHEKE("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#smc-b-eintrag-f%C3%BCr-apotheken-abda-gematik") {
         public String getBusinessId(String telematikId) {
             return String.valueOf(Integer.parseInt(telematikId.split("\\.")[2]));
         }
     },
-    APOTHEKER(EnumEntryType.Berufsgruppe, EnumAntragTyp.HBA){
+    APOTHEKER("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#hba-eintrag-f%C3%BCr-apotheker-pharmazieingenieure-und-apothekerassistenten-abda-gematik") {
         public String getBusinessId(String telematikId) {
             return String.valueOf(Integer.parseInt(telematikId.split("\\.")[2]));
         }
     },
-    ARZT(EnumEntryType.Berufsgruppe, EnumAntragTyp.HBA){
+    ARZT("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#%C3%A4rzte-kammern-hba-eintrag") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
     },
-    ARZTPRAXIS(EnumEntryType.Leistungserbringerinstitution, EnumAntragTyp.SMCB){
+    ARZTPRAXIS("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#kassen%C3%A4rztliche-vereinigungen-smc-b-eintrag") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
     },
-    ZAHNARZT(EnumEntryType.Berufsgruppe, EnumAntragTyp.HBA){
+    ZAHNARZT("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#zahn%C3%A4rzte-kammern-hba-eintrag") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
     },
-    ZAHNARZTPRAXIS(EnumEntryType.Leistungserbringerinstitution, EnumAntragTyp.SMCB){
+    ZAHNARZTPRAXIS("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#kassenzahn%C3%A4rztliche-vereinigungen-smc-b-eintrag") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
     },
-    PSYCHOTHERAPEUTH(EnumEntryType.Berufsgruppe, EnumAntragTyp.HBA){
+    PSYCHOTHERAPEUTH("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#psychotherapeuten-hba-eintrag") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
     },
-    KRANKENHAUS(EnumEntryType.Leistungserbringerinstitution, EnumAntragTyp.SMCB){
+    KRANKENHAUS("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#dktig-i-a-d-dkg-krankenhaus-krankenhausapotheke-vorsorge-und-rehabilitationseinrichtungen-smc-b-eintrag") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
     },
-    GKV(EnumEntryType.Krankenkasse, EnumAntragTyp.SMCB){
+    GKV("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#gkv-sv-smc-b-eintrag") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
     },
-    GKV_EPA(EnumEntryType.Krankenkasse_ePA, EnumAntragTyp.SMCB){
+    GKV_EPA("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#gkv-sv-smc-b-eintrag") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
     },
-    HBAGEMATIK(EnumEntryType.Berufsgruppe, EnumAntragTyp.HBA){
+    GEMATIK_SMCB("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#gematik-weitere-%C3%A4rztliche-institutionen-smc-b-eintrag") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
     },
-    SMCBGEMATIK(EnumEntryType.Organisation, EnumAntragTyp.SMCB){
+    GEMATIK_SMCB_ORG("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#smc-b-org-eintrag-gematik") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
     },
-    HBAEGBR(EnumEntryType.Berufsgruppe, EnumAntragTyp.HBA){
+    GEMATIK_PKV_KOSTENTRAEGER("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#gematik-kostentr%C3%A4ger-pkv-smc-b-eintrag") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
     },
-    SMCBEGBR(EnumEntryType.Leistungserbringerinstitution, EnumAntragTyp.SMCB){
+    GEMATIK_DIGA("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#gematik-diga-smc-b-eintrag") {
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    EGBR_HBA("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#egbr-weitere-gesundheitsfachberufe-hba-eintrag") {
+        public String getBusinessId(String telematikId) {
+            throw new IllegalStateException("not implemented");
+        }
+    },
+    EGBR_SMCB("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#egbr-nicht%C3%A4rztliche-institutionen-smc-b-eintrag") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
     };
 
-    private EnumEntryType entryType;
-    private EnumAntragTyp antragTyp;
+    private String implLeitfadenUrl;
 
-    private EnumSektor(EnumEntryType entryType, EnumAntragTyp antragTyp) {
-        this.entryType = entryType;
-        this.antragTyp = antragTyp;
+    private EnumSektor(String implLeitfadenUrl) {
+        this.implLeitfadenUrl = implLeitfadenUrl;
     }
 
-    public EnumEntryType getEntryType() {
-        return entryType;
+    public String getImplLeitfadenUrl() {
+        return implLeitfadenUrl;
     }
-    public EnumAntragTyp getAntragTyp() { return antragTyp; }
 
     public abstract String getBusinessId(String telematikId);
 }

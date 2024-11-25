@@ -48,6 +48,7 @@
               <span class="font-weight-bold">Inhaber: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).inhaber}"></span><br/>
               <span class="font-weight-bold">Telematik-ID: </span><span th:text="${zertInfo.get(zert.extractUserCertificateDnCn()).telematikId}"></span><br/>
               <span class="font-weight-bold">Aktiv: </span><span th:if="${zert.extractUserCertificateActive()}">Ja</span><span th:if="${!zert.extractUserCertificateActive()}">Nein</span><br/>
+              <span class="font-weight-bold">Public Key Algorithmus: </span><span th:text="${zert.extractUserCertificatePublicKeyAlgorithm()}">Algo</span><br/>
               <a target="_blank" th:href="@{/verzeichnisdienst/herunterladen/zertifikat/{vzdUid}/{certUid}(vzdUid=${uid}, certUid=${zert.extractUserCertificateDnCn()})}">Als crt-Datei herunterladen</a>
             </div>
             <br/>

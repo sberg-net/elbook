@@ -93,6 +93,12 @@
                 Statistiken / Reports
               </a>
             </li>
+            <li class="nav-item" sec:authorize="isAnonymous()">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/glossar') ? 'active':''}" th:href="@{/glossar}">
+                <span data-feather="bar-chart-2"></span>
+                Glossar
+              </a>
+            </li>
             <li class="nav-item" sec:authorize="isAuthenticated()">
               <a class="nav-link" href="javascript:{}" onclick="document.getElementById('logout-form').submit();">
                 <span data-feather="log-out"></span>
@@ -104,7 +110,10 @@
             </li>
           </ul>
         </div>
-        <span class="nav-link font-weight-bold">
+        <span class="nav-link font-weight-bold" sec:authorize="isAnonymous()">
+          Angemeldeter Nutzer: -
+        </span>
+        <span class="nav-link font-weight-bold" sec:authorize="isAuthenticated()">
           Angemeldeter Nutzer: <span sec:authentication="name">Bob</span>
         </span>
       </nav>

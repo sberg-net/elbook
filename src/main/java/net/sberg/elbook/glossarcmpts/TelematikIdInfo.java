@@ -9,5 +9,5 @@ import java.util.List;
 public class TelematikIdInfo {
     private TelematikIdPattern telematikIdPattern;
     private String telematikId;
-    private List<TelematikIdInfo> telematikIdOrganizationInfos = new ArrayList<>();
+    private List<ProfessionOIDInfo> professionOIDInfos = new ArrayList<>();
 }

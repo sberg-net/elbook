@@ -796,6 +796,37 @@ function mandantUebersicht(searchValue) {
   });
 }
 
+function glossarUebersicht(searchValue) {
+  const token = $("meta[name='_csrf']").attr("content");
+  const header = $("meta[name='_csrf_header']").attr("content");
+
+  if (searchValue === null || searchValue === undefined) {
+    searchValue = elbookContext.searchValue;
+  }
+  elbookContext.searchValue = searchValue?searchValue:'';
+
+  $("#elbook-spinner").attr("style", "");
+  $("#glossarTableContainer").attr("style", "");
+  $("#glossarTableContainer").empty();
+  $.ajax({
+    type: "POST",
+    url: $("#glossarTableContainer").attr("action")+'glossar/uebersicht',
+    data: 'telematikId='+(searchValue?searchValue:''),
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader(header, token);
+    },
+    success: function(data) {
+      $("#elbook-spinner").attr("style", "display:none");
+      $("#glossarTableContainer").append(data);
+      $("#search").val(elbookContext.searchValue);
+    },
+    error: function(jqXHR,textStatus,errorThrown) {
+      $("#elbook-spinner").attr("style", "display:none");
+      $("#glossarTableContainer").append(jqXHR.responseText);
+    }
+  });
+}
+
 function reportUebersicht() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");

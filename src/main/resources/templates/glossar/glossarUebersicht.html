@@ -14,72 +14,74 @@
   ~ See the Licence for the specific language governing permissions and limitations under the Licence.
   -->
 
-<div class="alert alert-danger" role="alert" style="display:none" id="mandantTableError">
+<div class="alert alert-danger" role="alert" style="display:none" id="glossarTableError">
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
   <div class="col-sm-12 col-lg-8 mb-3 p-0 pr-1">
-    <input type="text" class="form-control pr-0" id="search" placeholder="Suchbegriff">
+    <input type="text" class="form-control pr-0" id="search" placeholder="TelematikId">
   </div>
   <div class="col-sm-6 col-lg-2 mb-3 p-0 pr-1">
-    <button type="button" id="searchBtn" class="btn btn-primary btn-block" onclick="mandantUebersicht($('#search').val());">Suchen</button>
-  </div>
-  <div class="col-sm-6 col-lg-2 mb-3 p-0">
-    <button type="button" id="createUser" class="btn btn-primary btn-block" onclick="mandantLaden(-1)">Nutzer anlegen</button>
+    <button type="button" id="searchBtn" class="btn btn-primary btn-block" onclick="glossarUebersicht($('#search').val());">Suchen</button>
   </div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-9 mb-3 font-weight-bolder">
-    <span th:text="${#lists.size(mandanten)}"></span>&nbsp;Nutzer vorhanden
+  <div th:if="${verfuegbar}" class="col-md-9 mb-3 font-weight-bolder">
+    <table>
+      <tr>
+        <td>Pattern</td>
+        <td th:text="${telematikIdInfo.telematikIdPattern.pattern}"></td>
+      </tr>
+      <tr>
+        <td>Fhir Resource Type</td>
+        <td th:text="${telematikIdInfo.telematikIdPattern.fhirResourceType}"></td>
+      </tr>
+      <tr>
+        <td>Code</td>
+        <td th:text="${telematikIdInfo.telematikIdPattern.code}"></td>
+      </tr>
+      <tr>
+        <td>Display</td>
+        <td th:text="${telematikIdInfo.telematikIdPattern.displayShort}"></td>
+      </tr>
+      <tr>
+        <td>ProfessionOIDs</td>
+        <td th:text="${telematikIdInfo.telematikIdPattern.professionOIDs}"></td>
+      </tr>
+      <tr>
+        <td>Sektor</td>
+        <td th:text="${telematikIdInfo.telematikIdPattern.sektor}"></td>
+      </tr>
+      <tr>
+        <td>Url des Sektor - Leitfadens</td>
+        <td><a target="_blank" th:text="${telematikIdInfo.telematikIdPattern.sektorImplLeitfadenUrl}" th:href="${telematikIdInfo.telematikIdPattern.sektorImplLeitfadenUrl}"></a></td>
+      </tr>
+    </table>
   </div>
 </div>
-<div class="row">
-  <table class="table" id="mandantTable" xmlns:th="http://www.thymeleaf.org">
+<div th:if="${verfuegbar}" class="row">
+  <table class="table" id="glossarTable" xmlns:th="http://www.thymeleaf.org">
     <thead>
-      <tr th:if="${!superUser}">
-        <th>ID</th>
-        <th>Name</th>
-        <th>Bundesland</th>
-        <th>Nutzername</th>
-        <th>Sektor</th>
-        <th></th>
-      </tr>
-      <tr th:if="${superUser}">
-        <th>Nutzername</th>
-        <th>E-Mail</th>
-        <th></th>
+      <tr>
+        <th>Code</th>
+        <th>Display</th>
+        <th>EntryType</th>
+        <th>EntryTypeId</th>
+        <th>EntryTypeText</th>
+        <th>Organization</th>
+        <th>Practitionier</th>
+        <th>TspAntragTyp</th>
       </tr>
     </thead>
     <tbody>
-    <tr th:if="${mandanten.isEmpty()}">
-      <td colspan="2">Keine Nutzer verfügbar</td>
-    </tr>
-    <tr th:if="${!superUser}" th:each="n : ${mandanten}">
-      <td><span th:text="${n.id}">ID</span></td>
-      <td><span class="text-break" th:text="${n.name}">Name</span></td>
-      <td><span class="text-break" th:text="${n.bundesland.getHrText()}">Bundesland</span></td>
-      <td><span class="text-break" th:text="${n.nutzername}">Nutzername</span></td>
-      <td th:if="${n.sektor.name() == 'APOTHEKE'}"><span>Apotheke</span></td>
-      <td th:if="${n.sektor.name() == 'ARZTPRAXIS'}"><span>Arztpraxis</span></td>
-      <td>
-        <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-id=${n.id}" onclick="mandantLaden($(this).attr('data-id'))">
-          <span data-feather="edit"></span>
-        </button>&nbsp;&nbsp;&nbsp;
-        <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" onclick="elbookContext.toDeleteMandant=$(this).attr('data-id');$('#confirmDialog4DeleteMandant').modal('show')" >
-          <span data-feather="delete"></span>
-        </button>
-      </td>
-    </tr>
-    <tr th:if="${superUser}" th:each="n : ${mandanten}">
-      <td><span class="text-break" th:text="${n.nutzername}">Nutzername</span></td>
-      <td><span class="text-break" th:text="${n.mail}">Mail</span></td>
-      <td>
-        <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-id=${n.id}" onclick="mandantLaden($(this).attr('data-id'))">
-          <span data-feather="edit"></span>
-        </button>&nbsp;&nbsp;&nbsp;
-        <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" onclick="elbookContext.toDeleteMandant=$(this).attr('data-id');$('#confirmDialog4DeleteMandant').modal('show')" >
-          <span data-feather="delete"></span>
-        </button>
-      </td>
+    <tr th:each="n : ${telematikIdInfo.professionOIDInfos}">
+      <td><span th:text="${n.code}">code</span></td>
+      <td><span th:text="${n.display}">display</span></td>
+      <td><span th:text="${n.entryType}">entryType</span></td>
+      <td><span th:text="${n.entryTypeId}">entryTypeId</span></td>
+      <td><span th:text="${n.entryTypeText}">entryTypeText</span></td>
+      <td><span th:text="${n.organization}">organization</span></td>
+      <td><span th:text="${n.practitionier}">practitionier</span></td>
+      <td><span th:text="${n.tspAntragTyp}">tspAntragTyp</span></td>
     </tr>
     </tbody>
   </table>

@@ -16,6 +16,7 @@
 package net.sberg.elbook.stammdatenzertimportcmpts;
 
 import lombok.Data;
+import net.sberg.elbook.glossarcmpts.TelematikIdInfo;
 import net.sberg.elbook.mandantcmpts.EnumSektor;
 import net.sberg.elbook.verzeichnisdienstcmpts.DirectoryEntrySaveContainer;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
@@ -65,6 +66,8 @@ public class VerzeichnisdienstImportCommand {
     private boolean toDelete;
     private boolean toIgnore;
 
+    private TelematikIdInfo telematikIdInfo;
+
     public static VerzeichnisdienstImportCommand merge(VerzeichnisdienstImportCommand src, VerzeichnisdienstImportCommand dest) {
         VerzeichnisdienstImportCommand res = new VerzeichnisdienstImportCommand();
 
@@ -100,7 +103,9 @@ public class VerzeichnisdienstImportCommand {
         return res;
     }
 
-    public DirectoryEntrySaveContainer createAddDirEntryCommand(TiVZDProperties tiVZDProperties, EnumSektor sektor) {
+    public DirectoryEntrySaveContainer createAddDirEntryCommand(TiVZDProperties tiVZDProperties) {
+        EnumEntryType entryType = telematikIdInfo.getProfessionOIDInfos().get(0).getEntryType();
+
         DirectoryEntrySaveContainer directoryEntrySaveContainer = new DirectoryEntrySaveContainer();
         directoryEntrySaveContainer.setCreate(true);
 
@@ -126,12 +131,12 @@ public class VerzeichnisdienstImportCommand {
         addDirEntryCommand.setCountryCode(laenderCode);
 
         addDirEntryCommand.setSpecialization(fachrichtungen);
-        addDirEntryCommand.setEntryType(eintragsTyp != null?eintragsTyp:sektor.getEntryType());
+        addDirEntryCommand.setEntryType(eintragsTyp != null?eintragsTyp:entryType);
 
         addDirEntryCommand.setMaxKomLeAdr(maxKomLeAdr);
         addDirEntryCommand.setActive(aktiv);
 
-        if (!sektor.getEntryType().equals(EnumEntryType.Berufsgruppe) && !sektor.getEntryType().equals(EnumEntryType.Versicherte)) {
+        if (!entryType.equals(EnumEntryType.Berufsgruppe) && !entryType.equals(EnumEntryType.Versicherte)) {
             if (nachname == null) {
                 addDirEntryCommand.setSn(anzeigeName);
             }
@@ -143,7 +148,9 @@ public class VerzeichnisdienstImportCommand {
         return directoryEntrySaveContainer;
     }
 
-    public DirectoryEntrySaveContainer createModDirEntryCommand(TiVZDProperties tiVZDProperties, EnumSektor sektor, VzdEntryWrapper directoryEntry, Logger log) {
+    public DirectoryEntrySaveContainer createModDirEntryCommand(TiVZDProperties tiVZDProperties, VzdEntryWrapper directoryEntry) {
+        EnumEntryType entryType = telematikIdInfo.getProfessionOIDInfos().get(0).getEntryType();
+
         DirectoryEntrySaveContainer directoryEntrySaveContainer = new DirectoryEntrySaveContainer();
         directoryEntrySaveContainer.setCreate(false);
 
@@ -174,7 +181,7 @@ public class VerzeichnisdienstImportCommand {
             modDirEntryCommand.setEntryType(eintragsTyp);
         }
         else {
-            modDirEntryCommand.setEntryType(sektor.getEntryType());
+            modDirEntryCommand.setEntryType(entryType);
         }
 
         modDirEntryCommand.setMeta(directoryEntry.extractDirectoryEntryMeta());
@@ -192,28 +199,21 @@ public class VerzeichnisdienstImportCommand {
         return directoryEntrySaveContainer;
     }
 
-    public boolean toUpdate(EnumSektor sektor, VzdEntryWrapper directoryEntry) throws Exception {
+    public boolean toUpdate(VzdEntryWrapper directoryEntry) throws Exception {
         if (directoryEntry == null) {
             return false;
         }
 
-        if (!sektor.getEntryType().equals(EnumEntryType.Berufsgruppe) && !sektor.getEntryType().equals(EnumEntryType.Versicherte)) {
+        EnumEntryType entryType = telematikIdInfo.getProfessionOIDInfos().get(0).getEntryType();
+
+        if (telematikIdInfo.getProfessionOIDInfos().get(0).isOrganization()) {
             if (nachname == null) {
                 setNachname(anzeigeName);
             }
             if (allgemeinerName == null) {
                 setAllgemeinerName(anzeigeName);
             }
-        }
 
-        if (sektor.getEntryType().equals(EnumEntryType.Leistungserbringerinstitution)
-            ||
-            sektor.getEntryType().equals(EnumEntryType.Krankenkasse)
-            ||
-            sektor.getEntryType().equals(EnumEntryType.Krankenkasse_ePA)
-            ||
-            sektor.getEntryType().equals(EnumEntryType.Organisation)
-        ) {
             if (directoryEntry.extractDirectoryEntryGivenName() != null
                 &&
                 !directoryEntry.extractDirectoryEntryGivenName().trim().isEmpty()
@@ -227,7 +227,7 @@ public class VerzeichnisdienstImportCommand {
 
         //special komfort handling -> lower versions
         if (getEintragsTyp() == null) {
-            setEintragsTyp(sektor.getEntryType());
+            setEintragsTyp(entryType);
         }
         if (getLaenderCode() == null && directoryEntry.extractDirectoryEntryCountryCode() != null) {
             setLaenderCode(directoryEntry.extractDirectoryEntryCountryCode());

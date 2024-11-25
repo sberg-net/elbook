@@ -23,6 +23,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 import net.sberg.elbook.jdbc.DaoDescriptorClass;
 import net.sberg.elbook.jdbc.DaoDescriptorElement;
+import net.sberg.elbook.mandantcmpts.EnumSektor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -47,7 +48,7 @@ public class LogEintrag {
     private String businessId;
 
     @DaoDescriptorElement(notNull = true)
-    private EnumDatatype datentyp = EnumDatatype.APOTHEKE;
+    private EnumSektor datentyp = EnumSektor.APOTHEKE;
 
     @DaoDescriptorElement(notNull = true)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

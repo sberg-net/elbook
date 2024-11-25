@@ -15,165 +15,112 @@
  */
 package net.sberg.elbook.glossarcmpts;
 
-import net.sberg.elbook.holderattrcmpts.HolderAttrCommand;
-import net.sberg.elbook.holderattrcmpts.HolderAttrCommandContainer;
-import net.sberg.elbook.holderattrcmpts.HolderAttrErgebnis;
-import net.sberg.elbook.jdbc.JdbcGenericDao;
-import net.sberg.elbook.logeintragcmpts.EnumLogEintragArtikelTyp;
-import net.sberg.elbook.logeintragcmpts.LogEintragService;
-import net.sberg.elbook.mandantcmpts.Mandant;
-import net.sberg.elbook.verzeichnisdienstcmpts.VerzeichnisdienstService;
-import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
-import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
+import net.sberg.elbook.mandantcmpts.EnumSektor;
+import net.sberg.elbook.tspcmpts.EnumAntragTyp;
+import net.sberg.elbook.vzdclientcmpts.command.EnumEntryType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class GlossarService {
 
     private static final Logger log = LoggerFactory.getLogger(GlossarService.class);
 
-    @Autowired
-    private JdbcGenericDao genericDao;
-    @Autowired
-    private VerzeichnisdienstService verzeichnisdienstService;
-    @Autowired
-    private LogEintragService logEintragService;
-    @Value("${elbook.encryptionKeys}")
-    private String[] ENC_KEYS;
+    private final Map<String, Holder> holderStorage = new Hashtable<>();
+    private final Map<String, ProfessionOIDInfo> professionOIDStorage = new Hashtable<>();
+    private final Map<String, TelematikIdPattern> telematikIdPatternStorage = new Hashtable<>();
 
-    private CompletableFuture<HolderAttrErgebnis> importieren(
-        HolderAttrCommandContainer holderAttrCommandContainer,
-        HolderAttrCommand holderAttrCommand,
-        Mandant mandant,
-        TiVZDProperties tiVZDProperties,
-        ExecutorService executorService
-        ) {
+    @PostConstruct
+    public void startup() throws Exception {
+        //read holder
+        holderStorage.clear();
+        Map r = new ObjectMapper().readValue(getClass().getResourceAsStream("/glossar/CodeSystem-HolderCS.json"), Map.class);
+        List l = (List) r.get("concept");
+        l.forEach(o -> {
+            Holder holder = new Holder();
+            holder.setCode((String)((Map)o).get("code"));
+            holder.setDisplay((String)((Map)o).get("display"));
+            holderStorage.put(holder.getCode(), holder);
+        });
 
-        return CompletableFuture.supplyAsync(() -> {
-            log.info("START - handle the command for the mandantId: " + mandant.getId() + ", Telematik-ID: " + holderAttrCommand.getTelematikID());
+        //read telematikid pattern
+        telematikIdPatternStorage.clear();
+        r = new ObjectMapper().readValue(getClass().getResourceAsStream("/glossar/TelematikID.mapping.json"), Map.class);
+        l = (List) r.get("mapping");
+        l.forEach(o -> {
+            TelematikIdPattern telematikIdPattern = new TelematikIdPattern();
+            telematikIdPattern.setCode((String)((Map)o).get("code"));
+            telematikIdPattern.setPattern((String)((Map)o).get("pattern"));
+            telematikIdPattern.setDisplayShort((String)((Map)o).get("displayShort"));
+            telematikIdPattern.setFhirResourceType((String)((Map)o).get("fhirResourceType"));
+            telematikIdPattern.setProfessionOIDs((String)((Map)o).get("professionOIDs"));
+            telematikIdPattern.setSektor(EnumSektor.valueOf((String)((Map)o).get("sektor")));
+            telematikIdPattern.setSektorImplLeitfadenUrl(telematikIdPattern.getSektor().getImplLeitfadenUrl());
+            telematikIdPatternStorage.put(telematikIdPattern.getPattern(), telematikIdPattern);
+        });
 
-            HolderAttrErgebnis holderAttrErgebnis = new HolderAttrErgebnis();
+        //read CodeSystem-OrganizationProfessionOID.json
+        r = new ObjectMapper().readValue(getClass().getResourceAsStream("/glossar/CodeSystem-OrganizationProfessionOID.json"), Map.class);
+        l = (List) r.get("concept");
+        l.forEach(o -> {
+            ProfessionOIDInfo professionOIDInfo = new ProfessionOIDInfo();
+            professionOIDInfo.setCode((String)((Map)o).get("code"));
+            professionOIDInfo.setDisplay((String)((Map)o).get("display"));
+            professionOIDInfo.setEntryType(EnumEntryType.valueOf((String)((Map)o).get("entryType")));
+            professionOIDInfo.setEntryTypeId(professionOIDInfo.getEntryType().getId());
+            professionOIDInfo.setEntryTypeText(professionOIDInfo.getEntryType().getHrText());
+            professionOIDInfo.setOrganization(true);
+            professionOIDInfo.setPractitionier(false);
+            professionOIDInfo.setTspAntragTyp(EnumAntragTyp.SMCB);
+            professionOIDStorage.put(professionOIDInfo.getCode(), professionOIDInfo);
+        });
 
-            try {
-                VzdEntryWrapper vzdObject = verzeichnisdienstService.ladeByTelematikId(mandant, holderAttrCommand.getTelematikID());
-                if (vzdObject == null) {
-                    holderAttrErgebnis.setError(true);
-                    holderAttrErgebnis.getLog().add("vzdn entry with the id: "+holderAttrCommand.getTelematikID()+" not available");
-                }
-                else {
-                    verzeichnisdienstService.speichern(tiVZDProperties, holderAttrCommand.createModDirEntryCommand(tiVZDProperties, vzdObject, log, holderAttrCommandContainer, holderAttrErgebnis));
-                    holderAttrErgebnis.getLog().add("holder des verzeichnisdienseintrags wurde geändert mit der id=" + vzdObject.extractDirectoryEntryUid() + " und der telematikid=" + holderAttrCommand.getTelematikID());
-
-                    logEintragService.handle(
-                        mandant,
-                        vzdObject.extractDirectoryEntryTelematikId(),
-                        "",
-                        vzdObject.extractDirectoryEntryUid(),
-                        null,
-                        EnumLogEintragArtikelTyp.VZD_HOLDER_CHANGED
-                    );
-                }
-            } catch (Exception e) {
-                log.error("error on handling the command for mandantId: " + mandant.getId() + ", Telematik-ID: " + holderAttrCommand.getTelematikID(), e);
-                holderAttrErgebnis.setError(true);
-                holderAttrErgebnis.getLog().add("technischer fehler beim importieren: " + e.getMessage());
-            }
-
-            log.info("END - handle the command for the mandantId: " + mandant.getId() + ", Telematik-ID: " + holderAttrCommand.getTelematikID());
-
-            return holderAttrErgebnis;
-        }, executorService);
+        //read CodeSystem-PractitionerProfessionOID.json
+        r = new ObjectMapper().readValue(getClass().getResourceAsStream("/glossar/CodeSystem-PractitionerProfessionOID.json"), Map.class);
+        l = (List) r.get("concept");
+        l.forEach(o -> {
+            ProfessionOIDInfo professionOIDInfo = new ProfessionOIDInfo();
+            professionOIDInfo.setCode((String)((Map)o).get("code"));
+            professionOIDInfo.setDisplay((String)((Map)o).get("display"));
+            professionOIDInfo.setEntryType(EnumEntryType.valueOf((String)((Map)o).get("entryType")));
+            professionOIDInfo.setEntryTypeId(professionOIDInfo.getEntryType().getId());
+            professionOIDInfo.setEntryTypeText(professionOIDInfo.getEntryType().getHrText());
+            professionOIDInfo.setOrganization(false);
+            professionOIDInfo.setPractitionier(true);
+            professionOIDInfo.setTspAntragTyp(EnumAntragTyp.HBA);
+            professionOIDStorage.put(professionOIDInfo.getCode(), professionOIDInfo);
+        });
     }
 
-    public List<HolderAttrErgebnis> execute(Mandant mandant, HolderAttrCommandContainer holderAttrCommandContainer) {
-        List<HolderAttrErgebnis> result = new ArrayList<>();
-        TiVZDProperties tiVZDProperties = null;
-
-        try {
-            tiVZDProperties = mandant.createAndGetTiVZDProperties(verzeichnisdienstService);
-        }
-        catch (Exception e) {
-            log.error("error on importing the commands with the size: "+holderAttrCommandContainer.getCommands().size()+ " - mandant: "+mandant.getId(), e);
-            HolderAttrErgebnis holderAttrErgebnis = new HolderAttrErgebnis();
-            holderAttrErgebnis.setError(true);
-            holderAttrErgebnis.getLog().add("Auf den Verzeichnisdienst kann momentan nicht zugegriffen werden.");
-            result.add(holderAttrErgebnis);
-            return result;
-        }
-
-        if (tiVZDProperties.getAuthSecret() == null || tiVZDProperties.getAuthSecret().trim().isEmpty() || tiVZDProperties.getAuthId() == null || tiVZDProperties.getAuthId().trim().isEmpty()) {
-
-            if (holderAttrCommandContainer.getVzdAuthId() != null
-                &&
-                !holderAttrCommandContainer.getVzdAuthId().trim().isEmpty()
-                &&
-                holderAttrCommandContainer.getVzdAuthSecret() != null
-                &&
-                !holderAttrCommandContainer.getVzdAuthSecret().trim().isEmpty()) {
-
-                tiVZDProperties.setAuthId(holderAttrCommandContainer.getVzdAuthId());
-                tiVZDProperties.setAuthSecret(holderAttrCommandContainer.getVzdAuthSecret());
-
-            }
-            else {
-                log.error("vzd credentials not saved: " + mandant.getId());
-                HolderAttrErgebnis holderAttrErgebnis = new HolderAttrErgebnis();
-                holderAttrErgebnis.setError(true);
-                holderAttrErgebnis.getLog().add("bitte speichern sie die vzd credentials über die weboberfläche -> menüpunkt verzeichnisdienst");
-                result.add(holderAttrErgebnis);
-                return result;
-            }
-        }
-
-        List futureList = Collections.synchronizedList(new ArrayList());
-        log.info("START - handle all commands for the mandantId: " + mandant.getId());
-
-        int threadAnzahl = mandant.getThreadAnzahl() > 0 ? mandant.getThreadAnzahl() : 3;
-        ExecutorService executorService = Executors.newFixedThreadPool(threadAnzahl);
-
-        Object mutex = new Object();
-
-        for (Iterator<HolderAttrCommand> iterator = holderAttrCommandContainer.getCommands().iterator(); iterator.hasNext(); ) {
-            HolderAttrCommand holderAttrCommand = iterator.next();
-
-            futureList.add(importieren(
-                holderAttrCommandContainer,
-                holderAttrCommand,
-                mandant,
-                tiVZDProperties,
-                executorService
-            ));
-        }
-
-        CompletableFuture<HolderAttrErgebnis>[] arr = new CompletableFuture[futureList.size()];
-        CompletableFuture.allOf((CompletableFuture<HolderAttrErgebnis>[]) futureList.toArray(arr)).join();
-        executorService.shutdown();
-
-        result = (List<HolderAttrErgebnis>) futureList.stream().map(f -> {
-            try {
-                return ((CompletableFuture) f).get();
-            } catch (Exception e) {
-                log.error("error on handle the completable-futures for the commands with the mandantId: "+mandant.getId(), e);
-            }
-            return null;
-        }).collect(Collectors.toList());
-
-        log.info("END - handle all commands for the mandantId: " + mandant.getId());
-
-        return result;
+    public boolean validHolder(String holder) {
+        return holderStorage.containsKey(holder);
     }
 
+    public TelematikIdInfo get(String telematikId) {
+        for (Iterator<String> iterator = telematikIdPatternStorage.keySet().iterator(); iterator.hasNext(); ) {
+            String patternStr = iterator.next();
+            Pattern pattern = Pattern.compile(patternStr);
+            Matcher matcher = pattern.matcher(telematikId);
+            if (matcher.find() && matcher.group().equals(telematikId)) {
+                TelematikIdPattern telematikIdPattern = telematikIdPatternStorage.get(patternStr);
+                TelematikIdInfo telematikIdInfo = new TelematikIdInfo();
+                telematikIdInfo.setTelematikIdPattern(telematikIdPattern);
+                telematikIdInfo.setTelematikId(telematikId);
+                String[] ids = telematikIdPattern.getProfessionOIDs().split(",");
+                for (int i = 0; i < ids.length; i++) {
+                    ProfessionOIDInfo professionOIDInfo = professionOIDStorage.get(ids[i]);
+                    telematikIdInfo.getProfessionOIDInfos().add(professionOIDInfo);
+                }
+                return telematikIdInfo;
+            }
+        }
+        return null;
+    }
 }

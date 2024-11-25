@@ -10,156 +10,189 @@
   "concept": [
     {
       "code": "1.2.276.0.76.4.30",
-      "display": "Ärztin/Arzt"
+      "display": "Ärztin/Arzt",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.31",
       "display": "Zahnärztin/Zahnarzt",
-      "definition": "..."
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.32",
-      "display": "Apotheker/-in"
+      "display": "Apotheker/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.33",
-      "display": "Apothekerassistent/-in"
+      "display": "Apothekerassistent/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.34",
-      "display": "Pharmazieingenieur/-in"
+      "display": "Pharmazieingenieur/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.35",
-      "display": "pharmazeutisch-technische/-r Assistent/-in"
+      "display": "pharmazeutisch-technische/-r Assistent/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.36",
-      "display": "pharmazeutisch-kaufmännische/-r Angestellte"
+      "display": "pharmazeutisch-kaufmännische/-r Angestellte",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.37",
-      "display": "Apothekenhelfer/-in"
+      "display": "Apothekenhelfer/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.38",
-      "display": "Apothekenassistent/-in"
+      "display": "Apothekenassistent/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.39",
-      "display": "Pharmazeutische/-r Assistent/-in"
+      "display": "Pharmazeutische/-r Assistent/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.40",
-      "display": "Apothekenfacharbeiter/-in"
+      "display": "Apothekenfacharbeiter/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.41",
-      "display": "Pharmaziepraktikant/-in"
+      "display": "Pharmaziepraktikant/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.42",
-      "display": "Stud.pharm. oder Famulant/-in"
+      "display": "Stud.pharm. oder Famulant/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.43",
-      "display": "PTA-Praktikant/-in"
+      "display": "PTA-Praktikant/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.44",
-      "display": "PKA Auszubildende/-r"
+      "display": "PKA Auszubildende/-r",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.45",
-      "display": "Psychotherapeut/-in"
+      "display": "Psychotherapeut/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.46",
-      "display": "Psychologische/-r Psychotherapeut/-in"
+      "display": "Psychologische/-r Psychotherapeut/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.47",
-      "display": "Kinder- und Jugendlichenpsychotherapeut/-in"
+      "display": "Kinder- und Jugendlichenpsychotherapeut/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.48",
-      "display": "Rettungsassistent/-in"
+      "display": "Rettungsassistent/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.49",
-      "display": "Versicherte/-r"
+      "display": "Versicherte/-r",
+      "entryType": "Versicherte"
     },
     {
       "code": "1.2.276.0.76.4.178",
-      "display": "Notfallsanitäter/-in"
+      "display": "Notfallsanitäter/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.232",
-      "display": "Gesundheits- und Krankenpfleger/-in, Gesundheits- und Kinderkrankenpfleger/-in"
+      "display": "Gesundheits- und Krankenpfleger/-in, Gesundheits- und Kinderkrankenpfleger/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.233",
-      "display": "Altenpfleger/-in"
+      "display": "Altenpfleger/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.234",
-      "display": "Pflegefachfrauen und Pflegefachmänner"
+      "display": "Pflegefachfrauen und Pflegefachmänner",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.235",
-      "display": "Hebamme"
+      "display": "Hebamme",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.236",
-      "display": "Physiotherapeut/-in"
+      "display": "Physiotherapeut/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.237",
-      "display": "Augenoptiker/-in und Optometrist/-in"
+      "display": "Augenoptiker/-in und Optometrist/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.238",
-      "display": "Hörakustiker/-in"
+      "display": "Hörakustiker/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.239",
-      "display": "Orthopädieschuhmacher/-in"
+      "display": "Orthopädieschuhmacher/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.240",
-      "display": "Orthopädietechniker/-in"
+      "display": "Orthopädietechniker/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.241",
-      "display": "Zahntechniker/-in"
+      "display": "Zahntechniker/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.274",
-      "display": "Ergotherapeut/-in"
+      "display": "Ergotherapeut/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.275",
-      "display": "Logopäde/Logopädin"
+      "display": "Logopäde/Logopädin",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.276",
-      "display": "Podologe/Podologin"
+      "display": "Podologe/Podologin",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.277",
-      "display": "Ernährungstherapeut/-in"
+      "display": "Ernährungstherapeut/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.305",
-      "display": "Orthopädieschuhmacher/-in und Orthopädietechniker/-in"
+      "display": "Orthopädieschuhmacher/-in und Orthopädietechniker/-in",
+      "entryType": "Berufsgruppe"
     },
     {
       "code": "1.2.276.0.76.4.308",
-      "display": "Augenoptiker/-in, Optometrist/-in und Hörakustiker/-in"
+      "display": "Augenoptiker/-in, Optometrist/-in und Hörakustiker/-in",
+      "entryType": "Berufsgruppe"
     }
   ],
-  "publisher": "gematik GmbH",
-  "version": "0.11.2",
-  "caseSensitive": false,
-  "count": 37
+  "publisher": "gematik GmbH"
 }

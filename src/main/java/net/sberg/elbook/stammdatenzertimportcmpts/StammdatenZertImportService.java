@@ -26,6 +26,8 @@ import net.sberg.elbook.batchjobcmpts.EnumBatchJobStatusCode;
 import net.sberg.elbook.common.FileUtils;
 import net.sberg.elbook.common.ICommonConstants;
 import net.sberg.elbook.common.MailCreatorAndSender;
+import net.sberg.elbook.glossarcmpts.GlossarService;
+import net.sberg.elbook.glossarcmpts.TelematikIdInfo;
 import net.sberg.elbook.jdbc.DaoPlaceholderProperty;
 import net.sberg.elbook.jdbc.JdbcGenericDao;
 import net.sberg.elbook.logeintragcmpts.EnumLogEintragArtikelTyp;
@@ -57,6 +59,8 @@ public class StammdatenZertImportService {
 
     @Autowired
     private JdbcGenericDao genericDao;
+    @Autowired
+    private GlossarService glossarService;
     @Autowired
     private VerzeichnisdienstService verzeichnisdienstService;
     @Autowired
@@ -131,6 +135,12 @@ public class StammdatenZertImportService {
                     return verzeichnisdienstImportErgebnis;
                 }
 
+                if (verzeichnisdienstImportCommand.getTelematikIdInfo() == null) {
+                    verzeichnisdienstImportErgebnis.getLog().add("telematikIdInfo konnte nicht abgefragt werden");
+                    verzeichnisdienstImportErgebnis.setError(true);
+                    return verzeichnisdienstImportErgebnis;
+                }
+
                 boolean emptyVzdUid = verzeichnisdienstImportCommand.getVzdUid() == null || verzeichnisdienstImportCommand.getVzdUid().trim().isEmpty();
                 String telematikId = verzeichnisdienstImportCommand.getTelematikID();
                 boolean emptyTelematikId = telematikId == null || telematikId.trim().isEmpty();
@@ -200,7 +210,7 @@ public class StammdatenZertImportService {
                 //INSERT
                 if (verzeichnisdienstImportErgebnis.isInsert()) {
                     if (!verzeichnisdienstImportErgebnis.isSilentMode()) {
-                        List dnNameL = verzeichnisdienstService.speichern(tiVZDProperties, verzeichnisdienstImportCommand.createAddDirEntryCommand(tiVZDProperties, verzeichnisdienstImportCommandContainer.getSektor()));
+                        List dnNameL = verzeichnisdienstService.speichern(tiVZDProperties, verzeichnisdienstImportCommand.createAddDirEntryCommand(tiVZDProperties));
                         VzdEntryWrapper distinguishedName = (VzdEntryWrapper) dnNameL.get(0);
 
                         verzeichnisdienstImportErgebnis.getLog().add("verzeichnisdienseintrag wurde eingefügt mit der id=" + distinguishedName.extractDistinguishedNameUid() + " und der telematikid=" + verzeichnisdienstImportCommand.getTelematikID());
@@ -238,7 +248,7 @@ public class StammdatenZertImportService {
                 }
 
                 //UPDATE
-                if (!verzeichnisdienstImportErgebnis.isDelete() && !verzeichnisdienstImportErgebnis.isInsert() && verzeichnisdienstImportCommand.toUpdate(verzeichnisdienstImportCommandContainer.getSektor(), vzdObject)) {
+                if (!verzeichnisdienstImportErgebnis.isDelete() && !verzeichnisdienstImportErgebnis.isInsert() && verzeichnisdienstImportCommand.toUpdate(vzdObject)) {
 
                     verzeichnisdienstImportErgebnis.setUpdate(true);
 
@@ -246,7 +256,7 @@ public class StammdatenZertImportService {
                     verzeichnisdienstImportCommand.setTelematikID(vzdObject.extractDirectoryEntryTelematikId());
 
                     if (!verzeichnisdienstImportErgebnis.isSilentMode()) {
-                        verzeichnisdienstService.speichern(tiVZDProperties, verzeichnisdienstImportCommand.createModDirEntryCommand(tiVZDProperties, verzeichnisdienstImportCommandContainer.getSektor(), vzdObject, log));
+                        verzeichnisdienstService.speichern(tiVZDProperties, verzeichnisdienstImportCommand.createModDirEntryCommand(tiVZDProperties, vzdObject));
                         verzeichnisdienstImportErgebnis.getLog().add("verzeichnisdienseintrag wurde geändert mit der id=" + verzeichnisdienstImportCommand.getVzdUid() + " und der telematikid=" + verzeichnisdienstImportCommand.getTelematikID());
                     }
                     else {
@@ -321,6 +331,9 @@ public class StammdatenZertImportService {
         if (!verzeichnisdienstImportCommandContainer.isSyncWithTsps()) {
             return verzeichnisdienstImportCommandContainer;
         }
+
+        TelematikIdInfo telematikIdInfo = verzeichnisdienstImportCommandContainer.getCommands().get(0).getTelematikIdInfo();
+
         verzeichnisdienstImportCommandContainer.getCommands().forEach(verzeichnisdienstImportCommand -> verzeichnisdienstImportCommand.setToIgnore(true));
 
         List<Tsp> tsps = genericDao.selectMany(
@@ -337,7 +350,7 @@ public class StammdatenZertImportService {
 
             int limit = 100;
 
-            if (verzeichnisdienstImportCommandContainer.getSektor().getAntragTyp().equals(EnumAntragTyp.SMCB)) {
+            if (telematikIdInfo.getProfessionOIDInfos().get(0).getTspAntragTyp().equals(EnumAntragTyp.SMCB)) {
                 TspProperties tspProperties = tsp.create(EnumAntragTyp.SMCB);
                 TspConnector tspConnector = new TspConnectorBuilder().build(tspProperties, tsp.getTspName().getQvda(), EnumAntragTyp.SMCB);
 
@@ -351,7 +364,7 @@ public class StammdatenZertImportService {
                     }
                     offset = offset + limit;
                 }
-                verzeichnisdienstImportCommandContainer.syncSmcb(smcbAntragExports);
+                verzeichnisdienstImportCommandContainer.syncSmcb(telematikIdInfo, smcbAntragExports);
             }
             else {
                 TspProperties tspProperties = tsp.create(EnumAntragTyp.HBA);
@@ -367,7 +380,7 @@ public class StammdatenZertImportService {
                     }
                     offset = offset + limit;
                 }
-                verzeichnisdienstImportCommandContainer.syncHba(hbaAntragExports);
+                verzeichnisdienstImportCommandContainer.syncHba(telematikIdInfo, hbaAntragExports);
             }
 
         }
@@ -412,6 +425,21 @@ public class StammdatenZertImportService {
                 result.add(verzeichnisdienstImportErgebnis);
                 return result;
             }
+        }
+
+        try {
+            for (Iterator<VerzeichnisdienstImportCommand> iterator = verzeichnisdienstImportCommandContainer.getCommands().iterator(); iterator.hasNext(); ) {
+                VerzeichnisdienstImportCommand verzeichnisdienstImportCommand = iterator.next();
+                verzeichnisdienstImportCommand.setTelematikIdInfo(glossarService.get(verzeichnisdienstImportCommand.getTelematikID()));
+            }
+        }
+        catch (Exception e) {
+            log.error("error on importing / take the telematikIdInfo: "+verzeichnisdienstImportCommandContainer.getCommands().size()+ " - mandant: "+mandant.getId(), e);
+            VerzeichnisdienstImportErgebnis verzeichnisdienstImportErgebnis = new VerzeichnisdienstImportErgebnis();
+            verzeichnisdienstImportErgebnis.setError(true);
+            verzeichnisdienstImportErgebnis.getLog().add("Holen TelematikIdInfo ist fehlgeschlagen. Bitte achten Sie darauf, dass die Telematik-ID immer gesetzt ist!");
+            result.add(verzeichnisdienstImportErgebnis);
+            return result;
         }
 
         try {
