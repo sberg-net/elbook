@@ -15,21 +15,13 @@
  */
 package net.sberg.elbook.holderattrcmpts;
 
-import de.gematik.ws.cm.pers.hba_smc_b.v1.ExtCertType;
-import de.gematik.ws.cm.pers.hba_smc_b.v1.HbaAntragExport;
-import de.gematik.ws.cm.pers.hba_smc_b.v1.ProdResultType;
-import de.gematik.ws.cm.pers.hba_smc_b.v1.SmcbAntragExport;
 import lombok.Data;
-import net.sberg.elbook.mandantcmpts.EnumSektor;
-import net.sberg.elbook.stammdatenzertimportcmpts.EncZertifikat;
-import org.apache.commons.codec.binary.Base64;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class HolderAttrCommandContainer {
-    private EnumSektor sektor = EnumSektor.APOTHEKE;
     private String vzdAuthId;
     private String vzdAuthSecret;
     private List<HolderAttrCommand> commands = new ArrayList<>();

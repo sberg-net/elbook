@@ -1,11 +1,9 @@
 package net.sberg.elbook;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.sberg.elbook.config.AppConfig;
 import net.sberg.elbook.jdbc.DaoPlaceholderProperty;
 import net.sberg.elbook.jdbc.JdbcGenericDao;
 import net.sberg.elbook.mandantcmpts.Mandant;
-import net.sberg.elbook.verzeichnisdienstcmpts.DirectoryEntryContainer;
 import net.sberg.elbook.verzeichnisdienstcmpts.VerzeichnisdienstService;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.TiVZDConnector;
@@ -15,23 +13,14 @@ import net.sberg.elbook.vzdclientcmpts.command.PagingInfo;
 import net.sberg.elbook.vzdclientcmpts.command.ReadDirCertCommand;
 import net.sberg.elbook.vzdclientcmpts.command.ReadDirSyncEntryCommand;
 import net.sberg.elbook.vzdclientcmpts.command.resultcallbackhandler.DefaultCommandResultCallbackHandler;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = AppConfig.class)
 //@AutoConfigureMockMvc
@@ -47,7 +36,7 @@ public class CertAlgoAccessTest {
     //@Value("${elbook.encryptionKeys}")
     private String[] ENC_KEYS;
 
-    private String username = "lakrlpprod";
+    private String username = "";
 
     private DefaultCommandResultCallbackHandler execute(TiVZDProperties tiVZDProperties, AbstractCommand command) throws Exception {
         List<AbstractCommand> commands = new ArrayList<>();

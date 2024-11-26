@@ -20,8 +20,6 @@ import jakarta.annotation.PostConstruct;
 import net.sberg.elbook.mandantcmpts.EnumSektor;
 import net.sberg.elbook.tspcmpts.EnumAntragTyp;
 import net.sberg.elbook.vzdclientcmpts.command.EnumEntryType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,11 +29,11 @@ import java.util.regex.Pattern;
 @Service
 public class GlossarService {
 
-    private static final Logger log = LoggerFactory.getLogger(GlossarService.class);
-
-    private final Map<String, Holder> holderStorage = new Hashtable<>();
+    private final Map<String, HolderInfo> holderStorage = new Hashtable<>();
     private final Map<String, ProfessionOIDInfo> professionOIDStorage = new Hashtable<>();
     private final Map<String, TelematikIdPattern> telematikIdPatternStorage = new Hashtable<>();
+
+    public static final String SEARCHVALUE_ALL_ELEMS = "*";
 
     @PostConstruct
     public void startup() throws Exception {
@@ -44,7 +42,7 @@ public class GlossarService {
         Map r = new ObjectMapper().readValue(getClass().getResourceAsStream("/glossar/CodeSystem-HolderCS.json"), Map.class);
         List l = (List) r.get("concept");
         l.forEach(o -> {
-            Holder holder = new Holder();
+            HolderInfo holder = new HolderInfo();
             holder.setCode((String)((Map)o).get("code"));
             holder.setDisplay((String)((Map)o).get("display"));
             holderStorage.put(holder.getCode(), holder);
@@ -99,11 +97,31 @@ public class GlossarService {
         });
     }
 
-    public boolean validHolder(String holder) {
+    public synchronized boolean validHolder(String holder) {
         return holderStorage.containsKey(holder);
     }
 
-    public TelematikIdInfo get(String telematikId) {
+    public synchronized ProfessionOIDInfo getProfessionOIDInfo(String professionOID) {
+        return professionOIDStorage.get(professionOID);
+    }
+
+    public synchronized HolderInfo getHolderInfo(String holder) {
+        return holderStorage.get(holder);
+    }
+
+    public synchronized List<HolderInfo> getAllHolderInfo() {
+        List<HolderInfo> elems = new ArrayList<>(holderStorage.values());
+        Collections.sort(elems, (o1, o2) -> o1.getCode().compareTo(o2.getCode()));
+        return elems;
+    }
+
+    public synchronized List<ProfessionOIDInfo> getAllProfessionOIDInfo() {
+        List<ProfessionOIDInfo> elems = new ArrayList<>(professionOIDStorage.values());
+        Collections.sort(elems, (o1, o2) -> o1.getCode().compareTo(o2.getCode()));
+        return elems;
+    }
+
+    public synchronized TelematikIdInfo getTelematikIdInfo(String telematikId) {
         for (Iterator<String> iterator = telematikIdPatternStorage.keySet().iterator(); iterator.hasNext(); ) {
             String patternStr = iterator.next();
             Pattern pattern = Pattern.compile(patternStr);

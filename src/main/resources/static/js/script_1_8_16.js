@@ -796,7 +796,7 @@ function mandantUebersicht(searchValue) {
   });
 }
 
-function glossarUebersicht(searchValue) {
+function glossarUebersicht(searchValue, searchType) {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
@@ -804,6 +804,7 @@ function glossarUebersicht(searchValue) {
     searchValue = elbookContext.searchValue;
   }
   elbookContext.searchValue = searchValue?searchValue:'';
+  searchType=searchType?searchType:'';
 
   $("#elbook-spinner").attr("style", "");
   $("#glossarTableContainer").attr("style", "");
@@ -811,14 +812,22 @@ function glossarUebersicht(searchValue) {
   $.ajax({
     type: "POST",
     url: $("#glossarTableContainer").attr("action")+'glossar/uebersicht',
-    data: 'telematikId='+(searchValue?searchValue:''),
+    data: 'searchValue='+(searchValue?searchValue:'')+'&searchType='+searchType,
     beforeSend: function(xhr) {
       xhr.setRequestHeader(header, token);
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
       $("#glossarTableContainer").append(data);
-      $("#search").val(elbookContext.searchValue);
+      if (searchType === 'telematikId') {
+        $("#telematikIdSearch").val(elbookContext.searchValue);
+      }
+      else if (searchType === 'professionOID') {
+        $("#professionOIDSearch").val(elbookContext.searchValue);
+      }
+      else if (searchType === 'holder') {
+        $("#holderSearch").val(elbookContext.searchValue);
+      }
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");

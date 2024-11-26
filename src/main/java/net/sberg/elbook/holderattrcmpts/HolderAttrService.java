@@ -15,25 +15,10 @@
  */
 package net.sberg.elbook.holderattrcmpts;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.gematik.ws.cm.pers.hba_smc_b.v1.HbaAntragExport;
-import de.gematik.ws.cm.pers.hba_smc_b.v1.SmcbAntragExport;
-import de.gematik.ws.sst.v1.GetHbaAntraegeExportResponseType;
-import de.gematik.ws.sst.v1.GetSmcbAntraegeExportResponseType;
-import net.sberg.elbook.batchjobcmpts.BatchJob;
-import net.sberg.elbook.batchjobcmpts.EnumBatchJobName;
-import net.sberg.elbook.batchjobcmpts.EnumBatchJobStatusCode;
-import net.sberg.elbook.common.FileUtils;
-import net.sberg.elbook.common.ICommonConstants;
-import net.sberg.elbook.common.MailCreatorAndSender;
 import net.sberg.elbook.glossarcmpts.GlossarService;
-import net.sberg.elbook.jdbc.DaoPlaceholderProperty;
-import net.sberg.elbook.jdbc.JdbcGenericDao;
 import net.sberg.elbook.logeintragcmpts.EnumLogEintragArtikelTyp;
 import net.sberg.elbook.logeintragcmpts.LogEintragService;
 import net.sberg.elbook.mandantcmpts.Mandant;
-import net.sberg.elbook.stammdatenzertimportcmpts.EncZertifikat;
-import net.sberg.elbook.tspcmpts.*;
 import net.sberg.elbook.verzeichnisdienstcmpts.DirectoryEntrySaveContainer;
 import net.sberg.elbook.verzeichnisdienstcmpts.VerzeichnisdienstService;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
@@ -41,13 +26,12 @@ import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -64,8 +48,6 @@ public class HolderAttrService {
     private LogEintragService logEintragService;
     @Autowired
     private GlossarService glossarService;
-    @Value("${elbook.encryptionKeys}")
-    private String[] ENC_KEYS;
 
     private CompletableFuture<HolderAttrErgebnis> importieren(
         HolderAttrCommandContainer holderAttrCommandContainer,
@@ -152,6 +134,21 @@ public class HolderAttrService {
                 result.add(holderAttrErgebnis);
                 return result;
             }
+        }
+
+        try {
+            for (Iterator<HolderAttrCommand> iterator = holderAttrCommandContainer.getCommands().iterator(); iterator.hasNext(); ) {
+                HolderAttrCommand holderAttrCommand = iterator.next();
+                holderAttrCommand.setTelematikIdInfo(glossarService.getTelematikIdInfo(holderAttrCommand.getTelematikID()));
+            }
+        }
+        catch (Exception e) {
+            log.error("error on importing / take the telematikIdInfo: "+holderAttrCommandContainer.getCommands().size()+ " - mandant: "+mandant.getId(), e);
+            HolderAttrErgebnis holderAttrErgebnis = new HolderAttrErgebnis();
+            holderAttrErgebnis.setError(true);
+            holderAttrErgebnis.getLog().add("Es ist ein Fehler beim Bestimmen der telematikId-Info aufgetreten");
+            result.add(holderAttrErgebnis);
+            return result;
         }
 
         List futureList = Collections.synchronizedList(new ArrayList());

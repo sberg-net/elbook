@@ -17,12 +17,10 @@ package net.sberg.elbook.stammdatenzertimportcmpts;
 
 import lombok.Data;
 import net.sberg.elbook.glossarcmpts.TelematikIdInfo;
-import net.sberg.elbook.mandantcmpts.EnumSektor;
 import net.sberg.elbook.verzeichnisdienstcmpts.DirectoryEntrySaveContainer;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
 import net.sberg.elbook.vzdclientcmpts.command.*;
-import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +98,9 @@ public class VerzeichnisdienstImportCommand {
         res.getEncZertifikat().addAll(dest.getEncZertifikat());
 
         res.setToDelete(src.isToDelete());
+        res.setToIgnore(src.isToIgnore());
+
+        res.setTelematikIdInfo(src.getTelematikIdInfo());
         return res;
     }
 
@@ -136,7 +137,7 @@ public class VerzeichnisdienstImportCommand {
         addDirEntryCommand.setMaxKomLeAdr(maxKomLeAdr);
         addDirEntryCommand.setActive(aktiv);
 
-        if (!entryType.equals(EnumEntryType.Berufsgruppe) && !entryType.equals(EnumEntryType.Versicherte)) {
+        if (telematikIdInfo.getProfessionOIDInfos().get(0).isOrganization()) {
             if (nachname == null) {
                 addDirEntryCommand.setSn(anzeigeName);
             }

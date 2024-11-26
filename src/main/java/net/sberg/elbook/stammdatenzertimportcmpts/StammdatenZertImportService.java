@@ -428,21 +428,6 @@ public class StammdatenZertImportService {
         }
 
         try {
-            for (Iterator<VerzeichnisdienstImportCommand> iterator = verzeichnisdienstImportCommandContainer.getCommands().iterator(); iterator.hasNext(); ) {
-                VerzeichnisdienstImportCommand verzeichnisdienstImportCommand = iterator.next();
-                verzeichnisdienstImportCommand.setTelematikIdInfo(glossarService.get(verzeichnisdienstImportCommand.getTelematikID()));
-            }
-        }
-        catch (Exception e) {
-            log.error("error on importing / take the telematikIdInfo: "+verzeichnisdienstImportCommandContainer.getCommands().size()+ " - mandant: "+mandant.getId(), e);
-            VerzeichnisdienstImportErgebnis verzeichnisdienstImportErgebnis = new VerzeichnisdienstImportErgebnis();
-            verzeichnisdienstImportErgebnis.setError(true);
-            verzeichnisdienstImportErgebnis.getLog().add("Holen TelematikIdInfo ist fehlgeschlagen. Bitte achten Sie darauf, dass die Telematik-ID immer gesetzt ist!");
-            result.add(verzeichnisdienstImportErgebnis);
-            return result;
-        }
-
-        try {
             if (!verzeichnisdienstImportCommandContainer.isSyncWithTsps()) {
                 verzeichnisdienstImportCommandContainer.merge();
             }
@@ -452,6 +437,21 @@ public class StammdatenZertImportService {
             VerzeichnisdienstImportErgebnis verzeichnisdienstImportErgebnis = new VerzeichnisdienstImportErgebnis();
             verzeichnisdienstImportErgebnis.setError(true);
             verzeichnisdienstImportErgebnis.getLog().add("Mergen der Daten fehlgeschlagen. Bitte achten Sie darauf, dass die Telematik-ID immer gesetzt ist!");
+            result.add(verzeichnisdienstImportErgebnis);
+            return result;
+        }
+
+        try {
+            for (Iterator<VerzeichnisdienstImportCommand> iterator = verzeichnisdienstImportCommandContainer.getCommands().iterator(); iterator.hasNext(); ) {
+                VerzeichnisdienstImportCommand verzeichnisdienstImportCommand = iterator.next();
+                verzeichnisdienstImportCommand.setTelematikIdInfo(glossarService.getTelematikIdInfo(verzeichnisdienstImportCommand.getTelematikID()));
+            }
+        }
+        catch (Exception e) {
+            log.error("error on importing / take the telematikIdInfo: "+verzeichnisdienstImportCommandContainer.getCommands().size()+ " - mandant: "+mandant.getId(), e);
+            VerzeichnisdienstImportErgebnis verzeichnisdienstImportErgebnis = new VerzeichnisdienstImportErgebnis();
+            verzeichnisdienstImportErgebnis.setError(true);
+            verzeichnisdienstImportErgebnis.getLog().add("Holen TelematikIdInfo ist fehlgeschlagen. Bitte achten Sie darauf, dass die Telematik-ID immer gesetzt ist!");
             result.add(verzeichnisdienstImportErgebnis);
             return result;
         }

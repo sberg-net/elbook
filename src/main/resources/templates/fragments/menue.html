@@ -93,7 +93,7 @@
                 Statistiken / Reports
               </a>
             </li>
-            <li class="nav-item" sec:authorize="isAnonymous()">
+            <li class="nav-item">
               <a class="nav-link" th:classappend="${requestPath.endsWith('/glossar') ? 'active':''}" th:href="@{/glossar}">
                 <span data-feather="bar-chart-2"></span>
                 Glossar

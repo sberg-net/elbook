@@ -14,78 +14,162 @@
   ~ See the Licence for the specific language governing permissions and limitations under the Licence.
   -->
 
-<div class="alert alert-danger" role="alert" style="display:none" id="glossarTableError">
-</div>
-<div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-sm-12 col-lg-8 mb-3 p-0 pr-1">
-    <input type="text" class="form-control pr-0" id="search" placeholder="TelematikId">
+<!--- telematikId -->
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Suche nach TelematikID-Informationen</h5>
+    <p class="card-text">Sie können hier eine komplette TelematikId eingeben und sich Metainformationen geben lassen: welche Branche / Sektor, die zugehörigen professionOID's usw.</p>
+    <div class="row" xmlns:th="http://www.thymeleaf.org">
+      <div class="col-sm-12 col-lg-8 mb-3 p-0 pr-1">
+        <input type="text" class="form-control pr-0" id="telematikIdSearch" placeholder="TelematikId">
+      </div>
+      <div class="col-sm-6 col-lg-2 mb-3 p-0 pr-1">
+        <button type="button" id="telematikIdSearchBtn" class="btn btn-primary btn-block" onclick="glossarUebersicht($('#telematikIdSearch').val(), 'telematikId');">Suchen</button>
+      </div>
+    </div>
+    <div xmlns:th="http://www.thymeleaf.org" class="row">
+      <div th:if="${telematikIdInfoVerfuegbar}" class="col-md-9 mb-3 font-weight-bolder">
+        <table>
+          <tr>
+            <td>Pattern</td>
+            <td th:text="${telematikIdInfo.telematikIdPattern.pattern}"></td>
+          </tr>
+          <tr>
+            <td>Fhir Resource Type</td>
+            <td th:text="${telematikIdInfo.telematikIdPattern.fhirResourceType}"></td>
+          </tr>
+          <tr>
+            <td>Code</td>
+            <td th:text="${telematikIdInfo.telematikIdPattern.code}"></td>
+          </tr>
+          <tr>
+            <td>Display</td>
+            <td th:text="${telematikIdInfo.telematikIdPattern.displayShort}"></td>
+          </tr>
+          <tr>
+            <td>ProfessionOIDs</td>
+            <td th:text="${telematikIdInfo.telematikIdPattern.professionOIDs}"></td>
+          </tr>
+          <tr>
+            <td>Sektor</td>
+            <td th:text="${telematikIdInfo.telematikIdPattern.sektor}"></td>
+          </tr>
+          <tr>
+            <td>Url des Sektor - Leitfadens</td>
+            <td><a target="_blank" th:text="${telematikIdInfo.telematikIdPattern.sektorImplLeitfadenUrl}" th:href="${telematikIdInfo.telematikIdPattern.sektorImplLeitfadenUrl}"></a></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div th:if="${telematikIdInfoVerfuegbar}" class="row">
+      <table class="table" id="glossarTelematikIdTable" xmlns:th="http://www.thymeleaf.org">
+        <thead>
+        <tr>
+          <th>Code</th>
+          <th>Display</th>
+          <th>EntryType</th>
+          <th>EntryTypeId</th>
+          <th>EntryTypeText</th>
+          <th>Organization</th>
+          <th>Practitionier</th>
+          <th>TspAntragTyp</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="n : ${telematikIdInfo.professionOIDInfos}">
+          <td><span th:text="${n.code}">code</span></td>
+          <td><span th:text="${n.display}">display</span></td>
+          <td><span th:text="${n.entryType}">entryType</span></td>
+          <td><span th:text="${n.entryTypeId}">entryTypeId</span></td>
+          <td><span th:text="${n.entryTypeText}">entryTypeText</span></td>
+          <td><span th:text="${n.organization}">organization</span></td>
+          <td><span th:text="${n.practitionier}">practitionier</span></td>
+          <td><span th:text="${n.tspAntragTyp}">tspAntragTyp</span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="col-sm-6 col-lg-2 mb-3 p-0 pr-1">
-    <button type="button" id="searchBtn" class="btn btn-primary btn-block" onclick="glossarUebersicht($('#search').val());">Suchen</button>
+</div>
+
+<!--- professionOID -->
+<br/><br/>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Suche nach ProfessionOID-Informationen</h5>
+    <p class="card-text">Sie können hier eine komplette ProfessionOID eingeben (z.b. 1.2.276.0.76.4.251) und sich Metainformationen geben lassen. Ein Suchen nach '*' gibt alle im System verfügbaren OID's aus.</p>
+    <div class="row" xmlns:th="http://www.thymeleaf.org">
+      <div class="col-sm-12 col-lg-8 mb-3 p-0 pr-1">
+        <input type="text" class="form-control pr-0" id="professionOIDSearch" placeholder="ProfessionOID">
+      </div>
+      <div class="col-sm-6 col-lg-2 mb-3 p-0 pr-1">
+        <button type="button" id="professionOIDSearchBtn" class="btn btn-primary btn-block" onclick="glossarUebersicht($('#professionOIDSearch').val(), 'professionOID');">Suchen</button>
+      </div>
+    </div>
+    <div class="row">
+      <table class="table" id="glossarProfessionOIDTable" xmlns:th="http://www.thymeleaf.org">
+        <thead>
+        <tr>
+          <th>Code</th>
+          <th>Display</th>
+          <th>EntryType</th>
+          <th>EntryTypeId</th>
+          <th>EntryTypeText</th>
+          <th>Organization</th>
+          <th>Practitionier</th>
+          <th>TspAntragTyp</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="n : ${professionOIDInfos}">
+          <td><span th:text="${n.code}">code</span></td>
+          <td><span th:text="${n.display}">display</span></td>
+          <td><span th:text="${n.entryType}">entryType</span></td>
+          <td><span th:text="${n.entryTypeId}">entryTypeId</span></td>
+          <td><span th:text="${n.entryTypeText}">entryTypeText</span></td>
+          <td><span th:text="${n.organization}">organization</span></td>
+          <td><span th:text="${n.practitionier}">practitionier</span></td>
+          <td><span th:text="${n.tspAntragTyp}">tspAntragTyp</span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
-<div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div th:if="${verfuegbar}" class="col-md-9 mb-3 font-weight-bolder">
-    <table>
-      <tr>
-        <td>Pattern</td>
-        <td th:text="${telematikIdInfo.telematikIdPattern.pattern}"></td>
-      </tr>
-      <tr>
-        <td>Fhir Resource Type</td>
-        <td th:text="${telematikIdInfo.telematikIdPattern.fhirResourceType}"></td>
-      </tr>
-      <tr>
-        <td>Code</td>
-        <td th:text="${telematikIdInfo.telematikIdPattern.code}"></td>
-      </tr>
-      <tr>
-        <td>Display</td>
-        <td th:text="${telematikIdInfo.telematikIdPattern.displayShort}"></td>
-      </tr>
-      <tr>
-        <td>ProfessionOIDs</td>
-        <td th:text="${telematikIdInfo.telematikIdPattern.professionOIDs}"></td>
-      </tr>
-      <tr>
-        <td>Sektor</td>
-        <td th:text="${telematikIdInfo.telematikIdPattern.sektor}"></td>
-      </tr>
-      <tr>
-        <td>Url des Sektor - Leitfadens</td>
-        <td><a target="_blank" th:text="${telematikIdInfo.telematikIdPattern.sektorImplLeitfadenUrl}" th:href="${telematikIdInfo.telematikIdPattern.sektorImplLeitfadenUrl}"></a></td>
-      </tr>
-    </table>
+
+<!--- holder -->
+<br/><br/>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Suche nach Holder-Informationen</h5>
+    <p class="card-text">Sie können hier einen kompletten Holder eingeben (z.b. lakrlp) und sich Metainformationen geben lassen. Ein Suchen nach '*' gibt alle im System verfügbaren Holder aus.</p>
+    <div class="row" xmlns:th="http://www.thymeleaf.org">
+      <div class="col-sm-12 col-lg-8 mb-3 p-0 pr-1">
+        <input type="text" class="form-control pr-0" id="holderSearch" placeholder="Holder">
+      </div>
+      <div class="col-sm-6 col-lg-2 mb-3 p-0 pr-1">
+        <button type="button" id="holderSearchBtn" class="btn btn-primary btn-block" onclick="glossarUebersicht($('#holderSearch').val(), 'holder');">Suchen</button>
+      </div>
+    </div>
+    <div class="row">
+      <table class="table" id="glossarHolderTable" xmlns:th="http://www.thymeleaf.org">
+        <thead>
+        <tr>
+          <th>Code</th>
+          <th>Display</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="n : ${holderInfos}">
+          <td><span th:text="${n.code}">code</span></td>
+          <td><span th:text="${n.display}">display</span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
-<div th:if="${verfuegbar}" class="row">
-  <table class="table" id="glossarTable" xmlns:th="http://www.thymeleaf.org">
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Display</th>
-        <th>EntryType</th>
-        <th>EntryTypeId</th>
-        <th>EntryTypeText</th>
-        <th>Organization</th>
-        <th>Practitionier</th>
-        <th>TspAntragTyp</th>
-      </tr>
-    </thead>
-    <tbody>
-    <tr th:each="n : ${telematikIdInfo.professionOIDInfos}">
-      <td><span th:text="${n.code}">code</span></td>
-      <td><span th:text="${n.display}">display</span></td>
-      <td><span th:text="${n.entryType}">entryType</span></td>
-      <td><span th:text="${n.entryTypeId}">entryTypeId</span></td>
-      <td><span th:text="${n.entryTypeText}">entryTypeText</span></td>
-      <td><span th:text="${n.organization}">organization</span></td>
-      <td><span th:text="${n.practitionier}">practitionier</span></td>
-      <td><span th:text="${n.tspAntragTyp}">tspAntragTyp</span></td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+
 <script>
   feather.replace();
 </script>

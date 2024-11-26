@@ -17,14 +17,15 @@ package net.sberg.elbook.holderattrcmpts;
 
 import lombok.Data;
 import net.sberg.elbook.glossarcmpts.GlossarService;
+import net.sberg.elbook.glossarcmpts.TelematikIdInfo;
 import net.sberg.elbook.verzeichnisdienstcmpts.DirectoryEntrySaveContainer;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
-import net.sberg.elbook.vzdclientcmpts.command.*;
-import org.apache.commons.logging.Log;
+import net.sberg.elbook.vzdclientcmpts.command.EnumEntryType;
+import net.sberg.elbook.vzdclientcmpts.command.EnumStateOrProvinceName;
+import net.sberg.elbook.vzdclientcmpts.command.ModDirEntryCommand;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class HolderAttrCommand {
 
     private String telematikID;
     private List<String> holder;
+    private TelematikIdInfo telematikIdInfo;
 
     public DirectoryEntrySaveContainer createModDirEntryCommand(GlossarService glossarService, TiVZDProperties tiVZDProperties, VzdEntryWrapper directoryEntry, Logger log, HolderAttrCommandContainer holderAttrCommandContainer, HolderAttrErgebnis holderAttrErgebnis) {
         DirectoryEntrySaveContainer directoryEntrySaveContainer = new DirectoryEntrySaveContainer();
@@ -64,9 +66,14 @@ public class HolderAttrCommand {
         //entryType handling
         List<String> entryType = directoryEntry.extractDirectoryEntryEntryType();
         if (entryType == null || entryType.isEmpty())  {
-            log.error("entryType for id: "+directoryEntry.extractDirectoryEntryTelematikId()+" is not set");
-            holderAttrErgebnis.setError(true);
-            holderAttrErgebnis.getLog().add("entryType for id: "+directoryEntry.extractDirectoryEntryTelematikId()+" is not set");
+            if (telematikIdInfo == null) {
+                log.error("entryType for id: " + directoryEntry.extractDirectoryEntryTelematikId() + " is not set");
+                holderAttrErgebnis.setError(true);
+                holderAttrErgebnis.getLog().add("entryType for id: " + directoryEntry.extractDirectoryEntryTelematikId() + " is not set");
+            }
+            else {
+                modDirEntryCommand.setEntryType(telematikIdInfo.getProfessionOIDInfos().get(0).getEntryType());
+            }
         }
         else {
             modDirEntryCommand.setEntryType(EnumEntryType.getFromId(entryType.get(0), log));
@@ -91,13 +98,11 @@ public class HolderAttrCommand {
         }
         else {
             //check holder
-            boolean valid = true;
             for (Iterator<String> iterator = holder.iterator(); iterator.hasNext(); ) {
                 String holder = iterator.next();
                 if (!glossarService.validHolder(holder)) {
                     holderAttrErgebnis.setError(true);
                     holderAttrErgebnis.getLog().add("holder not valid: "+holder);
-                    valid = false;
                     break;
                 }
             }
