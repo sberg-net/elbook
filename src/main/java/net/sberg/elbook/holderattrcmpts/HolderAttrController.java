@@ -15,6 +15,7 @@
  */
 package net.sberg.elbook.holderattrcmpts;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -26,6 +27,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -35,6 +37,22 @@ import java.util.List;
 public class HolderAttrController extends AbstractWebController {
 
     private final HolderAttrService holderAttrService;
+
+    @RequestMapping(value = "/holderattribut", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    public String holderattributView() {
+        return "holderattribut/holderattribut";
+    }
+
+    @RequestMapping(value = "/holderattribut/jsondatei", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public List<HolderAttrErgebnis> jsondatei(Authentication authentication, @RequestParam(name = "holderAttrFile", required = false) MultipartFile holderAttrFile
+    ) throws Exception {
+        HolderAttrCommandContainer holderAttrCommandContainer = new ObjectMapper().readValue(holderAttrFile.getInputStream(), HolderAttrCommandContainer.class);
+        AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
+        return holderAttrService.execute(authUserDetails.getMandant(), holderAttrCommandContainer);
+    }
 
     @Operation(security = @SecurityRequirement(name = "basicAuth"), description = "Aktualisieren des Holder-Attributs mit Einträgen.",
             responses = { @ApiResponse( responseCode = "200", description = "Der Request wird synchron gestartet. Sie erhalten eine Liste mit den Ergebnisobjekten zurück."  )})

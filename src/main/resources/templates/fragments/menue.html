@@ -75,6 +75,12 @@
                 Verzeichnisdienst
               </a>
             </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('GOLD_LICENCE_HEAD_OF_DEPT','SILVER_LICENCE_HEAD_OF_DEPT','GOLD_LICENCE_USER','SILVER_LICENCE_USER')">
+              <a class="nav-link" th:classappend="${requestPath.endsWith('/holderattribut') ? 'active':''}" th:href="@{/holderattribut}">
+                <span data-feather="book-open"></span>
+                Holderattribut - Verwaltung
+              </a>
+            </li>
             <li class="nav-item" sec:authorize="hasRole('ADMIN')">
               <a class="nav-link" th:classappend="${requestPath.endsWith('/clientconnection') ? 'active':''}" th:href="@{/clientconnection}">
                 <span data-feather="share-2"></span>

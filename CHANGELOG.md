@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [2.4.0]
+
+### Added
+- HoldarAttr - Verwaltung über die Oberfläche aufrufbar
+
 ## [2.3.0]
 
 ### Added

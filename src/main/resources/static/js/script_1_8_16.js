@@ -1828,3 +1828,41 @@ function disableFinish2FA() {
     }
   });
 }
+
+function holderAttrFileSenden() {
+  const token = $("meta[name='_csrf']").attr("content");
+  const header = $("meta[name='_csrf_header']").attr("content");
+
+  const res = document.getElementById("holderAttributForm").checkValidity();
+  $('.needs-validation').addClass('was-validated');
+  if (!res) {
+    return;
+  }
+
+  $(".spinner-border").attr("style", "");
+  const fData = $("#holderAttributForm").serializeFiles();
+
+  $.ajax({
+    type: "POST",
+    url: $("#holderattributContainer").attr("action") + "holderattribut/jsondatei",
+    data: fData,
+    cache: false,
+    contentType: false,
+    processData: false,
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader(header, token);
+    },
+    success: function (data) {
+      $(".spinner-border").attr("style", "display:none");
+      $("#holderAttributForm").trigger("reset");
+      $("#holderattributFormularResult").empty();
+      $("#holderattributFormularResult").append(JSON.stringify(data, null, 2));
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      $(".spinner-border").attr("style", "display:none");
+      $("#holderattributFormularError").attr("style", "");
+      $("#holderattributFormularError").empty();
+      $("#holderattributFormularError").append(JSON.parse(jqXHR.responseText).message);
+    }
+  });
+}

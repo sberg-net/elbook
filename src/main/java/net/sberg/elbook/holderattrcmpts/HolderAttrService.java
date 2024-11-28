@@ -61,6 +61,8 @@ public class HolderAttrService {
             log.info("START - handle the command for the mandantId: " + mandant.getId() + ", Telematik-ID: " + holderAttrCommand.getTelematikID());
 
             HolderAttrErgebnis holderAttrErgebnis = new HolderAttrErgebnis();
+            holderAttrErgebnis.setHolder(holderAttrCommand.getHolder());
+            holderAttrErgebnis.setTelematikID(holderAttrCommand.getTelematikID());
 
             try {
                 VzdEntryWrapper vzdObject = verzeichnisdienstService.ladeByTelematikId(mandant, holderAttrCommand.getTelematikID());

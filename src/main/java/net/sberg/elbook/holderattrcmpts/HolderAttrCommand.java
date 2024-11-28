@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class HolderAttrCommand {
@@ -106,7 +107,16 @@ public class HolderAttrCommand {
                     break;
                 }
             }
-            modDirEntryCommand.setHolder(holder);
+
+            //check on equal
+            List<String> checkHolder = holder.stream().filter(s -> !directoryEntry.extractDirectoryEntryHolder().contains(s)).collect(Collectors.toList());
+            if (checkHolder.isEmpty()) {
+                holderAttrErgebnis.setError(true);
+                holderAttrErgebnis.getLog().add("holder not changed: "+holder);
+            }
+            else {
+                modDirEntryCommand.setHolder(holder);
+            }
         }
 
         return directoryEntrySaveContainer;

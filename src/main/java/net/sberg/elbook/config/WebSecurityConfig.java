@@ -99,6 +99,7 @@ public class WebSecurityConfig {
                                 antMatcher("/mandant/enableFinish2FA/**"),
                                 antMatcher("/mandant/disableFinish2FA/**"),
                                 antMatcher("/verzeichnisdienst/**"),
+                                antMatcher("/holderattribut/**"),
                                 antMatcher("/logeintrag/**"),
                                 antMatcher("/report/**")
                         ).hasAnyRole(EnumAuthRole.ROLE_ADMIN.getSuffix(),
