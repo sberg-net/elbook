@@ -1,0 +1,154 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="sberg">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>ElBook - Verzeichnisdienst</title>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/script_1_8_16.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/feather-icons/dist/feather.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}"/>
+  </head>
+  <body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div th:replace="~{fragments/menue :: menue}"></div>
+    <main role="main" class="col-md-10 ml-sm-auto pt-3 px-1 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Verzeichnisdienst</h1>
+      </div>
+      <div class="spinner-border" id="elbook-spinner" role="status" style="display: none">
+        <span class="sr-only">Laden...</span>
+      </div>
+      <div class="container-fluid" id="vzdTableContainer" th:action="@{/}">
+      </div>
+    </main>
+    <!-- Bestätigungsdialog Verzeichniseintrag aktivieren -->
+    <div class="modal fade" id="confirmDialog4BaseEntryActivate" tabindex="-1" role="dialog" aria-labelledby="confirmDialog4BaseEntryActivateLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmDialog4BaseEntryActivateLabel">Verzeichniseintrag Aktivieren</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Wollen Sie den Verzeichniseintrag wirklich aktivieren?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+            <button type="button" class="btn btn-primary" onclick="vzdEintragStatusAendern()">Aktivieren</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bestätigungsdialog Verzeichniseintrag deaktivieren -->
+    <div class="modal fade" id="confirmDialog4BaseEntryDeactivate" tabindex="-1" role="dialog" aria-labelledby="confirmDialog4BaseEntryDeactivateLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmDialog4BaseEntryDeactivateLabel">Verzeichniseintrag Deaktivieren</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Wollen Sie den Verzeichniseintrag wirklich deaktivieren?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+            <button type="button" class="btn btn-primary" onclick="vzdEintragStatusAendern()">Deaktivieren</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bestätigungsdialog Verzeichniseintrag löschen -->
+    <div class="modal fade" id="confirmDialog4DeleteVzdEintrag" tabindex="-1" role="dialog" aria-labelledby="confirmDialog4DeleteVzdEintragLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmDialog4DeleteVzdEintragLabel">Verzeichniseintrag löschen</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Wollen Sie den Verzeichniseintrag wirklich löschen?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+            <button type="button" class="btn btn-primary" onclick="vzdEintragLoeschen()">Löschen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bestätigungsdialog Verzeichniseintrag Zertifikat löschen -->
+    <div class="modal fade" id="confirmDialog4DeleteVzdEintragZert" tabindex="-1" role="dialog" aria-labelledby="confirmDialog4DeleteVzdEintragZertLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmDialog4DeleteVzdEintragZertLabel">Zertifikat löschen</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Wollen Sie das Zertifikat wirklich löschen?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+            <button type="button" class="btn btn-primary" onclick="vzdZertifikatEintragLoeschen()">Löschen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bestätigungsdialog Verzeichnisdienst Auth löschen -->
+    <div class="modal fade" id="confirmDialog4DeleteVzdAuth" tabindex="-1" role="dialog" aria-labelledby="confirmDialog4DeleteVzdAuthLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmDialog4DeleteVzdAuthLabel">Verzeichnisdienst-Anmeldedaten löschen</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Wollen Sie die Anmeldedaten für den Verzeichnisdienst wirklich löschen?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+            <button type="button" class="btn btn-primary" onclick="vzdEintragAuthLoeschen()">Löschen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $( document ).ready(function() {
+        vzdEintragUebersicht();
+        feather.replace();
+      });
+    </script>
+  </body>
+</html>
