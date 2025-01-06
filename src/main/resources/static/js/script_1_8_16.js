@@ -376,6 +376,8 @@ function vzdEintragLoeschen() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
+  const confirmDialog4DeleteVzdEintragModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4DeleteVzdEintrag'));
+
   $("#elbook-spinner").attr("style", "");
   $.ajax({
     type: "DELETE",
@@ -387,14 +389,14 @@ function vzdEintragLoeschen() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4DeleteVzdEintrag').modal('hide');
+      confirmDialog4DeleteVzdEintragModal.hide();
       setTimeout(vzdEintragUebersicht,0);
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
       $("#vzdEintragTableError").attr("style", "");
       $("#vzdEintragTableError").append("Beim Löschen des Eintrages ist ein Fehler aufgetreten.");
-      $('#confirmDialog4DeleteVzdEintrag').modal('hide');
+      confirmDialog4DeleteVzdEintragModal.hide();
     }
   });
 }
@@ -437,6 +439,8 @@ function vzdEintragAuthLoeschen() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
+  const confirmDialog4DeleteVzdAuthModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4DeleteVzdAuth'));
+
   $("#elbook-spinner").attr("style", "");
   $.ajax({
     type: "DELETE",
@@ -448,7 +452,7 @@ function vzdEintragAuthLoeschen() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4DeleteVzdAuth').modal('hide');
+      confirmDialog4DeleteVzdAuthModal.hide();
       $('#vzdSearchForm').remove();
       setTimeout(vzdEintragUebersicht, 0);
     },
@@ -456,7 +460,7 @@ function vzdEintragAuthLoeschen() {
       $("#elbook-spinner").attr("style", "display:none");
       $("#vzdEintragTableError").attr("style", "");
       $("#vzdEintragTableError").append("Beim Löschen der Authentifizierungsdaten ist ein Fehler aufgetreten.");
-      $('#confirmDialog4DeleteVzdAuth').modal('hide');
+      confirmDialog4DeleteVzdAuthModal.hide();
     }
   });
 }
@@ -505,6 +509,9 @@ function vzdEintragStatusAendern() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
+  const confirmDialog4BaseEntryActivateModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4BaseEntryActivate'));
+  const confirmDialog4BaseEntryDeactivateModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4BaseEntryDeactivate'));
+
   $("#elbook-spinner").attr("style", "");
   const command = {};
   command.telematikId = elbookContext.telematikId;
@@ -523,20 +530,20 @@ function vzdEintragStatusAendern() {
     success: function() {
       $("#elbook-spinner").attr("style", "display:none");
       if (command.active) {
-        $('#confirmDialog4BaseEntryActivate').modal('hide');
+        confirmDialog4BaseEntryActivateModal.hide();
       }
       else {
-        $('#confirmDialog4BaseEntryDeactivate').modal('hide');
+        confirmDialog4BaseEntryDeactivateModal.hide();
       }
       setTimeout(vzdEintragUebersicht(false), 0);
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
       if (command.active) {
-        $('#confirmDialog4BaseEntryActivate').modal('hide');
+        confirmDialog4BaseEntryActivateModal.hide();
       }
       else {
-        $('#confirmDialog4BaseEntryDeactivate').modal('hide');
+        confirmDialog4BaseEntryDeactivateModal.hide();
       }
       $("#vzdEintragFormError").attr("style", "");
       $("#vzdEintragFormError").empty();
@@ -578,6 +585,8 @@ function vzdZertifikatEintragLoeschen() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
+  const confirmDialog4DeleteVzdEintragZertModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4DeleteVzdEintragZert'));
+
   $("#elbook-spinner").attr("style", "");
   $.ajax({
     type: "DELETE",
@@ -589,14 +598,14 @@ function vzdZertifikatEintragLoeschen() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4DeleteVzdEintragZert').modal('hide');
+      confirmDialog4DeleteVzdEintragZertModal.hide();
       setTimeout(() => { vzdEintragZertifikateLaden(elbookContext.certUid, elbookContext.telematikId, false, 0) }, 0);
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
       $("#vzdZertifikatEintragFormError").attr("style", "");
       $("#vzdZertifikatEintragFormError").append("Beim Löschen des Zertifikats ist ein Fehler aufgetreten.");
-      $('#confirmDialog4DeleteVzdEintragZert').modal('hide');
+      confirmDialog4DeleteVzdEintragZertModal.hide();
     }
   });
 }
@@ -672,6 +681,8 @@ function mandantLoeschen() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
+  const confirmDialog4DeleteMandantModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4DeleteMandant'));
+
   $("#elbook-spinner").attr("style", "");
 
   $.ajax({
@@ -684,14 +695,14 @@ function mandantLoeschen() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4DeleteMandant').modal('hide');
+      confirmDialog4DeleteMandantModal.show();
       setTimeout(mandantUebersicht,0);
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
       $("#mandantTableError").attr("style", "");
       $("#mandantTableError").append(JSON.parse(jqXHR.responseText).message);
-      $('#confirmDialog4DeleteMandant').modal('hide');
+      confirmDialog4DeleteMandantModal.show();
     }
   });
 }
@@ -922,6 +933,8 @@ function reportLoeschen() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
+  const confirmDialog4DeleteReportModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4DeleteReport'));
+
   $("#elbook-spinner").attr("style", "");
 
   $.ajax({
@@ -934,14 +947,14 @@ function reportLoeschen() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4DeleteReport').modal('hide');
+      confirmDialog4DeleteReportModal.hide();
       setTimeout(reportUebersicht,0);
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
       $("#reportTableError").attr("style", "");
       $("#reportTableError").append(JSON.parse(jqXHR.responseText).message);
-      $('#confirmDialog4DeleteReport').modal('hide');
+      confirmDialog4DeleteReportModal.hide();
     }
   });
 }
@@ -971,10 +984,12 @@ function passwortZuruecksetzen() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
+  const confirmDialog4ZuruecksetzenPasswortModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4ZuruecksetzenPasswort'));
+
   const res = document.getElementById("passwortZuruecksetzenForm").checkValidity();
   $('#passwortZuruecksetzenForm .needs-validation').addClass('was-validated');
   if (!res) {
-    $('#confirmDialog4ZuruecksetzenPasswort').modal('hide');
+    confirmDialog4ZuruecksetzenPasswortModal.hide();
     return;
   }
 
@@ -993,13 +1008,13 @@ function passwortZuruecksetzen() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4ZuruecksetzenPasswort').modal('hide');
+      confirmDialog4ZuruecksetzenPasswortModal.hide();
       $("#mandantPwdResetContainer").attr("style", "display:none");
       $("#mandantFormContainer").attr("style", "");
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4ZuruecksetzenPasswort').modal('hide');
+      confirmDialog4ZuruecksetzenPasswortModal.hide();
       $("#passwortZuruecksetzenFormError").attr("style", "");
       $("#passwortZuruecksetzenFormError").empty();
       $("#passwortZuruecksetzenFormError").append(JSON.parse(jqXHR.responseText).message);
@@ -1010,11 +1025,13 @@ function passwortZuruecksetzen() {
 function passwortAendern() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
-
   const res = document.getElementById("passwortAendernForm").checkValidity();
+
+  const confirmDialog4AendernPasswortModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4AendernPasswort'));
+
   $('.needs-validation').addClass('was-validated');
   if (!res) {
-    $('#confirmDialog4AendernPasswort').modal('hide');
+    confirmDialog4AendernPasswortModal.hide();
     return;
   }
 
@@ -1033,12 +1050,12 @@ function passwortAendern() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4AendernPasswort').modal('hide');
+      confirmDialog4AendernPasswortModal.hide();
       document.getElementById('logout-form').submit();
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4AendernPasswort').modal('hide');
+      confirmDialog4AendernPasswortModal.hide();
       $("#passwortAendernFormError").attr("style", "");
       $("#passwortAendernFormError").empty();
       $("#passwortAendernFormError").append(JSON.parse(jqXHR.responseText).message);
@@ -1196,6 +1213,8 @@ function hbakartendatentransferPersonLoeschen() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
+  const confirmDialog4DeleteKartendatentransferPersonModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4DeleteKartendatentransferPerson'));
+
   $("#elbook-spinner").attr("style", "");
 
   $.ajax({
@@ -1208,14 +1227,14 @@ function hbakartendatentransferPersonLoeschen() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4DeleteKartendatentransferPerson').modal('hide');
+      confirmDialog4DeleteKartendatentransferPersonModal.hide();
       setTimeout(hbakartendatentransferPersonenUebersicht(elbookContext.toDeleteKartendatentransfer),0);
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
       $("#hbakartendatentransferTableError").attr("style", "");
       $("#hbakartendatentransferTableError").append(JSON.parse(jqXHR.responseText).message);
-      $('#confirmDialog4DeleteKartendatentransferPerson').modal('hide');
+      confirmDialog4DeleteKartendatentransferPersonModal.hide();
     }
   });
 }
@@ -1280,6 +1299,9 @@ function hbakartendatentransferPersonLaden(id, personId) {
 }
 
 function hbakartendatentransferSenden(sendMailWithActivationCode) {
+  const confirmDialog4SendKartendatentransferModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4SendKartendatentransfer'));
+  const confirmDialog4SendKartendatentransferWithoutActivationCodeModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4SendKartendatentransferWithoutActivationCode'));
+
   $("#elbook-spinner").attr("style", "");
   $("#hbakartendatentransferTableContainer").attr("style", "display:none");
   $("#hbakartendatentransferFormContainer").attr("style", "");
@@ -1290,20 +1312,20 @@ function hbakartendatentransferSenden(sendMailWithActivationCode) {
     success: function() {
       $("#elbook-spinner").attr("style", "display:none");
       if (sendMailWithActivationCode) {
-        $('#confirmDialog4SendKartendatentransfer').modal('hide');
+        confirmDialog4SendKartendatentransferModal.hide();
       }
       else {
-        $('#confirmDialog4SendKartendatentransferWithoutActivationCode').modal('hide');
+        confirmDialog4SendKartendatentransferWithoutActivationCodeModal.hide();
       }
       setTimeout(hbakartendatentransferPersonenUebersicht(elbookContext.toSendKartendatentransfer), 0);
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
       if (sendMailWithActivationCode) {
-        $('#confirmDialog4SendKartendatentransfer').modal('hide');
+        confirmDialog4SendKartendatentransferModal.hide();
       }
       else {
-        $('#confirmDialog4SendKartendatentransferWithoutActivationCode').modal('hide');
+        confirmDialog4SendKartendatentransferWithoutActivationCodeModal.hide();
       }
       $("#hbakartendatentransferTableError").append(jqXHR.responseText);
     }
@@ -1335,6 +1357,8 @@ function hbakartendatentransferLoeschen() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
+  const confirmDialog4DeleteKartendatentransferModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4DeleteKartendatentransfer'));
+
   $("#elbook-spinner").attr("style", "");
 
   $.ajax({
@@ -1347,14 +1371,14 @@ function hbakartendatentransferLoeschen() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4DeleteKartendatentransfer').modal('hide');
+      confirmDialog4DeleteKartendatentransferModal.hide();
       setTimeout(hbakartendatentransferUebersicht,0);
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
       $("#hbakartendatentransferTableError").attr("style", "");
       $("#hbakartendatentransferTableError").append(JSON.parse(jqXHR.responseText).message);
-      $('#confirmDialog4DeleteKartendatentransfer').modal('hide');
+      confirmDialog4DeleteKartendatentransferModal.hide();
     }
   });
 }
@@ -1362,6 +1386,8 @@ function hbakartendatentransferLoeschen() {
 function tspLoeschen() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
+
+  const confirmDialog4DeleteTspModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4DeleteTsp'));
 
   $("#elbook-spinner").attr("style", "");
   $.ajax({
@@ -1374,14 +1400,14 @@ function tspLoeschen() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4DeleteTsp').modal('hide');
+      confirmDialog4DeleteTspModal.hide();
       setTimeout(tspUebersicht,0);
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
       $("#tspTableError").attr("style", "");
       $("#tspTableError").append(JSON.parse(jqXHR.responseText).message);
-      $('#confirmDialog4DeleteTsp').modal('hide');
+      confirmDialog4DeleteTspModal.hide();
     }
   });
 }
@@ -1583,13 +1609,15 @@ function stammdatencertimportUebersicht() {
 }
 
 function stammdatencertimportZusammenfassung(jobId) {
+  const showDialog4ResultSummaryModal = new bootstrap.Modal(document.getElementById("showDialog4ResultSummary"), {});
+
   $("#elbook-spinner").attr("style", "");
   $.ajax({
     type: "GET",
     url: $("#stammdatencertimportTableContainer").attr("action")+'stammdatencertimport/zusammenfassen/ergebnisse/' + jobId,
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#showDialog4ResultSummary').modal('show');
+      showDialog4ResultSummaryModal.show();
       $('#showDialog4ResultSummary #loadError').text('');
       $('#showDialog4ResultSummary #errorCount').text(data.errorCount+' Fehler');
       $('#showDialog4ResultSummary #insertCount').text(data.insertCount+' Einfügungen');
@@ -1599,7 +1627,7 @@ function stammdatencertimportZusammenfassung(jobId) {
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#showDialog4ResultSummary').modal('show');
+      showDialog4ResultSummaryModal.show();
       $('#showDialog4ResultSummary #loadError').text(jqXHR.responseText);
       $('#showDialog4ResultSummary #errorCount').text('0 Fehler');
       $('#showDialog4ResultSummary #insertCount').text('0 Einfügungen');
@@ -1645,6 +1673,8 @@ function vzdConnectionLoeschen() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
+  const confirmDialog4DeleteVzdConnectionModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4DeleteVzdConnection'));
+
   $("#elbook-spinner").attr("style", "");
 
   $.ajax({
@@ -1657,14 +1687,14 @@ function vzdConnectionLoeschen() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4DeleteVzdConnection').modal('hide');
+      confirmDialog4DeleteVzdConnectionModal.hide();
       setTimeout(vzdConnectionUebersicht,0);
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
       $("#vzdConnectionTableError").attr("style", "");
       $("#vzdConnectionTableError").append(JSON.parse(jqXHR.responseText).message);
-      $('#confirmDialog4DeleteVzdConnection').modal('hide');
+      confirmDialog4DeleteVzdConnectionModal.hide();
     }
   });
 }
@@ -1716,6 +1746,8 @@ function enable2FA(){
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
+  const confirmDialog4Activate2FAModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4Activate2FA'));
+
   $("#elbook-spinner").attr("style", "");
 
   $.ajax({
@@ -1729,7 +1761,7 @@ function enable2FA(){
     success: function(data) {
       $("#activate2FAContainerFormError").attr("style", "display:none");
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4Activate2FA').modal('hide');
+      confirmDialog4Activate2FAModal.hide();
       $("#qrCode2FA").empty();
       $("#qrCode2FA").append('<img src="' + data.qrCodeLink + '" />').show();
       $('#activate2FAContainerFormContainer').show();
@@ -1738,7 +1770,7 @@ function enable2FA(){
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4Activate2FA').modal('hide');
+      confirmDialog4Activate2FAModal.hide();
       $("#activate2FAContainerFormError").attr("style", "");
       $("#activate2FAContainerFormError").empty();
       $("#activate2FAContainerFormError").append("Beim Erstellen des QR-Codes ist ein Fehler aufgetreten");
@@ -1793,10 +1825,12 @@ function disableFinish2FA() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 
+  const confirmDialog4Deactivate2FAModal = bootstrap.Modal.getInstance(document.getElementById('confirmDialog4Deactivate2FA'));
+
   const res = document.getElementById("deactivate2FAContainerForm").checkValidity();
   $('#deactivate2FAContainerForm .needs-validation').addClass('was-validated');
   if (!res) {
-    $('#confirmDialog4Deactivate2FA').modal('hide');
+    confirmDialog4Deactivate2FAModal.hide();
     return;
   }
 
@@ -1816,12 +1850,12 @@ function disableFinish2FA() {
     },
     success: function(data) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4Deactivate2FA').modal('hide');
+      confirmDialog4Deactivate2FAModal.hide();
       document.location.reload();
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");
-      $('#confirmDialog4Deactivate2FA').modal('hide');
+      confirmDialog4Deactivate2FAModal.hide();
       $("#deactivate2FAContainerFormError").attr("style", "");
       $("#deactivate2FAContainerFormError").empty();
       $("#deactivate2FAContainerFormError").append("Beim Abschliessen der 2-Faktor-Deaktivierung ist ein Fehler aufgetreten");

@@ -17,18 +17,20 @@
 <div class="alert alert-danger" role="alert" style="display:none" id="mandantTableError">
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-sm-12 col-lg-4 mb-3 p-0 pr-1">
-    <input type="text" class="form-control pr-0" id="anzahl" placeholder="Anzahl der Elemente">
+  <div class="col-sm-12 col-lg-4 mb-3 p-0 pe-1">
+    <input type="text" class="form-control pe-0" id="anzahl" placeholder="Anzahl der Elemente">
   </div>
-  <div class="col-sm-12 col-lg-4 mb-3 p-0 pr-1">
-    <input type="text" class="form-control pr-0" id="anzahlThreads" placeholder="Anzahl der Threads">
+  <div class="col-sm-12 col-lg-4 mb-3 p-0 pe-1">
+    <input type="text" class="form-control pe-0" id="anzahlThreads" placeholder="Anzahl der Threads">
   </div>
-  <div class="col-sm-6 col-lg-2 mb-3 p-0 pr-1">
-    <button type="button" id="searchBtn" class="btn btn-primary btn-block" onclick="threadStarten($('#anzahl').val(),$('#anzahlThreads').val());">Starten</button>
+  <div class="col-sm-6 col-lg-2 mb-3 p-0 pe-1">
+    <div class="d-grid gap-2">
+      <button type="button" id="searchBtn" class="btn btn-primary" onclick="threadStarten($('#anzahl').val(),$('#anzahlThreads').val());">Starten</button>
+    </div>
   </div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-9 mb-3 font-weight-bolder">
+  <div class="col-md-9 mb-3 fw-bolder">
     <span th:text="${#lists.size(result)}"></span>&nbsp;Lösungen vorhanden
   </div>
 </div>
@@ -45,7 +47,7 @@
     </thead>
     <tbody>
     <tr th:if="${result.isEmpty()}">
-      <td colspan="2">Keine Threads verfügbar</td>
+      <td colspan="5">Keine Threads verfügbar</td>
     </tr>
     <tr th:each="n : ${result}">
       <td><span th:text="${n.name}">Name</span></td>

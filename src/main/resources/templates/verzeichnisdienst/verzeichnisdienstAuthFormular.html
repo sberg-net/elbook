@@ -21,7 +21,7 @@
 
   <input type="hidden" id="id" name="id" th:value="${mandant.id}">
 
-  <div class="form-group needs-validation">
+  <div class="mb-3 needs-validation">
     <label for="vzdAuthId">VZD-Auth-ID</label>
     <input type="text" th:value="${mandant.vzdAuthId}" class="form-control" id="vzdAuthId" name="vzdAuthId" required>
     <div class="invalid-feedback">
@@ -29,19 +29,19 @@
     </div>
   </div>
 
-  <div class="form-group needs-validation">
+  <div class="mb-3 needs-validation">
     <label for="vzdAuthSecret">VZD-Auth-Secret</label>
     <input type="password" th:value="${mandant.vzdAuthSecret}" class="form-control" id="vzdAuthSecret" name="vzdAuthSecret" required>
     <div class="invalid-feedback">
       Bitte angeben!
     </div>
   </div>
-  <div class="form-group form-check">
+  <div class="mb-3 form-check">
     <input type="checkbox" class="form-check-input" id="passwortCheck" onclick="togglePwdVisibility('vzdAuthSecret')">
     <label class="form-check-label" for="passwortCheck">Passwort in Klartext anzeigen</label>
   </div>
 
-  <div class="form-group form-check">
+  <div class="mb-3 form-check">
     <input type="checkbox" class="form-check-input" id="speichereDauerhaft">
     <label for="speichereDauerhaft">Dauerhaft speichern</label>
   </div>
@@ -49,7 +49,9 @@
   <div class="container-fluid p-0 mb-2">
     <div class="row justify-content-start">
       <div class="col-12 col-md-6 col-lg-2 pb-1">
-        <button class="btn btn-primary btn-block" onclick="vzdEintragAuthSpeichern()">Speichern</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" onclick="vzdEintragAuthSpeichern()">Speichern</button>
+        </div>
       </div>
     </div>
   </div>

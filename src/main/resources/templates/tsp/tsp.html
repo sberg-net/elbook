@@ -34,12 +34,12 @@
   <body>
     <nav th:replace="fragments/navbar :: navbar"></nav>
     <div th:replace="fragments/menue :: menue"></div>
-    <main role="main" class="col-md-10 ml-sm-auto pt-3 px-1 px-md-4">
+    <main role="main" class="col-md-10 ms-sm-auto pt-3 px-1 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2">Trust Service Provider</h1>
       </div>
       <div class="spinner-border" id="elbook-spinner" role="status" style="display: none">
-        <span class="sr-only">Laden...</span>
+        <span class="visually-hidden">Laden...</span>
       </div>
       <div class="container-fluid" id="tspFormContainer" th:action="@{/}">
       </div>
@@ -52,15 +52,13 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="confirmDialog4DeleteTspLabel">TSP löschen</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
           </div>
           <div class="modal-body">
             Wollen Sie den Trust Service Provider wirklich löschen?
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
             <button type="button" class="btn btn-primary" onclick="tspLoeschen()">Löschen</button>
           </div>
         </div>

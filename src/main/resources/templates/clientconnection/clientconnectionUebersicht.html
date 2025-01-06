@@ -18,15 +18,17 @@
 </div>
 <div th:if="${fehlernachricht != null}" class="alert alert-danger" role="alert" xmlns:th="http://www.thymeleaf.org" th:text="${fehlernachricht}"></div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-sm-12 col-lg-10 mb-3 p-0 pr-1">
-    <input type="text" class="form-control pr-0" id="search" placeholder="Suchbegriff">
+  <div class="col-sm-12 col-lg-10 mb-3 p-0 pe-1">
+    <input type="text" class="form-control pe-0" id="search" placeholder="Suchbegriff">
   </div>
-  <div class="col-sm-12 col-lg-2 mb-3 p-0 pr-1">
-    <button type="button" id="searchBtn" class="btn btn-primary btn-block" onclick="vzdConnectionUebersicht($('#search').val());">Suchen</button>
+  <div class="col-sm-12 col-lg-2 mb-3 p-0 pe-1">
+    <div class="d-grid gap-2">
+      <button type="button" id="searchBtn" class="btn btn-primary" onclick="vzdConnectionUebersicht($('#search').val());">Suchen</button>
+    </div>
   </div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-9 mb-3 font-weight-bolder">
+  <div class="col-md-9 mb-3 fw-bolder">
     <span th:text="${#lists.size(connections)}"></span>&nbsp;Clientverbindungen vorhanden
   </div>
 </div>
@@ -44,7 +46,7 @@
     </thead>
     <tbody>
     <tr th:if="${connections.isEmpty()}">
-      <td colspan="4">Keine Clientverbindungen verfügbar.</td>
+      <td colspan="6">Keine Clientverbindungen verfügbar.</td>
     </tr>
     <tr th:each="n : ${connections}">
       <td><span th:text="${n.id}">ID</span></td>
@@ -53,7 +55,7 @@
       <td><span th:text="${#temporals.format(n.lastUsed, 'dd-MM-yyyy HH:mm:ss')}">lastUsed</span></td>
       <td><span th:text="${#temporals.format(n.tokenvalidationDate, 'dd-MM-yyyy HH:mm:ss')}">tokenvalidationDate</span></td>
       <td>&nbsp;&nbsp;
-        <button th:if="${!n.inUse}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" th:attrappend="data-mutex=${n.mutex}" onclick="elbookContext.toDeleteConnectionId=$(this).attr('data-id');elbookContext.toDeleteConnectionMutex=$(this).attr('data-mutex');$('#confirmDialog4DeleteVzdConnection').modal('show')" >
+        <button th:if="${!n.inUse}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" th:attrappend="data-mutex=${n.mutex}" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteVzdConnection" onclick="elbookContext.toDeleteConnectionId=$(this).attr('data-id');elbookContext.toDeleteConnectionMutex=$(this).attr('data-mutex');" >
           <span data-feather="delete"></span>
         </button>
       </td>

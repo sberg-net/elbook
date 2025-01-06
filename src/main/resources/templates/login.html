@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/animate.min.css}"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"/>
   </head>
-  <body id="home" data-spy="scroll" data-target="#navbar" data-offset="72" class="position-relative">
+  <body id="home" data-spy="scroll" data-bs-target="#navbar" data-offset="72" class="position-relative">
 
     <!-- Hero Area -->
     <section class="d-flex align-items-start position-relative vh-100 cover hero"
@@ -42,7 +42,7 @@
       <div class="container-fluid">
         <div class="row m-4">
           <div class="col-6">
-            <h1 class="text-white font-weight-bold">elBook</h1>
+            <h1 class="text-white fw-bold">elBook</h1>
             <h4 class="text-white">
               Ihr einfacher Zugriff auf den Gematik Verzeichnisdienst der Telematikinfrastruktur
             </h4>
@@ -68,7 +68,7 @@
                     <form id="login-form" class="form" th:action="@{/login}" method="post" novalidate>
                       <div class="row">
                         <div class="col-12">
-                          <div class="form-group">
+                          <div class="mb-3">
                             <input class="form-control" name="username" type="text"
                                    placeholder="Benutzername" required>
                             <div class="invalid-feedback">
@@ -77,7 +77,7 @@
                           </div>
                         </div>
                         <div class="col-12">
-                          <div class="form-group">
+                          <div class="mb-3">
                             <input class="form-control" name="password" type="password"
                                    placeholder="Passwort" required>
                             <div class="invalid-feedback">
@@ -86,7 +86,7 @@
                           </div>
                         </div>
                         <div class="col-12" id="2fa-group" style="display:none;">
-                          <div class="form-group">
+                          <div class="mb-3">
                             <input id="2fa-input" class="form-control" name="code" type="password" placeholder="2FA Code">
                             <div class="invalid-feedback">
                               Bitte 2FA Code angeben
@@ -96,9 +96,9 @@
                       </div>
                       <div class="row">
                         <div class="col-12">
-                          <div class="form-group">
-                            <div class="button">
-                              <input id="login-submit" type="submit" class="btn btn-block" value="Anmelden">
+                          <div class="mb-3">
+                            <div class="d-grid gap-2">
+                              <input id="login-submit" type="submit" class="btn btn-primary" value="Anmelden">
                             </div>
                           </div>
                         </div>
@@ -108,10 +108,10 @@
                 </div>
                 <div class="row">
                   <div class="col">
-                    <p id="fehlerText" class="text-danger d-none font-weight-bold">Anmeldedaten falsch</p>
+                    <p id="fehlerText" class="text-danger d-none fw-bold">Anmeldedaten falsch</p>
                   </div>
                   <div class="col">
-                    <img class="float-right" src="img/logo.png" style="width:200px" alt="sberg Logo">
+                    <img class="float-end" src="img/logo.png" style="width:200px" alt="sberg Logo">
                   </div>
                 </div>
               </div>

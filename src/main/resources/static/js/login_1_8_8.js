@@ -71,7 +71,8 @@ $(window).on('load', function() {
     $("#fehlerText").removeClass("d-none")
   }
 
-  $('#loginModal').modal({backdrop: 'static', keyboard: false});
+  const loginModal = new bootstrap.Modal(document.getElementById("loginModal"), {backdrop: 'static', keyboard: false});
+  loginModal.show();
 
   $("#login-submit").click(function(e) {
     const close = $("#login-close");
@@ -81,7 +82,7 @@ $(window).on('load', function() {
       e.preventDefault();
       e.stopPropagation();
     } else {
-      $this.prepend($('<span id="loading-spinner" class="spinner-border spinner-border-sm mr-3" role="status" aria-hidden="true"></span>'));
+      $this.prepend($('<span id="loading-spinner" class="spinner-border spinner-border-sm me-3" role="status" aria-hidden="true"></span>'));
       $this.prop('disabled', true);
       close.prop('disabled', true);
 
@@ -118,7 +119,8 @@ $(window).on('load', function() {
           $("#loading-spinner").remove();
           $this.prop('disabled', false);
           close.prop('disabled', false);
-          $('#fehlerModal').modal();
+          const fehlerModal = new bootstrap.Modal(document.getElementById("fehlerModal"), {});
+          fehlerModal.show();
         }
       });
     }
@@ -141,7 +143,7 @@ $(window).on('load', function() {
     } else {
       submit.prop('disabled', true);
       close.prop('disabled', true);
-      submit.prepend($('<span class="spinner-border spinner-border-sm mr-3" role="status" aria-hidden="true"></span>'));
+      submit.prepend($('<span class="spinner-border spinner-border-sm me-3" role="status" aria-hidden="true"></span>'));
     }
     form.addClass('was-validated');
   });

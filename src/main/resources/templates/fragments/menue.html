@@ -116,10 +116,10 @@
             </li>
           </ul>
         </div>
-        <span class="nav-link font-weight-bold" sec:authorize="isAnonymous()">
+        <span class="nav-link fw-bold px-3 py-2" sec:authorize="isAnonymous()">
           Angemeldeter Nutzer: -
         </span>
-        <span class="nav-link font-weight-bold" sec:authorize="isAuthenticated()">
+        <span class="nav-link fw-bold px-3 py-2" sec:authorize="isAuthenticated()">
           Angemeldeter Nutzer: <span sec:authentication="name">Bob</span>
         </span>
       </nav>

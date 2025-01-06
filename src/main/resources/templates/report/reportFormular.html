@@ -18,7 +18,7 @@
 
   <input type="hidden" id="id" name="id" th:value="${report.id}">
 
-  <div class="form-group">
+  <div class="mb-3">
     <label for="descriptor">Name</label>
     <select th:if="${report.editierbar}" class="form-control" id="descriptor" name="descriptor">
       <option value="eArztausweis" th:attrappend="selected=${report.descriptor.name() == 'eArztausweis'?'selected':''}">Absolute Angaben über Anzahl der VZD-Einträge bzgl. Arztausweise separiert nach Kartenherausgebern</option>
@@ -34,7 +34,7 @@
     </select>
   </div>
 
-  <div class="form-group">
+  <div class="mb-3">
     <label for="intervall">Intervall der Ausführung</label>
     <select th:if="${report.editierbar}" class="form-control" id="intervall" name="intervall">
       <option value="MONTHLY" th:attrappend="selected=${report.intervall.name() == 'MONTHLY'?'selected':''}">Monatlich</option>
@@ -46,7 +46,7 @@
     </select>
   </div>
 
-  <div class="form-group needs-validation">
+  <div class="mb-3 needs-validation">
     <label for="gueltigBis">Gültig bis</label>
     <input th:if="${report.editierbar}" type="date" th:value="${report.gueltigBis}" class="form-control" id="gueltigBis" name="gueltigBis" required>
     <input th:if="${!report.editierbar}" disabled type="date" th:value="${report.gueltigBis}" class="form-control" name="gueltigBis" required>
@@ -80,10 +80,14 @@
   <div class="container-fluid p-0 mb-2">
     <div class="row justify-content-start">
       <div class="col-12 col-md-6 col-lg-2 pb-1">
-        <button class="btn btn-secondary btn-block" type="button" onclick="reportUebersicht();">Schließen</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-secondary" type="button" onclick="reportUebersicht();">Schließen</button>
+        </div>
       </div>
       <div th:if="${report.editierbar}" class="col-12 col-md-6 col-lg-2">
-        <button class="btn btn-primary btn-block" type="button" onclick="reportSpeichern()">Speichern</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="button" onclick="reportSpeichern()">Speichern</button>
+        </div>
       </div>
     </div>
   </div>

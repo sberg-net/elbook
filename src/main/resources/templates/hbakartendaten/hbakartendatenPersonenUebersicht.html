@@ -17,24 +17,24 @@
 <div class="alert alert-danger" role="alert" style="display:none" id="hbakartendatenTableError">
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-sm-12 col-lg-12 mb-3 p-0 pr-1">
-    <span class="font-weight-bold">Datentransfer von </span>
-    <span class="font-weight-bold" th:text="${absenderKartenherausgeber.hrText}"></span>&nbsp;
+  <div class="col-sm-12 col-lg-12 mb-3 p-0 pe-1">
+    <span class="fw-bold">Datentransfer von </span>
+    <span class="fw-bold" th:text="${absenderKartenherausgeber.hrText}"></span>&nbsp;
     <a th:href="'mailto:' + ${datentransfer.absender}" th:text="${datentransfer.absender}"></a><br/>
-    <span class="font-weight-bold"> Daten abrufbar bis </span>
+    <span class="fw-bold"> Daten abrufbar bis </span>
     <span th:text="${#temporals.format(datentransfer.gueltigBis, 'dd-MM-yyyy HH:mm')}">Gültig Bis</span> Uhr
   </div>
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-sm-4 col-lg-3 mb-3 pr-1">
+  <div class="col-sm-4 col-lg-3 mb-3 pe-1">
     <a target="_blank" th:href="@{/hbakartendaten/herunterladen/{hashCode}/{aktivierungsCode}(aktivierungsCode=${datentransfer.aktivierungsCode},hashCode=${datentransfer.hashCode})}">Als json-Datei herunterladen</a>
   </div>
-  <div class="col-sm-4 col-lg-3 mb-3 pr-1">
+  <div class="col-sm-4 col-lg-3 mb-3 pe-1">
     <a target="_blank" th:href="@{/hbakartendaten/report/{hashCode}/{aktivierungsCode}(aktivierungsCode=${datentransfer.aktivierungsCode},hashCode=${datentransfer.hashCode})}">Als PDF herunterladen</a>
   </div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-9 mb-3 font-weight-bolder">
+  <div class="col-md-9 mb-3 fw-bolder">
     <span th:text="${#lists.size(personen)}"></span>&nbsp;Personen vorhanden
   </div>
 </div>
@@ -46,12 +46,11 @@
       <th>Person</th>
       <th>Typ</th>
       <th>Anschrift</th>
-      <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:if="${personen.isEmpty()}">
-      <td colspan="2">Keine Personen verfügbar</td>
+      <td colspan="4">Keine Personen verfügbar</td>
     </tr>
     <tr th:each="n : ${personen}">
       <td><span th:text="${n.id}">ID</span></td>

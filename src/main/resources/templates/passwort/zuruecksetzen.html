@@ -17,14 +17,14 @@
 <form id="passwortZuruecksetzenForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
   <input type="hidden" id="mandantId" name="mandantId" th:value="${id}">
   <input type="hidden" id="nutzername" name="nutzername" th:value="${nutzername}">
-  <div class="form-group needs-validation">
+  <div class="mb-3 needs-validation">
     <label for="neuesPasswort">Neues Passwort</label>
     <input type="password" class="form-control" id="neuesPasswort" name="neuesPasswort" required>
     <div class="invalid-feedback">
       Bitte angeben!
     </div>
   </div>
-  <div class="form-group form-check">
+  <div class="mb-3 form-check">
     <input type="checkbox" class="form-check-input" id="neuesPasswortCheck" onclick="togglePwdVisibility('neuesPasswort')">
     <label class="form-check-label" for="neuesPasswortCheck">Neues Passwort in Klartext anzeigen</label>
   </div>
@@ -33,10 +33,14 @@
   <div class="container-fluid p-0 mb-2">
     <div class="row justify-content-start">
       <div class="col-12 col-md-6 col-lg-2 pb-1">
-        <button class="btn btn-secondary btn-block" th:attr="data-mandantid=${id}" type="button" onclick="mandantLaden($(this).attr('data-mandantid'));">Schließen</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-secondary" th:attr="data-mandantid=${id}" type="button" onclick="mandantLaden($(this).attr('data-mandantid'));">Schließen</button>
+        </div>
       </div>
       <div class="col-12 col-md-6 col-lg-2">
-        <button class="btn btn-primary btn-block" type="button" onclick="$('#confirmDialog4ZuruecksetzenPasswort').modal('show')">Zurücksetzen</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#confirmDialog4ZuruecksetzenPasswort">Zurücksetzen</button>
+        </div>
       </div>
     </div>
   </div>

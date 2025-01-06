@@ -34,33 +34,33 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/animate.min.css}"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"/>
   </head>
-  <body id="home" data-spy="scroll" data-target="#navbar" data-offset="72" class="position-relative">
+  <body id="home" data-spy="scroll" data-bs-target="#navbar" data-offset="72" class="position-relative">
 
     <!-- Header Area -->
     <header class="fixed-top page-header" >
       <!-- Header Inner -->
       <div class="container-fluid container-fluid-max">
-        <nav id="navbar" class="navbar navbar-expand-lg navbar-dark">
+        <nav id="navbar" class="navbar navbar-expand-lg" data-bs-theme="dark">
           <div class="logo">
             <a th:href="@{/login}"><img id="logo" class="ebook-light" src="img/ebook.svg" width="32" height="32" alt="#"></a>
-            <a class="navbar-brand ml-2 font-weight-bold">elBook</a>
+            <a class="navbar-brand ms-2 fw-bold">elBook</a>
           </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-lg-between" id="navbarNav">
             <ul class="navbar-nav">
             </ul>
             <div class="nav-btns text-white p-2 p-lg-0">
-              <a href="mailto:software@sberg.net?subject=elBook" class="mr-2">
+              <a href="mailto:software@sberg.net?subject=elBook" class="me-2">
                 <i class="fa fa-envelope"></i>
                 <div class="d-none d-lg-inline">Mailen Sie uns</div>
               </a>
               <button
                       type="button"
                       class="btn login-btn text-white"
-                      data-toggle="modal"
-                      data-target="#loginModal"
+                      data-bs-toggle="modal"
+                      data-bs-target="#loginModal"
               >
                 <i class="fa fa-sign-in-alt"></i>
                 Anmelden
@@ -78,7 +78,7 @@
       <div class="container-fluid container-fluid-max">
         <div class="row">
           <div class="col-12 col-md-8 col-lg-6 mx-auto">
-            <h1 class="text-white font-weight-bold">elBook</h1>
+            <h1 class="text-white fw-bold">elBook</h1>
             <h4 class="text-white">
               Ihr einfacher Zugriff auf den Gematik Verzeichnisdienst der Telematikinfrastruktur
             </h4>
@@ -267,13 +267,13 @@
               </div>
               <div class="row">
                 <div class="col-12">
-                  <a href="mailto:software@sberg.net?subject=elBook" class="mr-2">
+                  <a href="mailto:software@sberg.net?subject=elBook" class="me-2">
                     <i class="fa fa-envelope"></i>
                     <div class="d-inline">software@sberg.net</div>
                   </a>
                 </div>
                 <div class="col-12">
-                  <a href="http://sberg.net/" target="_blank" class="mr-2">
+                  <a href="http://sberg.net/" target="_blank" class="me-2">
                     <i class="fa fa-external-link-alt"></i>
                     <div class="d-inline">Homepage öffnen</div>
                   </a>
@@ -314,9 +314,7 @@
         <div class="modal-content">
           <div class="modal-header p-2">
             <h5 class="modal-title" id="loginModalTitle">Login</h5>
-            <button id="login-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <button id="login-close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
           </div>
           <div class="modal-body">
             <div id="login">
@@ -326,7 +324,7 @@
                     <form id="login-form" class="form" th:href="@{/}" method="post" novalidate>
                       <div class="row">
                         <div class="col-12">
-                          <div class="form-group">
+                          <div class="mb-3">
                             <input class="form-control" name="username" type="text" placeholder="Benutzername" required>
                             <div class="invalid-feedback">
                               Bitte Benutzername angeben
@@ -334,7 +332,7 @@
                           </div>
                         </div>
                         <div class="col-12">
-                          <div class="form-group">
+                          <div class="mb-3">
                             <input class="form-control" name="password" type="password" placeholder="Passwort" required>
                             <div class="invalid-feedback">
                               Bitte Passwort angeben
@@ -344,7 +342,7 @@
                       </div>
                       <div class="row">
                         <div class="col-12">
-                          <div class="form-group">
+                          <div class="mb-3">
                             <div class="button">
                               <button id="login-submit" type="submit" class="btn btn-block">Anmelden</button>
                             </div>
@@ -367,16 +365,14 @@
         <div class="modal-content">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="fehlerModalTitle">Fehler</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
           </div>
           <div class="modal-body">
             Es ein Fehler bei der Anmeldung aufgetreten.<br>
             Bitte versuchen Sie es erneut.
           </div>
           <div class="modal-footer">
-            <a class="btn btn-danger" data-dismiss="modal" onclick="window.location.href=window.location.href.split('?')[0]" role="button">OK</a>
+            <a class="btn btn-danger" data-bs-dismiss="modal" onclick="window.location.href=window.location.href.split('?')[0]" role="button">OK</a>
           </div>
         </div>
       </div>

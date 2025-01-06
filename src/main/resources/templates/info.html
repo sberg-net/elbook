@@ -34,18 +34,18 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/animate.min.css}"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"/>
   </head>
-  <body id="home" data-spy="scroll" data-target="#navbar" data-offset="72" class="position-relative">
+  <body id="home" data-spy="scroll" data-bs-target="#navbar" data-offset="72" class="position-relative">
 
     <!-- Header Area -->
     <header class="fixed-top page-header" >
       <!-- Header Inner -->
       <div class="container-fluid container-fluid-max">
-        <nav id="navbar" class="navbar navbar-expand-lg navbar-dark">
+        <nav id="navbar" class="navbar navbar-expand-lg" data-bs-theme="dark">
           <div class="logo">
             <a th:href="@{/login}"><img id="logo" class="ebook-light" src="img/ebook.svg" width="32" height="32" alt="#"></a>
-            <a class="navbar-brand ml-2 font-weight-bold">elBook</a>
+            <a class="navbar-brand ms-2 fw-bold">elBook</a>
           </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-lg-between" id="navbarNav">
@@ -61,7 +61,7 @@
               </li>
             </ul>
             <div class="nav-btns text-white p-2 p-lg-0">
-              <a href="mailto:software@sberg.net?subject=elBook" class="mr-2">
+              <a href="mailto:software@sberg.net?subject=elBook" class="me-2">
                 <i class="fa fa-envelope"></i>
                 <div class="d-none d-lg-inline">Mailen Sie uns</div>
               </a>
@@ -79,7 +79,7 @@
       <div class="container-fluid">
         <div class="row m-4">
           <div class="col-6">
-            <h1 class="text-white font-weight-bold">elBook</h1>
+            <h1 class="text-white fw-bold">elBook</h1>
             <h4 class="text-white">
               Ihr einfacher Zugriff auf den Gematik Verzeichnisdienst der Telematikinfrastruktur
             </h4>
@@ -106,12 +106,12 @@
               <p class="lead mb-0">
                 Möchten Sie nach Einträgen im Gematik Telematikinfrastruktur-Verzeichnisdienst filtern?<br>
                 Haben Sie Interesse an manuellen und automatisierten Änderungsoperationen?<br>
-                <a th:href="@{/hbadatentransfer}" class="font-weight-bold red underline">Müssen Sie HBA Daten zu einem Kartenherausgeber transferieren?</a><br>
+                <a th:href="@{/hbadatentransfer}" class="fw-bold red underline">Müssen Sie HBA Daten zu einem Kartenherausgeber transferieren?</a><br>
                 Wünschen Sie sich eine moderne Weboberfläche die auch von mobilen Geräten aufgerufen werden kann?<br>
                 Dann arbeiten Sie mit diesem elBook-Modul.<br>
                 <br>
               </p>
-              <p class="font-weight-bold">
+              <p class="fw-bold">
                 Wenn Sie Interesse haben, nehmen Sie bitte Kontakt auf.<br>
                 Wir beraten Sie gerne.<br>
               </p>
@@ -138,7 +138,7 @@
           <div class="col-lg-12">
             <div class="section-title">
               <p class="lead mb-0">
-                <a th:href="@{/versionshistorie}" class="font-weight-bold red underline">Hier finden Sie eine Auflistung aller veröffentlichten Versionen</a><br/>
+                <a th:href="@{/versionshistorie}" class="fw-bold red underline">Hier finden Sie eine Auflistung aller veröffentlichten Versionen</a><br/>
               </p>
             </div>
           </div>
@@ -232,7 +232,7 @@
                 <h2 class="title">HBA Datentransfer zwischen Kartenherausgebern</h2>
                 <p class="lead mb-0">
                   Um den HBA Transfer bundeslandübergreifend zu digitalisieren, stellt die sberg it-systeme GmbH ein neues Modul für die elBook Plattform bereit. Damit kann die Kommunikation
-                  für einen HBA-Transfer komplett digital erfolgen. Weitere Informationen erhalten Sie <a class="font-weight-bold" th:href="@{/hbadatentransfer}">hier</a>
+                  für einen HBA-Transfer komplett digital erfolgen. Weitere Informationen erhalten Sie <a class="fw-bold" th:href="@{/hbadatentransfer}">hier</a>
                 </p>
               </div>
             </div>
@@ -281,13 +281,13 @@
               </div>
               <div class="row">
                 <div class="col-12">
-                  <a href="mailto:software@sberg.net?subject=elBook" class="mr-2">
+                  <a href="mailto:software@sberg.net?subject=elBook" class="me-2">
                     <i class="fa fa-envelope"></i>
                     <div class="d-inline">software@sberg.net</div>
                   </a>
                 </div>
                 <div class="col-12">
-                  <a href="http://sberg.net/" target="_blank" class="mr-2">
+                  <a href="http://sberg.net/" target="_blank" class="me-2">
                     <i class="fa fa-external-link-alt"></i>
                     <div class="d-inline">Homepage öffnen</div>
                   </a>

@@ -18,20 +18,20 @@
 </div>
 <div th:if="${fehlernachricht != null}" class="alert alert-danger" role="alert" xmlns:th="http://www.thymeleaf.org" th:text="${fehlernachricht}"></div>
 <div th:if='${infoObject != null && !infoObject.getVersion().equals("Version 0")}' class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#infoObjectContainer').is(':visible')){ $('#infoObjectContainer').hide() } else{ $('#infoObjectContainer').show() }">
+  <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#infoObjectContainer').is(':visible')){ $('#infoObjectContainer').hide() } else{ $('#infoObjectContainer').show() }">
     <span class="text-primary" style="cursor: pointer">Zusätzliche Gematik-Verzeichnisdienst-Informationen einblenden/ausblenden - Bitte klicken</span>
   </div>
-  <div class="col-md-12 mb-3 font-weight-bolder" id="infoObjectContainer" style="display: none">
+  <div class="col-md-12 mb-3 fw-bolder" id="infoObjectContainer" style="display: none">
     <span>Gematik-Verzeichnisdienst: Version </span>
     <span th:text="${infoObject.version}"></span><span>&nbsp;&nbsp;</span>
     <span th:text="${infoObject.description}"></span>
   </div>
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#configContainer').is(':visible')){ $('#configContainer').hide() } else{ $('#configContainer').show() }">
+  <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#configContainer').is(':visible')){ $('#configContainer').hide() } else{ $('#configContainer').show() }">
     <span class="text-primary" style="cursor: pointer">Konfiguration-Informationen einblenden/ausblenden - Bitte klicken</span>
   </div>
-  <div class="col-md-12 mb-3 font-weight-bolder" id="configContainer" style="display: none">
+  <div class="col-md-12 mb-3 fw-bolder" id="configContainer" style="display: none">
     <span th:if="${filternEintraege}">Es wurde ein Suchfilter in Ihren Mandanteneinstellungen aktiviert. Es werden automatisch ALLE Einträge rausgefiltert, die NICHT mit folgenden Telematik-ID Kürzeln beginnen: <br></span>
     <span th:if="${filternEintraege}" th:text="${telematikKuerzel}"></span><br th:if="${filternEintraege}">
     <span th:if="${filternEintraege}"> Änderungen können nur von der Firma sberg it-systeme GmbH vorgenommen werden<br></span>
@@ -48,19 +48,19 @@
 
     <!-- Identifikatoren -->
     <div class="row mt-2">
-      <div class="col font-weight-bolder">Suchattribute: Identifikatoren</div>
-      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchIdentifierAttrContainer').is(':visible')){ $('#vzdSearchIdentifierAttrContainer').hide() } else{ $('#vzdSearchIdentifierAttrContainer').show() }">
+      <div class="col fw-bolder">Suchattribute: Identifikatoren</div>
+      <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchIdentifierAttrContainer').is(':visible')){ $('#vzdSearchIdentifierAttrContainer').hide() } else{ $('#vzdSearchIdentifierAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
 
     <form id="vzdSearchIdentifierAttrContainer" class="searchAttrContainer" style="display: none">
       <!-- telematikid -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="telematikId">Telematik-ID</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="telematikId" name="telematikId" aria-describedby="telematikIdHelp">
-          <small id="telematikIdHelp" class="text-muted">
+          <small id="telematikIdHelp" class="text-body-secondary">
             Wildcard * am Anfang/Ende benutzbar
           </small>
         </div>
@@ -70,7 +70,7 @@
       </div>
 
       <!-- uid -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="uid">UUID</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="uid" name="uid">
@@ -78,11 +78,11 @@
       </div>
 
       <!-- telematikid substr -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="telematikIdSubstr">Substring: Telematik-ID</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="telematikIdSubstr" name="telematikIdSubstr" aria-describedby="telematikIdSubstrHelp">
-          <small id="telematikIdSubstrHelp" class="text-muted">
+          <small id="telematikIdSubstrHelp" class="text-body-secondary">
             Substring am Anfang - Mehrfachnennungen möglich (mit Komma trennen)
           </small>
         </div>
@@ -92,11 +92,11 @@
       </div>
 
       <!-- domainid -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="telematikId">Sektor-ID</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="domainId" name="domainId" aria-describedby="domainIdHelp">
-          <small id="domainIdHelp" class="text-muted">
+          <small id="domainIdHelp" class="text-body-secondary">
             Mehrfachnennungen möglich (mit Komma trennen) und Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -108,19 +108,19 @@
 
     <!-- Namen -->
     <div class="row mt-2">
-      <div class="col font-weight-bolder">Suchattribute: Namen</div>
-      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchNameAttrContainer').is(':visible')){ $('#vzdSearchNameAttrContainer').hide() } else{ $('#vzdSearchNameAttrContainer').show() }">
+      <div class="col fw-bolder">Suchattribute: Namen</div>
+      <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchNameAttrContainer').is(':visible')){ $('#vzdSearchNameAttrContainer').hide() } else{ $('#vzdSearchNameAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
 
     <form id="vzdSearchNameAttrContainer" class="searchAttrContainer" style="display: none">
       <!-- displayName -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="displayName">Anzeigename</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="displayName" name="displayName" aria-describedby="displayNameHelp">
-          <small id="displayNameHelp" class="text-muted">
+          <small id="displayNameHelp" class="text-body-secondary">
             Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -130,11 +130,11 @@
       </div>
 
       <!-- cn -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="cn">Allgemeiner Name</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="cn" name="cn" aria-describedby="cnHelp">
-          <small id="cnHelp" class="text-muted">
+          <small id="cnHelp" class="text-body-secondary">
             Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -144,11 +144,11 @@
       </div>
 
       <!-- otherName -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="otherName">Anderer Name</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="otherName" name="otherName" aria-describedby="otherNameHelp">
-          <small id="otherNameHelp" class="text-muted">
+          <small id="otherNameHelp" class="text-body-secondary">
             Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -158,11 +158,11 @@
       </div>
 
       <!-- organization -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="organization">Organisation</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="organization" name="organization" aria-describedby="organizationHelp">
-          <small id="organizationHelp" class="text-muted">
+          <small id="organizationHelp" class="text-body-secondary">
             Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -172,11 +172,11 @@
       </div>
 
       <!-- givenName -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="givenName">Vorname</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="givenName" name="givenName" aria-describedby="givenNameHelp">
-          <small id="givenNameHelp" class="text-muted">
+          <small id="givenNameHelp" class="text-body-secondary">
             Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -186,11 +186,11 @@
       </div>
 
       <!-- sn -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="sn">Nachname</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="sn" name="sn" aria-describedby="snHelp">
-          <small id="snHelp" class="text-muted">
+          <small id="snHelp" class="text-body-secondary">
             Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -200,11 +200,11 @@
       </div>
 
       <!-- title -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="title">Titel</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp">
-          <small id="titleHelp" class="text-muted">
+          <small id="titleHelp" class="text-body-secondary">
             Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -216,19 +216,19 @@
 
     <!-- Adressdaten -->
     <div class="row mt-2">
-      <div class="col font-weight-bolder">Suchattribute: Adressdaten</div>
-      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchAddressAttrContainer').is(':visible')){ $('#vzdSearchAddressAttrContainer').hide() } else{ $('#vzdSearchAddressAttrContainer').show() }">
+      <div class="col fw-bolder">Suchattribute: Adressdaten</div>
+      <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchAddressAttrContainer').is(':visible')){ $('#vzdSearchAddressAttrContainer').hide() } else{ $('#vzdSearchAddressAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
 
     <form id="vzdSearchAddressAttrContainer" class="searchAttrContainer" style="display: none">
       <!-- streetAddress -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="streetAddress">Strasse und Hausnummer</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="streetAddress" name="streetAddress" aria-describedby="streetAddressHelp">
-          <small id="streetAddressHelp" class="text-muted">
+          <small id="streetAddressHelp" class="text-body-secondary">
             Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -238,11 +238,11 @@
       </div>
 
       <!-- postalCode -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="postalCode">PLZ</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="postalCode" name="postalCode" aria-describedby="postalCodeHelp">
-          <small id="postalCodeHelp" class="text-muted">
+          <small id="postalCodeHelp" class="text-body-secondary">
             Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -252,11 +252,11 @@
       </div>
 
       <!-- localityName -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="localityName">Ort</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="localityName" name="localityName" aria-describedby="localityNameHelp">
-          <small id="localityNameHelp" class="text-muted">
+          <small id="localityNameHelp" class="text-body-secondary">
             Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -266,7 +266,7 @@
       </div>
 
       <!-- stateOrProvinceName -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="stateOrProvinceName">Bundesland</label>
         <div class="col-sm-6">
           <select class="form-control" id="stateOrProvinceName" name="stateOrProvinceName">
@@ -298,11 +298,11 @@
       </div>
 
       <!-- countryCode -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="countryCode">Ländercode</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="countryCode" name="countryCode" aria-describedby="countryCodeHelp">
-          <small id="countryCodeHelp" class="text-muted">
+          <small id="countryCodeHelp" class="text-body-secondary">
             Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -314,19 +314,19 @@
 
     <!-- Berufliche Informationen -->
     <div class="row mt-2">
-      <div class="col font-weight-bolder">Suchattribute: Berufliche Informationen</div>
-      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchJobAttrContainer').is(':visible')){ $('#vzdSearchJobAttrContainer').hide() } else{ $('#vzdSearchJobAttrContainer').show() }">
+      <div class="col fw-bolder">Suchattribute: Berufliche Informationen</div>
+      <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchJobAttrContainer').is(':visible')){ $('#vzdSearchJobAttrContainer').hide() } else{ $('#vzdSearchJobAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
 
     <form id="vzdSearchJobAttrContainer" class="searchAttrContainer" style="display: none">
       <!-- specialization -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="specialization">Spezialisierungen</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="specialization" name="specialization" aria-describedby="specializationHelp">
-          <small id="specializationHelp" class="text-muted">
+          <small id="specializationHelp" class="text-body-secondary">
             Mehrfachnennungen möglich (mit Komma trennen) und Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -336,11 +336,11 @@
       </div>
 
       <!-- professionOid -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="professionOid">Berufsgruppe oder Betriebsstätten-Typ</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="professionOid" name="professionOid" aria-describedby="professionOidHelp">
-          <small id="professionOidHelp" class="text-muted">
+          <small id="professionOidHelp" class="text-body-secondary">
             Mehrfachnennungen möglich (mit Komma trennen) und Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -350,7 +350,7 @@
       </div>
 
       <!-- entryType -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="entryType">Eintragstyp</label>
         <div class="col-sm-6">
           <select class="form-control" id="entryType" name="entryType">
@@ -376,30 +376,30 @@
 
     <!-- Systemdaten -->
     <div class="row mt-2">
-      <div class="col font-weight-bolder">Suchattribute: Systemdaten</div>
-      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchSystemAttrContainer').is(':visible')){ $('#vzdSearchSystemAttrContainer').hide() } else{ $('#vzdSearchSystemAttrContainer').show() }">
+      <div class="col fw-bolder">Suchattribute: Systemdaten</div>
+      <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchSystemAttrContainer').is(':visible')){ $('#vzdSearchSystemAttrContainer').hide() } else{ $('#vzdSearchSystemAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
 
     <form id="vzdSearchSystemAttrContainer" class="searchAttrContainer" style="display: none">
       <!-- maxKomLeAdr -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="maxKomLeAdr">Anzahl von KIM-Adressen</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="maxKomLeAdr" name="maxKomLeAdr" aria-describedby="maxKomLeAdrHelp">
-          <small id="maxKomLeAdrHelp" class="text-muted">
+          <small id="maxKomLeAdrHelp" class="text-body-secondary">
             Maximale Anzahl von mail Adressen in den KIM Fachdaten, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
       </div>
 
       <!-- holder -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="holder">Besitzer</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="holder" name="holder" aria-describedby="holderHelp">
-          <small id="holderHelp" class="text-muted">
+          <small id="holderHelp" class="text-body-secondary">
             Mehrfachnennungen möglich (mit Komma trennen) und Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
           </small>
         </div>
@@ -409,7 +409,7 @@
       </div>
 
       <!-- dataFromAuthority -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="dataFromAuthority">Daten vom Kartenherausgeber</label>
         <div class="col-sm-6">
           <select class="form-control" id="dataFromAuthority" name="dataFromAuthority">
@@ -425,7 +425,7 @@
       </div>
 
       <!-- personalEntry -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="personalEntry">Persönlicher Eintrag</label>
         <div class="col-sm-6">
           <select class="form-control" id="personalEntry" name="personalEntry">
@@ -441,7 +441,7 @@
       </div>
 
       <!-- active -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="active">Aktiv</label>
         <div class="col-sm-6">
           <select class="form-control" id="active" name="active">
@@ -454,18 +454,18 @@
       </div>
 
       <!-- meta -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="meta">Metadaten</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="meta" name="meta" aria-describedby="metaHelp">
-          <small id="metaHelp" class="text-muted">
+          <small id="metaHelp" class="text-body-secondary">
             Mehrfachnennungen möglich (mit Komma trennen) und Wildcard * am Anfang/Ende benutzbar
           </small>
         </div>
       </div>
 
       <!-- changeDateTimeFrom -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="changeDateTimeFrom">Änderung Von</label>
         <div class="col-sm-6">
           <input type="datetime-local" class="form-control" id="changeDateTimeFrom" name="changeDateTimeFrom">
@@ -476,7 +476,7 @@
       </div>
 
       <!-- changeDateTimeTo -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="changeDateTimeTo">Änderung Bis</label>
         <div class="col-sm-6">
           <input type="datetime-local" class="form-control" id="changeDateTimeTo" name="changeDateTimeTo">
@@ -489,19 +489,19 @@
 
     <!-- Fachdaten: mail, komledata, kimdata -->
     <div class="row mt-2" th:if="${showSearchFAAttributes}">
-      <div class="col font-weight-bolder">Suchattribute: KIM-Fachdaten (Mailadresse, KIM-Version, KIM-Anwendungskennzeichen). Wenn Sie die Attribute in dem Abschnitt belegen, werden ALLE oberen Attribute bei der Suche ignoriert.</div>
-      <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdSearchKimFachdatenAttrContainer').is(':visible')){ $('#vzdSearchKimFachdatenAttrContainer').hide() } else{ $('#vzdSearchKimFachdatenAttrContainer').show() }">
+      <div class="col fw-bolder">Suchattribute: KIM-Fachdaten (Mailadresse, KIM-Version, KIM-Anwendungskennzeichen). Wenn Sie die Attribute in dem Abschnitt belegen, werden ALLE oberen Attribute bei der Suche ignoriert.</div>
+      <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchKimFachdatenAttrContainer').is(':visible')){ $('#vzdSearchKimFachdatenAttrContainer').hide() } else{ $('#vzdSearchKimFachdatenAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
 
     <form id="vzdSearchKimFachdatenAttrContainer" class="searchAttrContainer" style="display: none" th:if="${showSearchFAAttributes}">
       <!-- mail -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="mail">KIM-Mailadresse im Fachdatenattribut mail</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="mail" name="mail" aria-describedby="mailHelp">
-          <small id="mailHelp" class="text-muted">
+          <small id="mailHelp" class="text-body-secondary">
             Selektiert alle VZD-Einträge mit oder ohne KIM-Mailadressen. Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
             Bsp.: beispiel@test.kim.telematik oder ** oder *spiel@test*
           </small>
@@ -509,11 +509,11 @@
       </div>
 
       <!-- komLeData -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="komLeData">KIM-Mailadresse und KIM-Version im Fachdatenattribut komLeData</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="komLeData" name="komLeData" aria-describedby="komLeDataHelp">
-          <small id="komLeDataHelp" class="text-muted">
+          <small id="komLeDataHelp" class="text-body-secondary">
             Selektiert alle VZD-Einträge, deren Attribut FAD1.komLeData den angegebenen String in einem Wert des array's enthält.
             komLeData enthält die "version" und "mail" durch Komma getrennt in einem array.
             Beispiel: 1.0,mc_smcb_za@dom1.komle.telematik-test
@@ -523,11 +523,11 @@
       </div>
 
       <!-- kimData -->
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="kimData">KIM-Mailadresse, KIM-Version und Anwendungskennzeichen im Fachdatenattribut kimData</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="kimData" name="kimData" aria-describedby="kimDataHelp">
-          <small id="kimDataHelp" class="text-muted">
+          <small id="kimDataHelp" class="text-body-secondary">
             Selektiert alle VZD-Einträge, deren Attribut FAD1.kimData den angegebenen String in einem Wert des array's enthält.
             kimData enthält die "mail", "version" und "appTags" durch Komma getrennt in einem array.
             Die appTags werden durch das Pipe Zeichen getrennt.
@@ -544,25 +544,33 @@
 
   </div>
   <div class="col-md-12 mb-3">
-    <div class="row ml-0 mr-0">
-      <div class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pr-1">
-        <button type="button" id="searchBtn" class="btn btn-primary btn-block" onclick="vzdEintragUebersicht();">Suchen</button>
+    <div class="row ms-0 me-0">
+      <div class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pe-1">
+        <div class="d-grid gap-2">
+          <button type="button" id="searchBtn" class="btn btn-primary" onclick="vzdEintragUebersicht();">Suchen</button>
+        </div>
       </div>
-      <div th:if="${bearbeitenNurFiltereintraege || bearbeitenEintraege}" class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pr-1">
-        <button type="button" id="createUser" class="btn btn-primary btn-block" onclick="vzdEintragLaden(-1)">Verzeichnisdiensteintrag anlegen</button>
+      <div th:if="${bearbeitenNurFiltereintraege || bearbeitenEintraege}" class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pe-1">
+        <div class="d-grid gap-2">
+          <button type="button" id="createUser" class="btn btn-primary" onclick="vzdEintragLaden(-1)">Verzeichnisdiensteintrag anlegen</button>
+        </div>
       </div>
-      <div class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pr-1">
-        <button type="button" class="btn btn-primary btn-block" onclick="$('#confirmDialog4DeleteVzdAuth').modal('show')">Verzeichnisdienst-Anmeldedaten löschen</button>
+      <div class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pe-1">
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteVzdAuth">Verzeichnisdienst-Anmeldedaten löschen</button>
+        </div>
       </div>
-      <div th:if="${!vzdeintraege.isEmpty()}" class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pr-1">
-        <button type="button" class="btn btn-primary btn-block" onclick="vzdEintragUebersicht(false,true)">CSV-Export der Uuid und TelematikID</button>
+      <div th:if="${!vzdeintraege.isEmpty()}" class="col-sm-6 col-md-6 col-lg-3 mb-3 p-0 pe-1">
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-primary" onclick="vzdEintragUebersicht(false,true)">CSV-Export der Uuid und TelematikID</button>
+        </div>
       </div>
       <a th:if="${csvExportErstellen && !vzdeintraege.isEmpty()}" style="display: none" target="_blank" id="csvExportErstellen" th:href="@{/verzeichnisdienst/uebersicht/herunterladen/{csvFileUuid}(csvFileUuid=${csvExportUuid})}"></a>
     </div>
   </div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-9 mb-3 font-weight-bolder">
+  <div class="col-md-9 mb-3 fw-bolder">
     <span th:text="${#lists.size(vzdeintraege)}"></span>&nbsp;Verzeichnisdiensteinträge vorhanden
   </div>
 </div>
@@ -570,10 +578,10 @@
   <div id="vzdOverlayText">Bitte warten....</div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-12 mb-3 font-weight-bolder" onclick="if($('#vzdColVisibleContainer').is(':visible')){ $('#vzdColVisibleContainer').hide() } else{ $('#vzdColVisibleContainer').show() }">
+  <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdColVisibleContainer').is(':visible')){ $('#vzdColVisibleContainer').hide() } else{ $('#vzdColVisibleContainer').show() }">
     <span class="text-primary" style="cursor: pointer">Spalten einblenden/ausblenden - Bitte klicken</span>
   </div>
-  <div class="col-md-12 mb-3 font-weight-bolder" id="vzdColVisibleContainer" style="display: none">
+  <div class="col-md-12 mb-3 fw-bolder" id="vzdColVisibleContainer" style="display: none">
     <div class="row">
       <!-- vzdentry_col_id-->
       <div class="col-sm-3">
@@ -737,9 +745,9 @@
       </tr>
     </thead>
     <tbody id="vzdEintragTableBody">
-      <tr class="font-weight-bolder" th:if="${vzdeintraege.isEmpty() || suchergebnisFehler != null}">
-        <td colspan="2" th:if="${suchergebnisFehler == null}">Keine Einträge verfügbar. Bitte benutzen Sie die Suche.</td>
-        <td colspan="2" th:if="${suchergebnisFehler != null}" th:text="${suchergebnisFehler}"></td>
+      <tr class="fw-bolder" th:if="${vzdeintraege.isEmpty() || suchergebnisFehler != null}">
+        <td colspan="27" th:if="${suchergebnisFehler == null}">Keine Einträge verfügbar. Bitte benutzen Sie die Suche.</td>
+        <td colspan="27" th:if="${suchergebnisFehler != null}" th:text="${suchergebnisFehler}"></td>
       </tr>
       <tr th:each="n : ${vzdeintraege}" th:attr="id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}">
         <td class="vzdentry_col_id"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryUid()}">ID</span></td>
@@ -771,7 +779,7 @@
           <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}" onclick="vzdEintragLaden($(this).attr('data-id'))">
             <span data-feather="edit"></span>
           </button>&nbsp;&nbsp;&nbsp;
-          <button th:if="${n.editable}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}" th:attrappend="data-telematikId=${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()}" onclick="elbookContext.toDeleteVzdEintrag=$(this).attr('data-id');elbookContext.telematikId=$(this).attr('data-telematikId');$('#confirmDialog4DeleteVzdEintrag').modal('show')" >
+          <button th:if="${n.editable}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}" th:attrappend="data-telematikId=${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()}" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteVzdEintrag" onclick="elbookContext.toDeleteVzdEintrag=$(this).attr('data-id');elbookContext.telematikId=$(this).attr('data-telematikId');" >
             <span data-feather="delete"></span>
           </button>
         </td>

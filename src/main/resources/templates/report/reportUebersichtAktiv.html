@@ -18,11 +18,13 @@
 </div>
 <div class="row" xmlns:th="http://www.thymeleaf.org">
   <div class="col-sm-6 col-lg-2 mb-3 p-0">
-    <button type="button" id="createUser" class="btn btn-primary btn-block" onclick="reportLaden(-1)">Statistik / Report anlegen</button>
+    <div class="d-grid gap-2">
+      <button type="button" id="createUser" class="btn btn-primary" onclick="reportLaden(-1)">Statistik / Report anlegen</button>
+    </div>
   </div>
 </div>
 <div xmlns:th="http://www.thymeleaf.org" class="row">
-  <div class="col-md-9 mb-3 font-weight-bolder">
+  <div class="col-md-9 mb-3 fw-bolder">
     <span th:text="${#lists.size(reports)}"></span>&nbsp;Statistiken / Reports vorhanden
   </div>
 </div>
@@ -37,12 +39,11 @@
       <th>Erstellt</th>
       <th>Geändert</th>
       <th>Gültig Bis</th>
-      <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:if="${reports.isEmpty()}">
-      <td colspan="2">Keine Statistiken / Reports verfügbar</td>
+      <td colspan="7">Keine Statistiken / Reports verfügbar</td>
     </tr>
     <tr th:each="n : ${reports}">
       <td><span th:text="${n.id}">ID</span></td>
@@ -63,7 +64,7 @@
         <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-id=${n.id}" onclick="reportLaden($(this).attr('data-id'))">
           <span data-feather="edit"></span>
         </button>&nbsp;&nbsp;&nbsp;
-        <button th:if="${n.editierbar}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" onclick="elbookContext.toDeleteReport=$(this).attr('data-id');$('#confirmDialog4DeleteReport').modal('show')" >
+        <button th:if="${n.editierbar}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteReport" onclick="elbookContext.toDeleteReport=$(this).attr('data-id');" >
           <span data-feather="delete"></span>
         </button>
         <a target="_blank" th:href="@{/report/starte/{reportId}(reportId=${n.id})}">Ausführen</a>&nbsp;&nbsp;
