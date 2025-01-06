@@ -210,12 +210,42 @@ public class VzdEntryWrapper {
         throw new IllegalStateException("no usercertificate entry found");
     }
 
+    public String extractUserCertificatePublicKeyAlgorithm() {
+        if (this.userV1_9_5Certificate != null) {
+            return this.userV1_9_5Certificate.getPublicKeyAlgorithm();
+        }
+        else if (this.userV1_12_6Certificate != null) {
+            return this.userV1_12_6Certificate.getPublicKeyAlgorithm();
+        }
+        throw new IllegalStateException("no usercertificate entry found");
+    }
+
     public String extractUserCertificateContent() {
         if (this.userV1_9_5Certificate != null) {
             return this.userV1_9_5Certificate.getUserCertificate();
         }
         else if (this.userV1_12_6Certificate != null) {
             return this.userV1_12_6Certificate.getUserCertificate();
+        }
+        throw new IllegalStateException("no usercertificate entry found");
+    }
+
+    public String extractUserCertificateNotAfter() {
+        if (this.userV1_9_5Certificate != null) {
+            return this.userV1_9_5Certificate.getNotAfter();
+        }
+        else if (this.userV1_12_6Certificate != null) {
+            return this.userV1_12_6Certificate.getNotAfter();
+        }
+        throw new IllegalStateException("no usercertificate entry found");
+    }
+
+    public String extractUserCertificateNotBefore() {
+        if (this.userV1_9_5Certificate != null) {
+            return this.userV1_9_5Certificate.getNotBefore();
+        }
+        else if (this.userV1_12_6Certificate != null) {
+            return this.userV1_12_6Certificate.getNotBefore();
         }
         throw new IllegalStateException("no usercertificate entry found");
     }
@@ -472,10 +502,10 @@ public class VzdEntryWrapper {
 
     public boolean checkDirectoryEntryHolder(String holder) {
         if (this.directoryV1_9_5Entry != null) {
-            return !this.directoryV1_9_5Entry.getDirectoryEntryBase().getHolder().isEmpty() && !this.directoryV1_9_5Entry.getDirectoryEntryBase().getHolder().contains(holder);
+            return !this.directoryV1_9_5Entry.getDirectoryEntryBase().getHolder().isEmpty() && this.directoryV1_9_5Entry.getDirectoryEntryBase().getHolder().contains(holder);
         }
         else if (this.directoryV1_12_6Entry != null) {
-            return !this.directoryV1_12_6Entry.getDirectoryEntryBase().getHolder().isEmpty() && !this.directoryV1_12_6Entry.getDirectoryEntryBase().getHolder().contains(holder);
+            return !this.directoryV1_12_6Entry.getDirectoryEntryBase().getHolder().isEmpty() && this.directoryV1_12_6Entry.getDirectoryEntryBase().getHolder().contains(holder);
         }
         throw new IllegalStateException("no directory entry found");
     }

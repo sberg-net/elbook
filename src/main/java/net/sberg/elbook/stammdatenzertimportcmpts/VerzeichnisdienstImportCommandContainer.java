@@ -23,6 +23,7 @@ import de.gematik.ws.cm.pers.hba_smc_b.v1.SmcbAntragExport;
 import de.gematik.ws.sst.v1.GetHbaAntraegeExportResponseType;
 import de.gematik.ws.sst.v1.GetSmcbAntraegeExportResponseType;
 import lombok.Data;
+import net.sberg.elbook.glossarcmpts.TelematikIdInfo;
 import net.sberg.elbook.mandantcmpts.EnumSektor;
 import org.apache.commons.codec.binary.Base64;
 
@@ -32,7 +33,6 @@ import java.util.stream.Collectors;
 @Data
 public class VerzeichnisdienstImportCommandContainer {
 
-    private EnumSektor sektor = EnumSektor.APOTHEKE;
     private String vzdAuthId;
     private String vzdAuthSecret;
     private List<VerzeichnisdienstImportCommand> commands = new ArrayList<>();
@@ -48,24 +48,24 @@ public class VerzeichnisdienstImportCommandContainer {
         }
     }
 
-    public void syncHba(List<HbaAntragExport> hbaAntragExports) throws Exception {
+    public void syncHba(TelematikIdInfo telematikIdInfo, List<HbaAntragExport> hbaAntragExports) throws Exception {
         for (Iterator<HbaAntragExport> iterator = hbaAntragExports.iterator(); iterator.hasNext(); ) {
             HbaAntragExport hbaAntragExport = iterator.next();
             String telematikId = hbaAntragExport.getFreigabedaten().getTelematikID();
-            sync(telematikId, hbaAntragExport.getProdResult());
+            sync(telematikId, telematikIdInfo, hbaAntragExport.getProdResult());
         }
     }
 
-    public void syncSmcb(List<SmcbAntragExport> smcbAntragExports) throws Exception {
+    public void syncSmcb(TelematikIdInfo telematikIdInfo, List<SmcbAntragExport> smcbAntragExports) throws Exception {
         for (Iterator<SmcbAntragExport> iterator = smcbAntragExports.iterator(); iterator.hasNext(); ) {
             SmcbAntragExport smcbAntragExport = iterator.next();
             String telematikId = smcbAntragExport.getInstitution().getTelematikID().getValue();
-            sync(telematikId, smcbAntragExport.getProdResult());
+            sync(telematikId, telematikIdInfo, smcbAntragExport.getProdResult());
         }
     }
 
-    private void sync(String telematikId, List<ProdResultType> prodResultTypes) throws Exception {
-        String businessId = sektor.getBusinessId(telematikId);
+    private void sync(String telematikId, TelematikIdInfo telematikIdInfo, List<ProdResultType> prodResultTypes) throws Exception {
+        String businessId = telematikIdInfo.getTelematikIdPattern().getSektor().getBusinessId(telematikId);
 
         List<VerzeichnisdienstImportCommand> c = commands.stream().filter(verzeichnisdienstImportCommand1 -> {
             String id = verzeichnisdienstImportCommand1.getVerwaltungsId();

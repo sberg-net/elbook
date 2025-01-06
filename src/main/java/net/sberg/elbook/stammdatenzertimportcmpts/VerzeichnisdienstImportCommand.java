@@ -16,12 +16,11 @@
 package net.sberg.elbook.stammdatenzertimportcmpts;
 
 import lombok.Data;
-import net.sberg.elbook.mandantcmpts.EnumSektor;
+import net.sberg.elbook.glossarcmpts.TelematikIdInfo;
 import net.sberg.elbook.verzeichnisdienstcmpts.DirectoryEntrySaveContainer;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
 import net.sberg.elbook.vzdclientcmpts.command.*;
-import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +64,8 @@ public class VerzeichnisdienstImportCommand {
     private boolean toDelete;
     private boolean toIgnore;
 
+    private TelematikIdInfo telematikIdInfo;
+
     public static VerzeichnisdienstImportCommand merge(VerzeichnisdienstImportCommand src, VerzeichnisdienstImportCommand dest) {
         VerzeichnisdienstImportCommand res = new VerzeichnisdienstImportCommand();
 
@@ -97,10 +98,15 @@ public class VerzeichnisdienstImportCommand {
         res.getEncZertifikat().addAll(dest.getEncZertifikat());
 
         res.setToDelete(src.isToDelete());
+        res.setToIgnore(src.isToIgnore());
+
+        res.setTelematikIdInfo(src.getTelematikIdInfo());
         return res;
     }
 
-    public DirectoryEntrySaveContainer createAddDirEntryCommand(TiVZDProperties tiVZDProperties, EnumSektor sektor) {
+    public DirectoryEntrySaveContainer createAddDirEntryCommand(TiVZDProperties tiVZDProperties) {
+        EnumEntryType entryType = telematikIdInfo.getProfessionOIDInfos().get(0).getEntryType();
+
         DirectoryEntrySaveContainer directoryEntrySaveContainer = new DirectoryEntrySaveContainer();
         directoryEntrySaveContainer.setCreate(true);
 
@@ -126,12 +132,12 @@ public class VerzeichnisdienstImportCommand {
         addDirEntryCommand.setCountryCode(laenderCode);
 
         addDirEntryCommand.setSpecialization(fachrichtungen);
-        addDirEntryCommand.setEntryType(eintragsTyp != null?eintragsTyp:sektor.getEntryType());
+        addDirEntryCommand.setEntryType(eintragsTyp != null?eintragsTyp:entryType);
 
         addDirEntryCommand.setMaxKomLeAdr(maxKomLeAdr);
         addDirEntryCommand.setActive(aktiv);
 
-        if (!sektor.getEntryType().equals(EnumEntryType.Berufsgruppe) && !sektor.getEntryType().equals(EnumEntryType.Versicherte)) {
+        if (telematikIdInfo.getProfessionOIDInfos().get(0).isOrganization()) {
             if (nachname == null) {
                 addDirEntryCommand.setSn(anzeigeName);
             }
@@ -143,7 +149,9 @@ public class VerzeichnisdienstImportCommand {
         return directoryEntrySaveContainer;
     }
 
-    public DirectoryEntrySaveContainer createModDirEntryCommand(TiVZDProperties tiVZDProperties, EnumSektor sektor, VzdEntryWrapper directoryEntry, Logger log) {
+    public DirectoryEntrySaveContainer createModDirEntryCommand(TiVZDProperties tiVZDProperties, VzdEntryWrapper directoryEntry) {
+        EnumEntryType entryType = telematikIdInfo.getProfessionOIDInfos().get(0).getEntryType();
+
         DirectoryEntrySaveContainer directoryEntrySaveContainer = new DirectoryEntrySaveContainer();
         directoryEntrySaveContainer.setCreate(false);
 
@@ -174,7 +182,7 @@ public class VerzeichnisdienstImportCommand {
             modDirEntryCommand.setEntryType(eintragsTyp);
         }
         else {
-            modDirEntryCommand.setEntryType(sektor.getEntryType());
+            modDirEntryCommand.setEntryType(entryType);
         }
 
         modDirEntryCommand.setMeta(directoryEntry.extractDirectoryEntryMeta());
@@ -192,28 +200,21 @@ public class VerzeichnisdienstImportCommand {
         return directoryEntrySaveContainer;
     }
 
-    public boolean toUpdate(EnumSektor sektor, VzdEntryWrapper directoryEntry) throws Exception {
+    public boolean toUpdate(VzdEntryWrapper directoryEntry) throws Exception {
         if (directoryEntry == null) {
             return false;
         }
 
-        if (!sektor.getEntryType().equals(EnumEntryType.Berufsgruppe) && !sektor.getEntryType().equals(EnumEntryType.Versicherte)) {
+        EnumEntryType entryType = telematikIdInfo.getProfessionOIDInfos().get(0).getEntryType();
+
+        if (telematikIdInfo.getProfessionOIDInfos().get(0).isOrganization()) {
             if (nachname == null) {
                 setNachname(anzeigeName);
             }
             if (allgemeinerName == null) {
                 setAllgemeinerName(anzeigeName);
             }
-        }
 
-        if (sektor.getEntryType().equals(EnumEntryType.Leistungserbringerinstitution)
-            ||
-            sektor.getEntryType().equals(EnumEntryType.Krankenkasse)
-            ||
-            sektor.getEntryType().equals(EnumEntryType.Krankenkasse_ePA)
-            ||
-            sektor.getEntryType().equals(EnumEntryType.Organisation)
-        ) {
             if (directoryEntry.extractDirectoryEntryGivenName() != null
                 &&
                 !directoryEntry.extractDirectoryEntryGivenName().trim().isEmpty()
@@ -227,7 +228,7 @@ public class VerzeichnisdienstImportCommand {
 
         //special komfort handling -> lower versions
         if (getEintragsTyp() == null) {
-            setEintragsTyp(sektor.getEntryType());
+            setEintragsTyp(entryType);
         }
         if (getLaenderCode() == null && directoryEntry.extractDirectoryEntryCountryCode() != null) {
             setLaenderCode(directoryEntry.extractDirectoryEntryCountryCode());

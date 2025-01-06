@@ -13,6 +13,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [2.4.0]
+
+### Added
+- HoldarAttr - Verwaltung über die Oberfläche aufrufbar
+
+## [2.3.0]
+
+### Added
+- Glossar erweitert um ProfessionOID und Holder
+
+### Fixed
+- diverse BugFixes rund um Holder-Attr-Change und Stammdatenimport
+
+## [2.2.0]
+
+### Added
+- Integration des Glosars: Eingabe einer TelematikID -> umfassende Informationen
+  - das Glossar ist auch per Rest-API abfragbar -> alles im öffentlichen Bereich
+- API integriert, um Holder-Attribute im Bulk-Modus für viele Objekte zu setzen 
+
 ## [2.1.0]
 
 ### Added

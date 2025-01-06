@@ -39,7 +39,7 @@ public class LogEintragService {
     private LogEintrag create(String telematikId, Mandant mandant, String businessId) throws Exception {
         LogEintrag logEintrag = new LogEintrag();
         logEintrag.setId(genericDao.getNextId(logEintrag.getClass().getName(), Optional.empty()));
-        logEintrag.setDatentyp(mandant.getSektor().equals(EnumSektor.ARZTPRAXIS)? EnumDatatype.ARZTPRAXIS:EnumDatatype.APOTHEKE);
+        logEintrag.setDatentyp(mandant.getSektor());
         logEintrag.setTelematikId(telematikId);
         logEintrag.setErstelltAm(LocalDateTime.now());
         logEintrag.setMandantId(mandant.getId());

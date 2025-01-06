@@ -66,6 +66,8 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 antMatcher("/mandant/is2FAenabled"),
                                 antMatcher("/hbakartendaten/**"),
+                                antMatcher("/glossar/**"),
+                                antMatcher("/api/glossar/**"),
                                 antMatcher("/login"),
                                 antMatcher("/info"),
                                 antMatcher("/versionshistorie"),
@@ -86,7 +88,9 @@ public class WebSecurityConfig {
                         ).hasRole(EnumAuthRole.ROLE_ADMIN.getSuffix())
 
                         .requestMatchers(
-                                antMatcher("/api/**")
+                                antMatcher("/api/holderattr/**"),
+                                antMatcher("/api/hbakartendaten/**"),
+                                antMatcher("/api/stammdatencertimport/**")
                         ).hasAnyRole(EnumAuthRole.ROLE_ADMIN.getSuffix(), EnumAuthRole.ROLE_GOLD_LICENCE_HEAD_OF_DEPT.getSuffix())
 
                         .requestMatchers(
@@ -95,6 +99,7 @@ public class WebSecurityConfig {
                                 antMatcher("/mandant/enableFinish2FA/**"),
                                 antMatcher("/mandant/disableFinish2FA/**"),
                                 antMatcher("/verzeichnisdienst/**"),
+                                antMatcher("/holderattribut/**"),
                                 antMatcher("/logeintrag/**"),
                                 antMatcher("/report/**")
                         ).hasAnyRole(EnumAuthRole.ROLE_ADMIN.getSuffix(),

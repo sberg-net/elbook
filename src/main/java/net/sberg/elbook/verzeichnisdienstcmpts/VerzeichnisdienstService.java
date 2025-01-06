@@ -439,7 +439,7 @@ public class VerzeichnisdienstService {
         if (cert != null) {
             VerzeichnisdienstZertifikat zertifikat = new VerzeichnisdienstZertifikat();
             zertifikat.setAussteller(cert.getIssuerX500Principal().getName());
-            zertifikat.setInhaber(cert.getSubjectX500Principal().getName());
+            zertifikat.setInhaber(cert.getSubjectX500Principal().toString());
             zertifikat.setSerienNummer(cert.getSerialNumber().toString());
             zertifikat.setVersion(String.valueOf(cert.getVersion()));
             zertifikat.setGueltigVon(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm:ss")

@@ -807,6 +807,46 @@ function mandantUebersicht(searchValue) {
   });
 }
 
+function glossarUebersicht(searchValue, searchType) {
+  const token = $("meta[name='_csrf']").attr("content");
+  const header = $("meta[name='_csrf_header']").attr("content");
+
+  if (searchValue === null || searchValue === undefined) {
+    searchValue = elbookContext.searchValue;
+  }
+  elbookContext.searchValue = searchValue?searchValue:'';
+  searchType=searchType?searchType:'';
+
+  $("#elbook-spinner").attr("style", "");
+  $("#glossarTableContainer").attr("style", "");
+  $("#glossarTableContainer").empty();
+  $.ajax({
+    type: "POST",
+    url: $("#glossarTableContainer").attr("action")+'glossar/uebersicht',
+    data: 'searchValue='+(searchValue?searchValue:'')+'&searchType='+searchType,
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader(header, token);
+    },
+    success: function(data) {
+      $("#elbook-spinner").attr("style", "display:none");
+      $("#glossarTableContainer").append(data);
+      if (searchType === 'telematikId') {
+        $("#telematikIdSearch").val(elbookContext.searchValue);
+      }
+      else if (searchType === 'professionOID') {
+        $("#professionOIDSearch").val(elbookContext.searchValue);
+      }
+      else if (searchType === 'holder') {
+        $("#holderSearch").val(elbookContext.searchValue);
+      }
+    },
+    error: function(jqXHR,textStatus,errorThrown) {
+      $("#elbook-spinner").attr("style", "display:none");
+      $("#glossarTableContainer").append(jqXHR.responseText);
+    }
+  });
+}
+
 function reportUebersicht() {
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
@@ -1819,6 +1859,44 @@ function disableFinish2FA() {
       $("#deactivate2FAContainerFormError").attr("style", "");
       $("#deactivate2FAContainerFormError").empty();
       $("#deactivate2FAContainerFormError").append("Beim Abschliessen der 2-Faktor-Deaktivierung ist ein Fehler aufgetreten");
+    }
+  });
+}
+
+function holderAttrFileSenden() {
+  const token = $("meta[name='_csrf']").attr("content");
+  const header = $("meta[name='_csrf_header']").attr("content");
+
+  const res = document.getElementById("holderAttributForm").checkValidity();
+  $('.needs-validation').addClass('was-validated');
+  if (!res) {
+    return;
+  }
+
+  $(".spinner-border").attr("style", "");
+  const fData = $("#holderAttributForm").serializeFiles();
+
+  $.ajax({
+    type: "POST",
+    url: $("#holderattributContainer").attr("action") + "holderattribut/jsondatei",
+    data: fData,
+    cache: false,
+    contentType: false,
+    processData: false,
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader(header, token);
+    },
+    success: function (data) {
+      $(".spinner-border").attr("style", "display:none");
+      $("#holderAttributForm").trigger("reset");
+      $("#holderattributFormularResult").empty();
+      $("#holderattributFormularResult").append(JSON.stringify(data, null, 2));
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      $(".spinner-border").attr("style", "display:none");
+      $("#holderattributFormularError").attr("style", "");
+      $("#holderattributFormularError").empty();
+      $("#holderattributFormularError").append(JSON.parse(jqXHR.responseText).message);
     }
   });
 }

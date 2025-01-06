@@ -1,0 +1,436 @@
+{
+  "mapping": [
+    {
+      "pattern": "^1-1.*",
+      "fhirResourceType": "Practitioner", 
+      "code": "Arzt",
+      "displayShort": "Arzt",
+      "professionOIDs": "1.2.276.0.76.4.30",
+      "sektor": "ARZT"
+    },
+    {
+      "pattern": "^1-20.*",
+      "fhirResourceType": "Organization",
+      "code": "Arztpaxis",
+      "displayShort": "Arztpaxis",
+      "professionOIDs": "1.2.276.0.76.4.50,1.2.276.0.76.4.52",
+      "sektor": "ARZTPRAXIS"
+    },
+    {
+      "pattern": "^2-0?1.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Zahnarzt",
+      "displayShort": "Zahnarzt",
+      "professionOIDs": "1.2.276.0.76.4.31",
+      "sektor": "ZAHNARZT"
+    },
+    {
+      "pattern": "^2-2.*",
+      "fhirResourceType": "Organization",
+      "code": "Zahnarztpraxis",
+      "displayShort": "Zahnarztpraxis",
+      "professionOIDs": "1.2.276.0.76.4.51",
+      "sektor": "ZAHNARZTPRAXIS"
+    },
+    {
+      "pattern": "^3-...2.*",
+      "fhirResourceType": "Organization",
+      "code": "Apotheke",
+      "displayShort": "Apotheke",
+      "professionOIDs": "1.2.276.0.76.4.54",
+      "sektor": "APOTHEKE"
+    },
+    {
+      "pattern": "^3-...3.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Apotheker",
+      "displayShort": "Apotheker",
+      "professionOIDs": "1.2.276.0.76.4.32",
+      "sektor": "APOTHEKER"
+    },
+    {
+      "pattern": "^4-.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Psychotherapeut",
+      "displayShort": "Psychotherapeut",
+      "professionOIDs": "1.2.276.0.76.4.45,1.2.276.0.76.4.46,1.2.276.0.76.4.47",
+      "sektor": "PSYCHOTHERAPEUTH"
+    },
+    {
+      "pattern": "^5-.*",
+      "fhirResourceType": "Organization",
+      "code": "Krankenhaus",
+      "displayShort": "Krankenhaus",
+      "professionOIDs": "1.2.276.0.76.4.53,1.2.276.0.76.4.55,1.2.276.0.76.4.257",
+      "sektor": "KRANKENHAUS"
+    },
+    {
+      "pattern": "^8-01.*",
+      "fhirResourceType": "Organization",
+      "code": "Krankenkasse",
+      "displayShort": "Krankenkasse",
+      "professionOIDs": "1.2.276.0.76.4.59",
+      "sektor": "GKV"
+    },
+    {
+      "pattern": "^8-03.*",
+      "fhirResourceType": "Organization",
+      "code": "Krankenkasse_ePA",
+      "displayShort": "Krankenkasse (ePA)",
+      "professionOIDs": "1.2.276.0.76.4.273",
+      "sektor": "GKV_EPA"
+    },
+    {
+      "pattern": "^8-04.*",
+      "fhirResourceType": "Organization",
+      "code": "Krankenkasse_Ombudsstelle",
+      "displayShort": "Krankenkasse Ombudsstelle",
+      "professionOIDs": "1.2.276.0.76.4.303",
+      "sektor": "GKV"
+    },
+    {
+      "pattern": "^9-1.32.*",
+      "fhirResourceType": "Practitioner",
+      "code": "EU_Versandapotheker",
+      "displayShort": "EU-Versandapotheker",
+      "professionOIDs": "1.2.276.0.76.4.32",
+      "sektor": "APOTHEKER"
+    },
+    {
+      "pattern": "^9-1.33.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Apothekerassistent",
+      "displayShort": "Apothekerassistent",
+      "professionOIDs": "1.2.276.0.76.4.33",
+      "sektor": "APOTHEKER"
+    },
+    {
+      "pattern": "^9-1.34.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Pharmazieingenieur",
+      "displayShort": "Pharmazieingenieur",
+      "professionOIDs": "1.2.276.0.76.4.34",
+      "sektor": "APOTHEKER"
+    },
+    {
+      "pattern": "^9-2.50.*",
+      "fhirResourceType": "Organization",
+      "code": "Private_Arztpraxis",
+      "displayShort": "Private Arztpraxis",
+      "professionOIDs": "1.2.276.0.76.4.50",
+      "sektor": "ARZTPRAXIS"
+    },
+    {
+      "pattern": "^9-2.51.*",
+      "fhirResourceType": "Organization",
+      "code": "Private_Zahnarztpraxis",
+      "displayShort": "Private Zahnarztpraxis",
+      "professionOIDs": "1.2.276.0.76.4.51",
+      "sektor": "ZAHNARZTPRAXIS"
+    },
+    {
+      "pattern": "^9-2.54.*",
+      "fhirResourceType": "Organization",
+      "code": "EU_Versandapotheke",
+      "displayShort": "EU-Versandapotheke",
+      "professionOIDs": "1.2.276.0.76.4.54",
+      "sektor": "APOTHEKE"
+    },
+    {
+      "pattern": "^9-2.58.*",
+      "fhirResourceType": "Organization",
+      "code": "Betriebsstätte gematik",
+      "displayShort": "Betriebsstätte gematik",
+      "professionOIDs": "1.2.276.0.76.4.58",
+      "sektor": "GEMATIK_SMCB_ORG"
+    },
+    {
+      "pattern": "^9-2.59.*",
+      "fhirResourceType": "Organization",
+      "code": "Krankenversicherung",
+      "displayShort": "Krankenversicherung",
+      "professionOIDs": "1.2.276.0.76.4.59",
+      "sektor": "GEMATIK_SMCB"
+    },
+    {
+      "pattern": "^9-2.187.*",
+      "fhirResourceType": "Organization",
+      "code": "Betriebsstätte_LEO_Vertragszahnärzte",
+      "displayShort": "LEO Vertragszahnärzte",
+      "professionOIDs": "1.2.276.0.76.4.187",
+      "sektor": "GEMATIK_SMCB_ORG"
+    },
+    {
+      "pattern": "^9-2.210.*",
+      "fhirResourceType": "Organization",
+      "code": "Betriebsstätte_LEO_Vertragsärzte",
+      "displayShort": "LEO Vertragsärzte",
+      "professionOIDs": "1.2.276.0.76.4.210",
+      "sektor": "GEMATIK_SMCB_ORG"
+    },
+    {
+      "pattern": "^9-2.224.*",
+      "fhirResourceType": "Organization",
+      "code": "Betriebsstätte_Apothekerverband",
+      "displayShort": "Betriebsstätte Apothekerverband",
+      "professionOIDs": "1.2.276.0.76.4.224",
+      "sektor": "GEMATIK_SMCB_ORG"
+    },
+    {
+      "pattern": "^9-2.229.*",
+      "fhirResourceType": "Organization",
+      "code": "Betriebsstätte_Bundesärztekammer",
+      "displayShort": "Betriebsstätte der Bundesärztekammer",
+      "professionOIDs": "1.2.276.0.76.4.229",
+      "sektor": "GEMATIK_SMCB_ORG"
+    },
+    {
+      "pattern": "^9-2.230.*",
+      "fhirResourceType": "Organization",
+      "code": "Betriebsstätte_Ärztekammer",
+      "displayShort": "Betriebsstätte einer Ärztekammer",
+      "professionOIDs": "1.2.276.0.76.4.230",
+      "sektor": "GEMATIK_SMCB_ORG"
+    },
+    {
+      "pattern": "^9-2.242.*",
+      "fhirResourceType": "Organization",
+      "code": "Betriebsstätte_Kassenärztlichen_Bundesvereinigung",
+      "displayShort": "Betriebsstätte der Kassenärztlichen Bundesvereinigung",
+      "professionOIDs": "1.2.276.0.76.4.242",
+      "sektor": "GEMATIK_SMCB_ORG"
+    },
+    {
+      "pattern": "^9-2.244.*",
+      "fhirResourceType": "Organization",
+      "code": "Betriebsstätte_LEO_Vertragszahnärzte",
+      "displayShort": "LEO Vertragszahnärzte",
+      "professionOIDs": "1.2.276.0.76.4.187,1.2.276.0.76.4.244",
+      "sektor": "GEMATIK_SMCB_ORG"
+    },
+    {
+      "pattern": "^9-2.245.*",
+      "fhirResourceType": "Organization",
+      "code": "Pflege",
+      "displayShort": "Pflege",
+      "professionOIDs": "1.2.276.0.76.4.245",
+      "sektor": "GEMATIK_SMCB"
+    },
+    {
+      "pattern": "^9-2.254.*",
+      "fhirResourceType": "Organization",
+      "code": "Sanitätsdienststelle_Bundeswehr",
+      "displayShort": "Bundeswehr",
+      "professionOIDs": "1.2.276.0.76.4.254",
+      "sektor": "GEMATIK_SMCB"
+    },
+    {
+      "pattern": "^9-2.255.*",
+      "fhirResourceType": "Organization",
+      "code": "Gesundheitsamt",
+      "displayShort": "Gesundheitsamt",
+      "professionOIDs": "1.2.276.0.76.4.255",
+      "sektor": "GEMATIK_SMCB"
+    },
+    {
+      "pattern": "^9-2.256.*",
+      "fhirResourceType": "Organization",
+      "code": "Arbeitsmedizin",
+      "displayShort": "Arbeitsmedizin",
+      "professionOIDs": "1.2.276.0.76.4.256",
+      "sektor": "GEMATIK_SMCB"
+    },
+    {
+      "pattern": "^9-2.265.*",
+      "fhirResourceType": "Organization",
+      "code": "Betriebsstätte_Landesapothekerkammer",
+      "displayShort": "Betriebsstätte Landesapothekerkammer",
+      "professionOIDs": "1.2.276.0.76.4.265",
+      "sektor": "GEMATIK_SMCB_ORG"
+    },
+    {
+      "pattern": "^9-2.269.*",
+      "fhirResourceType": "Organization",
+      "code": "Betriebsstätte_Register_Gesundheitsdaten",
+      "displayShort": "Betriebsstätte Register für Gesundheitsdaten",
+      "professionOIDs": "1.2.276.0.76.4.269",
+      "sektor": "GEMATIK_SMCB_ORG"
+    },
+    {
+      "pattern": "^9-2.270.*",
+      "fhirResourceType": "Organization",
+      "code": "Betriebsstätte_Abrechnungsdienstleister",
+      "displayShort": "Betriebsstätte Abrechnungsdienstleister",
+      "professionOIDs": "1.2.276.0.76.4.270",
+      "sektor": "GEMATIK_SMCB_ORG"
+    },
+    {
+      "pattern": "^9-2.282.*",
+      "fhirResourceType": "Organization",
+      "code": "DiGA",
+      "displayShort": "DiGA",
+      "professionOIDs": "1.2.276.0.76.4.282",
+      "sektor": "GEMATIK_DIGA"
+    },
+    {
+      "pattern": "^9-2.284.*",
+      "fhirResourceType": "Organization",
+      "code": "Betriebsstätte_Weitere_Kostenträger_Gesundheitswesen",
+      "displayShort": "Betriebsstätte Weitere Kostenträger im Gesundheitswesen",
+      "professionOIDs": "1.2.276.0.76.4.284",
+      "sektor": "GEMATIK_SMCB_ORG"
+    },
+    {
+      "pattern": "^9-2.285.*",
+      "fhirResourceType": "Organization",
+      "code": "Weitere_Organisationen_Gesundheitsversorgung",
+      "displayShort": "Weitere Organisationen der Gesundheitsversorgung",
+      "professionOIDs": "1.2.276.0.76.4.285",
+      "sektor": "GEMATIK_SMCB"
+    },
+    {
+      "pattern": "^9-2.286.*",
+      "fhirResourceType": "Organization",
+      "code": "KIM-Hersteller-Anbieter",
+      "displayShort": "KIM-Hersteller und -Anbieter",
+      "professionOIDs": "1.2.276.0.76.4.286",
+      "sektor": "GEMATIK_SMCB"
+    },
+    {
+      "pattern": "^9-2.295.*",
+      "fhirResourceType": "Organization",
+      "code": "TIM-Hersteller-Anbieter",
+      "displayShort": "TIM-Hersteller und -Anbieter",
+      "professionOIDs": "1.2.276.0.76.4.295",
+      "sektor": "GEMATIK_SMCB"
+    },
+    {
+      "pattern": "^9-2.303.*",
+      "fhirResourceType": "Organization",
+      "code": "Ombudsstelle_Kostenträgers",
+      "displayShort": "Ombudsstelle eines Kostenträgers",
+      "professionOIDs": "1.2.276.0.76.4.303",
+      "sektor": "GEMATIK_PKV_KOSTENTRAEGER"
+    },
+    {
+      "pattern": "^10-67.178.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Notfallsanitäter",
+      "displayShort": "Notfallsanitäter/-in",
+      "professionOIDs": "1.2.276.0.76.4.178",
+      "sektor": "EGBR_HBA"
+    },
+    {
+      "pattern": "^10-67.232.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Krankenpfleger",
+      "displayShort": "Krankenpfleger",
+      "professionOIDs": "1.2.276.0.76.4.232,1.2.276.0.76.4.233",
+      "sektor": "EGBR_HBA"
+    },
+    {
+      "pattern": "^10-67.233.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Altenpfleger",
+      "displayShort": "Altenpfleger",
+      "professionOIDs": "1.2.276.0.76.4.233",
+      "sektor": "EGBR_HBA"
+    },
+    {
+      "pattern": "^10-67.234.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Pfleger",
+      "displayShort": "Pfleger",
+      "professionOIDs": "1.2.276.0.76.4.234",
+      "sektor": "EGBR_HBA"
+    },
+    {
+      "pattern": "^10-67.235.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Hebamme",
+      "displayShort": "Hebamme",
+      "professionOIDs": "1.2.276.0.76.4.235",
+      "sektor": "EGBR_HBA"
+    },
+    {
+      "pattern": "^10-67.236.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Physiotherapeut",
+      "displayShort": "Physiotherapeut",
+      "professionOIDs": "1.2.276.0.76.4.236",
+      "sektor": "EGBR_HBA"
+    },
+    {
+      "pattern": "^10-67.245.*",
+      "fhirResourceType": "Organization",
+      "code": "Pflege",
+      "displayShort": "Pflege",
+      "professionOIDs": "1.2.276.0.76.4.245",
+      "sektor": "EGBR_SMCB"
+    },
+    {
+      "pattern": "^10-67.246.*",
+      "fhirResourceType": "Organization",
+      "code": "Geburtshilfe",
+      "displayShort": "Geburtshilfe",
+      "professionOIDs": "1.2.276.0.76.4.246",
+      "sektor": "EGBR_SMCB"
+    },
+    {
+      "pattern": "^10-67.247.*",
+      "fhirResourceType": "Organization",
+      "code": "Physiotherapie",
+      "displayShort": "Physiotherapie",
+      "professionOIDs": "1.2.276.0.76.4.247",
+      "sektor": "EGBR_SMCB"
+    },
+    {
+      "pattern": "^10-67.274.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Ergotherapeut",
+      "displayShort": "Ergotherapeut/-in",
+      "professionOIDs": "1.2.276.0.76.4.274",
+      "sektor": "EGBR_HBA"
+    },
+    {
+      "pattern": "^10-67.275.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Logopäde",
+      "displayShort": "Logopäde/Logopädin",
+      "professionOIDs": "1.2.276.0.76.4.275",
+      "sektor": "EGBR_HBA"
+    },
+    {
+      "pattern": "^10-67.276.*",
+      "fhirResourceType": "Practitioner",
+      "code": "Podologe",
+      "displayShort": "Podologe/Podologin",
+      "professionOIDs": "1.2.276.0.76.4.276",
+      "sektor": "EGBR_HBA"
+    },
+    {
+      "pattern": "^10-67.278.*",
+      "fhirResourceType": "Organization",
+      "code": "Ergotherapiepraxis",
+      "displayShort": "Ergotherapiepraxis",
+      "professionOIDs": "1.2.276.0.76.4.278",
+      "sektor": "EGBR_SMCB"
+    },
+    {
+      "pattern": "^10-67.279.*",
+      "fhirResourceType": "Organization",
+      "code": "Logopaedische_Praxis",
+      "displayShort": "Logopaedische Praxis",
+      "professionOIDs": "1.2.276.0.76.4.279",
+      "sektor": "EGBR_SMCB"
+    },
+    {
+      "pattern": "^10-67.280.*",
+      "fhirResourceType": "Organization",
+      "code": "Podologiepraxis",
+      "displayShort": "Podologiepraxis",
+      "professionOIDs": "1.2.276.0.76.4.280",
+      "sektor": "EGBR_SMCB"
+    }
+  ] 
+}

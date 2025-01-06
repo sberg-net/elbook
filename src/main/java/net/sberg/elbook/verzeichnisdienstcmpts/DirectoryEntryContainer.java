@@ -108,7 +108,7 @@ public class DirectoryEntryContainer {
             setEditable(false);
         }
 
-        if (!notAvailable && vzdEntryWrapper.checkDirectoryEntryHolder(mandant.getVzdAuthId())) {
+        if (!notAvailable && !vzdEntryWrapper.checkDirectoryEntryHolder(mandant.getVzdAuthId())) {
             setEditable(false);
         }
 
@@ -133,7 +133,7 @@ public class DirectoryEntryContainer {
             if (getEntryType().equals(EnumEntryType.UNKNOWN) && entryType != null && !entryType.isEmpty()) {
                 try {
                     int entryTypeId = Integer.parseInt(entryType.get(0));
-                    if (entryTypeId < Integer.parseInt(EnumEntryType.Berufsgruppe.getId()) || entryTypeId > Integer.parseInt(EnumEntryType.DiGA.getId())) {
+                    if (entryTypeId < Integer.parseInt(EnumEntryType.Berufsgruppe.getId()) || entryTypeId > Integer.parseInt(EnumEntryType.Ombudsstelle.getId())) {
                         throw new IllegalStateException("unknwown entryType");
                     }
                 }

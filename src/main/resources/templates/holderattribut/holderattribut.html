@@ -1,0 +1,96 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="sberg">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>ElBook - Holderattribut - Verwaltung</title>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/script_1_8_16.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/feather-icons/dist/feather.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}"/>
+  </head>
+  <body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div th:replace="~{fragments/menue :: menue}"></div>
+    <main role="main" class="col-md-10 ml-sm-auto pt-3 px-1 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Holderattribut - Verwaltung</h1>
+      </div>
+      <div class="spinner-border" id="elbook-spinner" role="status" style="display: none">
+        <span class="sr-only">Laden...</span>
+      </div>
+      <div class="container-fluid" id="holderattributContainer" th:action="@{/}">
+        <form id="holderAttributForm" xmlns:th="http://www.thymeleaf.org" onsubmit="return false;">
+
+          <div class="form-group">
+            <p>Die Datei ist wie folgt aufgebaut (Beispielbelegungen): vzdAuthId = username des VZD, vzdAuthSecret = secret oder pwd des VZD,
+              handleEmptyHolder = wenn die gefundenen VZD-Einträge leer sind, sollen die dann befüllt werden? Die Command-Objekte bestehen aus zwei Attributen:
+              telematikID = klar, holder = ist ein Array mit den holder-Attributen. Wichtig!! Der eigene Holder muss in der Datei angegeben werden.
+              Die Datei ist eine json-Datei
+            </p>
+            <pre>{
+"vzdAuthId": null,
+"vzdAuthSecret": null,
+"handleEmptyHolder": false,
+"commands": [
+  {
+    "telematikID" : "3-11.2.0000022485.16.073",
+    "holder": ["lakrlp","aeksh"]
+  }
+  ,.....
+]
+}
+            </pre>
+          </div>
+
+          <div class="form-group">
+            <label for="holderAttrFile">JSON-Datei hochladen</label>
+            <input type="file" class="form-control-file" id="holderAttrFile" name="holderAttrFile">
+          </div>
+
+          <div class="container-fluid p-0 mb-2">
+            <div class="row justify-content-start">
+              <div class="col-12 col-md-6 col-lg-3">
+                <button class="btn btn-primary btn-block" type="button" onclick="holderAttrFileSenden()">Senden</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-danger mt-2 mb-2 text-break" role="alert" style="display:none" id="holderattributFormularError">
+          </div>
+
+          <pre class="mt-2 mb-2 text-break" id="holderattributFormularResult">
+          </pre>
+
+        </form>
+      </div>
+    </main>
+    <script>
+      $( document ).ready(function() {
+        feather.replace();
+      });
+    </script>
+  </body>
+</html>

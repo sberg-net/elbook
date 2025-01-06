@@ -13,16 +13,26 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Licence for the specific language governing permissions and limitations under the Licence.
  */
-package net.sberg.elbook.logeintragcmpts;
+package net.sberg.elbook.holderattrcmpts;
 
-public enum EnumDatatype {
-    APOTHEKE("Apotheke"),ARZTPRAXIS("Arztpraxis");
+import lombok.Data;
+import net.sberg.elbook.vzdclientcmpts.command.EnumEntryType;
+import net.sberg.elbook.vzdclientcmpts.command.EnumStateOrProvinceName;
+import net.sberg.elbook.vzdclientcmpts.command.EnumTriValue;
 
-    private String hrText;
-    private EnumDatatype(String hrText) {
-        this.hrText = hrText;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+public class HolderAttrErgebnis {
+    private String telematikID;
+    private List<String> holder;
+    private List<String> log = new ArrayList<>();
+    private boolean error = false;
+
+    public void fill(HolderAttrCommand command) {
+        setTelematikID(command.getTelematikID());
+        setHolder(command.getHolder());
     }
-    public String getHrText() {
-        return hrText;
-    }
+
 }
