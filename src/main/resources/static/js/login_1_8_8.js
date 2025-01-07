@@ -14,58 +14,6 @@
  * See the Licence for the specific language governing permissions and limitations under the Licence.
  */
 
-$(window).on("scroll", () => {
-  const $body = $("body");
-  const scrollClass = "scroll";
-
-  const $navbar = $("nav");
-  const navbarClassDark = "navbar-dark";
-  const navbarClassLight = "navbar-light";
-
-  const $navbtns = $(".nav-btns");
-  const navbtnsClassDark = "text-white";
-  const navbtnsClassLight = "text-black";
-
-  const $logo = $("#logo");
-  const logoClassLight = "ebook-light";
-
-  if (this.matchMedia("(min-width: 992px)").matches) {
-    const scrollY = $(this).scrollTop();
-
-    if(scrollY > 0) {
-      $body.addClass(scrollClass);
-
-      $navbar.removeClass(navbarClassDark);
-      $navbar.addClass(navbarClassLight);
-
-      $navbtns.removeClass(navbtnsClassDark);
-      $navbtns.addClass(navbtnsClassLight);
-
-      $logo.removeClass(logoClassLight);
-    } else {
-      $body.removeClass(scrollClass);
-
-      $navbar.addClass(navbarClassDark);
-      $navbar.removeClass(navbarClassLight);
-
-      $navbtns.addClass(navbtnsClassDark);
-      $navbtns.removeClass(navbtnsClassLight);
-
-      $logo.addClass(logoClassLight);
-    }
-  } else {
-    $body.removeClass(scrollClass);
-
-    $navbar.removeClass(navbarClassDark);
-    $navbar.addClass(navbarClassLight);
-
-    $navbtns.removeClass(navbtnsClassDark);
-    $navbtns.addClass(navbtnsClassLight);
-
-    $logo.removeClass(logoClassLight);
-  }
-});
-
 $(window).on('load', function() {
   if (window.location.href.indexOf('?error') > -1) {
     $("#fehlerText").removeClass("d-none")
@@ -149,7 +97,6 @@ $(window).on('load', function() {
   });
 
   if (!this.matchMedia("(min-width: 992px)").matches) {
-    $("nav").removeClass("navbar-dark");
     $("nav").addClass("navbar-light");
 
     $(".nav-btns").removeClass("text-white");
