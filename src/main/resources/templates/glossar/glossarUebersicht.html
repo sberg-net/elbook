@@ -19,16 +19,18 @@
   <div class="card-body">
     <h5 class="card-title">Suche nach TelematikID-Informationen</h5>
     <p class="card-text">Sie können hier eine komplette TelematikId eingeben und sich Metainformationen geben lassen: welche Branche / Sektor, die zugehörigen professionOID's usw.</p>
-    <div class="row" xmlns:th="http://www.thymeleaf.org">
-      <div class="col-sm-12 col-lg-8 mb-3 p-0 pr-1">
-        <input type="text" class="form-control pr-0" id="telematikIdSearch" placeholder="TelematikId">
+    <div class="row ms-1" xmlns:th="http://www.thymeleaf.org">
+      <div class="col-sm-12 col-lg-8 mb-3 p-0 pe-1">
+        <input type="text" class="form-control pe-0" id="telematikIdSearch" placeholder="TelematikId">
       </div>
-      <div class="col-sm-6 col-lg-2 mb-3 p-0 pr-1">
-        <button type="button" id="telematikIdSearchBtn" class="btn btn-primary btn-block" onclick="glossarUebersicht($('#telematikIdSearch').val(), 'telematikId');">Suchen</button>
+      <div class="col-sm-6 col-lg-2 mb-3 p-0 pe-1">
+        <div class="d-grid gap-2">
+          <button type="button" id="telematikIdSearchBtn" class="btn btn-primary" onclick="glossarUebersicht($('#telematikIdSearch').val(), 'telematikId');">Suchen</button>
+        </div>
       </div>
     </div>
-    <div xmlns:th="http://www.thymeleaf.org" class="row">
-      <div th:if="${telematikIdInfoVerfuegbar}" class="col-md-9 mb-3 font-weight-bolder">
+    <div xmlns:th="http://www.thymeleaf.org" class="row ms-1">
+      <div th:if="${telematikIdInfoVerfuegbar}" class="col-md-9 mb-3 fw-bolder">
         <table>
           <tr>
             <td>Pattern</td>
@@ -61,7 +63,7 @@
         </table>
       </div>
     </div>
-    <div th:if="${telematikIdInfoVerfuegbar}" class="row">
+    <div th:if="${telematikIdInfoVerfuegbar}" class="row ms-1">
       <table class="table" id="glossarTelematikIdTable" xmlns:th="http://www.thymeleaf.org">
         <thead>
         <tr>
@@ -98,15 +100,17 @@
   <div class="card-body">
     <h5 class="card-title">Suche nach ProfessionOID-Informationen</h5>
     <p class="card-text">Sie können hier eine komplette ProfessionOID eingeben (z.b. 1.2.276.0.76.4.251) und sich Metainformationen geben lassen. Ein Suchen nach '*' gibt alle im System verfügbaren OID's aus.</p>
-    <div class="row" xmlns:th="http://www.thymeleaf.org">
-      <div class="col-sm-12 col-lg-8 mb-3 p-0 pr-1">
-        <input type="text" class="form-control pr-0" id="professionOIDSearch" placeholder="ProfessionOID">
+    <div class="row ms-1" xmlns:th="http://www.thymeleaf.org">
+      <div class="col-sm-12 col-lg-8 mb-3 p-0 pe-1">
+        <input type="text" class="form-control pe-0" id="professionOIDSearch" placeholder="ProfessionOID">
       </div>
-      <div class="col-sm-6 col-lg-2 mb-3 p-0 pr-1">
-        <button type="button" id="professionOIDSearchBtn" class="btn btn-primary btn-block" onclick="glossarUebersicht($('#professionOIDSearch').val(), 'professionOID');">Suchen</button>
+      <div class="col-sm-6 col-lg-2 mb-3 p-0 pe-1">
+        <div class="d-grid gap-2">
+          <button type="button" id="professionOIDSearchBtn" class="btn btn-primary" onclick="glossarUebersicht($('#professionOIDSearch').val(), 'professionOID');">Suchen</button>
+        </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row ms-1">
       <table class="table" id="glossarProfessionOIDTable" xmlns:th="http://www.thymeleaf.org">
         <thead>
         <tr>
@@ -143,15 +147,17 @@
   <div class="card-body">
     <h5 class="card-title">Suche nach Holder-Informationen</h5>
     <p class="card-text">Sie können hier einen kompletten Holder eingeben (z.b. lakrlp) und sich Metainformationen geben lassen. Ein Suchen nach '*' gibt alle im System verfügbaren Holder aus.</p>
-    <div class="row" xmlns:th="http://www.thymeleaf.org">
-      <div class="col-sm-12 col-lg-8 mb-3 p-0 pr-1">
-        <input type="text" class="form-control pr-0" id="holderSearch" placeholder="Holder">
+    <div class="row ms-1" xmlns:th="http://www.thymeleaf.org">
+      <div class="col-sm-12 col-lg-8 mb-3 p-0 pe-1">
+        <input type="text" class="form-control pe-0" id="holderSearch" placeholder="Holder">
       </div>
-      <div class="col-sm-6 col-lg-2 mb-3 p-0 pr-1">
-        <button type="button" id="holderSearchBtn" class="btn btn-primary btn-block" onclick="glossarUebersicht($('#holderSearch').val(), 'holder');">Suchen</button>
+      <div class="col-sm-6 col-lg-2 mb-3 p-0 pe-1">
+        <div class="d-grid gap-2">
+          <button type="button" id="holderSearchBtn" class="btn btn-primary" onclick="glossarUebersicht($('#holderSearch').val(), 'holder');">Suchen</button>
+        </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row ms-1">
       <table class="table" id="glossarHolderTable" xmlns:th="http://www.thymeleaf.org">
         <thead>
         <tr>
