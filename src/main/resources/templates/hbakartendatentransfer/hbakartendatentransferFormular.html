@@ -43,7 +43,7 @@
 
   <div class="mb-3">
     <label for="absenderKartenherausgeber">Absender-Kartenherausgeber</label>
-    <select th:if="${kartendatenTransfer.versendetAm == null}" class="form-control" id="absenderKartenherausgeber" name="absenderKartenherausgeber">
+    <select th:if="${kartendatenTransfer.versendetAm == null}" class="form-select" id="absenderKartenherausgeber" name="absenderKartenherausgeber">
       <option value="AK3_01" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_01'?'selected':''}">Landesapothekerkammer Baden-Württemberg</option>
       <option value="AK3_02" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_02'?'selected':''}">Bayerische Landesapothekerkammer</option>
       <option value="AK3_03" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_03'?'selected':''}">Apothekerkammer Berlin</option>
@@ -62,7 +62,7 @@
       <option value="AK3_16" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_16'?'selected':''}">Landesapothekerkammer Thüringen</option>
       <option value="AK3_17" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_17'?'selected':''}">Apothekerkammer Westfalen-Lippe</option>
     </select>
-    <select th:if="${kartendatenTransfer.versendetAm != null}" class="form-control" disabled name="absenderKartenherausgeber">
+    <select th:if="${kartendatenTransfer.versendetAm != null}" class="form-select" disabled name="absenderKartenherausgeber">
       <option value="AK3_01" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_01'?'selected':''}">Landesapothekerkammer Baden-Württemberg</option>
       <option value="AK3_02" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_02'?'selected':''}">Bayerische Landesapothekerkammer</option>
       <option value="AK3_03" th:attrappend="selected=${kartendatenTransfer.absenderKartenherausgeber.name() == 'AK3_03'?'selected':''}">Apothekerkammer Berlin</option>
@@ -85,7 +85,7 @@
 
   <div class="mb-3">
     <label for="empfaengerKartenherausgeber">Empfänger-Kartenherausgeber</label>
-    <select th:if="${kartendatenTransfer.versendetAm == null}" class="form-control" id="empfaengerKartenherausgeber" name="empfaengerKartenherausgeber">
+    <select th:if="${kartendatenTransfer.versendetAm == null}" class="form-select" id="empfaengerKartenherausgeber" name="empfaengerKartenherausgeber">
       <option value="AK3_01" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_01'?'selected':''}">Landesapothekerkammer Baden-Württemberg</option>
       <option value="AK3_02" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_02'?'selected':''}">Bayerische Landesapothekerkammer</option>
       <option value="AK3_03" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_03'?'selected':''}">Apothekerkammer Berlin</option>
@@ -104,7 +104,7 @@
       <option value="AK3_16" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_16'?'selected':''}">Landesapothekerkammer Thüringen</option>
       <option value="AK3_17" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_17'?'selected':''}">Apothekerkammer Westfalen-Lippe</option>
     </select>
-    <select th:if="${kartendatenTransfer.versendetAm != null}" class="form-control" disabled name="empfaengerKartenherausgeber">
+    <select th:if="${kartendatenTransfer.versendetAm != null}" class="form-select" disabled name="empfaengerKartenherausgeber">
       <option value="AK3_01" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_01'?'selected':''}">Landesapothekerkammer Baden-Württemberg</option>
       <option value="AK3_02" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_02'?'selected':''}">Bayerische Landesapothekerkammer</option>
       <option value="AK3_03" th:attrappend="selected=${kartendatenTransfer.empfaengerKartenherausgeber.name() == 'AK3_03'?'selected':''}">Apothekerkammer Berlin</option>

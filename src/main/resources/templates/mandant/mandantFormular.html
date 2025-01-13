@@ -29,7 +29,7 @@
 
   <div class="mb-3" th:if="${mandant.mandantId == 0}">
     <label for="bundesland">Bundesland</label>
-    <select class="form-control" id="bundesland" name="bundesland">
+    <select class="form-select" id="bundesland" name="bundesland">
       <option value="BW" th:attrappend="selected=${mandant.bundesland.name() == 'BW'?'selected':''}">Baden-Württemberg</option>
       <option value="BAY" th:attrappend="selected=${mandant.bundesland.name() == 'BAY'?'selected':''}">Bayern</option>
       <option value="B" th:attrappend="selected=${mandant.bundesland.name() == 'B'?'selected':''}">Berlin</option>
@@ -128,7 +128,7 @@
 
   <div class="mb-3" th:if="${mandant.mandantId == 0}">
     <label for="sektor">Sektor</label>
-    <select class="form-control" id="sektor" name="sektor">
+    <select class="form-select" id="sektor" name="sektor">
       <option value="APOTHEKE" th:attrappend="selected=${mandant.sektor.name() == 'APOTHEKE'?'selected':''}">Apotheke</option>
       <option value="ARZTPRAXIS" th:attrappend="selected=${mandant.sektor.name() == 'ARZTPRAXIS'?'selected':''}">Arztpraxis</option>
     </select>

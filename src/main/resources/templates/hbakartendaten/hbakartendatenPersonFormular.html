@@ -28,7 +28,7 @@
 
   <div class="mb-3">
     <label>Art des Datentransfers</label>
-    <select class="form-control" disabled name="typ">
+    <select class="form-select" disabled name="typ">
       <option value="ABGEBEND" th:attrappend="selected=${person.typ.name() == 'ABGEBEND'?'selected':''}">Abgebend</option>
       <option value="MITZUSTAENDIG" th:attrappend="selected=${person.typ.name() == 'MITZUSTAENDIG'?'selected':''}">Mitzuständig</option>
     </select>
@@ -52,7 +52,7 @@
 
           <div class="mb-3">
             <label>Akademischer Grad</label>
-            <select class="form-control" disabled name="akademischerGrad">
+            <select class="form-select" disabled name="akademischerGrad">
               <option value="" th:attrappend="selected=${person.akademischerGrad == ''?'selected':''}"></option>
               <option value="Dr." th:attrappend="selected=${person.akademischerGrad == 'Dr.'?'selected':''}">Doktor</option>
               <option value="Prof." th:attrappend="selected=${person.akademischerGrad == 'Prof.'?'selected':''}">Professor</option>
@@ -71,7 +71,7 @@
 
           <div class="mb-3">
             <label>Zur Approbation</label>
-            <select class="form-control" disabled name="approbationStatus">
+            <select class="form-select" disabled name="approbationStatus">
               <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumApprobationStatus).UNBEKANNT.getHrText()}" th:attrappend="selected=${person.approbationStatus.name() == 'UNBEKANNT'?'selected':''}"></option>
               <option value="BESTEHT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumApprobationStatus).BESTEHT.getHrText()}" th:attrappend="selected=${person.approbationStatus.name() == 'BESTEHT'?'selected':''}"></option>
               <option value="RUHT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumApprobationStatus).RUHT.getHrText()}" th:attrappend="selected=${person.approbationStatus.name() == 'RUHT'?'selected':''}"></option>
@@ -83,7 +83,7 @@
 
           <div class="mb-3">
             <label>Zur Kammermitgliedschaft</label>
-            <select class="form-control" disabled name="approbationStatus">
+            <select class="form-select" disabled name="approbationStatus">
               <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKammermitgliedschaftStatus).UNBEKANNT.getHrText()}" th:attrappend="selected=${person.kammermitgliedschaftStatus.name() == 'UNBEKANNT'?'selected':''}"></option>
               <option value="ABGEHEND_GRUND_BERUF" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKammermitgliedschaftStatus).ABGEHEND_GRUND_BERUF.getHrText()}" th:attrappend="selected=${person.kammermitgliedschaftStatus.name() == 'ABGEHEND_GRUND_BERUF'?'selected':''}"></option>
               <option value="ABGEHEND_GRUND_SONSTIGER" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKammermitgliedschaftStatus).ABGEHEND_GRUND_SONSTIGER.getHrText()}" th:attrappend="selected=${person.kammermitgliedschaftStatus.name() == 'ABGEHEND_GRUND_SONSTIGER'?'selected':''}"></option>
@@ -155,7 +155,7 @@
               <h5 class="card-title">Ausweis 1</h5>
               <div class="mb-3">
                 <label>QVDA/TSP</label>
-                <select class="form-control" disabled name="qvda">
+                <select class="form-select" disabled name="qvda">
                   <option value="BUNDESDRUCKEREI" th:attrappend="selected=${person.qvda.name() == 'BUNDESDRUCKEREI'?'selected':''}">Bundesdruckerei</option>
                   <option value="MEDISIGN" th:attrappend="selected=${person.qvda.name() == 'MEDISIGN'?'selected':''}">Medisign</option>
                   <option value="SHC" th:attrappend="selected=${person.qvda.name() == 'SHC'?'selected':''}">Stolle & Heinz</option>
@@ -168,7 +168,7 @@
               </div>
               <div class="mb-3">
                 <label>Ausweisstatus</label>
-                <select class="form-control" disabled name="kartenStatus">
+                <select class="form-select" disabled name="kartenStatus">
                   <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).UNBEKANNT.value()}" th:attrappend="selected=${(person.kartenStatus == null || person.kartenStatus.name() == 'UNBEKANNT')?'selected':''}"></option>
                   <option value="AUSLIEFERUNG" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).AUSLIEFERUNG.value()}" th:attrappend="selected=${person.kartenStatus != null && person.kartenStatus.name() == 'AUSLIEFERUNG'?'selected':''}"></option>
                   <option value="FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG.value()}" th:attrappend="selected=${person.kartenStatus != null && person.kartenStatus.name() == 'FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG'?'selected':''}"></option>
@@ -202,7 +202,7 @@
               <h5 class="card-title">Ausweis 2</h5>
               <div class="mb-3">
                 <label>QVDA/TSP</label>
-                <select class="form-control" disabled name="qvda2">
+                <select class="form-select" disabled name="qvda2">
                   <option value="BUNDESDRUCKEREI" th:attrappend="selected=${person.qvda2.name() == 'BUNDESDRUCKEREI'?'selected':''}">Bundesdruckerei</option>
                   <option value="MEDISIGN" th:attrappend="selected=${person.qvda2.name() == 'MEDISIGN'?'selected':''}">Medisign</option>
                   <option value="SHC" th:attrappend="selected=${person.qvda2.name() == 'SHC'?'selected':''}">Stolle & Heinz</option>
@@ -215,7 +215,7 @@
               </div>
               <div class="mb-3">
                 <label>Ausweisstatus</label>
-                <select class="form-control" disabled name="kartenStatus2">
+                <select class="form-select" disabled name="kartenStatus2">
                   <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).UNBEKANNT.value()}" th:attrappend="selected=${(person.kartenStatus2 == null || person.kartenStatus2.name() == 'UNBEKANNT')?'selected':''}"></option>
                   <option value="AUSLIEFERUNG" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).AUSLIEFERUNG.value()}" th:attrappend="selected=${person.kartenStatus2 != null && person.kartenStatus2.name() == 'AUSLIEFERUNG'?'selected':''}"></option>
                   <option value="FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG.value()}" th:attrappend="selected=${person.kartenStatus2 != null && person.kartenStatus2.name() == 'FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG'?'selected':''}"></option>
@@ -249,7 +249,7 @@
               <h5 class="card-title">Ausweis 3</h5>
               <div class="mb-3">
                 <label>QVDA/TSP</label>
-                <select class="form-control" disabled name="qvda3">
+                <select class="form-select" disabled name="qvda3">
                   <option value="BUNDESDRUCKEREI" th:attrappend="selected=${person.qvda3.name() == 'BUNDESDRUCKEREI'?'selected':''}">Bundesdruckerei</option>
                   <option value="MEDISIGN" th:attrappend="selected=${person.qvda3.name() == 'MEDISIGN'?'selected':''}">Medisign</option>
                   <option value="SHC" th:attrappend="selected=${person.qvda3.name() == 'SHC'?'selected':''}">Stolle & Heinz</option>
@@ -262,7 +262,7 @@
               </div>
               <div class="mb-3">
                 <label>Ausweisstatus</label>
-                <select class="form-control" disabled name="kartenStatus3">
+                <select class="form-select" disabled name="kartenStatus3">
                   <option value="UNBEKANNT" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).UNBEKANNT.value()}" th:attrappend="selected=${(person.kartenStatus3 == null || person.kartenStatus3.name() == 'UNBEKANNT')?'selected':''}"></option>
                   <option value="AUSLIEFERUNG" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).AUSLIEFERUNG.value()}" th:attrappend="selected=${person.kartenStatus3 != null && person.kartenStatus3.name() == 'AUSLIEFERUNG'?'selected':''}"></option>
                   <option value="FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG" th:text="${T(net.sberg.elbook.kartendatentransfer.EnumKartenStatusKey).FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG.value()}" th:attrappend="selected=${person.kartenStatus3 != null && person.kartenStatus3.name() == 'FRISTUEBERSCHREITUNG_EMPFANGSBESTAETIGUNG'?'selected':''}"></option>

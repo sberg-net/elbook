@@ -132,7 +132,7 @@
         <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#stateorprovincename">
           <span data-feather="help-circle"></span>
         </a>
-        <select class="form-control" id="stateOrProvinceName" name="stateOrProvinceName">
+        <select class="form-select" id="stateOrProvinceName" name="stateOrProvinceName">
           <option value="BW" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'BW'?'selected':''}">Baden-Württemberg</option>
           <option value="BAY" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'BAY'?'selected':''}">Bayern</option>
           <option value="B" th:attrappend="selected=${vzdeintrag.getStateOrProvinceName().name() == 'B'?'selected':''}">Berlin</option>
@@ -185,7 +185,7 @@
         <a target="_blank" href="https://github.com/gematik/api-vzd/blob/main/docs/LDAP_Attribute.adoc#entrytype">
           <span data-feather="help-circle"></span>
         </a>
-        <select class="form-control" id="entryType" name="entryType">
+        <select class="form-select" id="entryType" name="entryType">
           <option value="" selected>Eintragstyp - Bitte einen Wert auswählen</option>
           <option value="UNKNOWN" th:attrappend="selected=${vzdeintrag.getEntryType().name() == 'UNKNOWN'?'selected':''}">Unbekannter Eintragstyp</option>
           <option value="Berufsgruppe" th:attrappend="selected=${vzdeintrag.getEntryType().name() == 'Berufsgruppe'?'selected':''}">Berufsgruppe</option>
