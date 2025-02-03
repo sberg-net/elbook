@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [2.5.1]
+
+### Fixed
+- Holderattributverwaltung
+
 ## [2.5.0]
 
 ### Added
