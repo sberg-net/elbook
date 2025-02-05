@@ -110,7 +110,8 @@ public class HolderAttrCommand {
 
             //check on equal
             List<String> checkHolder = holder.stream().filter(s -> !directoryEntry.extractDirectoryEntryHolder().contains(s)).collect(Collectors.toList());
-            if (checkHolder.isEmpty()) {
+            List<String> reverseCheckHolder = directoryEntry.extractDirectoryEntryHolder().stream().filter(s -> !holder.contains(s)).collect(Collectors.toList());
+            if (checkHolder.isEmpty() && reverseCheckHolder.isEmpty()) {
                 holderAttrErgebnis.setError(true);
                 holderAttrErgebnis.getLog().add("holder not changed: "+holder);
             }
