@@ -55,6 +55,7 @@ public class VerzeichnisdienstImportErgebnis {
     // system attributes
     private String maxKomLeAdr;
     private EnumTriValue aktiv;
+    private List<String> besitzer;
 
     private List<String> log = new ArrayList<>();
     private boolean error = false;
@@ -91,6 +92,7 @@ public class VerzeichnisdienstImportErgebnis {
 
         setMaxKomLeAdr(command.getMaxKomLeAdr());
         setAktiv(command.getAktiv());
+        setBesitzer(command.getBesitzer());
 
         setIgnore(command.isToIgnore());
     }

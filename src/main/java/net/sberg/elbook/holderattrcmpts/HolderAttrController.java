@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sberg.elbook.authcomponents.AuthUserDetails;
 import net.sberg.elbook.common.AbstractWebController;
+import net.sberg.elbook.common.MailCreatorAndSender;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,7 @@ import java.util.List;
 public class HolderAttrController extends AbstractWebController {
 
     private final HolderAttrService holderAttrService;
+    private final MailCreatorAndSender mailCreatorAndSender;
 
     @RequestMapping(value = "/holderattribut", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
@@ -47,11 +49,25 @@ public class HolderAttrController extends AbstractWebController {
     @RequestMapping(value = "/holderattribut/jsondatei", method = RequestMethod.POST, consumes = {"multipart/form-data"})
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public List<HolderAttrErgebnis> jsondatei(Authentication authentication, @RequestParam(name = "holderAttrFile", required = false) MultipartFile holderAttrFile
+    public String jsondatei(Authentication authentication, @RequestParam(name = "holderAttrFile", required = false) MultipartFile holderAttrFile
     ) throws Exception {
         HolderAttrCommandContainer holderAttrCommandContainer = new ObjectMapper().readValue(holderAttrFile.getInputStream(), HolderAttrCommandContainer.class);
         AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
-        return holderAttrService.execute(authUserDetails.getMandant(), holderAttrCommandContainer);
+        List<HolderAttrErgebnis> ergebnisse = holderAttrService.execute(authUserDetails.getMandant(), holderAttrCommandContainer);
+
+        try {
+            mailCreatorAndSender.send(
+                "software@sberg.net",
+                mailCreatorAndSender.isTestMode() ? mailCreatorAndSender.getTestRecipients().split(",") : new String[]{authUserDetails.getMandant().getMail()},
+                "Elbook: Die Holder wurden entsprechend der hochgeladenen Datei geändert. Die Ergebnisse der Operationen finden Sie im Mailinhalt",
+                new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(ergebnisse),
+                null
+            );
+            return "Es wurde eine Mail mit den Ergebnissen der Operation an "+authUserDetails.getMandant().getMail()+" gesendet";
+        }
+        catch (Exception e) {
+            return "Es konnte leider eine Mail mit den Ergebnissen der Operation !!!NICHT!!! an "+(mailCreatorAndSender.isTestMode() ? mailCreatorAndSender.getTestRecipients() : authUserDetails.getMandant().getMail())+" gesendet werden.\n\n"+new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(ergebnisse);
+        }
     }
 
     @Operation(security = @SecurityRequirement(name = "basicAuth"), description = "Aktualisieren des Holder-Attributs mit Einträgen.",

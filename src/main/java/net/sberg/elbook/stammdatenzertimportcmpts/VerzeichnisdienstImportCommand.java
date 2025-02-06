@@ -58,6 +58,7 @@ public class VerzeichnisdienstImportCommand {
     // system attributes
     private String maxKomLeAdr;
     private EnumTriValue aktiv = EnumTriValue.YES;
+    private List<String> besitzer = new ArrayList<>();
 
     private List<EncZertifikat> encZertifikat = new ArrayList<>();
 
@@ -93,6 +94,7 @@ public class VerzeichnisdienstImportCommand {
 
         res.setMaxKomLeAdr(src.getMaxKomLeAdr());
         res.setAktiv(src.getAktiv());
+        res.setBesitzer(src.getBesitzer());
 
         res.getEncZertifikat().addAll(src.getEncZertifikat());
         res.getEncZertifikat().addAll(dest.getEncZertifikat());
@@ -144,7 +146,10 @@ public class VerzeichnisdienstImportCommand {
         }
 
         addDirEntryCommand.setHolder(new ArrayList<>());
-        addDirEntryCommand.getHolder().add(tiVZDProperties.getAuthId());
+        if (besitzer.isEmpty() || !besitzer.contains(tiVZDProperties.getAuthId())) {
+            besitzer.add(tiVZDProperties.getAuthId());
+        }
+        addDirEntryCommand.getHolder().addAll(besitzer);
 
         return directoryEntrySaveContainer;
     }
@@ -189,18 +194,13 @@ public class VerzeichnisdienstImportCommand {
         modDirEntryCommand.setActive(aktiv != null?aktiv:directoryEntry.extractDirectoryEntryActive());
         modDirEntryCommand.setMaxKomLeAdr(maxKomLeAdr != null?maxKomLeAdr:directoryEntry.extractDirectoryEntryMaxKOMLEadr());
 
-        if (directoryEntry.extractDirectoryEntryHolder().isEmpty()) {
-            modDirEntryCommand.setHolder(new ArrayList<>());
-            modDirEntryCommand.getHolder().add(tiVZDProperties.getAuthId());
-        }
-        else {
-            modDirEntryCommand.setHolder(directoryEntry.extractDirectoryEntryHolder());
-        }
+        modDirEntryCommand.setHolder(new ArrayList<>());
+        modDirEntryCommand.getHolder().addAll(besitzer);
 
         return directoryEntrySaveContainer;
     }
 
-    public boolean toUpdate(VzdEntryWrapper directoryEntry) throws Exception {
+    public boolean toUpdate(VzdEntryWrapper directoryEntry, TiVZDProperties tiVZDProperties) throws Exception {
         if (directoryEntry == null) {
             return false;
         }
@@ -239,14 +239,21 @@ public class VerzeichnisdienstImportCommand {
 
         boolean toUpdate = createHash() != createHash(directoryEntry);
 
-        if (directoryEntry.extractDirectoryEntryHolder().isEmpty()) {
+        //besitzer check
+        if (!besitzer.contains(tiVZDProperties.getAuthId())) {
+            besitzer.add(tiVZDProperties.getAuthId());
+        }
+        //check on equal
+        List<String> checkHolder = besitzer.stream().filter(s -> !directoryEntry.extractDirectoryEntryHolder().contains(s)).collect(Collectors.toList());
+        List<String> reverseCheckHolder = directoryEntry.extractDirectoryEntryHolder().stream().filter(s -> !besitzer.contains(s)).collect(Collectors.toList());
+        if (!checkHolder.isEmpty() || !reverseCheckHolder.isEmpty()) {
             toUpdate = true;
         }
 
         return toUpdate;
     }
 
-    public boolean toDelete(VzdEntryWrapper directoryEntry) throws Exception {
+    public boolean toDelete() throws Exception {
         return toDelete;
     }
 

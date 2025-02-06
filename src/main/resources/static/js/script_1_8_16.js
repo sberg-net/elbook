@@ -1864,6 +1864,11 @@ function disableFinish2FA() {
 }
 
 function holderAttrFileSenden() {
+
+  $("#holderattributFormularError").attr("style", "display: none");
+  $("#holderattributFormularError").empty();
+  $("#holderattributFormularResult").empty();
+
   const token = $("meta[name='_csrf']").attr("content");
   const header = $("meta[name='_csrf_header']").attr("content");
 

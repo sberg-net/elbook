@@ -101,14 +101,16 @@ public class MailCreatorAndSender {
         }
     }
 
-    public void send(String from, String to, String subject, String body, File attachment) throws Exception {
+    public void send(String from, String[] to, String subject, String body, File attachment) throws Exception {
         MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+        MimeMessageHelper helper = new MimeMessageHelper(message, attachment!=null?MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED:MimeMessageHelper.MULTIPART_MODE_NO, StandardCharsets.UTF_8.name());
         helper.setTo(to);
         helper.setFrom(from);
         helper.setSubject(subject);
         helper.setText(body);
-        helper.addAttachment(attachment.getName(), attachment);
+        if (attachment != null) {
+            helper.addAttachment(attachment.getName(), attachment);
+        }
         javaMailSender.send(message);
     }
 }

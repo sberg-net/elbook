@@ -165,13 +165,16 @@ public class StammdatenZertImportService {
                 else {
                     vzdObject = verzeichnisdienstService.ladeByUid(mandant, verzeichnisdienstImportCommand.getVzdUid());
                     if (vzdObject == null) {
-                        verzeichnisdienstImportErgebnis.setInsert(true);
-                        verzeichnisdienstImportErgebnis.getLog().add("verzeichnisdienseintrag mit der id=" + verzeichnisdienstImportCommand.getVzdUid() + " kann nicht gefunden werden");
+                        vzdObject = verzeichnisdienstService.ladeByTelematikId(mandant, verzeichnisdienstImportCommand.getTelematikID());
+                        if (vzdObject == null) {
+                            verzeichnisdienstImportErgebnis.setInsert(true);
+                            verzeichnisdienstImportErgebnis.getLog().add("verzeichnisdienseintrag mit der id=" + verzeichnisdienstImportCommand.getVzdUid() + " kann nicht gefunden werden");
+                        }
                     }
                 }
 
                 //DELETE
-                if (verzeichnisdienstImportCommand.toDelete(vzdObject)) {
+                if (verzeichnisdienstImportCommand.toDelete()) {
 
                     verzeichnisdienstImportErgebnis.setInsert(false);
                     verzeichnisdienstImportErgebnis.setUpdate(false);
@@ -248,7 +251,7 @@ public class StammdatenZertImportService {
                 }
 
                 //UPDATE
-                if (!verzeichnisdienstImportErgebnis.isDelete() && !verzeichnisdienstImportErgebnis.isInsert() && verzeichnisdienstImportCommand.toUpdate(vzdObject)) {
+                if (!verzeichnisdienstImportErgebnis.isDelete() && !verzeichnisdienstImportErgebnis.isInsert() && verzeichnisdienstImportCommand.toUpdate(vzdObject, tiVZDProperties)) {
 
                     verzeichnisdienstImportErgebnis.setUpdate(true);
 

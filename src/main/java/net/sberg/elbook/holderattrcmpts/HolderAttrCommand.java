@@ -95,7 +95,7 @@ public class HolderAttrCommand {
         }
         else if (directoryEntry.extractDirectoryEntryHolder().isEmpty() && !holderAttrCommandContainer.isHandleEmptyHolder()) {
             holderAttrErgebnis.setError(true);
-            holderAttrErgebnis.getLog().add("remote holder set is empty");
+            holderAttrErgebnis.getLog().add("remote holder set is empty. you have to handle empty holder in command-container");
         }
         else {
             //check holder
