@@ -1881,6 +1881,8 @@ function holderAttrFileSenden() {
   $(".spinner-border").attr("style", "");
   const fData = $("#holderAttributForm").serializeFiles();
 
+  $("#holderAttributForm").hide();
+
   $.ajax({
     type: "POST",
     url: $("#holderattributContainer").attr("action") + "holderattribut/jsondatei",
@@ -1893,12 +1895,14 @@ function holderAttrFileSenden() {
     },
     success: function (data) {
       $(".spinner-border").attr("style", "display:none");
+      $("#holderAttributForm").show();
       $("#holderAttributForm").trigger("reset");
       $("#holderattributFormularResult").empty();
       $("#holderattributFormularResult").append(JSON.stringify(data, null, 2));
     },
     error: function (jqXHR, textStatus, errorThrown) {
       $(".spinner-border").attr("style", "display:none");
+      $("#holderAttributForm").show();
       $("#holderattributFormularError").attr("style", "");
       $("#holderattributFormularError").empty();
       $("#holderattributFormularError").append(JSON.parse(jqXHR.responseText).message);
