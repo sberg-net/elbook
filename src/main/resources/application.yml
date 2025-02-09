@@ -45,6 +45,9 @@ kartendatenTransferService:
 hbaKartendatenTransferJob:
   scheduledDef: 0 0 1 * * ?
 
+batchJobCleanerJob:
+  scheduledDef: 0 0 2 * * ?
+
 reportJob:
   scheduledDef: 0 0 5 * * ?
 
@@ -95,6 +98,10 @@ mailCreatorAndSenderService:
 
 reportJob:
   scheduledDef: 0 0/3 * * * ?
+
+batchJobCleanerJob:
+  scheduledDef: 0 0/2 * * * ?
+  expiredDays: 30
 
 kartendatenTransferService:
   url: http://${elbook.app.kartendatentrans-base-url}:8082/elbook/hbakartendaten/
