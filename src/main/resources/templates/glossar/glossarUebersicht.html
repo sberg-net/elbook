@@ -18,7 +18,7 @@
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">Suche nach TelematikID-Informationen</h5>
-    <p class="card-text">Sie können hier eine komplette TelematikId eingeben und sich Metainformationen geben lassen: welche Branche / Sektor, die zugehörigen professionOID's usw.</p>
+    <p class="card-text">Sie können hier eine komplette TelematikId eingeben und sich Metainformationen geben lassen: welche Branche / Sektor, die zugehörigen professionOID's usw. Ein Suchen nach '*' gibt alle im System verfügbaren Metainformationen aus.</p>
     <div class="row ms-1" xmlns:th="http://www.thymeleaf.org">
       <div class="col-sm-12 col-lg-8 mb-3 p-0 pe-1">
         <input type="text" class="form-control pe-0" id="telematikIdSearch" placeholder="TelematikId">
@@ -30,67 +30,69 @@
       </div>
     </div>
     <div xmlns:th="http://www.thymeleaf.org" class="row ms-1">
-      <div th:if="${telematikIdInfoVerfuegbar}" class="col-md-9 mb-3 fw-bolder">
-        <table>
-          <tr>
-            <td>Pattern</td>
-            <td th:text="${telematikIdInfo.telematikIdPattern.pattern}"></td>
-          </tr>
-          <tr>
-            <td>Fhir Resource Type</td>
-            <td th:text="${telematikIdInfo.telematikIdPattern.fhirResourceType}"></td>
-          </tr>
-          <tr>
-            <td>Code</td>
-            <td th:text="${telematikIdInfo.telematikIdPattern.code}"></td>
-          </tr>
-          <tr>
-            <td>Display</td>
-            <td th:text="${telematikIdInfo.telematikIdPattern.displayShort}"></td>
-          </tr>
-          <tr>
-            <td>ProfessionOIDs</td>
-            <td th:text="${telematikIdInfo.telematikIdPattern.professionOIDs}"></td>
-          </tr>
-          <tr>
-            <td>Sektor</td>
-            <td th:text="${telematikIdInfo.telematikIdPattern.sektor}"></td>
-          </tr>
-          <tr>
-            <td>Url des Sektor - Leitfadens</td>
-            <td><a target="_blank" th:text="${telematikIdInfo.telematikIdPattern.sektorImplLeitfadenUrl}" th:href="${telematikIdInfo.telematikIdPattern.sektorImplLeitfadenUrl}"></a></td>
-          </tr>
-        </table>
+      <div th:if="${telematikIdInfoVerfuegbar}" th:each="telematikIdInfo : ${telematikIdInfos}">
+        <br/><br/>
+        <div class="col-md-9 mb-6 fw-bolder">
+          <table>
+            <tr>
+              <td>Pattern</td>
+              <td th:text="${telematikIdInfo.telematikIdPattern.pattern}"></td>
+            </tr>
+            <tr>
+              <td>Fhir Resource Type</td>
+              <td th:text="${telematikIdInfo.telematikIdPattern.fhirResourceType}"></td>
+            </tr>
+            <tr>
+              <td>Code</td>
+              <td th:text="${telematikIdInfo.telematikIdPattern.code}"></td>
+            </tr>
+            <tr>
+              <td>Display</td>
+              <td th:text="${telematikIdInfo.telematikIdPattern.displayShort}"></td>
+            </tr>
+            <tr>
+              <td>ProfessionOIDs</td>
+              <td th:text="${telematikIdInfo.telematikIdPattern.professionOIDs}"></td>
+            </tr>
+            <tr>
+              <td>Sektor</td>
+              <td th:text="${telematikIdInfo.telematikIdPattern.sektor}"></td>
+            </tr>
+            <tr>
+              <td>Url des Sektor - Leitfadens</td>
+              <td><a target="_blank" th:text="${telematikIdInfo.telematikIdPattern.sektorImplLeitfadenUrl}" th:href="${telematikIdInfo.telematikIdPattern.sektorImplLeitfadenUrl}"></a></td>
+            </tr>
+          </table>
+        </div>
+        <div th:if="${telematikIdInfoVerfuegbar}" class="row ms-1">
+          <table class="table" id="glossarTelematikIdTable" xmlns:th="http://www.thymeleaf.org">
+            <thead>
+            <tr>
+              <th>Code</th>
+              <th>Display</th>
+              <th>EntryType</th>
+              <th>EntryTypeId</th>
+              <th>EntryTypeText</th>
+              <th>Organization</th>
+              <th>Practitionier</th>
+              <th>TspAntragTyp</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="n : ${telematikIdInfo.professionOIDInfos}">
+              <td><span th:text="${n.code}">code</span></td>
+              <td><span th:text="${n.display}">display</span></td>
+              <td><span th:text="${n.entryType}">entryType</span></td>
+              <td><span th:text="${n.entryTypeId}">entryTypeId</span></td>
+              <td><span th:text="${n.entryTypeText}">entryTypeText</span></td>
+              <td><span th:text="${n.organization}">organization</span></td>
+              <td><span th:text="${n.practitionier}">practitionier</span></td>
+              <td><span th:text="${n.tspAntragTyp}">tspAntragTyp</span></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    <div th:if="${telematikIdInfoVerfuegbar}" class="row ms-1">
-      <table class="table" id="glossarTelematikIdTable" xmlns:th="http://www.thymeleaf.org">
-        <thead>
-        <tr>
-          <th>Code</th>
-          <th>Display</th>
-          <th>EntryType</th>
-          <th>EntryTypeId</th>
-          <th>EntryTypeText</th>
-          <th>Organization</th>
-          <th>Practitionier</th>
-          <th>TspAntragTyp</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="n : ${telematikIdInfo.professionOIDInfos}">
-          <td><span th:text="${n.code}">code</span></td>
-          <td><span th:text="${n.display}">display</span></td>
-          <td><span th:text="${n.entryType}">entryType</span></td>
-          <td><span th:text="${n.entryTypeId}">entryTypeId</span></td>
-          <td><span th:text="${n.entryTypeText}">entryTypeText</span></td>
-          <td><span th:text="${n.organization}">organization</span></td>
-          <td><span th:text="${n.practitionier}">practitionier</span></td>
-          <td><span th:text="${n.tspAntragTyp}">tspAntragTyp</span></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 </div>
 

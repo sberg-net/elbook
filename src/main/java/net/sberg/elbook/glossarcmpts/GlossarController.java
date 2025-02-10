@@ -48,13 +48,13 @@ public class GlossarController extends AbstractWebController {
     @ResponseStatus(value = HttpStatus.OK)
     public String uebersicht(Model model, String searchValue, String searchType) throws Exception {
         if (searchType.equals(SEARCHTYPE_TID)) {
-            if (searchValue.equals("")) {
-                model.addAttribute("telematikIdInfo", null);
-                model.addAttribute("telematikIdInfoVerfuegbar", false);
+            if (searchValue.equals(GlossarService.SEARCHVALUE_ALL_ELEMS)) {
+                model.addAttribute("telematikIdInfos", glossarService.getAllTelematikIdInfo());
+                model.addAttribute("telematikIdInfoVerfuegbar", true);
             }
             else {
                 TelematikIdInfo telematikIdInfo = glossarService.getTelematikIdInfo(searchValue);
-                model.addAttribute("telematikIdInfo", telematikIdInfo);
+                model.addAttribute("telematikIdInfos", List.of(telematikIdInfo));
                 model.addAttribute("telematikIdInfoVerfuegbar", telematikIdInfo != null);
             }
         }

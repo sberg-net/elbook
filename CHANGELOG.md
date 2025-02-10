@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [2.6.3]
+
+### Fixed
+- Anpassung des Glossars
+
 ## [2.6.2]
 
 ### Fixed
