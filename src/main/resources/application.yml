@@ -47,6 +47,7 @@ hbaKartendatenTransferJob:
 
 batchJobCleanerJob:
   scheduledDef: 0 0 2 * * ?
+  expiredDays: 30
 
 reportJob:
   scheduledDef: 0 0 5 * * ?

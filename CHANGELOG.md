@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [2.6.4]
+
+### Fixed
+- Cleaner Job für die BatchJob's integriert
+
 ## [2.6.3]
 
 ### Fixed
