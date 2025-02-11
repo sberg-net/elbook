@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [2.6.5]
+
+### Fixed
+- Erweiterung des Glossars um TelematikID-Bildungsregel -> https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping
+
 ## [2.6.4]
 
 ### Fixed

@@ -61,6 +61,7 @@ public class GlossarService {
             telematikIdPattern.setProfessionOIDs((String)((Map)o).get("professionOIDs"));
             telematikIdPattern.setSektor(EnumSektor.valueOf((String)((Map)o).get("sektor")));
             telematikIdPattern.setSektorImplLeitfadenUrl(telematikIdPattern.getSektor().getImplLeitfadenUrl());
+            telematikIdPattern.setTelematikIdBildungsregelUrl((String)((Map)o).get("telematikIdBildungsregelUrl"));
             telematikIdPatternStorage.put(telematikIdPattern.getPattern(), telematikIdPattern);
         });
 

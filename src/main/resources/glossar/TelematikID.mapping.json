@@ -6,7 +6,8 @@
       "code": "Arzt",
       "displayShort": "Arzt",
       "professionOIDs": "1.2.276.0.76.4.30",
-      "sektor": "ARZT"
+      "sektor": "ARZT",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-1-1%C3%84rzte(HBA)"
     },
     {
       "pattern": "^1-20.*",
@@ -14,7 +15,8 @@
       "code": "Arztpaxis",
       "displayShort": "Arztpaxis",
       "professionOIDs": "1.2.276.0.76.4.50,1.2.276.0.76.4.52",
-      "sektor": "ARZTPRAXIS"
+      "sektor": "ARZTPRAXIS",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-1-20Arztpraxenetal.(SMC-B)"
     },
     {
       "pattern": "^2-0?1.*",
@@ -22,7 +24,8 @@
       "code": "Zahnarzt",
       "displayShort": "Zahnarzt",
       "professionOIDs": "1.2.276.0.76.4.31",
-      "sektor": "ZAHNARZT"
+      "sektor": "ZAHNARZT",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-2-1Zahn%C3%A4rzte(HBA)"
     },
     {
       "pattern": "^2-2.*",
@@ -30,7 +33,8 @@
       "code": "Zahnarztpraxis",
       "displayShort": "Zahnarztpraxis",
       "professionOIDs": "1.2.276.0.76.4.51",
-      "sektor": "ZAHNARZTPRAXIS"
+      "sektor": "ZAHNARZTPRAXIS",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-2-2Zahnarztpraxen(SMC-B)"
     },
     {
       "pattern": "^3-...2.*",
@@ -38,7 +42,8 @@
       "code": "Apotheke",
       "displayShort": "Apotheke",
       "professionOIDs": "1.2.276.0.76.4.54",
-      "sektor": "APOTHEKE"
+      "sektor": "APOTHEKE",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-3-Apotheker(HBA)undApotheken(SMC-B)"
     },
     {
       "pattern": "^3-...3.*",
@@ -46,7 +51,8 @@
       "code": "Apotheker",
       "displayShort": "Apotheker",
       "professionOIDs": "1.2.276.0.76.4.32",
-      "sektor": "APOTHEKER"
+      "sektor": "APOTHEKER",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-3-Apotheker(HBA)undApotheken(SMC-B)"
     },
     {
       "pattern": "^4-.*",
@@ -54,7 +60,8 @@
       "code": "Psychotherapeut",
       "displayShort": "Psychotherapeut",
       "professionOIDs": "1.2.276.0.76.4.45,1.2.276.0.76.4.46,1.2.276.0.76.4.47",
-      "sektor": "PSYCHOTHERAPEUTH"
+      "sektor": "PSYCHOTHERAPEUTH",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-4-1Psychotherapeuten(HBA)"
     },
     {
       "pattern": "^5-.*",
@@ -62,7 +69,8 @@
       "code": "Krankenhaus",
       "displayShort": "Krankenhaus",
       "professionOIDs": "1.2.276.0.76.4.53,1.2.276.0.76.4.55,1.2.276.0.76.4.257",
-      "sektor": "KRANKENHAUS"
+      "sektor": "KRANKENHAUS",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-5-2Krankenh%C3%A4user(SMC-B)"
     },
     {
       "pattern": "^8-01.*",
@@ -70,7 +78,8 @@
       "code": "Krankenkasse",
       "displayShort": "Krankenkasse",
       "professionOIDs": "1.2.276.0.76.4.59",
-      "sektor": "GKV"
+      "sektor": "GKV",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-8-Kostentr%C3%A4ger(SMC-B)"
     },
     {
       "pattern": "^8-03.*",
@@ -78,7 +87,8 @@
       "code": "Krankenkasse_ePA",
       "displayShort": "Krankenkasse (ePA)",
       "professionOIDs": "1.2.276.0.76.4.273",
-      "sektor": "GKV_EPA"
+      "sektor": "GKV_EPA",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-8-Kostentr%C3%A4ger(SMC-B)"
     },
     {
       "pattern": "^8-04.*",
@@ -86,7 +96,8 @@
       "code": "Krankenkasse_Ombudsstelle",
       "displayShort": "Krankenkasse Ombudsstelle",
       "professionOIDs": "1.2.276.0.76.4.303",
-      "sektor": "GKV"
+      "sektor": "GKV",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-8-Kostentr%C3%A4ger(SMC-B)"
     },
     {
       "pattern": "^9-1.32.*",
@@ -94,7 +105,8 @@
       "code": "EU_Versandapotheker",
       "displayShort": "EU-Versandapotheker",
       "professionOIDs": "1.2.276.0.76.4.32",
-      "sektor": "APOTHEKER"
+      "sektor": "APOTHEKER",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-1DurchgematikausgestellteHBAs"
     },
     {
       "pattern": "^9-1.33.*",
@@ -102,7 +114,8 @@
       "code": "Apothekerassistent",
       "displayShort": "Apothekerassistent",
       "professionOIDs": "1.2.276.0.76.4.33",
-      "sektor": "APOTHEKER"
+      "sektor": "APOTHEKER",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-1DurchgematikausgestellteHBAs"
     },
     {
       "pattern": "^9-1.34.*",
@@ -110,7 +123,8 @@
       "code": "Pharmazieingenieur",
       "displayShort": "Pharmazieingenieur",
       "professionOIDs": "1.2.276.0.76.4.34",
-      "sektor": "APOTHEKER"
+      "sektor": "APOTHEKER",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-1DurchgematikausgestellteHBAs"
     },
     {
       "pattern": "^9-2.50.*",
@@ -118,7 +132,8 @@
       "code": "Private_Arztpraxis",
       "displayShort": "Private Arztpraxis",
       "professionOIDs": "1.2.276.0.76.4.50",
-      "sektor": "ARZTPRAXIS"
+      "sektor": "ARZTPRAXIS",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.51.*",
@@ -126,7 +141,8 @@
       "code": "Private_Zahnarztpraxis",
       "displayShort": "Private Zahnarztpraxis",
       "professionOIDs": "1.2.276.0.76.4.51",
-      "sektor": "ZAHNARZTPRAXIS"
+      "sektor": "ZAHNARZTPRAXIS",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.54.*",
@@ -134,7 +150,8 @@
       "code": "EU_Versandapotheke",
       "displayShort": "EU-Versandapotheke",
       "professionOIDs": "1.2.276.0.76.4.54",
-      "sektor": "APOTHEKE"
+      "sektor": "APOTHEKE",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.58.*",
@@ -142,7 +159,8 @@
       "code": "Betriebsstätte gematik",
       "displayShort": "Betriebsstätte gematik",
       "professionOIDs": "1.2.276.0.76.4.58",
-      "sektor": "GEMATIK_SMCB_ORG"
+      "sektor": "GEMATIK_SMCB_ORG",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.59.*",
@@ -150,7 +168,8 @@
       "code": "Krankenversicherung",
       "displayShort": "Krankenversicherung",
       "professionOIDs": "1.2.276.0.76.4.59",
-      "sektor": "GEMATIK_SMCB"
+      "sektor": "GEMATIK_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.187.*",
@@ -158,7 +177,8 @@
       "code": "Betriebsstätte_LEO_Vertragszahnärzte",
       "displayShort": "LEO Vertragszahnärzte",
       "professionOIDs": "1.2.276.0.76.4.187",
-      "sektor": "GEMATIK_SMCB_ORG"
+      "sektor": "GEMATIK_SMCB_ORG",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.210.*",
@@ -166,7 +186,8 @@
       "code": "Betriebsstätte_LEO_Vertragsärzte",
       "displayShort": "LEO Vertragsärzte",
       "professionOIDs": "1.2.276.0.76.4.210",
-      "sektor": "GEMATIK_SMCB_ORG"
+      "sektor": "GEMATIK_SMCB_ORG",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.224.*",
@@ -174,7 +195,8 @@
       "code": "Betriebsstätte_Apothekerverband",
       "displayShort": "Betriebsstätte Apothekerverband",
       "professionOIDs": "1.2.276.0.76.4.224",
-      "sektor": "GEMATIK_SMCB_ORG"
+      "sektor": "GEMATIK_SMCB_ORG",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.229.*",
@@ -182,7 +204,8 @@
       "code": "Betriebsstätte_Bundesärztekammer",
       "displayShort": "Betriebsstätte der Bundesärztekammer",
       "professionOIDs": "1.2.276.0.76.4.229",
-      "sektor": "GEMATIK_SMCB_ORG"
+      "sektor": "GEMATIK_SMCB_ORG",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.230.*",
@@ -190,7 +213,8 @@
       "code": "Betriebsstätte_Ärztekammer",
       "displayShort": "Betriebsstätte einer Ärztekammer",
       "professionOIDs": "1.2.276.0.76.4.230",
-      "sektor": "GEMATIK_SMCB_ORG"
+      "sektor": "GEMATIK_SMCB_ORG",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.242.*",
@@ -198,7 +222,8 @@
       "code": "Betriebsstätte_Kassenärztlichen_Bundesvereinigung",
       "displayShort": "Betriebsstätte der Kassenärztlichen Bundesvereinigung",
       "professionOIDs": "1.2.276.0.76.4.242",
-      "sektor": "GEMATIK_SMCB_ORG"
+      "sektor": "GEMATIK_SMCB_ORG",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.244.*",
@@ -206,7 +231,8 @@
       "code": "Betriebsstätte_LEO_Vertragszahnärzte",
       "displayShort": "LEO Vertragszahnärzte",
       "professionOIDs": "1.2.276.0.76.4.187,1.2.276.0.76.4.244",
-      "sektor": "GEMATIK_SMCB_ORG"
+      "sektor": "GEMATIK_SMCB_ORG",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.245.*",
@@ -214,7 +240,8 @@
       "code": "Pflege",
       "displayShort": "Pflege",
       "professionOIDs": "1.2.276.0.76.4.245",
-      "sektor": "GEMATIK_SMCB"
+      "sektor": "GEMATIK_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.254.*",
@@ -222,7 +249,8 @@
       "code": "Sanitätsdienststelle_Bundeswehr",
       "displayShort": "Bundeswehr",
       "professionOIDs": "1.2.276.0.76.4.254",
-      "sektor": "GEMATIK_SMCB"
+      "sektor": "GEMATIK_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.255.*",
@@ -230,7 +258,8 @@
       "code": "Gesundheitsamt",
       "displayShort": "Gesundheitsamt",
       "professionOIDs": "1.2.276.0.76.4.255",
-      "sektor": "GEMATIK_SMCB"
+      "sektor": "GEMATIK_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.256.*",
@@ -238,7 +267,8 @@
       "code": "Arbeitsmedizin",
       "displayShort": "Arbeitsmedizin",
       "professionOIDs": "1.2.276.0.76.4.256",
-      "sektor": "GEMATIK_SMCB"
+      "sektor": "GEMATIK_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.265.*",
@@ -246,7 +276,8 @@
       "code": "Betriebsstätte_Landesapothekerkammer",
       "displayShort": "Betriebsstätte Landesapothekerkammer",
       "professionOIDs": "1.2.276.0.76.4.265",
-      "sektor": "GEMATIK_SMCB_ORG"
+      "sektor": "GEMATIK_SMCB_ORG",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.269.*",
@@ -254,7 +285,8 @@
       "code": "Betriebsstätte_Register_Gesundheitsdaten",
       "displayShort": "Betriebsstätte Register für Gesundheitsdaten",
       "professionOIDs": "1.2.276.0.76.4.269",
-      "sektor": "GEMATIK_SMCB_ORG"
+      "sektor": "GEMATIK_SMCB_ORG",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.270.*",
@@ -262,7 +294,8 @@
       "code": "Betriebsstätte_Abrechnungsdienstleister",
       "displayShort": "Betriebsstätte Abrechnungsdienstleister",
       "professionOIDs": "1.2.276.0.76.4.270",
-      "sektor": "GEMATIK_SMCB_ORG"
+      "sektor": "GEMATIK_SMCB_ORG",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.282.*",
@@ -270,7 +303,8 @@
       "code": "DiGA",
       "displayShort": "DiGA",
       "professionOIDs": "1.2.276.0.76.4.282",
-      "sektor": "GEMATIK_DIGA"
+      "sektor": "GEMATIK_DIGA",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.284.*",
@@ -278,7 +312,8 @@
       "code": "Betriebsstätte_Weitere_Kostenträger_Gesundheitswesen",
       "displayShort": "Betriebsstätte Weitere Kostenträger im Gesundheitswesen",
       "professionOIDs": "1.2.276.0.76.4.284",
-      "sektor": "GEMATIK_SMCB_ORG"
+      "sektor": "GEMATIK_SMCB_ORG",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.285.*",
@@ -286,7 +321,8 @@
       "code": "Weitere_Organisationen_Gesundheitsversorgung",
       "displayShort": "Weitere Organisationen der Gesundheitsversorgung",
       "professionOIDs": "1.2.276.0.76.4.285",
-      "sektor": "GEMATIK_SMCB"
+      "sektor": "GEMATIK_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.286.*",
@@ -294,7 +330,8 @@
       "code": "KIM-Hersteller-Anbieter",
       "displayShort": "KIM-Hersteller und -Anbieter",
       "professionOIDs": "1.2.276.0.76.4.286",
-      "sektor": "GEMATIK_SMCB"
+      "sektor": "GEMATIK_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.295.*",
@@ -302,7 +339,8 @@
       "code": "TIM-Hersteller-Anbieter",
       "displayShort": "TIM-Hersteller und -Anbieter",
       "professionOIDs": "1.2.276.0.76.4.295",
-      "sektor": "GEMATIK_SMCB"
+      "sektor": "GEMATIK_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^9-2.303.*",
@@ -310,7 +348,8 @@
       "code": "Ombudsstelle_Kostenträgers",
       "displayShort": "Ombudsstelle eines Kostenträgers",
       "professionOIDs": "1.2.276.0.76.4.303",
-      "sektor": "GEMATIK_PKV_KOSTENTRAEGER"
+      "sektor": "GEMATIK_PKV_KOSTENTRAEGER",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-9-2DurchgematikausgestellteSMC-Bs"
     },
     {
       "pattern": "^10-67.178.*",
@@ -318,7 +357,8 @@
       "code": "Notfallsanitäter",
       "displayShort": "Notfallsanitäter/-in",
       "professionOIDs": "1.2.276.0.76.4.178",
-      "sektor": "EGBR_HBA"
+      "sektor": "EGBR_HBA",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.232.*",
@@ -326,7 +366,8 @@
       "code": "Krankenpfleger",
       "displayShort": "Krankenpfleger",
       "professionOIDs": "1.2.276.0.76.4.232,1.2.276.0.76.4.233",
-      "sektor": "EGBR_HBA"
+      "sektor": "EGBR_HBA",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.233.*",
@@ -334,7 +375,8 @@
       "code": "Altenpfleger",
       "displayShort": "Altenpfleger",
       "professionOIDs": "1.2.276.0.76.4.233",
-      "sektor": "EGBR_HBA"
+      "sektor": "EGBR_HBA",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.234.*",
@@ -342,7 +384,8 @@
       "code": "Pfleger",
       "displayShort": "Pfleger",
       "professionOIDs": "1.2.276.0.76.4.234",
-      "sektor": "EGBR_HBA"
+      "sektor": "EGBR_HBA",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.235.*",
@@ -350,7 +393,8 @@
       "code": "Hebamme",
       "displayShort": "Hebamme",
       "professionOIDs": "1.2.276.0.76.4.235",
-      "sektor": "EGBR_HBA"
+      "sektor": "EGBR_HBA",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.236.*",
@@ -358,7 +402,8 @@
       "code": "Physiotherapeut",
       "displayShort": "Physiotherapeut",
       "professionOIDs": "1.2.276.0.76.4.236",
-      "sektor": "EGBR_HBA"
+      "sektor": "EGBR_HBA",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.245.*",
@@ -366,7 +411,8 @@
       "code": "Pflege",
       "displayShort": "Pflege",
       "professionOIDs": "1.2.276.0.76.4.245",
-      "sektor": "EGBR_SMCB"
+      "sektor": "EGBR_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.246.*",
@@ -374,7 +420,8 @@
       "code": "Geburtshilfe",
       "displayShort": "Geburtshilfe",
       "professionOIDs": "1.2.276.0.76.4.246",
-      "sektor": "EGBR_SMCB"
+      "sektor": "EGBR_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.247.*",
@@ -382,7 +429,8 @@
       "code": "Physiotherapie",
       "displayShort": "Physiotherapie",
       "professionOIDs": "1.2.276.0.76.4.247",
-      "sektor": "EGBR_SMCB"
+      "sektor": "EGBR_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.274.*",
@@ -390,7 +438,8 @@
       "code": "Ergotherapeut",
       "displayShort": "Ergotherapeut/-in",
       "professionOIDs": "1.2.276.0.76.4.274",
-      "sektor": "EGBR_HBA"
+      "sektor": "EGBR_HBA",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.275.*",
@@ -398,7 +447,8 @@
       "code": "Logopäde",
       "displayShort": "Logopäde/Logopädin",
       "professionOIDs": "1.2.276.0.76.4.275",
-      "sektor": "EGBR_HBA"
+      "sektor": "EGBR_HBA",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.276.*",
@@ -406,7 +456,8 @@
       "code": "Podologe",
       "displayShort": "Podologe/Podologin",
       "professionOIDs": "1.2.276.0.76.4.276",
-      "sektor": "EGBR_HBA"
+      "sektor": "EGBR_HBA",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.278.*",
@@ -414,7 +465,8 @@
       "code": "Ergotherapiepraxis",
       "displayShort": "Ergotherapiepraxis",
       "professionOIDs": "1.2.276.0.76.4.278",
-      "sektor": "EGBR_SMCB"
+      "sektor": "EGBR_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.279.*",
@@ -422,7 +474,8 @@
       "code": "Logopaedische_Praxis",
       "displayShort": "Logopaedische Praxis",
       "professionOIDs": "1.2.276.0.76.4.279",
-      "sektor": "EGBR_SMCB"
+      "sektor": "EGBR_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     },
     {
       "pattern": "^10-67.280.*",
@@ -430,7 +483,8 @@
       "code": "Podologiepraxis",
       "displayShort": "Podologiepraxis",
       "professionOIDs": "1.2.276.0.76.4.280",
-      "sektor": "EGBR_SMCB"
+      "sektor": "EGBR_SMCB",
+      "telematikIdBildungsregelUrl": "https://wiki.gematik.de/display/DIRSERV/Telematik-ID+Mapping#TelematikIDMapping-10-67GesundheitsberufeeGBR"
     }
   ] 
 }

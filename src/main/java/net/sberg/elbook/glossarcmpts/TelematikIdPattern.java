@@ -12,4 +12,5 @@ public class TelematikIdPattern {
     private String professionOIDs;
     private EnumSektor sektor;
     private String sektorImplLeitfadenUrl;
+    private String telematikIdBildungsregelUrl;
 }
