@@ -15,20 +15,18 @@
  */
 package net.sberg.elbook.tspcmpts;
 
-import de.gematik.ws.cm.pers.hba_smc_b.v1.AntragStatusKey;
 import de.gematik.ws.cm.pers.hba_smc_b.v1.HbaAntragExport;
 import de.gematik.ws.cm.pers.hba_smc_b.v1.SmcbAntragExport;
 import de.gematik.ws.sst.v1.GetHbaAntraegeExportResponseType;
 import de.gematik.ws.sst.v1.GetSmcbAntraegeExportResponseType;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.sberg.elbook.authcomponents.AuthService;
 import net.sberg.elbook.authcomponents.AuthUserDetails;
 import net.sberg.elbook.common.AbstractWebController;
 import net.sberg.elbook.jdbc.DaoPlaceholderProperty;
 import net.sberg.elbook.jdbc.DaoProjectionBean;
 import net.sberg.elbook.jdbc.JdbcGenericDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,8 +36,10 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -115,10 +115,11 @@ public class TspController extends AbstractWebController {
         }
     }
 
-    @RequestMapping(value = "/tsp/loadsmcb/{id}/{vorgangsNr}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/tsp/loadsmcb/{id}/**", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public SmcbAntragExport loadRequest(@PathVariable int id, @PathVariable String vorgangsNr) throws Exception {
+    public SmcbAntragExport loadSmcbRequest(@PathVariable int id, HttpServletRequest request) throws Exception {
+        String vorgangsNr = request.getRequestURI().split(request.getContextPath() + "/tsp/loadsmcb/"+id+"/")[1];
         Tsp tsp = (Tsp)genericDao.selectOne(
             Tsp.class.getName(),
             null,
@@ -127,7 +128,7 @@ public class TspController extends AbstractWebController {
         TspProperties tspProperties = tsp.create(EnumAntragTyp.SMCB);
         try {
             TspConnector tspConnector = new TspConnectorBuilder().build(tspProperties, tsp.getTspName().getQvda(), EnumAntragTyp.SMCB);
-            GetSmcbAntraegeExportResponseType getSmcbAntraegeExportResponseType = tspConnector.getSmcbAntrag(vorgangsNr);
+            GetSmcbAntraegeExportResponseType getSmcbAntraegeExportResponseType = tspConnector.getSmcbAntrag(UriUtils.decode(vorgangsNr, StandardCharsets.UTF_8));
             if (getSmcbAntraegeExportResponseType.getSmcbAntraegeExport().getSmcbAntragExport().isEmpty()) {
                 throw new IllegalStateException("not available");
             }
@@ -138,10 +139,11 @@ public class TspController extends AbstractWebController {
         }
     }
 
-    @RequestMapping(value = "/tsp/loadhba/{id}/{vorgangsNr}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/tsp/loadhba/{id}/**", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public HbaAntragExport loadHbaRequest(@PathVariable int id, @PathVariable String vorgangsNr) throws Exception {
+    public HbaAntragExport loadHbaRequest(@PathVariable int id, HttpServletRequest request) throws Exception {
+        String vorgangsNr = request.getRequestURI().split(request.getContextPath() + "/tsp/loadhba/"+id+"/")[1];
         Tsp tsp = (Tsp)genericDao.selectOne(
             Tsp.class.getName(),
             null,
@@ -150,7 +152,7 @@ public class TspController extends AbstractWebController {
         TspProperties tspProperties = tsp.create(EnumAntragTyp.HBA);
         try {
             TspConnector tspConnector = new TspConnectorBuilder().build(tspProperties, tsp.getTspName().getQvda(), EnumAntragTyp.HBA);
-            GetHbaAntraegeExportResponseType getHbaAntraegeExportResponseType = tspConnector.getHbaAntrag(vorgangsNr);
+            GetHbaAntraegeExportResponseType getHbaAntraegeExportResponseType = tspConnector.getHbaAntrag(UriUtils.decode(vorgangsNr, StandardCharsets.UTF_8));
             if (getHbaAntraegeExportResponseType.getHbaAntraegeExport().getHbaAntragExport().isEmpty()) {
                 throw new IllegalStateException("not available");
             }

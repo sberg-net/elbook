@@ -26,7 +26,7 @@
     <title>ElBook - Holderattribut - Verwaltung</title>
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/script_1_8_17.js}"></script>
+    <script type="text/javascript" th:src="@{/js/script_1_8_18.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/feather-icons/dist/feather.min.js}"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/dashboard.css}"/>
@@ -48,7 +48,7 @@
             <p>Die Datei ist wie folgt aufgebaut (Beispielbelegungen): vzdAuthId = username des VZD, vzdAuthSecret = secret oder pwd des VZD,
               handleEmptyHolder = wenn die gefundenen VZD-Einträge leer sind, sollen die dann befüllt werden? Die Command-Objekte bestehen aus zwei Attributen:
               telematikID = klar, holder = ist ein Array mit den holder-Attributen. Wichtig!! Der eigene Holder muss in der Datei angegeben werden.
-              Die Datei ist eine json-Datei
+              Die Datei ist eine json-Datei und <b>DARF NICHT GRÖßER ALS 5MB SEIN!!</b>
             </p>
             <pre>{
 "vzdAuthId": null,

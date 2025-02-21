@@ -1457,8 +1457,8 @@ function tspLoadAllRequest(tspId, antragTyp, aTagId) {
 }
 
 function tspLoadRequest(tspId, vorgangsnummer, aTagId) {
-  var aHrefTag = $('#'+aTagId).attr("href");
-  aHrefTag = aHrefTag + "/" + tspId + "/" + encodeURIComponent(vorgangsnummer);
+  var aHrefTag = $('#'+aTagId).attr("src");
+  aHrefTag = aHrefTag + "/" + tspId + "/" + vorgangsnummer;
   $('#'+aTagId).attr("href", aHrefTag);
   document.getElementById(aTagId).click();
 }

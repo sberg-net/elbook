@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [2.6.6]
+
+### Fixed
+- Suche nach VZD-Einträgen angepasst
+- Fixen des Ladens nach Vorgangsnummer von HBA/SMCB-Anträgen
+
 ## [2.6.5]
 
 ### Fixed

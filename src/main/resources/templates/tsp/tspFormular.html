@@ -79,14 +79,14 @@
         <label for="smcbVorgangsnummer">SMCB-Vorgangsnummer</label>
         <input type="text" class="form-control col-lg-3" id="smcbVorgangsnummer">
         <button th:attr="data-id=${tsp.id}" class="btn btn-primary" onclick="tspLoadRequest($(this).attr('data-id'), $('#smcbVorgangsnummer').val(), 'loadSmcbReq')">Kompletten SMCB-Antrag laden</button>
-        <a th:href="@{/tsp/loadsmcb}" target="_blank" id="loadSmcbReq"></a>
+        <a th:src="@{/tsp/loadsmcb}" target="_blank" id="loadSmcbReq"></a>
       </div>
 
       <div class="mb-3">
         <label for="hbaVorgangsnummer">HBA-Vorgangsnummer</label>
         <input type="text" class="form-control col-lg-3" id="hbaVorgangsnummer">
         <button th:attr="data-id=${tsp.id}" class="btn btn-primary" onclick="tspLoadRequest($(this).attr('data-id'), $('#hbaVorgangsnummer').val(), 'loadHbaReq')">Kompletten HBA-Antrag laden</button>
-        <a th:href="@{/tsp/loadhba}" target="_blank" id="loadHbaReq"></a>
+        <a th:src="@{/tsp/loadhba}" target="_blank" id="loadHbaReq"></a>
       </div>
 
       <div class="container-fluid p-0 mb-2">
