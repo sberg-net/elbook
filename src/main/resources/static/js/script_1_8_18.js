@@ -127,7 +127,7 @@ const elbookContext = {
     'specialization': true,
     'professionOid': true,
     'meta': true,
-    'holder': true,
+    'holder': true
   },
   searchData: {
     readDirSyncEntryCommand: {
@@ -1458,7 +1458,7 @@ function tspLoadAllRequest(tspId, antragTyp, aTagId) {
 
 function tspLoadRequest(tspId, vorgangsnummer, aTagId) {
   var aHrefTag = $('#'+aTagId).attr("href");
-  aHrefTag = aHrefTag + "/" + tspId + "/" + vorgangsnummer;
+  aHrefTag = aHrefTag + "/" + tspId + "/" + encodeURIComponent(vorgangsnummer);
   $('#'+aTagId).attr("href", aHrefTag);
   document.getElementById(aTagId).click();
 }
