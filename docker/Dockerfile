@@ -1,4 +1,4 @@
-FROM amazoncorretto:17-alpine3.16-jdk
+FROM amazoncorretto:17-alpine3.21-jdk
 
 ENV ELBOOK-DB-HOST="localhost"
 ENV ELBOOK-DB-PORT="3306"
