@@ -15,6 +15,7 @@
  */
 package net.sberg.elbook.kartendatentransfer;
 
+import lombok.RequiredArgsConstructor;
 import net.sberg.elbook.common.ICommonConstants;
 import net.sberg.elbook.common.MailCreatorAndSender;
 import net.sberg.elbook.jdbc.JdbcGenericDao;
@@ -31,6 +32,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class KartendatenTransferService {
 
     @Value("${kartendatenTransferService.gueltigBisTage}")
@@ -38,10 +40,8 @@ public class KartendatenTransferService {
     @Value("${kartendatenTransferService.url}")
     private String url;
 
-    @Autowired
-    private MailCreatorAndSender mailCreatorAndSender;
-    @Autowired
-    private JdbcGenericDao genericDao;
+    private final MailCreatorAndSender mailCreatorAndSender;
+    private final JdbcGenericDao genericDao;
 
     public String createAktivierungsCode() {
         return UUID.randomUUID().toString();
