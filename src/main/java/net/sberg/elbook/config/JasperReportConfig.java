@@ -15,6 +15,7 @@
  */
 package net.sberg.elbook.config;
 
+import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -28,13 +29,13 @@ import org.springframework.core.io.Resource;
 import java.io.InputStream;
 
 @Configuration
+@RequiredArgsConstructor
 public class JasperReportConfig {
-	
+
 	private static final String JASPER_REPORT_DIR = "classpath:/reports/";
 	private static final String REPORT_DATA_KEY = "datasource";
 
-	@Autowired
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
     private JasperReport loadReport(String url) throws Exception {
         Resource resource = applicationContext.getResource(url);

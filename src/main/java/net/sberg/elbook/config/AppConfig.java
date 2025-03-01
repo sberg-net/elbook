@@ -101,7 +101,6 @@ public class AppConfig {
 	}
 
 	@Bean(name = "jdbcElbook")
-    @Autowired
     @Qualifier("dsElbook")
     public JdbcTemplate elbookJdbcTemplate(DataSource dsElbook) {
         return new JdbcTemplate(dsElbook);
