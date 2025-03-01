@@ -13,6 +13,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+### Security
+
+## [2.6.7]
+
+### Security
+* update spring-boot-starter-parent auf 3.4.3
+* update jasperreports auf 6.21.3
+* update flyway-mysql auf 11.3.4
+* update gson auf 2.12.1
+* update okhttp auf 4.9.2
+* update logging-interceptor auf 4.9.2
+* update json auf 20250107
+* entfernen ungenutztes maven repository
+
 ## [2.6.6]
 
 ### Fixed
