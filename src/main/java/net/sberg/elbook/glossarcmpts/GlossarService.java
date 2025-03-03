@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 public class GlossarService {
 
     private final Map<String, HolderInfo> holderStorage = new Hashtable<>();
-    private final Map<String, ProfessionOIDInfo> professionOIDStorage = new Hashtable<>();
+    private final Map<String, ProfessionOIDInfoReduced> professionOIDStorage = new Hashtable<>();
     private final Map<String, TelematikIdPattern> telematikIdPatternStorage = new Hashtable<>();
 
     public static final String SEARCHVALUE_ALL_ELEMS = "*";
@@ -69,7 +69,7 @@ public class GlossarService {
         r = new ObjectMapper().readValue(getClass().getResourceAsStream("/glossar/CodeSystem-OrganizationProfessionOID.json"), Map.class);
         l = (List) r.get("concept");
         l.forEach(o -> {
-            ProfessionOIDInfo professionOIDInfo = new ProfessionOIDInfo();
+            ProfessionOIDInfoReduced professionOIDInfo = new ProfessionOIDInfoReduced();
             professionOIDInfo.setCode((String)((Map)o).get("code"));
             professionOIDInfo.setDisplay((String)((Map)o).get("display"));
             professionOIDInfo.setEntryType(EnumEntryType.valueOf((String)((Map)o).get("entryType")));
@@ -85,7 +85,7 @@ public class GlossarService {
         r = new ObjectMapper().readValue(getClass().getResourceAsStream("/glossar/CodeSystem-PractitionerProfessionOID.json"), Map.class);
         l = (List) r.get("concept");
         l.forEach(o -> {
-            ProfessionOIDInfo professionOIDInfo = new ProfessionOIDInfo();
+            ProfessionOIDInfoReduced professionOIDInfo = new ProfessionOIDInfoReduced();
             professionOIDInfo.setCode((String)((Map)o).get("code"));
             professionOIDInfo.setDisplay((String)((Map)o).get("display"));
             professionOIDInfo.setEntryType(EnumEntryType.valueOf((String)((Map)o).get("entryType")));
@@ -102,7 +102,7 @@ public class GlossarService {
         return holderStorage.containsKey(holder);
     }
 
-    public synchronized ProfessionOIDInfo getProfessionOIDInfo(String professionOID) {
+    public synchronized ProfessionOIDInfoReduced getProfessionOIDInfo(String professionOID) {
         return professionOIDStorage.get(professionOID);
     }
 
@@ -116,10 +116,43 @@ public class GlossarService {
         return elems;
     }
 
-    public synchronized List<ProfessionOIDInfo> getAllProfessionOIDInfo() {
-        List<ProfessionOIDInfo> elems = new ArrayList<>(professionOIDStorage.values());
+    public synchronized List<ProfessionOIDInfoReduced> getAllProfessionOIDInfo() {
+        List<ProfessionOIDInfoReduced> elems = new ArrayList<>(professionOIDStorage.values());
         Collections.sort(elems, (o1, o2) -> o1.getCode().compareTo(o2.getCode()));
         return elems;
+    }
+
+    public synchronized ProfessionOIDInfo createProfessionOIDInfo(ProfessionOIDInfoReduced professionOIDInfoReduced) {
+        ProfessionOIDInfo professionOIDInfo = new ProfessionOIDInfo();
+        professionOIDInfo.setCode(professionOIDInfoReduced.getCode());
+        professionOIDInfo.setPractitionier(professionOIDInfoReduced.isPractitionier());
+        professionOIDInfo.setDisplay(professionOIDInfoReduced.getDisplay());
+        professionOIDInfo.setOrganization(professionOIDInfoReduced.isOrganization());
+        professionOIDInfo.setEntryType(professionOIDInfoReduced.getEntryType());
+        professionOIDInfo.setEntryTypeText(professionOIDInfoReduced.getEntryTypeText());
+        professionOIDInfo.setEntryTypeId(professionOIDInfoReduced.getEntryTypeId());
+        professionOIDInfo.setTspAntragTyp(professionOIDInfoReduced.getTspAntragTyp());
+        professionOIDInfo.setTelematikIdInfos(getTelematikIdInfos(professionOIDInfoReduced));
+        return professionOIDInfo;
+    }
+
+    private synchronized List<TelematikIdInfo> getTelematikIdInfos(ProfessionOIDInfoReduced professionOIDInfoReduced) {
+        List<TelematikIdInfo> res = new ArrayList<>();
+        for (Iterator<String> iterator = telematikIdPatternStorage.keySet().iterator(); iterator.hasNext(); ) {
+            String patternStr = iterator.next();
+            TelematikIdPattern telematikIdPattern = telematikIdPatternStorage.get(patternStr);
+            String[] ids = telematikIdPattern.getProfessionOIDs().split(",");
+            for (int i = 0; i < ids.length; i++) {
+                if (professionOIDInfoReduced.getCode().equals(ids[i])) {
+                    TelematikIdInfo telematikIdInfo = new TelematikIdInfo();
+                    telematikIdInfo.setTelematikIdPattern(telematikIdPattern);
+                    ProfessionOIDInfoReduced professionOIDInfo = professionOIDStorage.get(ids[i]);
+                    telematikIdInfo.getProfessionOIDInfos().add(professionOIDInfo);
+                    res.add(telematikIdInfo);
+                }
+            }
+        }
+        return res;
     }
 
     public synchronized TelematikIdInfo getTelematikIdInfo(String telematikId) {
@@ -134,7 +167,7 @@ public class GlossarService {
                 telematikIdInfo.setTelematikId(telematikId);
                 String[] ids = telematikIdPattern.getProfessionOIDs().split(",");
                 for (int i = 0; i < ids.length; i++) {
-                    ProfessionOIDInfo professionOIDInfo = professionOIDStorage.get(ids[i]);
+                    ProfessionOIDInfoReduced professionOIDInfo = professionOIDStorage.get(ids[i]);
                     telematikIdInfo.getProfessionOIDInfos().add(professionOIDInfo);
                 }
                 return telematikIdInfo;
@@ -153,7 +186,7 @@ public class GlossarService {
             telematikIdInfo.setTelematikId("");
             String[] ids = telematikIdPattern.getProfessionOIDs().split(",");
             for (int i = 0; i < ids.length; i++) {
-                ProfessionOIDInfo professionOIDInfo = professionOIDStorage.get(ids[i]);
+                ProfessionOIDInfoReduced professionOIDInfo = professionOIDStorage.get(ids[i]);
                 telematikIdInfo.getProfessionOIDInfos().add(professionOIDInfo);
             }
             result.add(telematikIdInfo);

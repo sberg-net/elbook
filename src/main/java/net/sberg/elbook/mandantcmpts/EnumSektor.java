@@ -67,7 +67,7 @@ public enum EnumSektor {
             throw new IllegalStateException("not implemented");
         }
     },
-    GEMATIK_SMCB("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#gematik-weitere-%C3%A4rztliche-institutionen-smc-b-eintrag") {
+    GEMATIK_SMCB_WAEI("https://github.com/gematik/api-vzd/blob/main/docs/gemILF_Pflege_VZD.adoc#gematik-weitere-%C3%A4rztliche-institutionen-smc-b-eintrag") {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }

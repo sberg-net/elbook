@@ -79,6 +79,16 @@
       "entryType": "Organisation"
     },
     {
+      "code": "1.2.276.0.76.4.224",
+      "display": "Betriebsstätte Apothekerverband",
+      "entryType": "Organisation"
+    },
+    {
+      "code": "1.2.276.0.76.4.225",
+      "display": "Betriebsstätte Deutscher Apothekerverband",
+      "entryType": "Organisation"
+    },
+    {
       "code": "1.2.276.0.76.4.226",
       "display": "Betriebsstätte Mitgliedsverband der Krankenhäuser",
       "entryType": "Organisation"
@@ -91,16 +101,6 @@
     {
       "code": "1.2.276.0.76.4.228",
       "display": "Betriebsstätte der Deutschen Krankenhausgesellschaft",
-      "entryType": "Organisation"
-    },
-    {
-      "code": "1.2.276.0.76.4.224",
-      "display": "Betriebsstätte Apothekerverband",
-      "entryType": "Organisation"
-    },
-    {
-      "code": "1.2.276.0.76.4.225",
-      "display": "Betriebsstätte Deutscher Apothekerverband",
       "entryType": "Organisation"
     },
     {
@@ -199,11 +199,6 @@
       "entryType": "Leistungserbringerinstitution"
     },
     {
-      "code": "1.2.276.0.76.4.273",
-      "display": "ePA KTR-Zugriffsautorisierung",
-      "entryType": "Krankenkasse_ePA"
-    },
-    {
       "code": "1.2.276.0.76.4.262",
       "display": "Betriebsstätte Pflegeberatung nach § 7a SGB XI",
       "entryType": "Organisation"
@@ -252,6 +247,11 @@
       "code": "1.2.276.0.76.4.271",
       "display": "Betriebsstätte PKV-Verband",
       "entryType": "Organisation"
+    },
+    {
+      "code": "1.2.276.0.76.4.273",
+      "display": "ePA KTR-Zugriffsautorisierung",
+      "entryType": "Krankenkasse_ePA"
     },
     {
       "code": "1.2.276.0.76.4.278",

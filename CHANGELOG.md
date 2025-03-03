@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.7.0]
+
+### Changed
+- Glossar erweitert um TelematikId-Patterns
+- VZD-Sucheinträge im Bereich der TelematikID, Holder und ProfessionOID mit dem Glossar verlinkt
+
 ## [2.6.7]
 
 ### Security

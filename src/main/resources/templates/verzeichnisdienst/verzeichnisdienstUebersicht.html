@@ -751,7 +751,7 @@
       </tr>
       <tr th:each="n : ${vzdeintraege}" th:attr="id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}">
         <td class="vzdentry_col_id"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryUid()}">ID</span></td>
-        <td class="vzdentry_col_tid"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()}">TelematikID</span></td>
+        <td class="vzdentry_col_tid"><a title="Glossar in einem neuen Tab öffnen" th:href="@{/glossar/uebersicht/telematikidinfo/{id}(id=${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()})}" th:text="${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()}" target="_blank"></a></td>
         <td class="vzdentry_col_domainid"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryDomainIDAsStr()}">Sektor-IDs</span></td>
         <td class="vzdentry_col_displayname"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryDisplayName()}">Anzeigename</span></td>
         <td class="vzdentry_col_cn"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryCn()}">Allgemeiner Name</span></td>
@@ -766,9 +766,9 @@
         <td class="vzdentry_col_stateorprovincename"><span th:text="${n.stateOrProvinceName.hrText}">Bundesland/Region</span></td>
         <td class="vzdentry_col_countrycode"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryCountryCode()}">Ländercode</span></td>
         <td class="vzdentry_col_specialization"><span th:text="${n.getSpecializationAsStr()}">Spezialisierungen</span></td>
-        <td class="vzdentry_col_professionoid"><span th:text="${n.getProfessionOIDAsStr()}">Berufsgruppen / Betriebsstätten</span></td>
+        <td class="vzdentry_col_professionoid"><a title="Glossar in einem neuen Tab öffnen" th:href="@{/glossar/uebersicht/professionoid/{id}(id=${n.getProfessionOIDAsStr()})}" th:text="${n.getProfessionOIDAsStr()}" target="_blank"></a></td>
         <td class="vzdentry_col_entrytype"><span th:text="${n.entryType.hrText}">Eintragstyp</span></td>
-        <td class="vzdentry_col_holder"><span th:text="${n.getHolderAsStr()}">Besitzer</span></td>
+        <td class="vzdentry_col_holder"><a title="Glossar in einem neuen Tab öffnen" th:href="@{/glossar/uebersicht/holderinfo/{id}(id=${n.getHolderAsStr()})}" th:text="${n.getHolderAsStr()}" target="_blank"></a></td>
         <td class="vzdentry_col_meta"><span th:text="${n.getMetaAsStr()}">Meta</span></td>
         <td class="vzdentry_col_active"><span th:text="${n.active.textValue}">Aktiv</span></td>
         <td class="vzdentry_col_datafromauthority"><span th:text="${n.dataFromAuthority.textValue}">Daten vom Kartenherausgeber</span></td>

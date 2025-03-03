@@ -100,7 +100,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" th:classappend="${requestPath.endsWith('/glossar') ? 'active':''}" th:href="@{/glossar}">
+              <a class="nav-link" th:classappend="${requestPath.contains('/glossar') ? 'active':''}" th:href="@{/glossar}">
                 <span data-feather="bar-chart-2"></span>
                 Glossar
               </a>

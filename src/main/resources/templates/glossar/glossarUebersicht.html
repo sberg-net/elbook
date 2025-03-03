@@ -63,7 +63,7 @@
               <td><a target="_blank" th:href="${telematikIdInfo.telematikIdPattern.sektorImplLeitfadenUrl}">Details im Implementierungsleitfaden</a></td>
             </tr>
             <tr>
-              <td>Url de TelematikId - Bildungsregel</td>
+              <td>Url der TelematikId - Bildungsregel</td>
               <td><a target="_blank" th:href="${telematikIdInfo.telematikIdPattern.telematikIdBildungsregelUrl}">Details der Bildungsregel</a></td>
             </tr>
           </table>
@@ -97,6 +97,7 @@
           </table>
         </div>
       </div>
+    </div>
   </div>
 </div>
 
@@ -128,19 +129,103 @@
           <th>Organization</th>
           <th>Practitionier</th>
           <th>TspAntragTyp</th>
+          <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="n : ${professionOIDInfos}">
-          <td><span th:text="${n.code}">code</span></td>
-          <td><span th:text="${n.display}">display</span></td>
-          <td><span th:text="${n.entryType}">entryType</span></td>
-          <td><span th:text="${n.entryTypeId}">entryTypeId</span></td>
-          <td><span th:text="${n.entryTypeText}">entryTypeText</span></td>
-          <td><span th:text="${n.organization}">organization</span></td>
-          <td><span th:text="${n.practitionier}">practitionier</span></td>
-          <td><span th:text="${n.tspAntragTyp}">tspAntragTyp</span></td>
-        </tr>
+          <div th:each="n : ${professionOIDInfos}">
+            <tr>
+              <td><span th:text="${n.code}">code</span></td>
+              <td><span th:text="${n.display}">display</span></td>
+              <td><span th:text="${n.entryType}">entryType</span></td>
+              <td><span th:text="${n.entryTypeId}">entryTypeId</span></td>
+              <td><span th:text="${n.entryTypeText}">entryTypeText</span></td>
+              <td><span th:text="${n.organization}">organization</span></td>
+              <td><span th:text="${n.practitionier}">practitionier</span></td>
+              <td><span th:text="${n.tspAntragTyp}">tspAntragTyp</span></td>
+              <td>
+                <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="TelematikID-Informationen Anzeigen" th:attr="data-id=${n.code}" onclick="handleTelematikIdInfo($(this),true)">
+                  <span data-feather="eye"></span>
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="TelematikID-Informationen Verbergen" th:attr="data-id=${n.code}" onclick="handleTelematikIdInfo($(this),false)">
+                  <span data-feather="eye-off"></span>
+                </button>
+              </td>
+            </tr>
+            <tr th:attr="data-id=${n.code}" style="display:none">
+              <td colspan="9">
+                <div xmlns:th="http://www.thymeleaf.org" class="row ms-1">
+                  <div th:each="telematikIdInfo : ${n.telematikIdInfos}">
+                    <br/><br/>
+                    <div class="col-md-9 mb-6 fw-bolder">
+                      <table>
+                        <tr>
+                          <td>Pattern</td>
+                          <td th:text="${telematikIdInfo.telematikIdPattern.pattern}"></td>
+                        </tr>
+                        <tr>
+                          <td>Fhir Resource Type</td>
+                          <td th:text="${telematikIdInfo.telematikIdPattern.fhirResourceType}"></td>
+                        </tr>
+                        <tr>
+                          <td>Code</td>
+                          <td th:text="${telematikIdInfo.telematikIdPattern.code}"></td>
+                        </tr>
+                        <tr>
+                          <td>Display</td>
+                          <td th:text="${telematikIdInfo.telematikIdPattern.displayShort}"></td>
+                        </tr>
+                        <tr>
+                          <td>ProfessionOIDs</td>
+                          <td th:text="${telematikIdInfo.telematikIdPattern.professionOIDs}"></td>
+                        </tr>
+                        <tr>
+                          <td>Sektor</td>
+                          <td th:text="${telematikIdInfo.telematikIdPattern.sektor}"></td>
+                        </tr>
+                        <tr>
+                          <td>Url des Sektor - Leitfadens</td>
+                          <td><a target="_blank" th:href="${telematikIdInfo.telematikIdPattern.sektorImplLeitfadenUrl}">Details im Implementierungsleitfaden</a></td>
+                        </tr>
+                        <tr>
+                          <td>Url der TelematikId - Bildungsregel</td>
+                          <td><a target="_blank" th:href="${telematikIdInfo.telematikIdPattern.telematikIdBildungsregelUrl}">Details der Bildungsregel</a></td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="row ms-1">
+                      <table class="table" xmlns:th="http://www.thymeleaf.org">
+                        <thead>
+                        <tr>
+                          <th>Code</th>
+                          <th>Display</th>
+                          <th>EntryType</th>
+                          <th>EntryTypeId</th>
+                          <th>EntryTypeText</th>
+                          <th>Organization</th>
+                          <th>Practitionier</th>
+                          <th>TspAntragTyp</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="o : ${telematikIdInfo.professionOIDInfos}">
+                          <td><span th:text="${o.code}">code</span></td>
+                          <td><span th:text="${o.display}">display</span></td>
+                          <td><span th:text="${o.entryType}">entryType</span></td>
+                          <td><span th:text="${o.entryTypeId}">entryTypeId</span></td>
+                          <td><span th:text="${o.entryTypeText}">entryTypeText</span></td>
+                          <td><span th:text="${o.organization}">organization</span></td>
+                          <td><span th:text="${o.practitionier}">practitionier</span></td>
+                          <td><span th:text="${o.tspAntragTyp}">tspAntragTyp</span></td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </div>
         </tbody>
       </table>
     </div>
@@ -184,4 +269,13 @@
 
 <script>
   feather.replace();
+  function handleTelematikIdInfo(t, show) {
+    var id = t.attr('data-id');
+    if (show) {
+      $("tr[data-id='"+id+"']").show();
+    }
+    else {
+      $("tr[data-id='"+id+"']").hide();
+    }
+  }
 </script>

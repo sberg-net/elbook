@@ -17,6 +17,7 @@ package net.sberg.elbook.glossarcmpts;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sberg.elbook.common.AbstractWebController;
@@ -26,6 +27,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -44,6 +46,40 @@ public class GlossarController extends AbstractWebController {
         return "glossar/glossar";
     }
 
+    @RequestMapping(value = "/glossar/uebersicht/professionoid/**", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    public String uebersichtProfessionOID(Model model, HttpServletRequest request) throws Exception {
+        String professionOids = request.getRequestURI().split(request.getContextPath() + "/glossar/uebersicht/professionoid/")[1];
+        model.addAttribute("searchType", SEARCHTYPE_PID);
+        model.addAttribute("searchValue", professionOids);
+        List<ProfessionOIDInfo> res = new ArrayList<>();
+
+        for (int i = 0; i < professionOids.split(",").length; i++) {
+            ProfessionOIDInfo professionOIDInfo = glossarService.createProfessionOIDInfo(glossarService.getProfessionOIDInfo(professionOids.split(",")[i]));
+            res.add(professionOIDInfo);
+        }
+        model.addAttribute("professionOIDInfos", res);
+        return "glossar/glossar";
+    }
+
+    @RequestMapping(value = "/glossar/uebersicht/telematikidinfo/**", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    public String uebersichtTelematikIDInfo(Model model, HttpServletRequest request) throws Exception {
+        String telematikIds = request.getRequestURI().split(request.getContextPath() + "/glossar/uebersicht/telematikidinfo/")[1];
+        model.addAttribute("searchType", SEARCHTYPE_TID);
+        model.addAttribute("searchValue", telematikIds);
+        return "glossar/glossar";
+    }
+
+    @RequestMapping(value = "/glossar/uebersicht/holderinfo/**", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    public String uebersichtHolderInfo(Model model, HttpServletRequest request) throws Exception {
+        String holder = request.getRequestURI().split(request.getContextPath() + "/glossar/uebersicht/holderinfo/")[1];
+        model.addAttribute("searchType", SEARCHTYPE_HOLDER);
+        model.addAttribute("searchValue", holder);
+        return "glossar/glossar";
+    }
+
     @RequestMapping(value = "/glossar/uebersicht", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
     public String uebersicht(Model model, String searchValue, String searchType) throws Exception {
@@ -53,9 +89,13 @@ public class GlossarController extends AbstractWebController {
                 model.addAttribute("telematikIdInfoVerfuegbar", true);
             }
             else {
-                TelematikIdInfo telematikIdInfo = glossarService.getTelematikIdInfo(searchValue);
-                model.addAttribute("telematikIdInfos", List.of(telematikIdInfo));
-                model.addAttribute("telematikIdInfoVerfuegbar", telematikIdInfo != null);
+                List<TelematikIdInfo> res = new ArrayList<>();
+                String[] elems = searchValue.split(",");
+                for (int i = 0; i < elems.length; i++) {
+                    res.add(glossarService.getTelematikIdInfo(elems[i].trim()));
+                }
+                model.addAttribute("telematikIdInfos", res);
+                model.addAttribute("telematikIdInfoVerfuegbar", !res.isEmpty());
             }
         }
         else if (searchType.equals(SEARCHTYPE_PID)) {
@@ -64,14 +104,17 @@ public class GlossarController extends AbstractWebController {
                 model.addAttribute("professionOIDInfos", new ArrayList<>());
             }
             else if (searchValue.equals(GlossarService.SEARCHVALUE_ALL_ELEMS)) {
-                List<ProfessionOIDInfo> professionOIDInfos = glossarService.getAllProfessionOIDInfo();
+                List<ProfessionOIDInfo> professionOIDInfos = glossarService.getAllProfessionOIDInfo().stream().map(professionOIDInfoReduced -> glossarService.createProfessionOIDInfo(professionOIDInfoReduced)).collect(Collectors.toList());
                 model.addAttribute("professionOIDInfos", professionOIDInfos);
             }
             else {
-                ProfessionOIDInfo professionOIDInfo = glossarService.getProfessionOIDInfo(searchValue);
-                model.addAttribute("professionOIDInfos", professionOIDInfo != null?List.of(professionOIDInfo):new ArrayList<>());
+                List<ProfessionOIDInfo> res = new ArrayList<>();
+                String[] elems = searchValue.split(",");
+                for (int i = 0; i < elems.length; i++) {
+                    res.add(glossarService.createProfessionOIDInfo(glossarService.getProfessionOIDInfo(elems[i].trim())));
+                }
+                model.addAttribute("professionOIDInfos", res);
             }
-
         }
         else if (searchType.equals(SEARCHTYPE_HOLDER)) {
             model.addAttribute("telematikIdInfoVerfuegbar", false);
@@ -83,8 +126,12 @@ public class GlossarController extends AbstractWebController {
                 model.addAttribute("holderInfos", holderInfos);
             }
             else {
-                HolderInfo holderInfo = glossarService.getHolderInfo(searchValue);
-                model.addAttribute("holderInfos", holderInfo != null?List.of(holderInfo):new ArrayList<>());
+                List<HolderInfo> res = new ArrayList<>();
+                String[] elems = searchValue.split(",");
+                for (int i = 0; i < elems.length; i++) {
+                    res.add(glossarService.getHolderInfo(elems[i].trim()));
+                }
+                model.addAttribute("holderInfos", res);
             }
         }
         else {
@@ -119,12 +166,12 @@ public class GlossarController extends AbstractWebController {
         Map<String, ProfessionOIDInfo> res = new HashMap<>();
 
         if (professionOIDs.size() == 1 && professionOIDs.get(0).equals(GlossarService.SEARCHVALUE_ALL_ELEMS)) {
-            glossarService.getAllProfessionOIDInfo().forEach(professionOIDInfo -> res.put(professionOIDInfo.getCode(), professionOIDInfo));
+            glossarService.getAllProfessionOIDInfo().forEach(professionOIDInfo -> res.put(professionOIDInfo.getCode(), glossarService.createProfessionOIDInfo(professionOIDInfo)));
         }
         else {
             for (Iterator<String> iterator = professionOIDs.iterator(); iterator.hasNext(); ) {
                 String professionOID = iterator.next();
-                res.put(professionOID, glossarService.getProfessionOIDInfo(professionOID));
+                res.put(professionOID, glossarService.createProfessionOIDInfo(glossarService.getProfessionOIDInfo(professionOID)));
             }
         }
         return res;
