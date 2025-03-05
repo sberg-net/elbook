@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.7.1]
+
+### Fixed
+- Glossar bugfixes
+
 ## [2.7.0]
 
 ### Changed

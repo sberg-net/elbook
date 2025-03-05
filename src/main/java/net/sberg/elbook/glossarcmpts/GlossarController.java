@@ -92,7 +92,10 @@ public class GlossarController extends AbstractWebController {
                 List<TelematikIdInfo> res = new ArrayList<>();
                 String[] elems = searchValue.split(",");
                 for (int i = 0; i < elems.length; i++) {
-                    res.add(glossarService.getTelematikIdInfo(elems[i].trim()));
+                    TelematikIdInfo telematikIdInfo = glossarService.getTelematikIdInfo(elems[i].trim());
+                    if (telematikIdInfo != null) {
+                        res.add(telematikIdInfo);
+                    }
                 }
                 model.addAttribute("telematikIdInfos", res);
                 model.addAttribute("telematikIdInfoVerfuegbar", !res.isEmpty());
@@ -111,7 +114,10 @@ public class GlossarController extends AbstractWebController {
                 List<ProfessionOIDInfo> res = new ArrayList<>();
                 String[] elems = searchValue.split(",");
                 for (int i = 0; i < elems.length; i++) {
-                    res.add(glossarService.createProfessionOIDInfo(glossarService.getProfessionOIDInfo(elems[i].trim())));
+                    ProfessionOIDInfoReduced professionOIDInfoReduced = glossarService.getProfessionOIDInfo(elems[i].trim());
+                    if (professionOIDInfoReduced != null) {
+                        res.add(glossarService.createProfessionOIDInfo(professionOIDInfoReduced));
+                    }
                 }
                 model.addAttribute("professionOIDInfos", res);
             }
@@ -129,7 +135,10 @@ public class GlossarController extends AbstractWebController {
                 List<HolderInfo> res = new ArrayList<>();
                 String[] elems = searchValue.split(",");
                 for (int i = 0; i < elems.length; i++) {
-                    res.add(glossarService.getHolderInfo(elems[i].trim()));
+                    HolderInfo holderInfo = glossarService.getHolderInfo(elems[i].trim());
+                    if (holderInfo != null) {
+                        res.add(holderInfo);
+                    }
                 }
                 model.addAttribute("holderInfos", res);
             }
