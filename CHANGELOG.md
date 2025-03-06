@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.8.0]
+
+### Changed
+- Glossar erweitert um Spezialisierungen/Fachrichtungen
+- BugFix - Swagger
+
 ## [2.7.1]
 
 ### Fixed

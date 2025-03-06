@@ -839,6 +839,9 @@ function glossarUebersicht(searchValue, searchType) {
       else if (searchType === 'holder') {
         $("#holderSearch").val(elbookContext.searchValue);
       }
+      else if (searchType === 'specialization') {
+        $("#specializationSearch").val(elbookContext.searchValue);
+      }
     },
     error: function(jqXHR,textStatus,errorThrown) {
       $("#elbook-spinner").attr("style", "display:none");

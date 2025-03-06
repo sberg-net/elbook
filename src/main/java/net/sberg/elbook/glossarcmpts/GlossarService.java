@@ -32,6 +32,7 @@ public class GlossarService {
     private final Map<String, HolderInfo> holderStorage = new Hashtable<>();
     private final Map<String, ProfessionOIDInfoReduced> professionOIDStorage = new Hashtable<>();
     private final Map<String, TelematikIdPattern> telematikIdPatternStorage = new Hashtable<>();
+    private final Map<String, SpecializationInfo> specializationStorage = new Hashtable<>();
 
     public static final String SEARCHVALUE_ALL_ELEMS = "*";
 
@@ -96,6 +97,38 @@ public class GlossarService {
             professionOIDInfo.setTspAntragTyp(EnumAntragTyp.HBA);
             professionOIDStorage.put(professionOIDInfo.getCode(), professionOIDInfo);
         });
+
+        //read specialization
+        readSpecialization("CodeSystem-aerztliche-fachrichtungen-oid-url.json");
+        readSpecialization("CodeSystem-facharzttitelderaerztekammern-oid-url.json");
+        readSpecialization("CodeSystem-kbv-cm-sfhir-bar2-wbo-oid-url.json");
+        readSpecialization("CodeSystem-nicht-aerztliche-fachrichtungen-oid-url.json");
+        readSpecialization("CodeSystem-PharmacyTypeLDAPCS.json");
+        readSpecialization("CodeSystem-qualifikationen-nicht-aerztlicher-autoren-oid-url.json");
+        readSpecialization("CodeSystem-qualifikatoren-zahnaerztlicher-autoren-oid-url.json");
+        readSpecialization("CodeSystem-zahnaerztliche-fachrichtungen-oid-url.json");
+    }
+
+    private void readSpecialization(String name) throws Exception {
+        Map r = new ObjectMapper().readValue(getClass().getResourceAsStream("/glossar/specialization/"+name), Map.class);
+        String url = (String)r.get("url");
+        String codeOffset = url.contains("urn:oid:")?url.substring("urn:oid:".length()):"";
+        String description = (String)r.get("description");
+        List l = (List) r.get("concept");
+        l.forEach(o -> {
+            SpecializationInfo specializationInfo = new SpecializationInfo();
+            if (codeOffset.isEmpty()) {
+                specializationInfo.setCode((String)((Map)o).get("code"));
+            }
+            else {
+                specializationInfo.setCode(codeOffset+":"+(String)((Map)o).get("code"));
+            }
+            specializationInfo.setDisplay((String)((Map)o).get("display"));
+            specializationInfo.setDefinition((String)((Map)o).get("definition"));
+            specializationInfo.setDescription(description);
+            specializationInfo.setUrl(url);
+            specializationStorage.put(specializationInfo.getCode(), specializationInfo);
+        });
     }
 
     public synchronized boolean validHolder(String holder) {
@@ -113,6 +146,32 @@ public class GlossarService {
     public synchronized List<HolderInfo> getAllHolderInfo() {
         List<HolderInfo> elems = new ArrayList<>(holderStorage.values());
         Collections.sort(elems, (o1, o2) -> o1.getCode().compareTo(o2.getCode()));
+        return elems;
+    }
+
+    public synchronized SpecializationInfo getSpecializationInfo(String code) {
+        if (code.startsWith("urn")) {
+            String[] parts = code.split("\\:");
+            StringBuilder newCode = new StringBuilder();
+            for (int i = 2; i < parts.length; i++) {
+                if (!newCode.isEmpty()) {
+                    newCode.append(":");
+                }
+                newCode.append(parts[i]);
+            }
+            code = newCode.toString();
+        }
+        return specializationStorage.get(code);
+    }
+
+    public synchronized List<SpecializationInfo> getAllSpecializationInfo() {
+        List<SpecializationInfo> elems = new ArrayList<>(specializationStorage.values());
+        Collections.sort(elems, (o1, o2) -> {
+            if (o1.getUrl().equals(o2.getUrl())) {
+                return o1.getCode().compareTo(o2.getCode());
+            }
+            return o1.getUrl().compareTo(o2.getUrl());
+        });
         return elems;
     }
 

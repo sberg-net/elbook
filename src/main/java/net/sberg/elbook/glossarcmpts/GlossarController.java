@@ -37,6 +37,7 @@ public class GlossarController extends AbstractWebController {
     private static final String SEARCHTYPE_TID = "telematikId";
     private static final String SEARCHTYPE_PID = "professionOID";
     private static final String SEARCHTYPE_HOLDER = "holder";
+    private static final String SEARCHTYPE_SPECIALIZATION = "specialization";
 
     private final GlossarService glossarService;
 
@@ -77,6 +78,15 @@ public class GlossarController extends AbstractWebController {
         String holder = request.getRequestURI().split(request.getContextPath() + "/glossar/uebersicht/holderinfo/")[1];
         model.addAttribute("searchType", SEARCHTYPE_HOLDER);
         model.addAttribute("searchValue", holder);
+        return "glossar/glossar";
+    }
+
+    @RequestMapping(value = "/glossar/uebersicht/specializationinfo/**", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    public String uebersichtSpecializationInfo(Model model, HttpServletRequest request) throws Exception {
+        String codes = request.getRequestURI().split(request.getContextPath() + "/glossar/uebersicht/specializationinfo/")[1];
+        model.addAttribute("searchType", SEARCHTYPE_SPECIALIZATION);
+        model.addAttribute("searchValue", codes);
         return "glossar/glossar";
     }
 
@@ -143,10 +153,32 @@ public class GlossarController extends AbstractWebController {
                 model.addAttribute("holderInfos", res);
             }
         }
+        else if (searchType.equals(SEARCHTYPE_SPECIALIZATION)) {
+            model.addAttribute("telematikIdInfoVerfuegbar", false);
+            if (searchValue.equals("")) {
+                model.addAttribute("specializationInfos", new ArrayList<>());
+            }
+            else if (searchValue.equals(GlossarService.SEARCHVALUE_ALL_ELEMS)) {
+                List<SpecializationInfo> specializationInfos = glossarService.getAllSpecializationInfo();
+                model.addAttribute("specializationInfos", specializationInfos);
+            }
+            else {
+                List<SpecializationInfo> res = new ArrayList<>();
+                String[] elems = searchValue.split(",");
+                for (int i = 0; i < elems.length; i++) {
+                    SpecializationInfo specializationInfo = glossarService.getSpecializationInfo(elems[i].trim());
+                    if (specializationInfo != null) {
+                        res.add(specializationInfo);
+                    }
+                }
+                model.addAttribute("specializationInfos", res);
+            }
+        }
         else {
             model.addAttribute("telematikIdInfoVerfuegbar", false);
             model.addAttribute("holderInfos", new ArrayList<>());
             model.addAttribute("professionOIDInfos", new ArrayList<>());
+            model.addAttribute("specializationInfos", new ArrayList<>());
         }
 
         return "glossar/glossarUebersicht";
@@ -201,6 +233,26 @@ public class GlossarController extends AbstractWebController {
             for (Iterator<String> iterator = holder.iterator(); iterator.hasNext(); ) {
                 String holderV = iterator.next();
                 res.put(holderV, glossarService.getHolderInfo(holderV));
+            }
+        }
+        return res;
+    }
+
+    @Operation(description = "Anhand des übergebenen Codes werden die Informationen zurückgegeben. In dem übergebenen Array können Sie auch nur ein Element vom Wert '*' angeben. Dann bekommen Sie alle verfügbaren Werte.",
+            responses = { @ApiResponse( responseCode = "200", description = "Anhand des übergebenen Codes werden die Informationen zurückgegeben."  )})
+    @RequestMapping(value = "/api/glossar/specializationinfo", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public Map<String, SpecializationInfo> apiGlossarSpecializationInfo(@RequestBody List<String> codes) throws Exception {
+        Map<String, SpecializationInfo> res = new HashMap<>();
+
+        if (codes.size() == 1 && codes.get(0).equals(GlossarService.SEARCHVALUE_ALL_ELEMS)) {
+            glossarService.getAllSpecializationInfo().forEach(specializationInfo -> res.put(specializationInfo.getCode(), specializationInfo));
+        }
+        else {
+            for (Iterator<String> iterator = codes.iterator(); iterator.hasNext(); ) {
+                String a = iterator.next();
+                res.put(a, glossarService.getSpecializationInfo(a));
             }
         }
         return res;

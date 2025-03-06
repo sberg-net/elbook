@@ -267,6 +267,47 @@
   </div>
 </div>
 
+<!--- specialization -->
+<br/><br/>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Suche nach Specialization-Informationen</h5>
+    <p class="card-text">Sie können hier einen kompletten Code eingeben (z.b. urn:as:1.3.6.1.4.1.19376.3.276.1.5.4:ALLG) und sich Metainformationen geben lassen. Ein Suchen nach '*' gibt alle im System verfügbaren Holder aus.</p>
+    <div class="row ms-1" xmlns:th="http://www.thymeleaf.org">
+      <div class="col-sm-12 col-lg-8 mb-3 p-0 pe-1">
+        <input type="text" class="form-control pe-0" id="specializationSearch" placeholder="Specialization">
+      </div>
+      <div class="col-sm-6 col-lg-2 mb-3 p-0 pe-1">
+        <div class="d-grid gap-2">
+          <button type="button" id="specializationSearchBtn" class="btn btn-primary" onclick="glossarUebersicht($('#specializationSearch').val(), 'specialization');">Suchen</button>
+        </div>
+      </div>
+    </div>
+    <div class="row ms-1">
+      <table class="table" id="glossarSpecializationTable" xmlns:th="http://www.thymeleaf.org">
+        <thead>
+        <tr>
+          <th>Code</th>
+          <th>Display</th>
+          <th>Definition</th>
+          <th>Beschreibung</th>
+          <th>Url</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="n : ${specializationInfos}">
+          <td><span th:text="${n.code}">code</span></td>
+          <td><span th:text="${n.display}">display</span></td>
+          <td><span th:text="${n.definition}">definition</span></td>
+          <td><span th:text="${n.description}">description</span></td>
+          <td><span th:text="${n.url}">url</span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <script>
   feather.replace();
   function handleTelematikIdInfo(t, show) {

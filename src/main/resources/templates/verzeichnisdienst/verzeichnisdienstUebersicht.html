@@ -765,7 +765,7 @@
         <td class="vzdentry_col_localityname"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryLocalityName()}">Ort</span></td>
         <td class="vzdentry_col_stateorprovincename"><span th:text="${n.stateOrProvinceName.hrText}">Bundesland/Region</span></td>
         <td class="vzdentry_col_countrycode"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryCountryCode()}">Ländercode</span></td>
-        <td class="vzdentry_col_specialization"><span th:text="${n.getSpecializationAsStr()}">Spezialisierungen</span></td>
+        <td class="vzdentry_col_specialization"><a title="Glossar in einem neuen Tab öffnen" th:href="@{/glossar/uebersicht/specializationinfo/{id}(id=${n.getSpecializationAsStr})}" th:text="${n.getSpecializationAsStr}" target="_blank"></a></td></td>
         <td class="vzdentry_col_professionoid"><a title="Glossar in einem neuen Tab öffnen" th:href="@{/glossar/uebersicht/professionoid/{id}(id=${n.getProfessionOIDAsStr()})}" th:text="${n.getProfessionOIDAsStr()}" target="_blank"></a></td>
         <td class="vzdentry_col_entrytype"><span th:text="${n.entryType.hrText}">Eintragstyp</span></td>
         <td class="vzdentry_col_holder"><a title="Glossar in einem neuen Tab öffnen" th:href="@{/glossar/uebersicht/holderinfo/{id}(id=${n.getHolderAsStr()})}" th:text="${n.getHolderAsStr()}" target="_blank"></a></td>
