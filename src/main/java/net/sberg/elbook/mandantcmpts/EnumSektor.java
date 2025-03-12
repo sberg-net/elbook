@@ -187,38 +187,33 @@ public enum EnumSektor {
 
                 //handle ignore
                 List<VerzeichnisdienstImportCommand> res = new ArrayList<>();
-                if (hVersandhandelMap.size() == 1) {
-                    hVersandhandelMap.keySet().forEach(s -> {
-                        hVersandhandelMap.get(s).setTelematikID(s);
-                        hVersandhandelMap.get(s).setToIgnore(false);
-                        res.add(hVersandhandelMap.get(s));
-                        hMap.remove(s);
-                    });
-                }
-                if (hHeimversorgungMap.size() == 1) {
-                    hHeimversorgungMap.keySet().forEach(s -> {
-                        hHeimversorgungMap.get(s).setToIgnore(false);
-                        hHeimversorgungMap.get(s).setTelematikID(s);
-                        res.add(hHeimversorgungMap.get(s));
-                        hMap.remove(s);
-                    });
-                }
-                if (hKrankenhausversorgungMap.size() == 1) {
-                    hKrankenhausversorgungMap.keySet().forEach(s -> {
-                        hKrankenhausversorgungMap.get(s).setToIgnore(false);
-                        hKrankenhausversorgungMap.get(s).setTelematikID(s);
-                        res.add(hKrankenhausversorgungMap.get(s));
-                        hMap.remove(s);
-                    });
-                }
-                if (hSterilherstellungMap.size() == 1) {
-                    hSterilherstellungMap.keySet().forEach(s -> {
-                        hSterilherstellungMap.get(s).setToIgnore(false);
-                        hSterilherstellungMap.get(s).setTelematikID(s);
-                        res.add(hSterilherstellungMap.get(s));
-                        hMap.remove(s);
-                    });
-                }
+                hVersandhandelMap.keySet().forEach(s -> {
+                    hVersandhandelMap.get(s).setTelematikID(s);
+                    hVersandhandelMap.get(s).setToIgnore(false);
+                    res.add(hVersandhandelMap.get(s));
+                    hMap.remove(s);
+                });
+
+                hHeimversorgungMap.keySet().forEach(s -> {
+                    hHeimversorgungMap.get(s).setToIgnore(false);
+                    hHeimversorgungMap.get(s).setTelematikID(s);
+                    res.add(hHeimversorgungMap.get(s));
+                    hMap.remove(s);
+                });
+
+                hKrankenhausversorgungMap.keySet().forEach(s -> {
+                    hKrankenhausversorgungMap.get(s).setToIgnore(false);
+                    hKrankenhausversorgungMap.get(s).setTelematikID(s);
+                    res.add(hKrankenhausversorgungMap.get(s));
+                    hMap.remove(s);
+                });
+
+                hSterilherstellungMap.keySet().forEach(s -> {
+                    hSterilherstellungMap.get(s).setToIgnore(false);
+                    hSterilherstellungMap.get(s).setTelematikID(s);
+                    res.add(hSterilherstellungMap.get(s));
+                    hMap.remove(s);
+                });
 
                 if (hMap.size() == 1) {
                     hMap.keySet().forEach(s -> {
@@ -226,6 +221,10 @@ public enum EnumSektor {
                         hMap.get(s).setTelematikID(s);
                         res.add(hMap.get(s));
                     });
+                }
+
+                if (res.isEmpty()) {
+                    res.add(verzeichnisdienstImportCommand);
                 }
 
                 return res;
