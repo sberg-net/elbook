@@ -214,6 +214,18 @@ public class GlossarService {
         return res;
     }
 
+    public synchronized TelematikIdInfo getTelematikIdInfoByPattern(String telematikIdPatternStr) {
+        TelematikIdPattern telematikIdPattern = telematikIdPatternStorage.get(telematikIdPatternStr);
+        TelematikIdInfo telematikIdInfo = new TelematikIdInfo();
+        telematikIdInfo.setTelematikIdPattern(telematikIdPattern);
+        String[] ids = telematikIdPattern.getProfessionOIDs().split(",");
+        for (int i = 0; i < ids.length; i++) {
+            ProfessionOIDInfoReduced professionOIDInfo = professionOIDStorage.get(ids[i]);
+            telematikIdInfo.getProfessionOIDInfos().add(professionOIDInfo);
+        }
+        return telematikIdInfo;
+    }
+
     public synchronized TelematikIdInfo getTelematikIdInfo(String telematikId) {
         for (Iterator<String> iterator = telematikIdPatternStorage.keySet().iterator(); iterator.hasNext(); ) {
             String patternStr = iterator.next();

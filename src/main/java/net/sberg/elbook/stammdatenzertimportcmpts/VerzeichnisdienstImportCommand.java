@@ -15,6 +15,9 @@
  */
 package net.sberg.elbook.stammdatenzertimportcmpts;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.gematik.ws.cm.pers.hba_smc_b.v1.HbaAntragExport;
+import de.gematik.ws.cm.pers.hba_smc_b.v1.SmcbAntragExport;
 import lombok.Data;
 import net.sberg.elbook.glossarcmpts.TelematikIdInfo;
 import net.sberg.elbook.verzeichnisdienstcmpts.DirectoryEntrySaveContainer;
@@ -65,7 +68,14 @@ public class VerzeichnisdienstImportCommand {
     private boolean toDelete;
     private boolean toIgnore;
 
+    @JsonIgnore
     private TelematikIdInfo telematikIdInfo;
+    @JsonIgnore
+    private List<SmcbAntragExport> helperSmcbAntragExports = new ArrayList<>();
+    @JsonIgnore
+    private List<HbaAntragExport> helperHbaAntragExports = new ArrayList<>();
+    @JsonIgnore
+    private List<String> helperTelematikIDs = new ArrayList<>();
 
     public static VerzeichnisdienstImportCommand merge(VerzeichnisdienstImportCommand src, VerzeichnisdienstImportCommand dest) {
         VerzeichnisdienstImportCommand res = new VerzeichnisdienstImportCommand();
@@ -98,6 +108,44 @@ public class VerzeichnisdienstImportCommand {
 
         res.getEncZertifikat().addAll(src.getEncZertifikat());
         res.getEncZertifikat().addAll(dest.getEncZertifikat());
+
+        res.setToDelete(src.isToDelete());
+        res.setToIgnore(src.isToIgnore());
+
+        res.setTelematikIdInfo(src.getTelematikIdInfo());
+        return res;
+    }
+
+    public static VerzeichnisdienstImportCommand copy(VerzeichnisdienstImportCommand src) {
+        VerzeichnisdienstImportCommand res = new VerzeichnisdienstImportCommand();
+
+        res.setVerwaltungsId(src.getVerwaltungsId());
+        res.setVzdUid(src.getVzdUid());
+        res.setTelematikID(src.getTelematikID());
+        res.setSektorIds(src.getSektorIds());
+
+        res.setStrasseUndHausnummer(src.getStrasseUndHausnummer());
+        res.setPlz(src.getPlz());
+        res.setOrt(src.getOrt());
+        res.setLaenderCode(src.getLaenderCode());
+        res.setBundesland(src.getBundesland());
+
+        res.setVorname(src.getVorname());
+        res.setNachname(src.getNachname());
+        res.setAnzeigeName(src.getAnzeigeName());
+        res.setAllgemeinerName(src.getAllgemeinerName());
+        res.setAndererName(src.getAndererName());
+        res.setTitel(src.getTitel());
+        res.setOrganisation(src.getOrganisation());
+
+        res.setFachrichtungen(src.getFachrichtungen());
+        res.setEintragsTyp(src.getEintragsTyp());
+
+        res.setMaxKomLeAdr(src.getMaxKomLeAdr());
+        res.setAktiv(src.getAktiv());
+        res.setBesitzer(src.getBesitzer());
+
+        res.getEncZertifikat().addAll(src.getEncZertifikat());
 
         res.setToDelete(src.isToDelete());
         res.setToIgnore(src.isToIgnore());

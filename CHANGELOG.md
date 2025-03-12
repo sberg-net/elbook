@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.9.0]
+
+### Changed
+- Batchvorgang -> Synchronisierung mit den Tsp's angepasst, Orgeinheiten bei Apotheken 
+
 ## [2.8.1]
 
 ### Fixed

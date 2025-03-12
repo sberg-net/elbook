@@ -15,17 +15,10 @@
  */
 package net.sberg.elbook.stammdatenzertimportcmpts;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.gematik.ws.cm.pers.hba_smc_b.v1.ExtCertType;
 import de.gematik.ws.cm.pers.hba_smc_b.v1.HbaAntragExport;
-import de.gematik.ws.cm.pers.hba_smc_b.v1.ProdResultType;
 import de.gematik.ws.cm.pers.hba_smc_b.v1.SmcbAntragExport;
-import de.gematik.ws.sst.v1.GetHbaAntraegeExportResponseType;
-import de.gematik.ws.sst.v1.GetSmcbAntraegeExportResponseType;
 import lombok.Data;
 import net.sberg.elbook.glossarcmpts.TelematikIdInfo;
-import net.sberg.elbook.mandantcmpts.EnumSektor;
-import org.apache.commons.codec.binary.Base64;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,6 +31,7 @@ public class VerzeichnisdienstImportCommandContainer {
     private List<VerzeichnisdienstImportCommand> commands = new ArrayList<>();
     private boolean syncWithTsps = false;
     private boolean silentMode = false;
+    private String telematikIdPattern;
 
     public void merge() {
         Map<String, Optional<VerzeichnisdienstImportCommand>> cmdsPerTelematikId = commands.stream().collect(Collectors.groupingBy(VerzeichnisdienstImportCommand::getTelematikID, Collectors.reducing(VerzeichnisdienstImportCommand::merge)));
@@ -52,7 +46,7 @@ public class VerzeichnisdienstImportCommandContainer {
         for (Iterator<HbaAntragExport> iterator = hbaAntragExports.iterator(); iterator.hasNext(); ) {
             HbaAntragExport hbaAntragExport = iterator.next();
             String telematikId = hbaAntragExport.getFreigabedaten().getTelematikID();
-            sync(telematikId, telematikIdInfo, hbaAntragExport.getProdResult());
+            sync(telematikId, telematikIdInfo, null, hbaAntragExport);
         }
     }
 
@@ -60,11 +54,11 @@ public class VerzeichnisdienstImportCommandContainer {
         for (Iterator<SmcbAntragExport> iterator = smcbAntragExports.iterator(); iterator.hasNext(); ) {
             SmcbAntragExport smcbAntragExport = iterator.next();
             String telematikId = smcbAntragExport.getInstitution().getTelematikID().getValue();
-            sync(telematikId, telematikIdInfo, smcbAntragExport.getProdResult());
+            sync(telematikId, telematikIdInfo, smcbAntragExport, null);
         }
     }
 
-    private void sync(String telematikId, TelematikIdInfo telematikIdInfo, List<ProdResultType> prodResultTypes) throws Exception {
+    private void sync(String telematikId, TelematikIdInfo telematikIdInfo, SmcbAntragExport smcbAntragExport, HbaAntragExport hbaAntragExport) throws Exception {
         String businessId = telematikIdInfo.getTelematikIdPattern().getSektor().getBusinessId(telematikId);
 
         List<VerzeichnisdienstImportCommand> c = commands.stream().filter(verzeichnisdienstImportCommand1 -> {
@@ -83,19 +77,16 @@ public class VerzeichnisdienstImportCommandContainer {
         }
 
         VerzeichnisdienstImportCommand verzeichnisdienstImportCommand = c.get(0);
-        verzeichnisdienstImportCommand.setTelematikID(telematikId);
-        verzeichnisdienstImportCommand.setToIgnore(false);
 
-        for (Iterator<ProdResultType> iteratored = prodResultTypes.iterator(); iteratored.hasNext(); ) {
-            ProdResultType prodResultType = iteratored.next();
-            for (Iterator<ExtCertType> zertIterator = prodResultType.getZertifikate().iterator(); zertIterator.hasNext(); ) {
-                ExtCertType extCertType = zertIterator.next();
-                if (extCertType.getCertificateSem().contains(".ENC.")) {
-                    EncZertifikat encZertifikat = new EncZertifikat();
-                    encZertifikat.setContent(Base64.encodeBase64String(extCertType.getCertificateValue()));
-                    verzeichnisdienstImportCommand.getEncZertifikat().add(encZertifikat);
-                }
-            }
+        //fill helper variables
+        if (!verzeichnisdienstImportCommand.getHelperTelematikIDs().contains(telematikId)) {
+            verzeichnisdienstImportCommand.getHelperTelematikIDs().add(telematikId);
+        }
+        if (smcbAntragExport != null) {
+            verzeichnisdienstImportCommand.getHelperSmcbAntragExports().add(smcbAntragExport);
+        }
+        else if (hbaAntragExport != null) {
+            verzeichnisdienstImportCommand.getHelperHbaAntragExports().add(hbaAntragExport);
         }
     }
 }

@@ -132,6 +132,10 @@ public class StammdatenZertImportService {
 
                 if (verzeichnisdienstImportErgebnis.isIgnore()) {
                     verzeichnisdienstImportErgebnis.getLog().add("eintrag wird ignoriert");
+                    if (verzeichnisdienstImportCommand.getHelperTelematikIDs().size() > 1) {
+                        verzeichnisdienstImportErgebnis.getLog().add("!!!für die smcb/hba - person existieren mehrere telematikids!!!");
+                    }
+                    verzeichnisdienstImportCommand.getHelperTelematikIDs().forEach(s -> verzeichnisdienstImportErgebnis.getLog().add(s));
                     return verzeichnisdienstImportErgebnis;
                 }
 
@@ -330,6 +334,19 @@ public class StammdatenZertImportService {
         }, executorService);
     }
 
+    private VerzeichnisdienstImportCommandContainer postHandleTspSync(VerzeichnisdienstImportCommandContainer verzeichnisdienstImportCommandContainer) throws Exception {
+        if (!verzeichnisdienstImportCommandContainer.isSyncWithTsps()) {
+            return verzeichnisdienstImportCommandContainer;
+        }
+        List<VerzeichnisdienstImportCommand> newCommands = new ArrayList<>();
+        verzeichnisdienstImportCommandContainer.getCommands().forEach(verzeichnisdienstImportCommand -> {
+            newCommands.addAll(verzeichnisdienstImportCommand.getTelematikIdInfo().getTelematikIdPattern().getSektor().checkCommand(verzeichnisdienstImportCommand));
+        });
+        verzeichnisdienstImportCommandContainer.getCommands().clear();
+        verzeichnisdienstImportCommandContainer.getCommands().addAll(newCommands);
+        return verzeichnisdienstImportCommandContainer;
+    }
+
     private VerzeichnisdienstImportCommandContainer handleTspSync(Mandant mandant, VerzeichnisdienstImportCommandContainer verzeichnisdienstImportCommandContainer) throws Exception {
         if (!verzeichnisdienstImportCommandContainer.isSyncWithTsps()) {
             return verzeichnisdienstImportCommandContainer;
@@ -447,7 +464,12 @@ public class StammdatenZertImportService {
         try {
             for (Iterator<VerzeichnisdienstImportCommand> iterator = verzeichnisdienstImportCommandContainer.getCommands().iterator(); iterator.hasNext(); ) {
                 VerzeichnisdienstImportCommand verzeichnisdienstImportCommand = iterator.next();
-                verzeichnisdienstImportCommand.setTelematikIdInfo(glossarService.getTelematikIdInfo(verzeichnisdienstImportCommand.getTelematikID()));
+                if (verzeichnisdienstImportCommand.getTelematikID() == null || verzeichnisdienstImportCommand.getTelematikID().trim().isEmpty()) {
+                    verzeichnisdienstImportCommand.setTelematikIdInfo(glossarService.getTelematikIdInfoByPattern(verzeichnisdienstImportCommandContainer.getTelematikIdPattern()));
+                }
+                else {
+                    verzeichnisdienstImportCommand.setTelematikIdInfo(glossarService.getTelematikIdInfo(verzeichnisdienstImportCommand.getTelematikID()));
+                }
             }
         }
         catch (Exception e) {
@@ -480,6 +502,8 @@ public class StammdatenZertImportService {
         boolean tspSyncSuccess = true;
         try {
             verzeichnisdienstImportCommandContainer = handleTspSync(mandant, verzeichnisdienstImportCommandContainer);
+            verzeichnisdienstImportCommandContainer = postHandleTspSync(verzeichnisdienstImportCommandContainer);
+            batchJob.setAnzahlDatensaetze(verzeichnisdienstImportCommandContainer.getCommands().size());
         }
         catch (Exception e) {
             log.error("error on importing the commands with the size: "+verzeichnisdienstImportCommandContainer.getCommands().size()+ " - mandant: "+mandant.getId()+" - tsp sync failed", e);

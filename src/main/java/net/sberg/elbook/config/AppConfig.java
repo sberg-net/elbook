@@ -17,7 +17,6 @@ package net.sberg.elbook.config;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Bean;
@@ -63,7 +62,7 @@ public class AppConfig {
 	@Bean
 	public TaskScheduler taskScheduler() {
 		ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
-		threadPoolTaskScheduler.setThreadNamePrefix("eldixjobs");
+		threadPoolTaskScheduler.setThreadNamePrefix("elbookjobs");
 		return threadPoolTaskScheduler;
 	}
     @Bean
