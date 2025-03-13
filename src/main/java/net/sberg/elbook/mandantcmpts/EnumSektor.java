@@ -120,11 +120,15 @@ public enum EnumSektor {
                             //Krankenhausversorgung
                             else if (instName.contains("(Krankenhausversorgung")) {
                                 orgEinheit = "Krankenhausversorgung";
-                            } else if (instName.contains("(KHV")) {
-                                orgEinheit = "Krankenhausversorgung";
                             } else if (instName.contains(" - Krankenhausversorgung")) {
                                 orgEinheit = "Krankenhausversorgung";
+                            } else if (instName.contains("(KHV")) {
+                                orgEinheit = "Krankenhausversorgung";
+                            } else if (instName.contains("(KV")) {
+                                orgEinheit = "Krankenhausversorgung";
                             } else if (instName.contains(" - KHV")) {
+                                orgEinheit = "Krankenhausversorgung";
+                            } else if (instName.contains(" - KV")) {
                                 orgEinheit = "Krankenhausversorgung";
                             }
                             //Sterilherstellung
