@@ -44,8 +44,12 @@ public enum EnumSektor {
 
                     SmcbAntragExport smcbAntragExport = iterator.next();
                     String telematikId = smcbAntragExport.getInstitution().getTelematikID().getValue();
+                    boolean available = false;
                     if (!hMap.containsKey(telematikId)) {
                         hMap.put(telematikId, VerzeichnisdienstImportCommand.copy(verzeichnisdienstImportCommand));
+                    }
+                    else {
+                        available = true;
                     }
                     VerzeichnisdienstImportCommand hCmd = hMap.get(telematikId);
 
@@ -63,126 +67,112 @@ public enum EnumSektor {
                     }
 
                     //check on orgEinheiten
-                    if (hCmd.getFachrichtungen() == null) {
-                        hCmd.setFachrichtungen(new ArrayList<>());
-                    }
-                    hCmd.getFachrichtungen().clear();
-                    hCmd.getFachrichtungen().add("10");
-                    String abteilung = smcbAntragExport.getInstitution().getAbteilung();
-                    String instName = smcbAntragExport.getInstitution().getInstName();
-                    String orgEinheit = "";
-                    String handelsName = null;
-                    if (abteilung != null && !abteilung.trim().isEmpty()) {
-                        if (abteilung.contains("(") && abteilung.contains(")")) {
-                            orgEinheit = abteilung.substring(abteilung.indexOf("(")).trim();
-                            handelsName = abteilung.substring(abteilung.indexOf("(")+1,abteilung.indexOf(")"));
-                        }
-                        else {
-                            orgEinheit = abteilung.trim();
-                        }
-                    }
-                    else {
+                    if (!available) {
 
-                        String handelsNamePattern = null;
-                        if (instName.contains("(Versandhandel")) {
-                            orgEinheit = "Versandhandel";
-                            handelsNamePattern = "(Versandhandel";
+                        if (hCmd.getFachrichtungen() == null) {
+                            hCmd.setFachrichtungen(new ArrayList<>());
                         }
-                        else if (instName.contains("(VH")) {
-                            orgEinheit = "Versandhandel";
-                            handelsNamePattern = "(VH";
-                        }
-                        else if (instName.contains(" - Versandhandel")) {
-                            orgEinheit = "Versandhandel";
-                            handelsNamePattern = "- Versandhandel";
-                        }
-                        else if (instName.contains(" - VH")) {
-                            orgEinheit = "Versandhandel";
-                            handelsNamePattern = " - VH";
-                        }
-
-                        if (handelsNamePattern != null) {
-                            handelsName = instName.substring(instName.indexOf(handelsNamePattern) + handelsNamePattern.length());
-                            handelsName = handelsName.replaceAll("\\)", "").trim();
-                        }
-
-                        //Heimversorgung
-                        if (instName.contains("(Heimversorgung")) {
-                            orgEinheit = "Heimversorgung";
-                        }
-                        else if (instName.contains("(HV")) {
-                            orgEinheit = "Heimversorgung";
-                        }
-                        else if (instName.contains(" - Heimversorgung")) {
-                            orgEinheit = "Heimversorgung";
-                        }
-                        else if (instName.contains(" - HV")) {
-                            orgEinheit = "Heimversorgung";
-                        }
-                        //Krankenhausversorgung
-                        else if (instName.contains("(Krankenhausversorgung")) {
-                            orgEinheit = "Krankenhausversorgung";
-                        }
-                        else if (instName.contains("(KHV")) {
-                            orgEinheit = "Krankenhausversorgung";
-                        }
-                        else if (instName.contains(" - Krankenhausversorgung")) {
-                            orgEinheit = "Krankenhausversorgung";
-                        }
-                        else if (instName.contains(" - KHV")) {
-                            orgEinheit = "Krankenhausversorgung";
-                        }
-                        //Sterilherstellung
-                        else if (instName.contains("(Sterilherstellung")) {
-                            orgEinheit = "Sterilherstellung";
-                        }
-                        else if (instName.contains("(SH")) {
-                            orgEinheit = "Sterilherstellung";
-                        }
-                        else if (instName.contains(" - Sterilherstellung")) {
-                            orgEinheit = "Sterilherstellung";
-                        }
-                        else if (instName.contains(" - SH")) {
-                            orgEinheit = "Sterilherstellung";
-                        }
-                    }
-
-                    if (orgEinheit.equals("Versandhandel")) {
                         hCmd.getFachrichtungen().clear();
-                        hCmd.getFachrichtungen().add("40");
-                        if (!hVersandhandelMap.containsKey(telematikId)) {
-                            hVersandhandelMap.put(telematikId, hCmd);
-                        }
-                    }
-                    else if (orgEinheit.equals("Heimversorgung")) {
-                        hCmd.getFachrichtungen().clear();
-                        hCmd.getFachrichtungen().add("30");
-                        if (!hHeimversorgungMap.containsKey(telematikId)) {
-                            hHeimversorgungMap.put(telematikId, hCmd);
-                        }
-                    }
-                    else if (orgEinheit.equals("Krankenhausversorgung")) {
-                        hCmd.getFachrichtungen().clear();
-                        hCmd.getFachrichtungen().add("20");
-                        if (!hKrankenhausversorgungMap.containsKey(telematikId)) {
-                            hKrankenhausversorgungMap.put(telematikId, hCmd);
-                        }
-                    }
-                    else if (orgEinheit.equals("Sterilherstellung")) {
-                        hCmd.getFachrichtungen().clear();
-                        hCmd.getFachrichtungen().add("50");
-                        if (!hSterilherstellungMap.containsKey(telematikId)) {
-                            hSterilherstellungMap.put(telematikId, hCmd);
-                        }
-                    }
+                        hCmd.getFachrichtungen().add("10");
+                        String abteilung = smcbAntragExport.getInstitution().getAbteilung();
+                        String instName = smcbAntragExport.getInstitution().getInstName();
+                        String orgEinheit = "";
+                        String handelsName = null;
+                        if (abteilung != null && !abteilung.trim().isEmpty()) {
+                            if (abteilung.contains("(") && abteilung.contains(")")) {
+                                orgEinheit = abteilung.substring(abteilung.indexOf("(")).trim();
+                                handelsName = abteilung.substring(abteilung.indexOf("(") + 1, abteilung.indexOf(")"));
+                            } else {
+                                orgEinheit = abteilung.trim();
+                            }
+                        } else {
 
-                    if (!orgEinheit.isEmpty() && handelsName == null) {
-                        hCmd.setAnzeigeName(hCmd.getAnzeigeName()+" ("+orgEinheit+")");
+                            String handelsNamePattern = null;
+                            if (instName.contains("(Versandhandel")) {
+                                orgEinheit = "Versandhandel";
+                                handelsNamePattern = "(Versandhandel";
+                            } else if (instName.contains("(VH")) {
+                                orgEinheit = "Versandhandel";
+                                handelsNamePattern = "(VH";
+                            } else if (instName.contains(" - Versandhandel")) {
+                                orgEinheit = "Versandhandel";
+                                handelsNamePattern = "- Versandhandel";
+                            } else if (instName.contains(" - VH")) {
+                                orgEinheit = "Versandhandel";
+                                handelsNamePattern = " - VH";
+                            }
 
+                            if (handelsNamePattern != null) {
+                                handelsName = instName.substring(instName.indexOf(handelsNamePattern) + handelsNamePattern.length());
+                                handelsName = handelsName.replaceAll("\\)", "").trim();
+                            }
+
+                            //Heimversorgung
+                            if (instName.contains("(Heimversorgung")) {
+                                orgEinheit = "Heimversorgung";
+                            } else if (instName.contains("(HV")) {
+                                orgEinheit = "Heimversorgung";
+                            } else if (instName.contains(" - Heimversorgung")) {
+                                orgEinheit = "Heimversorgung";
+                            } else if (instName.contains(" - HV")) {
+                                orgEinheit = "Heimversorgung";
+                            }
+                            //Krankenhausversorgung
+                            else if (instName.contains("(Krankenhausversorgung")) {
+                                orgEinheit = "Krankenhausversorgung";
+                            } else if (instName.contains("(KHV")) {
+                                orgEinheit = "Krankenhausversorgung";
+                            } else if (instName.contains(" - Krankenhausversorgung")) {
+                                orgEinheit = "Krankenhausversorgung";
+                            } else if (instName.contains(" - KHV")) {
+                                orgEinheit = "Krankenhausversorgung";
+                            }
+                            //Sterilherstellung
+                            else if (instName.contains("(Sterilherstellung")) {
+                                orgEinheit = "Sterilherstellung";
+                            } else if (instName.contains("(SH")) {
+                                orgEinheit = "Sterilherstellung";
+                            } else if (instName.contains(" - Sterilherstellung")) {
+                                orgEinheit = "Sterilherstellung";
+                            } else if (instName.contains(" - SH")) {
+                                orgEinheit = "Sterilherstellung";
+                            }
+                        }
+
+                        if (orgEinheit.equals("Versandhandel")) {
+                            hCmd.getFachrichtungen().clear();
+                            hCmd.getFachrichtungen().add("40");
+                            if (!hVersandhandelMap.containsKey(telematikId)) {
+                                hVersandhandelMap.put(telematikId, hCmd);
+                            }
+                        } else if (orgEinheit.equals("Heimversorgung")) {
+                            hCmd.getFachrichtungen().clear();
+                            hCmd.getFachrichtungen().add("30");
+                            if (!hHeimversorgungMap.containsKey(telematikId)) {
+                                hHeimversorgungMap.put(telematikId, hCmd);
+                            }
+                        } else if (orgEinheit.equals("Krankenhausversorgung")) {
+                            hCmd.getFachrichtungen().clear();
+                            hCmd.getFachrichtungen().add("20");
+                            if (!hKrankenhausversorgungMap.containsKey(telematikId)) {
+                                hKrankenhausversorgungMap.put(telematikId, hCmd);
+                            }
+                        } else if (orgEinheit.equals("Sterilherstellung")) {
+                            hCmd.getFachrichtungen().clear();
+                            hCmd.getFachrichtungen().add("50");
+                            if (!hSterilherstellungMap.containsKey(telematikId)) {
+                                hSterilherstellungMap.put(telematikId, hCmd);
+                            }
+                        }
+
+                        if (!orgEinheit.isEmpty() && handelsName == null) {
+                            hCmd.setAnzeigeName(hCmd.getAnzeigeName() + " (" + orgEinheit + ")");
+
+                        } else if (!orgEinheit.isEmpty() && handelsName != null) {
+                            hCmd.setAnzeigeName(handelsName + " (" + orgEinheit + " - " + hCmd.getAnzeigeName() + ")");
+                        }
                     }
-                    else if (!orgEinheit.isEmpty() && handelsName != null) {
-                        hCmd.setAnzeigeName(handelsName+" ("+orgEinheit+" - "+hCmd.getAnzeigeName()+")");
-                    }
+                    //end of available
                 }
 
                 //handle ignore
