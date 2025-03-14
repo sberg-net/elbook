@@ -216,6 +216,12 @@ public enum EnumSektor {
                         res.add(hMap.get(s));
                     });
                 }
+                else if (hMap.size() > 1) {
+                    hMap.keySet().forEach(s -> {
+                        hMap.get(s).setTelematikID(s);
+                        res.add(hMap.get(s));
+                    });
+                }
 
                 if (res.isEmpty()) {
                     res.add(verzeichnisdienstImportCommand);
