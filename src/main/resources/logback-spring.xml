@@ -24,15 +24,17 @@
 	<property name="LOG_FILE" value="elbook"/>
 	<property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
 	<property name="FILE_LOG_PATTERN" value="${FILE_LOG_PATTERN:-%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
-    <property name="MAIL_ENABLE_ERROR_APPENDER" value="${log.mail.enable.error.appender:-false}" />
-    <property name="MAIL_SUBJECT_ADDON" value="${log.mail.subject.addon:-notSet}" />
-    <property name="MAIL_SMTP_HOST" value="${log.mail.smtp.host:-notSet}" />
+    <property name="MAIL_ENABLE_ERROR_APPENDER" value="${log.mail.enable.error.appender:-true}" />
+
+
+    <property name="MAIL_SUBJECT_ADDON" value="${LOG_MAIL_SUBJECT_ADDON:-notSet}" />
+    <property name="MAIL_SMTP_HOST" value="${LOG_MAIL_SMTP_HOST:-notSet}" />
     <property name="MAIL_SMTP_PORT" value="${log.mail.smtp.port:-25}" />
     <property name="MAIL_STARTTLS" value="${log.mail.starttls:-true}" />
-    <property name="MAIL_USERNAME" value="${log.mail.username:-snotSet}" />
-    <property name="MAIL_PASSWORD" value="${log.mail.password:-notSet}" />
-    <property name="MAIL_SEND_FROM" value="${log.mail.send.from:-notSet}" />
-    <property name="MAIL_SEND_TO" value="${log.mail.send.to:-notSet}" />
+    <property name="MAIL_USERNAME" value="${LOG_MAIL_USERNAME:-notSet}" />
+    <property name="MAIL_PASSWORD" value="${LOG_MAIL_PASSWORD:-notSet}" />
+    <property name="MAIL_SEND_FROM" value="${LOG_MAIL_SEND_FROM:-notSet}" />
+    <property name="MAIL_SEND_TO" value="${LOG_MAIL_SEND_TO:-notSet}" />
 
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -74,7 +76,7 @@
 
         <if condition='property("MAIL_ENABLE_ERROR_APPENDER").equalsIgnoreCase("true")'>
             <then>
-                <root level="ERROR" additivity="false">
+                <root level="WARN" additivity="false">
                     <appender-ref ref="mailAppender" />
                 </root>
             </then>

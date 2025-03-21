@@ -14,17 +14,17 @@ versions:
 
 elbook:
   app:
-    kartendatentrans-base-url: localhost
+    kartendatentrans-base-url: ${ELBOOK_APP_KARTENDATENTRANS_BASE_URL:localhost}
   db:
-    host: 127.0.0.1
-    port: 3306
-    name: elbook
+    host: ${ELBOOK_DB_HOST:127.0.0.1}
+    port: ${ELBOOK_DB_PORT:3306}
+    name: ${ELBOOK_DB_NAME:elbook}
     rootpassword: mrdata123!
-    user: elbook
-    password: elbook
-  encryptionKeys: bravo,delta,tango,27
-  defaultAdminUser: admin
-  defaultAdminPwd: admin
+    user: ${ELBOOK_DB_USER:elbook}
+    password: ${ELBOOK_DB_PASSWORD:elbook}
+  encryptionKeys: ${VZD_CRED_ENCRYPTION_KEYS:bravo,delta,tango,27}
+  defaultAdminUser: ${DEFAULT_ADMIN_USER:admin}
+  defaultAdminPwd: ${DEFAULT_ADMIN_PWD:admin}
 
 jdbc:
   elbook:
@@ -69,13 +69,13 @@ springdoc:
 
 spring:
   mail:
-    host: notSet
-    port: 465
-    username: notSet
-    password: notSet
+    host: ${MAIL_HOST:notSet}
+    port: ${MAIL_PORT:465}
+    username: ${MAIL_USERNAME:notSet}
+    password: ${MAIL_PASSWORD:notSet}
     protocol: smtp
     properties:
-      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.enable: ${MAIL_SSL_ENABLED:true}
   flyway:
     enabled: true
     user: root
