@@ -16,12 +16,23 @@ elbook:
   app:
     kartendatentrans-base-url: ${ELBOOK_APP_KARTENDATENTRANS_BASE_URL:localhost}
   db:
-    host: ${ELBOOK_DB_HOST:127.0.0.1}
-    port: ${ELBOOK_DB_PORT:3306}
-    name: ${ELBOOK_DB_NAME:elbook}
-    rootpassword: mrdata123!
-    user: ${ELBOOK_DB_USER:elbook}
-    password: ${ELBOOK_DB_PASSWORD:elbook}
+    host: ${DB_HOST:127.0.0.1}
+    port: ${DB_PORT:3306}
+    name: ${DB_NAME:elbook}
+    user: ${DB_USER:elbook}
+    password: ${DB_PASSWORD:elbook}
+  flyway:
+    user: ${FLYWAY_USER:${elbook.db.user}}
+    password: ${FLYWAY_PASSWORD:${elbook.db.password}}
+    checksum:
+      repair: ${FLYWAY_CHECKSUM_REPAIR:false}
+  mail:
+    host: ${MAIL_HOST:notSet}
+    port: ${MAIL_PORT:465}
+    username: ${MAIL_USERNAME:notSet}
+    password: ${MAIL_PASSWORD:notSet}
+    ssl:
+      enabled: ${MAIL_SSL_ENABLED:true}
   encryptionKeys: ${VZD_CRED_ENCRYPTION_KEYS:bravo,delta,tango,27}
   defaultAdminUser: ${DEFAULT_ADMIN_USER:admin}
   defaultAdminPwd: ${DEFAULT_ADMIN_PWD:admin}
@@ -69,21 +80,26 @@ springdoc:
 
 spring:
   mail:
-    host: ${MAIL_HOST:notSet}
-    port: ${MAIL_PORT:465}
-    username: ${MAIL_USERNAME:notSet}
-    password: ${MAIL_PASSWORD:notSet}
+    host: ${elbook.mail.host}
+    port: ${elbook.mail.port}
+    username: ${elbook.mail.username}
+    password: ${elbook.mail.password}
     protocol: smtp
     properties:
-      mail.smtp.ssl.enable: ${MAIL_SSL_ENABLED:true}
+      mail.smtp.ssl.enable: ${elbook.mail.ssl.enabled}
   flyway:
     enabled: true
-    user: root
-    password: ${elbook.db.rootpassword}
+    user: ${elbook.flyway.user}
+    password: ${elbook.flyway.password}
     schemas: ${elbook.db.name}
     url: jdbc:mysql://${elbook.db.host}:${elbook.db.port}?serverTimezone=Europe/Berlin
     baseline-on-migrate: true
-
+    validate-on-migrate: true
+    placeholders:
+      fwUser: ${elbook.flyway.user}
+      dbName: ${elbook.db.name}
+      dbUser: ${elbook.db.user}
+      dbPassword: ${elbook.db.password}
 ---
 spring:
   config.activate.on-profile: dev
