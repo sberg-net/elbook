@@ -2,7 +2,6 @@ FROM amazoncorretto:17-alpine3.21-jdk
 
 ENV DB_HOST="localhost"
 ENV DB_PORT="3306"
-ENV DB_ROOTPASSWORD="mrdata123!"
 ENV DB_NAME="elbook"
 ENV DB_USER="elbook"
 ENV DB_PASSWORD="elbook"
@@ -50,5 +49,5 @@ RUN addgroup --gid 2728 elbook \
 USER elbook:elbook
 
 ENTRYPOINT ["java",\
-            "-Dspring.profiles.active=${APP-PROFILES}",\
+            "-Dspring.profiles.active=${APP_PROFILES}",\
             "-jar","/opt/app.jar"]
