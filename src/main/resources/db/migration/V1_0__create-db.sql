@@ -14,7 +14,19 @@
  * See the Licence for the specific language governing permissions and limitations under the Licence.
  */
 
-CREATE DATABASE IF NOT EXISTS `elbook`;
-CREATE USER IF NOT EXISTS 'elbook'@'%' IDENTIFIED BY 'elbook';
-GRANT ALL ON `elbook`.* TO 'elbook'@'%';
-FLUSH PRIVILEGES;
+DELIMITER //
+CREATE PROCEDURE initDB()
+BEGIN
+    IF '${fwUser}' = 'root' THEN
+        BEGIN
+            CREATE DATABASE IF NOT EXISTS `${dbName}`;
+            CREATE USER IF NOT EXISTS '${dbUser}'@'%' IDENTIFIED BY '${dbPassword}';
+            GRANT ALL ON `${dbName}`.* TO '${dbUser}'@'%';
+            FLUSH PRIVILEGES;
+        END;
+    END IF;
+END;
+//
+DELIMITER ;
+CALL initDB();
+DROP PROCEDURE initDB;

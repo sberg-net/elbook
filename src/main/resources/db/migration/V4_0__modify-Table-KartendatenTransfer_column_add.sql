@@ -14,4 +14,4 @@
  * See the Licence for the specific language governing permissions and limitations under the Licence.
  */
 
-ALTER TABLE `KartendatenTransfer` ADD COLUMN `absenderKartenherausgeber` VARCHAR(10) NOT NULL DEFAULT 'AK3_11';
+ALTER TABLE `KartendatenTransfer` ADD COLUMN IF NOT EXISTS `absenderKartenherausgeber` VARCHAR(10) NOT NULL DEFAULT 'AK3_11';

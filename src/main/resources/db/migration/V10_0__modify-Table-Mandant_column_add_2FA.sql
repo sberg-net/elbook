@@ -14,5 +14,5 @@
  * See the Licence for the specific language governing permissions and limitations under the Licence.
  */
 
-ALTER TABLE `Mandant` ADD COLUMN `using2FA` boolean NOT NULL DEFAULT false;
-ALTER TABLE `Mandant` ADD COLUMN `secret2FA` VARCHAR (100);
+ALTER TABLE `Mandant` ADD COLUMN IF NOT EXISTS `using2FA` boolean NOT NULL DEFAULT false;
+ALTER TABLE `Mandant` ADD COLUMN IF NOT EXISTS `secret2FA` VARCHAR (100);
