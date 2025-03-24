@@ -18,6 +18,7 @@ package net.sberg.elbook.config;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -50,11 +51,11 @@ public class AppConfig {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
 
-	// ToDo: delete in Version > 2.0.0, needed one time to repair sql update files
 	@Bean
-	public FlywayMigrationStrategy cleanMigrateStrategy() {
+	public FlywayMigrationStrategy repairFlyway(@Value("${elbook.flyway.checksum.repair}") boolean repair) {
 		return flyway -> {
-			flyway.repair();
+			if (repair)
+				flyway.repair();
 			flyway.migrate();
 		};
 	}

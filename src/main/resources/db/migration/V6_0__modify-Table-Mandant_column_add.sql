@@ -14,4 +14,4 @@
  * See the Licence for the specific language governing permissions and limitations under the Licence.
  */
 
-ALTER TABLE `Mandant` ADD COLUMN `bearbeitenNurFiltereintraege` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE `Mandant` ADD COLUMN IF NOT EXISTS `bearbeitenNurFiltereintraege` TINYINT(1) NOT NULL DEFAULT 0;
