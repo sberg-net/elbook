@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.10.0]
+
+### Changed
+- refactor App Environment Variablen (siehe README.md ##update auf Version 2.10.x)
+- Image läuft per Default im NonRoot Modus
+- Container: alle persistenten elbook daten (z.B. logs & daten) wurden nach /elbook verschoben
+
 ## [2.9.4]
 
 ### Fixed

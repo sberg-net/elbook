@@ -8,7 +8,7 @@ Beim Update auf elbook 2.10.x oder höher gibt es breaking changes und es ist au
   Sonst wird für den init Prozess ```DB_USER``` und ```DB_PASSWORD``` verwendet.
 * Beim ersten UpdateProzess muss ```FLYWAY_CHECKSUM_REPAIR=true``` da die Checksummen der DB Init Scripte geändert wurden. Das danach wieder entfernt werden.
 * Das elbook Image läuft ab sofort im NonRoot Modus mit der User/GroupID 2728/2728. Sollt der Container mit Root-Rechten laufen, muss er mit --user 0:0 (docker) oder user: 0:0 (docker-compose.yaml) gestartet werden.
-
+* Container: logs & data wurde in /ebook verschoben, muss beim volume mount beachtet werden.
 
 ## elbook springboot Docker Container
 
