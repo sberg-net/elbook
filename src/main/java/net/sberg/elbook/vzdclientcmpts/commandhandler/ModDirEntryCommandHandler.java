@@ -1,8 +1,8 @@
 package net.sberg.elbook.vzdclientcmpts.commandhandler;
 
-import de.gematik.vzd.api.V1_9_5.DirectoryEntryAdministrationApi;
-import de.gematik.vzd.model.V1_9_5.BaseDirectoryEntry;
-import de.gematik.vzd.model.V1_9_5.DistinguishedName;
+import de.gematik.vzd.api.V1_12_7.DirectoryEntryAdministrationApi;
+import de.gematik.vzd.model.V1_12_7.BaseDirectoryEntry;
+import de.gematik.vzd.model.V1_12_7.DistinguishedName;
 import net.sberg.elbook.vzdclientcmpts.ClientImpl;
 import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
 import net.sberg.elbook.vzdclientcmpts.command.*;
@@ -21,13 +21,13 @@ import java.util.Arrays;
 public class ModDirEntryCommandHandler extends AbstractCommandHandler {
 
     private Logger log = LoggerFactory.getLogger(ModDirEntryCommandHandler.class);
-    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_9_5;
+    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_7;
     private de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_6;
 
     public ModDirEntryCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_9_5)) {
-            directoryEntryAdministrationApiV1_9_5 = new DirectoryEntryAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
+            directoryEntryAdministrationApiV1_12_7 = new DirectoryEntryAdministrationApi(client);
         }
         else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
             directoryEntryAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi(client);
@@ -64,14 +64,14 @@ public class ModDirEntryCommandHandler extends AbstractCommandHandler {
 
             ModDirEntryCommand modDirEntryCommand = (ModDirEntryCommand)command;
 
-            if (directoryEntryAdministrationApiV1_9_5 != null) {
+            if (directoryEntryAdministrationApiV1_12_7 != null) {
                 BaseDirectoryEntry baseDirectoryEntry = convertV1_9_5(modDirEntryCommand);
 
                 if (!CommandHandlerUtils.isEntryPresent(null, command.getTelematikId(), client, log)) {
                     throw new IllegalStateException("entry with the telematikId is not present: " + command.getTelematikId());
                 }
 
-                ResponseEntity<DistinguishedName> response = directoryEntryAdministrationApiV1_9_5.modifyDirectoryEntryWithHttpInfo(command.getUid(), baseDirectoryEntry);
+                ResponseEntity<DistinguishedName> response = directoryEntryAdministrationApiV1_12_7.modifyDirectoryEntryWithHttpInfo(command.getUid(), baseDirectoryEntry);
                 if (response.getStatusCode() == HttpStatus.OK) {
                     log.debug("Modify directory entry execution successful operated\n" + response.getBody());
                     commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(true, ""));

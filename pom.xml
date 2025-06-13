@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sberg</groupId>
     <artifactId>elbook</artifactId>
-    <version>2.10.0</version>
+    <version>2.11.0</version>
     <name>elbook</name>
     <description>elBook</description>
 
@@ -291,6 +291,27 @@
                 <version>6.6.0</version>
                 <executions>
                     <execution>
+                        <id>VZD_V1_12_7</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/api/DirectoryAdministration_V1_12_7.yaml</inputSpec>
+                            <generatorName>java</generatorName>
+                            <apiPackage>de.gematik.vzd.api.V1_12_7</apiPackage>
+                            <modelPackage>de.gematik.vzd.model.V1_12_7</modelPackage>
+                            <generateApiTests>false</generateApiTests>
+                            <generateModelTests>false</generateModelTests>
+                            <library>resttemplate</library>
+                            <configOptions>
+                                <dateLibrary>java8</dateLibrary>
+                                <sourceFolder>/</sourceFolder>
+                                <interfaceOnly>true</interfaceOnly>
+                                <useJakartaEe>true</useJakartaEe>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>VZD_V1_12_6</id>
                         <goals>
                             <goal>generate</goal>
@@ -311,49 +332,12 @@
                             </configOptions>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>VZD_V1_9_5</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/api/DirectoryAdministration_V1_9_5.yaml</inputSpec>
-                            <generatorName>java</generatorName>
-                            <apiPackage>de.gematik.vzd.api.V1_9_5</apiPackage>
-                            <modelPackage>de.gematik.vzd.model.V1_9_5</modelPackage>
-                            <generateApiTests>false</generateApiTests>
-                            <generateModelTests>false</generateModelTests>
-                            <library>resttemplate</library>
-                            <configOptions>
-                                <dateLibrary>java8</dateLibrary>
-                                <sourceFolder>/</sourceFolder>
-                                <interfaceOnly>true</interfaceOnly>
-                                <useJakartaEe>true</useJakartaEe>
-                            </configOptions>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
                 <version>4.0.2</version>
-                <!--configuration>
-                    <fork>once</fork>
-                    <additionalJvmArgs>-Djavax.xml.accessExternalDTD=all</additionalJvmArgs>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jvnet.jaxb2_commons</groupId>
-                        <artifactId>jaxb2-value-constructor</artifactId>
-                        <version>3.0</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.jvnet.jaxb2_commons</groupId>
-                        <artifactId>jaxb2-basics</artifactId>
-                        <version>0.6.4</version>
-                    </dependency>
-                </dependencies-->
                 <executions>
                     <execution>
                         <id>leotsp-service</id>

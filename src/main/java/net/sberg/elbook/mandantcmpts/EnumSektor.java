@@ -237,11 +237,18 @@ public enum EnumSektor {
             return String.valueOf(Integer.parseInt(telematikId.split("\\.")[2]));
         }
         public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
-            if (!verzeichnisdienstImportCommand.getHelperHbaAntragExports().isEmpty() && verzeichnisdienstImportCommand.getHelperTelematikIDs().size() == 1) {
-                verzeichnisdienstImportCommand.setToIgnore(false);
+            if (!verzeichnisdienstImportCommand.getHelperHbaAntragExports().isEmpty()) {
+                Map<String, VerzeichnisdienstImportCommand> hMap = new HashMap<>();
                 for (Iterator<HbaAntragExport> iterator = verzeichnisdienstImportCommand.getHelperHbaAntragExports().iterator(); iterator.hasNext(); ) {
+
                     HbaAntragExport hbaAntragExport = iterator.next();
-                    verzeichnisdienstImportCommand.setTelematikID(hbaAntragExport.getFreigabedaten().getTelematikID());
+                    String telematikId = hbaAntragExport.getFreigabedaten().getTelematikID();
+                    verzeichnisdienstImportCommand.setTelematikID(telematikId);
+                    if (!hMap.containsKey(telematikId)) {
+                        hMap.put(telematikId, VerzeichnisdienstImportCommand.copy(verzeichnisdienstImportCommand));
+                    }
+
+                    //save the certs
                     for (Iterator<ProdResultType> iteratored = hbaAntragExport.getProdResult().iterator(); iteratored.hasNext(); ) {
                         ProdResultType prodResultType = iteratored.next();
                         for (Iterator<ExtCertType> zertIterator = prodResultType.getZertifikate().iterator(); zertIterator.hasNext(); ) {
@@ -254,7 +261,27 @@ public enum EnumSektor {
                         }
                     }
                 }
-                return List.of(verzeichnisdienstImportCommand);
+
+                List<VerzeichnisdienstImportCommand> res = new ArrayList<>();
+                if (hMap.size() == 1) {
+                    hMap.keySet().forEach(s -> {
+                        hMap.get(s).setToIgnore(false);
+                        hMap.get(s).setTelematikID(s);
+                        res.add(hMap.get(s));
+                    });
+                }
+                else if (hMap.size() > 1) {
+                    hMap.keySet().forEach(s -> {
+                        hMap.get(s).setTelematikID(s);
+                        res.add(hMap.get(s));
+                    });
+                }
+
+                if (res.isEmpty()) {
+                    res.add(verzeichnisdienstImportCommand);
+                }
+
+                return res;
             }
             return List.of(verzeichnisdienstImportCommand);
         }

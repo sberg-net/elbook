@@ -1,7 +1,7 @@
 package net.sberg.elbook.vzdclientcmpts.commandhandler;
 
-import de.gematik.vzd.api.V1_9_5.LogApi;
-import de.gematik.vzd.model.V1_9_5.LogEntry;
+import de.gematik.vzd.api.V1_12_7.LogApi;
+import de.gematik.vzd.model.V1_12_7.LogEntry;
 import net.sberg.elbook.common.StringUtils;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.ClientImpl;
@@ -24,13 +24,13 @@ import java.util.List;
 public class ReadDirLogEntryCommandHandler extends AbstractCommandHandler {
 
     private Logger log = LoggerFactory.getLogger(ReadDirLogEntryCommandHandler.class);
-    private LogApi logApiV1_9_5;
+    private LogApi logApiV1_12_7;
     private de.gematik.vzd.api.V1_12_6.LogApi logApiV1_12_6;
 
     public ReadDirLogEntryCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_9_5)) {
-            logApiV1_9_5 = new LogApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
+            logApiV1_12_7 = new LogApi(client);
         }
         else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
             logApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.LogApi(client);
@@ -93,8 +93,8 @@ public class ReadDirLogEntryCommandHandler extends AbstractCommandHandler {
             Boolean noDataChanged = readDirLogEntryCommand.getNoDataChanged();
             String holder = !StringUtils.listToString(readDirLogEntryCommand.getHolder()).equals("")?StringUtils.listToString(readDirLogEntryCommand.getHolder()):null;
 
-            if (logApiV1_9_5 != null) {
-                ResponseEntity<List<LogEntry>> response = logApiV1_9_5.readLogWithHttpInfo(uid, telematikId, holder, logtimeFrom, logtimeTo, operation, noDataChanged);
+            if (logApiV1_12_7 != null) {
+                ResponseEntity<List<LogEntry>> response = logApiV1_12_7.readLogWithHttpInfo(uid, telematikId, holder, logtimeFrom, logtimeTo, operation, noDataChanged);
 
                 if (response.getStatusCode() == HttpStatus.OK) {
                     if (response.getBody().isEmpty()) {

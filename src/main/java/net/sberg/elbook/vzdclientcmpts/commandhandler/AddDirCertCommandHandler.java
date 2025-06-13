@@ -1,8 +1,8 @@
 package net.sberg.elbook.vzdclientcmpts.commandhandler;
 
-import de.gematik.vzd.api.V1_9_5.CertificateAdministrationApi;
-import de.gematik.vzd.model.V1_9_5.DistinguishedName;
-import de.gematik.vzd.model.V1_9_5.UserCertificate;
+import de.gematik.vzd.api.V1_12_7.CertificateAdministrationApi;
+import de.gematik.vzd.model.V1_12_7.DistinguishedName;
+import de.gematik.vzd.model.V1_12_7.UserCertificate;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.ClientImpl;
 import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
@@ -22,15 +22,15 @@ import java.util.Iterator;
 
 public class AddDirCertCommandHandler extends AbstractCommandHandler {
 
-    private CertificateAdministrationApi certificateAdministrationApiV1_9_5;
+    private CertificateAdministrationApi certificateAdministrationApiV1_12_7;
     private de.gematik.vzd.api.V1_12_6.CertificateAdministrationApi certificateAdministrationApiV1_12_6;
 
     private Logger log = LoggerFactory.getLogger(AddDirCertCommandHandler.class);
 
     protected AddDirCertCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_9_5)) {
-            certificateAdministrationApiV1_9_5 = new CertificateAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
+            certificateAdministrationApiV1_12_7 = new CertificateAdministrationApi(client);
         }
         else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
             certificateAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.CertificateAdministrationApi(client);
@@ -79,7 +79,7 @@ public class AddDirCertCommandHandler extends AbstractCommandHandler {
                 String certContent = iterator.next();
                 try {
 
-                    if (this.certificateAdministrationApiV1_9_5 != null) {
+                    if (this.certificateAdministrationApiV1_12_7 != null) {
                         UserCertificate userCertificate = new UserCertificate();
                         userCertificate.setUserCertificate(certContent);
 
@@ -87,7 +87,7 @@ public class AddDirCertCommandHandler extends AbstractCommandHandler {
                         dn.setUid(addDirCertCommand.getUid());
                         userCertificate.setDn(dn);
 
-                        ResponseEntity<DistinguishedName> response = certificateAdministrationApiV1_9_5.addDirectoryEntryCertificateWithHttpInfo(addDirCertCommand.getUid(), userCertificate);
+                        ResponseEntity<DistinguishedName> response = certificateAdministrationApiV1_12_7.addDirectoryEntryCertificateWithHttpInfo(addDirCertCommand.getUid(), userCertificate);
 
                         if (response.getStatusCode() == HttpStatus.CREATED) {
                             log.debug("Certificate successful added: \n" + userCertificate);

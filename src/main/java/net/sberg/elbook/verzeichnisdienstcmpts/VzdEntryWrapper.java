@@ -5,7 +5,7 @@ import de.gematik.vzd.model.V1_12_6.FAD1;
 import de.gematik.vzd.model.V1_12_6.FAD1KimDataInner;
 import de.gematik.vzd.model.V1_12_6.FAD1KomLeDataInner;
 import de.gematik.vzd.model.V1_12_6.Fachdaten;
-import de.gematik.vzd.model.V1_9_5.*;
+import de.gematik.vzd.model.V1_12_7.*;
 import lombok.Data;
 import net.sberg.elbook.common.StringUtils;
 import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
@@ -18,16 +18,16 @@ import java.util.List;
 @Data
 public class VzdEntryWrapper {
 
-    private DirectoryEntry directoryV1_9_5Entry;
+    private DirectoryEntry directoryV1_12_7Entry;
     private de.gematik.vzd.model.V1_12_6.DirectoryEntry directoryV1_12_6Entry;
 
-    private LogEntry logV1_9_5Entry;
+    private LogEntry logV1_12_7Entry;
     private de.gematik.vzd.model.V1_12_6.LogEntry logV1_12_6Entry;
 
-    private UserCertificate userV1_9_5Certificate;
+    private UserCertificate userV1_12_7Certificate;
     private de.gematik.vzd.model.V1_12_6.UserCertificate userV1_12_6Certificate;
 
-    private DistinguishedName distinguishedNameV1_9_5;
+    private DistinguishedName distinguishedNameV1_12_7;
     private de.gematik.vzd.model.V1_12_6.DistinguishedName distinguishedNameV1_12_6;
 
     private TiVZDProperties tiVZDProperties;
@@ -35,20 +35,20 @@ public class VzdEntryWrapper {
     private VzdEntryWrapper() {}
     public VzdEntryWrapper(TiVZDProperties tiVZDProperties) {
         this.tiVZDProperties = tiVZDProperties;
-        if (tiVZDProperties.getApiVersion().equals(TiVZDProperties.API_VERSION_V1_9_5)) {
+        if (tiVZDProperties.getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
 
-            directoryV1_9_5Entry = new DirectoryEntry();
+            directoryV1_12_7Entry = new DirectoryEntry();
             BaseDirectoryEntry baseDirectoryEntry = new BaseDirectoryEntry();
             DistinguishedName dn = new DistinguishedName();
             baseDirectoryEntry.setDn(dn);
-            directoryV1_9_5Entry.setDirectoryEntryBase(baseDirectoryEntry);
+            directoryV1_12_7Entry.setDirectoryEntryBase(baseDirectoryEntry);
 
-            logV1_9_5Entry = new LogEntry();
+            logV1_12_7Entry = new LogEntry();
 
-            userV1_9_5Certificate = new UserCertificate();
-            userV1_9_5Certificate.setDn(new DistinguishedName());
+            userV1_12_7Certificate = new UserCertificate();
+            userV1_12_7Certificate.setDn(new DistinguishedName());
 
-            distinguishedNameV1_9_5 = new DistinguishedName();
+            distinguishedNameV1_12_7 = new DistinguishedName();
         }
         else if (tiVZDProperties.getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
 
@@ -66,37 +66,37 @@ public class VzdEntryWrapper {
             distinguishedNameV1_12_6 = new de.gematik.vzd.model.V1_12_6.DistinguishedName();
         }
     }
-    public VzdEntryWrapper(DirectoryEntry directoryV1_9_5Entry) {
-        this.directoryV1_9_5Entry = directoryV1_9_5Entry;
+    public VzdEntryWrapper(DirectoryEntry directoryV1_12_7Entry) {
+        this.directoryV1_12_7Entry = directoryV1_12_7Entry;
     }
     public VzdEntryWrapper(de.gematik.vzd.model.V1_12_6.DirectoryEntry directoryV1_12_6Entry) {
         this.directoryV1_12_6Entry = directoryV1_12_6Entry;
     }
 
-    public VzdEntryWrapper(LogEntry logV1_9_5Entry) {
-        this.logV1_9_5Entry = logV1_9_5Entry;
+    public VzdEntryWrapper(LogEntry logV1_12_7Entry) {
+        this.logV1_12_7Entry = logV1_12_7Entry;
     }
     public VzdEntryWrapper(de.gematik.vzd.model.V1_12_6.LogEntry logV1_12_6Entry) {
         this.logV1_12_6Entry = logV1_12_6Entry;
     }
 
-    public VzdEntryWrapper(UserCertificate userV1_9_5Certificate) {
-        this.userV1_9_5Certificate = userV1_9_5Certificate;
+    public VzdEntryWrapper(UserCertificate userV1_12_7Certificate) {
+        this.userV1_12_7Certificate = userV1_12_7Certificate;
     }
     public VzdEntryWrapper(de.gematik.vzd.model.V1_12_6.UserCertificate userV1_12_6Certificate) {
         this.userV1_12_6Certificate = userV1_12_6Certificate;
     }
 
-    public VzdEntryWrapper(DistinguishedName distinguishedNameV1_9_5) {
-        this.distinguishedNameV1_9_5 = distinguishedNameV1_9_5;
+    public VzdEntryWrapper(DistinguishedName distinguishedNameV1_12_7) {
+        this.distinguishedNameV1_12_7 = distinguishedNameV1_12_7;
     }
     public VzdEntryWrapper(de.gematik.vzd.model.V1_12_6.DistinguishedName distinguishedNameV1_12_6) {
         this.distinguishedNameV1_12_6 = distinguishedNameV1_12_6;
     }
 
     public void writeDirectoryEntry(File f) throws Exception {
-        if (this.directoryV1_9_5Entry != null) {
-            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(f, this.directoryV1_9_5Entry);
+        if (this.directoryV1_12_7Entry != null) {
+            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(f, this.directoryV1_12_7Entry);
         }
         else if (this.directoryV1_12_6Entry != null) {
             new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(f, this.directoryV1_12_6Entry);
@@ -107,8 +107,8 @@ public class VzdEntryWrapper {
     }
 
     public void setDirectoryEntryUid(String uid) {
-        if (this.directoryV1_9_5Entry != null) {
-            this.getDirectoryV1_9_5Entry().getDirectoryEntryBase().getDn().setUid(uid);
+        if (this.directoryV1_12_7Entry != null) {
+            this.directoryV1_12_7Entry.getDirectoryEntryBase().getDn().setUid(uid);
         }
         else if (this.directoryV1_12_6Entry != null) {
             this.getDirectoryV1_12_6Entry().getDirectoryEntryBase().getDn().setUid(uid);
@@ -119,8 +119,8 @@ public class VzdEntryWrapper {
     }
 
     public void setUserCertificateDnCn(String cn) {
-        if (this.userV1_9_5Certificate != null) {
-            this.userV1_9_5Certificate.getDn().setCn(cn);
+        if (this.userV1_12_7Certificate != null) {
+            this.userV1_12_7Certificate.getDn().setCn(cn);
         }
         else if (this.userV1_12_6Certificate != null) {
             this.userV1_12_6Certificate.getDn().setCn(cn);
@@ -131,8 +131,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractLogEntryLogTime() {
-        if (this.logV1_9_5Entry != null) {
-            return logV1_9_5Entry.getLogTime();
+        if (this.logV1_12_7Entry != null) {
+            return logV1_12_7Entry.getLogTime();
         }
         else if (this.logV1_12_6Entry != null) {
             return logV1_12_6Entry.getLogTime();
@@ -141,8 +141,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractLogEntryOperation() {
-        if (this.logV1_9_5Entry != null) {
-            return logV1_9_5Entry.getOperation().getValue();
+        if (this.logV1_12_7Entry != null) {
+            return logV1_12_7Entry.getOperation().getValue();
         }
         else if (this.logV1_12_6Entry != null) {
             return logV1_12_6Entry.getOperation().getValue();
@@ -151,8 +151,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractLogEntryClientID() {
-        if (this.logV1_9_5Entry != null) {
-            return logV1_9_5Entry.getClientID();
+        if (this.logV1_12_7Entry != null) {
+            return logV1_12_7Entry.getClientID();
         }
         else if (this.logV1_12_6Entry != null) {
             return logV1_12_6Entry.getClientID();
@@ -161,8 +161,8 @@ public class VzdEntryWrapper {
     }
 
     public Boolean extractLogEntryNoDataChanged() {
-        if (this.logV1_9_5Entry != null) {
-            return logV1_9_5Entry.getNoDataChanged();
+        if (this.logV1_12_7Entry != null) {
+            return logV1_12_7Entry.getNoDataChanged();
         }
         else if (this.logV1_12_6Entry != null) {
             return logV1_12_6Entry.getNoDataChanged();
@@ -171,8 +171,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDistinguishedNameCn() {
-        if (this.distinguishedNameV1_9_5 != null) {
-            return this.distinguishedNameV1_9_5.getCn();
+        if (this.distinguishedNameV1_12_7 != null) {
+            return this.distinguishedNameV1_12_7.getCn();
         }
         else if (this.distinguishedNameV1_12_6 != null) {
             return this.distinguishedNameV1_12_6.getCn();
@@ -181,8 +181,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDistinguishedNameUid() {
-        if (this.distinguishedNameV1_9_5 != null) {
-            return this.distinguishedNameV1_9_5.getUid();
+        if (this.distinguishedNameV1_12_7 != null) {
+            return this.distinguishedNameV1_12_7.getUid();
         }
         else if (this.distinguishedNameV1_12_6 != null) {
             return this.distinguishedNameV1_12_6.getUid();
@@ -191,8 +191,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractUserCertificateDnCn() {
-        if (this.userV1_9_5Certificate != null) {
-            return this.userV1_9_5Certificate.getDn().getCn();
+        if (this.userV1_12_7Certificate != null) {
+            return this.userV1_12_7Certificate.getDn().getCn();
         }
         else if (this.userV1_12_6Certificate != null) {
             return this.userV1_12_6Certificate.getDn().getCn();
@@ -201,8 +201,8 @@ public class VzdEntryWrapper {
     }
 
     public Boolean extractUserCertificateActive() {
-        if (this.userV1_9_5Certificate != null) {
-            return this.userV1_9_5Certificate.getActive();
+        if (this.userV1_12_7Certificate != null) {
+            return this.userV1_12_7Certificate.getActive();
         }
         else if (this.userV1_12_6Certificate != null) {
             return this.userV1_12_6Certificate.getActive();
@@ -211,8 +211,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractUserCertificatePublicKeyAlgorithm() {
-        if (this.userV1_9_5Certificate != null) {
-            return this.userV1_9_5Certificate.getPublicKeyAlgorithm();
+        if (this.userV1_12_7Certificate != null) {
+            return this.userV1_12_7Certificate.getPublicKeyAlgorithm();
         }
         else if (this.userV1_12_6Certificate != null) {
             return this.userV1_12_6Certificate.getPublicKeyAlgorithm();
@@ -221,8 +221,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractUserCertificateContent() {
-        if (this.userV1_9_5Certificate != null) {
-            return this.userV1_9_5Certificate.getUserCertificate();
+        if (this.userV1_12_7Certificate != null) {
+            return this.userV1_12_7Certificate.getUserCertificate();
         }
         else if (this.userV1_12_6Certificate != null) {
             return this.userV1_12_6Certificate.getUserCertificate();
@@ -231,8 +231,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractUserCertificateNotAfter() {
-        if (this.userV1_9_5Certificate != null) {
-            return this.userV1_9_5Certificate.getNotAfter();
+        if (this.userV1_12_7Certificate != null) {
+            return this.userV1_12_7Certificate.getNotAfter();
         }
         else if (this.userV1_12_6Certificate != null) {
             return this.userV1_12_6Certificate.getNotAfter();
@@ -241,8 +241,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractUserCertificateNotBefore() {
-        if (this.userV1_9_5Certificate != null) {
-            return this.userV1_9_5Certificate.getNotBefore();
+        if (this.userV1_12_7Certificate != null) {
+            return this.userV1_12_7Certificate.getNotBefore();
         }
         else if (this.userV1_12_6Certificate != null) {
             return this.userV1_12_6Certificate.getNotBefore();
@@ -251,8 +251,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractUserCertificateTelematikId() {
-        if (this.userV1_9_5Certificate != null) {
-            return this.userV1_9_5Certificate.getTelematikID();
+        if (this.userV1_12_7Certificate != null) {
+            return this.userV1_12_7Certificate.getTelematikID();
         }
         else if (this.userV1_12_6Certificate != null) {
             return this.userV1_12_6Certificate.getTelematikID();
@@ -261,8 +261,8 @@ public class VzdEntryWrapper {
     }
 
     public EnumTriValue extractDirectoryEntryPersonalEntry() {
-        if (this.directoryV1_9_5Entry != null) {
-            return EnumTriValue.getFromBool(this.directoryV1_9_5Entry.getDirectoryEntryBase().getPersonalEntry());
+        if (this.directoryV1_12_7Entry != null) {
+            return EnumTriValue.getFromBool(this.directoryV1_12_7Entry.getDirectoryEntryBase().getPersonalEntry());
         }
         else if (this.directoryV1_12_6Entry != null) {
             return EnumTriValue.getFromBool(this.directoryV1_12_6Entry.getDirectoryEntryBase().getPersonalEntry());
@@ -271,8 +271,8 @@ public class VzdEntryWrapper {
     }
 
     public EnumTriValue extractDirectoryEntryDataFromAuthority() {
-        if (this.directoryV1_9_5Entry != null) {
-            return EnumTriValue.getFromBool(this.directoryV1_9_5Entry.getDirectoryEntryBase().getDataFromAuthority());
+        if (this.directoryV1_12_7Entry != null) {
+            return EnumTriValue.getFromBool(this.directoryV1_12_7Entry.getDirectoryEntryBase().getDataFromAuthority());
         }
         else if (this.directoryV1_12_6Entry != null) {
             return EnumTriValue.getFromBool(this.directoryV1_12_6Entry.getDirectoryEntryBase().getDataFromAuthority());
@@ -281,8 +281,8 @@ public class VzdEntryWrapper {
     }
 
     public EnumTriValue extractDirectoryEntryActive() {
-        if (this.directoryV1_9_5Entry != null) {
-            return EnumTriValue.getFromBool(this.directoryV1_9_5Entry.getDirectoryEntryBase().getActive());
+        if (this.directoryV1_12_7Entry != null) {
+            return EnumTriValue.getFromBool(this.directoryV1_12_7Entry.getDirectoryEntryBase().getActive());
         }
         else if (this.directoryV1_12_6Entry != null) {
             return EnumTriValue.getFromBool(this.directoryV1_12_6Entry.getDirectoryEntryBase().getActive());
@@ -291,8 +291,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryTelematikId() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getTelematikID();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getTelematikID();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getTelematikID();
@@ -301,8 +301,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryChangeDateTime() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getChangeDateTime();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getChangeDateTime();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getChangeDateTime();
@@ -311,8 +311,8 @@ public class VzdEntryWrapper {
     }
 
     public List<String> extractDirectoryEntryHolder() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getHolder();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getHolder();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getHolder();
@@ -321,8 +321,8 @@ public class VzdEntryWrapper {
     }
 
     public List<String> extractDirectoryEntryMeta() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getMeta();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getMeta();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getMeta();
@@ -331,8 +331,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryMaxKOMLEadr() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getMaxKOMLEadr();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getMaxKOMLEadr();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getMaxKOMLEadr();
@@ -341,8 +341,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryStateOrProvinceName() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getStateOrProvinceName();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getStateOrProvinceName();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getStateOrProvinceName();
@@ -351,8 +351,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntrySn() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getSn();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getSn();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getSn();
@@ -361,8 +361,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryGivenName() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getGivenName();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getGivenName();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getGivenName();
@@ -371,8 +371,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryOtherName() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getOtherName();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getOtherName();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getOtherName();
@@ -381,8 +381,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryDisplayName() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getDisplayName();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getDisplayName();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getDisplayName();
@@ -391,8 +391,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryCn() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getCn();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getCn();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getCn();
@@ -401,8 +401,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryTitle() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getTitle();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getTitle();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getTitle();
@@ -411,8 +411,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryOrganization() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getOrganization();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getOrganization();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getOrganization();
@@ -421,8 +421,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryStreetAddress() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getStreetAddress();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getStreetAddress();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getStreetAddress();
@@ -431,8 +431,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryPostalCode() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getPostalCode();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getPostalCode();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getPostalCode();
@@ -441,8 +441,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryLocalityName() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getLocalityName();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getLocalityName();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getLocalityName();
@@ -451,8 +451,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryCountryCode() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getCountryCode();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getCountryCode();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getCountryCode();
@@ -461,8 +461,8 @@ public class VzdEntryWrapper {
     }
 
     public List<String> extractDirectoryEntrySpecialization() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getSpecialization();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getSpecialization();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getSpecialization();
@@ -471,8 +471,8 @@ public class VzdEntryWrapper {
     }
 
     public List<String> extractDirectoryEntryDomainID() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getDomainID();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getDomainID();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getDomainID();
@@ -481,8 +481,8 @@ public class VzdEntryWrapper {
     }
 
     public List<String> extractDirectoryEntryEntryType() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getEntryType();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getEntryType();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getEntryType();
@@ -491,8 +491,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryUid() {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getDn().getUid();
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getDn().getUid();
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getDn().getUid();
@@ -501,8 +501,8 @@ public class VzdEntryWrapper {
     }
 
     public boolean checkDirectoryEntryHolder(String holder) {
-        if (this.directoryV1_9_5Entry != null) {
-            return this.directoryV1_9_5Entry.getDirectoryEntryBase().getHolder().isEmpty() || (!this.directoryV1_9_5Entry.getDirectoryEntryBase().getHolder().isEmpty() && this.directoryV1_9_5Entry.getDirectoryEntryBase().getHolder().contains(holder));
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getHolder().isEmpty() || (!this.directoryV1_12_7Entry.getDirectoryEntryBase().getHolder().isEmpty() && this.directoryV1_12_7Entry.getDirectoryEntryBase().getHolder().contains(holder));
         }
         else if (this.directoryV1_12_6Entry != null) {
             return this.directoryV1_12_6Entry.getDirectoryEntryBase().getHolder().isEmpty() || (!this.directoryV1_12_6Entry.getDirectoryEntryBase().getHolder().isEmpty() && this.directoryV1_12_6Entry.getDirectoryEntryBase().getHolder().contains(holder));
@@ -511,8 +511,8 @@ public class VzdEntryWrapper {
     }
 
     public String extractDirectoryEntryDomainIDAsStr() {
-        if (this.directoryV1_9_5Entry != null && this.directoryV1_9_5Entry.getDirectoryEntryBase() != null) {
-            return StringUtils.listToString(directoryV1_9_5Entry.getDirectoryEntryBase().getDomainID());
+        if (this.directoryV1_12_7Entry != null && this.directoryV1_12_7Entry.getDirectoryEntryBase() != null) {
+            return StringUtils.listToString(directoryV1_12_7Entry.getDirectoryEntryBase().getDomainID());
         }
         else if (this.directoryV1_12_6Entry != null && this.directoryV1_12_6Entry.getDirectoryEntryBase() != null) {
             return StringUtils.listToString(directoryV1_12_6Entry.getDirectoryEntryBase().getDomainID());
@@ -520,8 +520,8 @@ public class VzdEntryWrapper {
         return "";
     }
     public String extractDirectoryEntrySpecializationAsStr() {
-        if (this.directoryV1_9_5Entry != null && this.directoryV1_9_5Entry.getDirectoryEntryBase() != null) {
-            return StringUtils.listToString(directoryV1_9_5Entry.getDirectoryEntryBase().getSpecialization());
+        if (this.directoryV1_12_7Entry != null && this.directoryV1_12_7Entry.getDirectoryEntryBase() != null) {
+            return StringUtils.listToString(directoryV1_12_7Entry.getDirectoryEntryBase().getSpecialization());
         }
         else if (this.directoryV1_12_6Entry != null && this.directoryV1_12_6Entry.getDirectoryEntryBase() != null) {
             return StringUtils.listToString(directoryV1_12_6Entry.getDirectoryEntryBase().getSpecialization());
@@ -529,8 +529,8 @@ public class VzdEntryWrapper {
         return "";
     }
     public String extractDirectoryEntryProfessionOIDAsStr() {
-        if (this.directoryV1_9_5Entry != null && this.directoryV1_9_5Entry.getDirectoryEntryBase() != null) {
-            return StringUtils.listToString(directoryV1_9_5Entry.getDirectoryEntryBase().getProfessionOID());
+        if (this.directoryV1_12_7Entry != null && this.directoryV1_12_7Entry.getDirectoryEntryBase() != null) {
+            return StringUtils.listToString(directoryV1_12_7Entry.getDirectoryEntryBase().getProfessionOID());
         }
         else if (this.directoryV1_12_6Entry != null && this.directoryV1_12_6Entry.getDirectoryEntryBase() != null) {
             return StringUtils.listToString(directoryV1_12_6Entry.getDirectoryEntryBase().getProfessionOID());
@@ -538,8 +538,8 @@ public class VzdEntryWrapper {
         return "";
     }
     public String extractDirectoryEntryHolderAsStr() {
-        if (this.directoryV1_9_5Entry != null && this.directoryV1_9_5Entry.getDirectoryEntryBase() != null) {
-            return StringUtils.listToString(directoryV1_9_5Entry.getDirectoryEntryBase().getHolder());
+        if (this.directoryV1_12_7Entry != null && this.directoryV1_12_7Entry.getDirectoryEntryBase() != null) {
+            return StringUtils.listToString(directoryV1_12_7Entry.getDirectoryEntryBase().getHolder());
         }
         else if (this.directoryV1_12_6Entry != null && this.directoryV1_12_6Entry.getDirectoryEntryBase() != null) {
             return StringUtils.listToString(directoryV1_12_6Entry.getDirectoryEntryBase().getHolder());
@@ -547,8 +547,8 @@ public class VzdEntryWrapper {
         return "";
     }
     public String extractDirectoryEntryMetaAsStr() {
-        if (this.directoryV1_9_5Entry != null && this.directoryV1_9_5Entry.getDirectoryEntryBase() != null) {
-            return StringUtils.listToString(directoryV1_9_5Entry.getDirectoryEntryBase().getMeta());
+        if (this.directoryV1_12_7Entry != null && this.directoryV1_12_7Entry.getDirectoryEntryBase() != null) {
+            return StringUtils.listToString(directoryV1_12_7Entry.getDirectoryEntryBase().getMeta());
         }
         else if (this.directoryV1_12_6Entry != null && this.directoryV1_12_6Entry.getDirectoryEntryBase() != null) {
             return StringUtils.listToString(directoryV1_12_6Entry.getDirectoryEntryBase().getMeta());
@@ -557,14 +557,14 @@ public class VzdEntryWrapper {
     }
 
     public void extractDirectoryEntryKimMailInfos(List<String> fadMailAttrs, List<String> fadKomLeDataAttrs, List<String> fadKimDataAttrs) {
-        if (this.directoryV1_9_5Entry != null && this.directoryV1_9_5Entry.getFachdaten() != null) {
-            for (Iterator<de.gematik.vzd.model.V1_9_5.Fachdaten> iterator = this.directoryV1_9_5Entry.getFachdaten().iterator(); iterator.hasNext(); ) {
-                de.gematik.vzd.model.V1_9_5.Fachdaten fachdaten = iterator.next();
+        if (this.directoryV1_12_7Entry != null && this.directoryV1_12_7Entry.getFachdaten() != null) {
+            for (Iterator<de.gematik.vzd.model.V1_12_7.Fachdaten> iterator = this.directoryV1_12_7Entry.getFachdaten().iterator(); iterator.hasNext(); ) {
+                de.gematik.vzd.model.V1_12_7.Fachdaten fachdaten = iterator.next();
                 if (fachdaten.getFAD1() == null) {
                     continue;
                 }
-                for (Iterator<de.gematik.vzd.model.V1_9_5.FAD1> fad1Iterator = fachdaten.getFAD1().iterator(); fad1Iterator.hasNext(); ) {
-                    de.gematik.vzd.model.V1_9_5.FAD1 fad1 = fad1Iterator.next();
+                for (Iterator<de.gematik.vzd.model.V1_12_7.FAD1> fad1Iterator = fachdaten.getFAD1().iterator(); fad1Iterator.hasNext(); ) {
+                    de.gematik.vzd.model.V1_12_7.FAD1 fad1 = fad1Iterator.next();
                     if (fad1.getMail() == null && fad1.getKomLeData() == null) {
                         continue;
                     }
@@ -572,8 +572,8 @@ public class VzdEntryWrapper {
                         String mail = mailIterator.next();
                         fadMailAttrs.add(mail);
                     }
-                    for (Iterator<de.gematik.vzd.model.V1_9_5.FAD1KomLeDataInner> mailIterator = fad1.getKomLeData().iterator(); mailIterator.hasNext(); ) {
-                        de.gematik.vzd.model.V1_9_5.FAD1KomLeDataInner komLeDataInner = mailIterator.next();
+                    for (Iterator<de.gematik.vzd.model.V1_12_7.FAD1KomLeDataInner> mailIterator = fad1.getKomLeData().iterator(); mailIterator.hasNext(); ) {
+                        de.gematik.vzd.model.V1_12_7.FAD1KomLeDataInner komLeDataInner = mailIterator.next();
                         fadKomLeDataAttrs.add(komLeDataInner.getMail()+","+komLeDataInner.getVersion());
                     }
                 }

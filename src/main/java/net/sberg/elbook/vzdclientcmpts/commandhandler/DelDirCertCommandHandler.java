@@ -1,6 +1,6 @@
 package net.sberg.elbook.vzdclientcmpts.commandhandler;
 
-import de.gematik.vzd.api.V1_9_5.CertificateAdministrationApi;
+import de.gematik.vzd.api.V1_12_7.CertificateAdministrationApi;
 import net.sberg.elbook.vzdclientcmpts.ClientImpl;
 import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
 import net.sberg.elbook.vzdclientcmpts.command.AbstractCommand;
@@ -19,14 +19,14 @@ import java.util.Iterator;
 
 public class DelDirCertCommandHandler extends AbstractCommandHandler {
 
-    private CertificateAdministrationApi certificateAdministrationApiV1_9_5;
+    private CertificateAdministrationApi certificateAdministrationApiV1_12_7;
     private de.gematik.vzd.api.V1_12_6.CertificateAdministrationApi certificateAdministrationApiV1_12_6;
     private Logger log = LoggerFactory.getLogger(DelDirCertCommandHandler.class);
 
     public DelDirCertCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_9_5)) {
-            certificateAdministrationApiV1_9_5 = new CertificateAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
+            certificateAdministrationApiV1_12_7 = new CertificateAdministrationApi(client);
         }
         else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
             certificateAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.CertificateAdministrationApi(client);
@@ -67,8 +67,8 @@ public class DelDirCertCommandHandler extends AbstractCommandHandler {
                 try {
                     ResponseEntity<Void> response = null;
 
-                    if (certificateAdministrationApiV1_9_5 != null) {
-                        response = certificateAdministrationApiV1_9_5.deleteDirectoryEntryCertificateWithHttpInfo(delDirCertCommand.getUid(), certUid);
+                    if (certificateAdministrationApiV1_12_7 != null) {
+                        response = certificateAdministrationApiV1_12_7.deleteDirectoryEntryCertificateWithHttpInfo(delDirCertCommand.getUid(), certUid);
                     }
                     else if (certificateAdministrationApiV1_12_6 != null) {
                         response = certificateAdministrationApiV1_12_6.deleteDirectoryEntryCertificateWithHttpInfo(delDirCertCommand.getUid(), certUid);

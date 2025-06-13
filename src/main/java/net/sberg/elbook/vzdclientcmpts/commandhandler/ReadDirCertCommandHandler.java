@@ -1,7 +1,7 @@
 package net.sberg.elbook.vzdclientcmpts.commandhandler;
 
-import de.gematik.vzd.api.V1_9_5.CertificateAdministrationApi;
-import de.gematik.vzd.model.V1_9_5.UserCertificate;
+import de.gematik.vzd.api.V1_12_7.CertificateAdministrationApi;
+import de.gematik.vzd.model.V1_12_7.UserCertificate;
 import net.sberg.elbook.common.StringUtils;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.ClientImpl;
@@ -23,14 +23,14 @@ import java.util.List;
 
 public class ReadDirCertCommandHandler extends AbstractCommandHandler {
 
-    private CertificateAdministrationApi certificateAdministrationApiV1_9_5;
+    private CertificateAdministrationApi certificateAdministrationApiV1_12_7;
     private de.gematik.vzd.api.V1_12_6.CertificateAdministrationApi certificateAdministrationApiV1_12_6;
     private Logger log = LoggerFactory.getLogger(ReadDirCertCommandHandler.class);
 
     public ReadDirCertCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_9_5)) {
-            certificateAdministrationApiV1_9_5 = new CertificateAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
+            certificateAdministrationApiV1_12_7 = new CertificateAdministrationApi(client);
         }
         else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
             certificateAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.CertificateAdministrationApi(client);
@@ -96,8 +96,8 @@ public class ReadDirCertCommandHandler extends AbstractCommandHandler {
             String entryType = readDirCertCommand.getEntryType() != null?readDirCertCommand.getEntryType().getId():null;
             Boolean active = readDirCertCommand.getActive() != null?readDirCertCommand.getActive().getDataValue():null;
 
-            if (certificateAdministrationApiV1_9_5 != null) {
-                ResponseEntity<List<UserCertificate>> response = certificateAdministrationApiV1_9_5.readDirectoryCertificatesWithHttpInfo(
+            if (certificateAdministrationApiV1_12_7 != null) {
+                ResponseEntity<List<UserCertificate>> response = certificateAdministrationApiV1_12_7.readDirectoryCertificatesWithHttpInfo(
                         uid, certUid, entryType, telematikID, professionOID, active, serialNumber, issuer, publicKeyAlgorithm
                 );
 

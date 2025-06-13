@@ -1,6 +1,6 @@
 package net.sberg.elbook.vzdclientcmpts.commandhandler;
 
-import de.gematik.vzd.api.V1_9_5.DirectoryEntryAdministrationApi;
+import de.gematik.vzd.api.V1_12_7.DirectoryEntryAdministrationApi;
 import net.sberg.elbook.vzdclientcmpts.ClientImpl;
 import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
 import net.sberg.elbook.vzdclientcmpts.command.AbstractCommand;
@@ -17,13 +17,13 @@ import org.springframework.http.ResponseEntity;
 public class DelDirEntryCommandHandler extends AbstractCommandHandler {
 
     private Logger log = LoggerFactory.getLogger(DelDirEntryCommandHandler.class);
-    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_9_5;
+    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_7;
     private de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_6;
 
     public DelDirEntryCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_9_5)) {
-            directoryEntryAdministrationApiV1_9_5 = new DirectoryEntryAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
+            directoryEntryAdministrationApiV1_12_7 = new DirectoryEntryAdministrationApi(client);
         }
         else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
             directoryEntryAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi(client);
@@ -52,8 +52,8 @@ public class DelDirEntryCommandHandler extends AbstractCommandHandler {
             client.validateToken();
 
             ResponseEntity<Object> response = null;
-            if (directoryEntryAdministrationApiV1_9_5 != null) {
-                response = directoryEntryAdministrationApiV1_9_5.deleteDirectoryEntryWithHttpInfo(command.getUid());
+            if (directoryEntryAdministrationApiV1_12_7 != null) {
+                response = directoryEntryAdministrationApiV1_12_7.deleteDirectoryEntryWithHttpInfo(command.getUid());
             }
             if (directoryEntryAdministrationApiV1_12_6 != null) {
                 response = directoryEntryAdministrationApiV1_12_6.deleteDirectoryEntryWithHttpInfo(command.getUid());

@@ -1,7 +1,7 @@
 package net.sberg.elbook.vzdclientcmpts.commandhandler;
 
-import de.gematik.vzd.api.V1_9_5.GetInfoDirectoryEntryAdministrationApi;
-import de.gematik.vzd.model.V1_9_5.InfoObject;
+import de.gematik.vzd.api.V1_12_7.GetInfoDirectoryEntryAdministrationApi;
+import de.gematik.vzd.model.V1_12_7.InfoObject;
 import net.sberg.elbook.vzdclientcmpts.ClientImpl;
 import net.sberg.elbook.vzdclientcmpts.command.AbstractCommand;
 import net.sberg.elbook.vzdclientcmpts.command.EnumCommand;

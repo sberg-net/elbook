@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.11.0]
+
+### Added
+- add API 1.12.7
+- vzd entry uploading bugfixes
+
 ## [2.10.0]
 
 ### Changed

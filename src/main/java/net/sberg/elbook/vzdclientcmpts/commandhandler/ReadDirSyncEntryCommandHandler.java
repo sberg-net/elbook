@@ -1,8 +1,8 @@
 package net.sberg.elbook.vzdclientcmpts.commandhandler;
 
-import de.gematik.vzd.api.V1_9_5.DirectoryEntrySynchronizationApi;
-import de.gematik.vzd.model.V1_9_5.DirectoryEntry;
-import de.gematik.vzd.model.V1_9_5.ReadDirectoryEntryforSyncResponse;
+import de.gematik.vzd.api.V1_12_7.DirectoryEntrySynchronizationApi;
+import de.gematik.vzd.model.V1_12_7.DirectoryEntry;
+import de.gematik.vzd.model.V1_12_7.ReadDirectoryEntryforSyncResponse;
 import net.sberg.elbook.common.StringUtils;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.ClientImpl;
@@ -25,13 +25,13 @@ public class ReadDirSyncEntryCommandHandler extends AbstractCommandHandler {
     private static final String CHECK_EMPTY_STRING = "**";
 
     private Logger log = LoggerFactory.getLogger(ReadDirSyncEntryCommandHandler.class);
-    private DirectoryEntrySynchronizationApi directoryEntrySynchronizationApiV1_9_5;
+    private DirectoryEntrySynchronizationApi directoryEntrySynchronizationApiV1_12_7;
     private de.gematik.vzd.api.V1_12_6.DirectoryEntrySynchronizationApi directoryEntrySynchronizationApiV1_12_6;
 
     public ReadDirSyncEntryCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_9_5)) {
-            directoryEntrySynchronizationApiV1_9_5 = new DirectoryEntrySynchronizationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
+            directoryEntrySynchronizationApiV1_12_7 = new DirectoryEntrySynchronizationApi(client);
         }
         else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
             directoryEntrySynchronizationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.DirectoryEntrySynchronizationApi(client);
@@ -149,19 +149,19 @@ public class ReadDirSyncEntryCommandHandler extends AbstractCommandHandler {
             boolean searchResultsAvailable = false;
             int size = 0;
             while (true) {
-                if (directoryEntrySynchronizationApiV1_9_5 != null) {
+                if (directoryEntrySynchronizationApiV1_12_7 != null) {
                     ResponseEntity response = null;
                     boolean pagingMode = true;
                     if (pagingInfo == null || pagingInfo.getPagingCookie() == null) {
-                        response = directoryEntrySynchronizationApiV1_9_5.readDirectoryEntryForSyncWithHttpInfo(uid, givenName, sn, cn,
+                        response = directoryEntrySynchronizationApiV1_12_7.readDirectoryEntryForSyncWithHttpInfo(uid, givenName, sn, cn,
                             displayName, streetAddress, postalCode, countryCode, localityName, stateOrProvinceName, title,
-                            organization, otherName, telematikID, telematikIDSubstr, specialization, domainID, holder, personalEntry,
+                            organization, otherName, telematikID, telematikIDSubstr, null,  null, specialization, domainID, holder, personalEntry,
                             dataFromAuthority, professionOID, entryType, maxKomLeAdr, changeDateTimeFrom, changeDateTimeTo, baseEntryOnly, active, meta);
                         pagingMode = false;
                     } else {
-                        response = directoryEntrySynchronizationApiV1_9_5.readDirectoryEntryForSyncPagingWithHttpInfo(uid, givenName, sn, cn,
+                        response = directoryEntrySynchronizationApiV1_12_7.readDirectoryEntryForSyncPagingWithHttpInfo(uid, givenName, sn, cn,
                             displayName, streetAddress, postalCode, countryCode, localityName, stateOrProvinceName, title,
-                            organization, otherName, telematikID, telematikIDSubstr, specialization, domainID, holder, personalEntry,
+                            organization, otherName, telematikID, telematikIDSubstr, null, null, specialization, domainID, holder, personalEntry,
                             dataFromAuthority, professionOID, entryType, maxKomLeAdr, changeDateTimeFrom, changeDateTimeTo, baseEntryOnly, active, meta, pagingInfo.getPagingSize(), pagingInfo.getPagingCookie());
                     }
                     if (response.getStatusCode() == HttpStatus.OK) {

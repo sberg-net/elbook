@@ -1,7 +1,7 @@
 package net.sberg.elbook.vzdclientcmpts.commandhandler;
 
-import de.gematik.vzd.api.V1_9_5.DirectoryEntryAdministrationApi;
-import de.gematik.vzd.model.V1_9_5.DirectoryEntry;
+import de.gematik.vzd.api.V1_12_7.DirectoryEntryAdministrationApi;
+import de.gematik.vzd.model.V1_12_7.DirectoryEntry;
 import net.sberg.elbook.common.StringUtils;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.ClientImpl;
@@ -24,13 +24,13 @@ public class ReadDirEntryCommandHandler extends AbstractCommandHandler {
     private static final String CHECK_EMPTY_STRING = "**";
 
     private Logger log = LoggerFactory.getLogger(ReadDirEntryCommandHandler.class);
-    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_9_5;
+    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_7;
     private de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_6;
 
     public ReadDirEntryCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_9_5)) {
-            directoryEntryAdministrationApiV1_9_5 = new DirectoryEntryAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
+            directoryEntryAdministrationApiV1_12_7 = new DirectoryEntryAdministrationApi(client);
         }
         else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
             directoryEntryAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi(client);
@@ -143,11 +143,11 @@ public class ReadDirEntryCommandHandler extends AbstractCommandHandler {
             String changeDateTimeFrom = checkOnEmptySearchValue(readDirEntryCommand.getChangeDateTimeFrom());
             String changeDateTimeTo = checkOnEmptySearchValue(readDirEntryCommand.getChangeDateTimeTo());
 
-            if (directoryEntryAdministrationApiV1_9_5 != null) {
+            if (directoryEntryAdministrationApiV1_12_7 != null) {
                 ResponseEntity<List<DirectoryEntry>> response =
-                    directoryEntryAdministrationApiV1_9_5.readDirectoryEntryWithHttpInfo(uid, givenName, sn, cn,
+                        directoryEntryAdministrationApiV1_12_7.readDirectoryEntryWithHttpInfo(uid, givenName, sn, cn,
                         displayName, streetAddress, postalCode, countryCode, localityName, stateOrProvinceName, title,
-                        organization, otherName, telematikID, telematikIDSubstr, specialization, domainID, holder, personalEntry,
+                        organization, otherName, telematikID, telematikIDSubstr, null, null, specialization, domainID, holder, personalEntry,
                         dataFromAuthority, professionOID, entryType, maxKomLeAdr, changeDateTimeFrom, changeDateTimeTo, baseEntryOnly, active, meta);
                 if (response.getStatusCode() == HttpStatus.OK) {
                     if (response.getBody().isEmpty()) {

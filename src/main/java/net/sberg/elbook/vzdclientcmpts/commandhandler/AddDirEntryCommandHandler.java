@@ -1,10 +1,10 @@
 package net.sberg.elbook.vzdclientcmpts.commandhandler;
 
-import de.gematik.vzd.api.V1_9_5.DirectoryEntryAdministrationApi;
-import de.gematik.vzd.model.V1_9_5.BaseDirectoryEntry;
-import de.gematik.vzd.model.V1_9_5.CreateDirectoryEntry;
-import de.gematik.vzd.model.V1_9_5.DistinguishedName;
-import de.gematik.vzd.model.V1_9_5.UserCertificate;
+import de.gematik.vzd.api.V1_12_7.DirectoryEntryAdministrationApi;
+import de.gematik.vzd.model.V1_12_7.BaseDirectoryEntry;
+import de.gematik.vzd.model.V1_12_7.CreateDirectoryEntry;
+import de.gematik.vzd.model.V1_12_7.DistinguishedName;
+import de.gematik.vzd.model.V1_12_7.UserCertificate;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.ClientImpl;
 import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
@@ -24,14 +24,14 @@ import java.util.Iterator;
 
 public class AddDirEntryCommandHandler extends AbstractCommandHandler {
 
-    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_9_5;
+    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_7;
     private de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_6;
     private Logger log = LoggerFactory.getLogger(AddDirEntryCommandHandler.class);
 
     public AddDirEntryCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_9_5)) {
-            directoryEntryAdministrationApiV1_9_5 = new DirectoryEntryAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
+            directoryEntryAdministrationApiV1_12_7 = new DirectoryEntryAdministrationApi(client);
         }
         else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
             directoryEntryAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi(client);
@@ -66,9 +66,9 @@ public class AddDirEntryCommandHandler extends AbstractCommandHandler {
 
             AddDirEntryCommand addDirEntryCommand = (AddDirEntryCommand)command;
 
-            if (directoryEntryAdministrationApiV1_9_5 != null) {
+            if (directoryEntryAdministrationApiV1_12_7 != null) {
                 CreateDirectoryEntry createDirectoryEntry = new CreateDirectoryEntry();
-                createDirectoryEntry.setDirectoryEntryBase(convertV1_9_5(addDirEntryCommand));
+                createDirectoryEntry.setDirectoryEntryBase(convertV1_12_7(addDirEntryCommand));
 
                 if (addDirEntryCommand.getCertContents() != null && !addDirEntryCommand.getCertContents().isEmpty()) {
                     createDirectoryEntry.setUserCertificates(new ArrayList<>());
@@ -81,7 +81,7 @@ public class AddDirEntryCommandHandler extends AbstractCommandHandler {
                     }
                 }
 
-                ResponseEntity<DistinguishedName> response = directoryEntryAdministrationApiV1_9_5.addDirectoryEntryWithHttpInfo(createDirectoryEntry);
+                ResponseEntity<DistinguishedName> response = directoryEntryAdministrationApiV1_12_7.addDirectoryEntryWithHttpInfo(createDirectoryEntry);
 
                 if (response.getStatusCode() == HttpStatus.CREATED) {
                     log.debug("Add directory entry execution successful operated\n" + response.getBody());
@@ -132,7 +132,7 @@ public class AddDirEntryCommandHandler extends AbstractCommandHandler {
         }
     }
 
-    private BaseDirectoryEntry convertV1_9_5(AddDirEntryCommand addDirEntryCommand) {
+    private BaseDirectoryEntry convertV1_12_7(AddDirEntryCommand addDirEntryCommand) {
         BaseDirectoryEntry baseDirectoryEntry = new BaseDirectoryEntry();
 
         //id attributes
