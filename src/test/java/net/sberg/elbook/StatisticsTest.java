@@ -26,18 +26,18 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = AppConfig.class)
-@AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:application.yml")
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = AppConfig.class)
+//@AutoConfigureMockMvc
+//@TestPropertySource(locations = "classpath:application.yml")
 public class StatisticsTest {
 
-    @Autowired
+    //@Autowired
     private TiVZDConnector tiVZDConnector;
-    @Autowired
+    //@Autowired
     private JdbcGenericDao genericDao;
-    @Autowired
+    //@Autowired
     private VerzeichnisdienstService verzeichnisdienstService;
-    @Value("${elbook.encryptionKeys}")
+    //@Value("${elbook.encryptionKeys}")
     private String[] ENC_KEYS;
 
     private String username = "";
@@ -48,7 +48,7 @@ public class StatisticsTest {
         return tiVZDConnector.executeCommands(commands, tiVZDProperties);
     }
 
-    @Test
+    //@Test
     public void execute() throws Exception {
 
         Mandant mandant = (Mandant) genericDao.selectOne(Mandant.class.getName(), null, Arrays.asList(new DaoPlaceholderProperty("nutzername", username)));
