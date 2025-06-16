@@ -99,6 +99,8 @@ const elbookContext = {
     'uid': true,
     'telematikId': true,
     'domainId': true,
+    'lanr': true,
+    'providedBy': true,
     'telematikIdSubstr': true,
     'displayName': true,
     'cn': true,
@@ -124,6 +126,7 @@ const elbookContext = {
   },
   arraySearchData: {
     'domainId': true,
+    'lanr': true,
     'specialization': true,
     'professionOid': true,
     'meta': true,
@@ -134,6 +137,8 @@ const elbookContext = {
       uid: '',
       telematikId: '',
       domainId: [],
+      lanr: [],
+      providedBy: '',
       telematikIdSubstr: '',
 
       displayName: '',
@@ -173,6 +178,8 @@ const elbookContext = {
     vzdentry_col_id: false,
     vzdentry_col_tid: true,
     vzdentry_col_domainid: false,
+    vzdentry_col_lanr: false,
+    vzdentry_col_providedby: false,
     vzdentry_col_displayname: true,
     vzdentry_col_cn: true,
     vzdentry_col_othername: false,
@@ -479,6 +486,7 @@ function vzdEintragSpeichern() {
   const data = $("#vzdEintragForm").serializeFormJSON();
   data.specialization = data.specialization.trim() !== ''?data.specialization.split(','):[];
   data.domainId = data.domainId.trim() !== ''?data.domainId.split(','):[];
+  data.lanr = data.lanr.trim() !== ''?data.lanr.split(','):[];
   if (!data.telematikId) {
     data.telematikId = $('#vzdEintragForm input[name=telematikId]').val();
   }
