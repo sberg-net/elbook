@@ -25,7 +25,7 @@ import java.util.*;
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = AppConfig.class)
 //@AutoConfigureMockMvc
 //@TestPropertySource(locations = "classpath:application.yml")
-public class CertAlgoAccessTest {
+public class CertAlgoAccessTestHandler {
 
     //@Autowired
     private TiVZDConnector tiVZDConnector;

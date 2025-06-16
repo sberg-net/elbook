@@ -3,7 +3,7 @@ package net.sberg.elbook;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TelematikIdTest {
+public class TelematikIdTestHandler {
 
     //@Test
     public void execute() throws Exception {

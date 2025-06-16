@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
 
-public class HolderAttrTest {
+public class HolderAttrTestHandler {
 
     //@Test
     public void execute() throws Exception {
