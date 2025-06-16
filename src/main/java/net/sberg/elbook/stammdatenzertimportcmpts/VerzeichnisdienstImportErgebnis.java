@@ -31,6 +31,8 @@ public class VerzeichnisdienstImportErgebnis {
     private String vzdUid;
     private String telematikID;
     private List<String> sektorIds;
+    private List<String> lanrs;
+    private String telematikIDMutterOrgEinheit;
 
     // name attributes
     private String vorname;
@@ -72,6 +74,8 @@ public class VerzeichnisdienstImportErgebnis {
         setTelematikID(command.getTelematikID());
         setVzdUid(command.getVzdUid());
         setSektorIds(command.getSektorIds());
+        setLanrs(command.getLanrs());
+        setTelematikIDMutterOrgEinheit(command.getTelematikIDMutterOrgEinheit());
 
         setVorname(command.getVorname());
         setNachname(command.getNachname());

@@ -138,6 +138,8 @@ public class AddDirEntryCommandHandler extends AbstractCommandHandler {
         //id attributes
         baseDirectoryEntry.setTelematikID(addDirEntryCommand.getTelematikId());
         baseDirectoryEntry.setDomainID(addDirEntryCommand.getDomainId());
+        baseDirectoryEntry.setLanr(addDirEntryCommand.getLanr());
+        baseDirectoryEntry.setProvidedBy(addDirEntryCommand.getProvidedBy());
 
         //name attributes
         baseDirectoryEntry.setDisplayName(addDirEntryCommand.getDisplayName());

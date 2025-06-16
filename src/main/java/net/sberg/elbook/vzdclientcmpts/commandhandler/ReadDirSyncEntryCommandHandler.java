@@ -57,6 +57,8 @@ public class ReadDirSyncEntryCommandHandler extends AbstractCommandHandler {
         params.add(readDirSyncEntryCommand.getTelematikId());
         params.add(readDirSyncEntryCommand.getTelematikIdSubstr());
         params.add(StringUtils.listToString(readDirSyncEntryCommand.getDomainId()));
+        params.add(StringUtils.listToString(readDirSyncEntryCommand.getLanr()));
+        params.add(readDirSyncEntryCommand.getProvidedBy());
 
         params.add(readDirSyncEntryCommand.getDisplayName());
         params.add(readDirSyncEntryCommand.getGivenName());
@@ -115,6 +117,8 @@ public class ReadDirSyncEntryCommandHandler extends AbstractCommandHandler {
             String telematikID = readDirSyncEntryCommand.getTelematikId();
             String telematikIDSubstr = readDirSyncEntryCommand.getTelematikIdSubstr();
             String domainID = checkOnEmptySearchValue(!StringUtils.listToString(readDirSyncEntryCommand.getDomainId()).equals("")?StringUtils.listToString(readDirSyncEntryCommand.getDomainId()):null);
+            String lanr = checkOnEmptySearchValue(!StringUtils.listToString(readDirSyncEntryCommand.getLanr()).equals("")?StringUtils.listToString(readDirSyncEntryCommand.getLanr()):null);
+            String providedBy = readDirSyncEntryCommand.getProvidedBy();
 
             String givenName = checkOnEmptySearchValue(readDirSyncEntryCommand.getGivenName());
             String sn = checkOnEmptySearchValue(readDirSyncEntryCommand.getSn());
@@ -155,7 +159,7 @@ public class ReadDirSyncEntryCommandHandler extends AbstractCommandHandler {
                     if (pagingInfo == null || pagingInfo.getPagingCookie() == null) {
                         response = directoryEntrySynchronizationApiV1_12_7.readDirectoryEntryForSyncWithHttpInfo(uid, givenName, sn, cn,
                             displayName, streetAddress, postalCode, countryCode, localityName, stateOrProvinceName, title,
-                            organization, otherName, telematikID, telematikIDSubstr, null,  null, specialization, domainID, holder, personalEntry,
+                            organization, otherName, telematikID, telematikIDSubstr, lanr,  providedBy, specialization, domainID, holder, personalEntry,
                             dataFromAuthority, professionOID, entryType, maxKomLeAdr, changeDateTimeFrom, changeDateTimeTo, baseEntryOnly, active, meta);
                         pagingMode = false;
                     } else {

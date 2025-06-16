@@ -93,7 +93,7 @@
 
       <!-- domainid -->
       <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label" for="telematikId">Sektor-ID</label>
+        <label class="col-sm-3 col-form-label" for="domainId">Sektor-ID</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="domainId" name="domainId" aria-describedby="domainIdHelp">
           <small id="domainIdHelp" class="text-body-secondary">
@@ -104,6 +104,29 @@
           <span data-feather="help-circle"></span>
         </a>
       </div>
+
+      <!-- lanr -->
+      <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label" for="lanr">LANR</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="lanr" name="lanr" aria-describedby="lanrHelp">
+          <small id="lanrHelp" class="text-body-secondary">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+      </div>
+
+      <!-- providedBy -->
+      <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label" for="providedBy">Telematik-ID der Mutter-OrgEinheit</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="providedBy" name="providedBy" aria-describedby="providedByHelp">
+          <small id="providedByHelp" class="text-body-secondary">
+            Wildcard * am Anfang/Ende benutzbar, Suche nach Vorhandensein ODER leerem Inhalt mit **
+          </small>
+        </div>
+      </div>
+
     </form>
 
     <!-- Namen -->
@@ -488,14 +511,14 @@
     </form>
 
     <!-- Fachdaten: mail, komledata, kimdata -->
-    <div class="row mt-2" th:if="${showSearchFAAttributes}">
+    <div class="row mt-2">
       <div class="col fw-bolder">Suchattribute: KIM-Fachdaten (Mailadresse, KIM-Version, KIM-Anwendungskennzeichen). Wenn Sie die Attribute in dem Abschnitt belegen, werden ALLE oberen Attribute bei der Suche ignoriert.</div>
       <div class="col-md-12 mb-3 fw-bolder" onclick="if($('#vzdSearchKimFachdatenAttrContainer').is(':visible')){ $('#vzdSearchKimFachdatenAttrContainer').hide() } else{ $('#vzdSearchKimFachdatenAttrContainer').show() }">
         <span class="text-primary" style="cursor: pointer">Suchattribute einblenden/ausblenden - Bitte klicken</span>
       </div>
     </div>
 
-    <form id="vzdSearchKimFachdatenAttrContainer" class="searchAttrContainer" style="display: none" th:if="${showSearchFAAttributes}">
+    <form id="vzdSearchKimFachdatenAttrContainer" class="searchAttrContainer" style="display: none">
       <!-- mail -->
       <div class="mb-3 row">
         <label class="col-sm-3 col-form-label" for="mail">KIM-Mailadresse im Fachdatenattribut mail</label>
@@ -597,6 +620,16 @@
       <div class="col-sm-3">
         <input type="checkbox" id="vzdentry_col_domainid" onclick="vzdColClickHandle(this)">
         <label class="form-check-label" for="vzdentry_col_domainid">Sektor-ID's</label>
+      </div>
+      <!-- vzdentry_col_lanr-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_lanr" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_lanr">LANR</label>
+      </div>
+      <!-- vzdentry_col_providedby-->
+      <div class="col-sm-3">
+        <input type="checkbox" id="vzdentry_col_providedby" onclick="vzdColClickHandle(this)">
+        <label class="form-check-label" for="vzdentry_col_providedby">Mutter-Telematik-ID</label>
       </div>
       <!-- vzdentry_col_displayname-->
       <div class="col-sm-3">
@@ -718,6 +751,8 @@
         <th class="vzdentry_col_id">ID</th>
         <th class="vzdentry_col_tid">Telematik-ID</th>
         <th class="vzdentry_col_domainid">Sektor-ID's</th>
+        <th class="vzdentry_col_lanr">LANR</th>
+        <th class="vzdentry_col_providedby">Mutter-Telematik-ID</th>
         <th class="vzdentry_col_displayname">Anzeigename</th>
         <th class="vzdentry_col_cn">Allgemeiner Name</th>
         <th class="vzdentry_col_othername">Anderer Name</th>
@@ -753,6 +788,8 @@
         <td class="vzdentry_col_id"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryUid()}">ID</span></td>
         <td class="vzdentry_col_tid"><a title="Glossar in einem neuen Tab öffnen" th:href="@{/glossar/uebersicht/telematikidinfo/{id}(id=${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()})}" th:text="${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()}" target="_blank"></a></td>
         <td class="vzdentry_col_domainid"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryDomainIDAsStr()}">Sektor-IDs</span></td>
+        <td class="vzdentry_col_lanr"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryLanrAsStr()}">LANR</span></td>
+        <td class="vzdentry_col_providedby"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryProvidedBy()}">Mutter-Telematik-ID</span></td>
         <td class="vzdentry_col_displayname"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryDisplayName()}">Anzeigename</span></td>
         <td class="vzdentry_col_cn"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryCn()}">Allgemeiner Name</span></td>
         <td class="vzdentry_col_othername"><span th:text="${n.vzdEntryWrapper.extractDirectoryEntryOtherName()}">Anderer Name</span></td>

@@ -10,6 +10,8 @@ public class AddDirEntryCommand extends AbstractCommand {
 
     //id attributes
     private List<String> domainId;
+    private List<String> lanr;
+    private String providedBy;
 
     //name attributes
     private String givenName;

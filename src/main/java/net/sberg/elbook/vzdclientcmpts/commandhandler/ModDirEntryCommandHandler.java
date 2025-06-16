@@ -65,7 +65,7 @@ public class ModDirEntryCommandHandler extends AbstractCommandHandler {
             ModDirEntryCommand modDirEntryCommand = (ModDirEntryCommand)command;
 
             if (directoryEntryAdministrationApiV1_12_7 != null) {
-                BaseDirectoryEntry baseDirectoryEntry = convertV1_9_5(modDirEntryCommand);
+                BaseDirectoryEntry baseDirectoryEntry = convertV1_12_7(modDirEntryCommand);
 
                 if (!CommandHandlerUtils.isEntryPresent(null, command.getTelematikId(), client, log)) {
                     throw new IllegalStateException("entry with the telematikId is not present: " + command.getTelematikId());
@@ -113,8 +113,8 @@ public class ModDirEntryCommandHandler extends AbstractCommandHandler {
         }
     }
 
-    private BaseDirectoryEntry convertV1_9_5(ModDirEntryCommand modDirEntryCommand) {
-        BaseDirectoryEntry baseDirectoryEntry = new BaseDirectoryEntry();
+    private de.gematik.vzd.model.V1_12_6.BaseDirectoryEntry convertV1_12_6(ModDirEntryCommand modDirEntryCommand) {
+        de.gematik.vzd.model.V1_12_6.BaseDirectoryEntry baseDirectoryEntry = new de.gematik.vzd.model.V1_12_6.BaseDirectoryEntry();
 
         //id attributes
         baseDirectoryEntry.setTelematikID(modDirEntryCommand.getTelematikId());
@@ -149,12 +149,14 @@ public class ModDirEntryCommandHandler extends AbstractCommandHandler {
         return baseDirectoryEntry;
     }
 
-    private de.gematik.vzd.model.V1_12_6.BaseDirectoryEntry convertV1_12_6(ModDirEntryCommand modDirEntryCommand) {
-        de.gematik.vzd.model.V1_12_6.BaseDirectoryEntry baseDirectoryEntry = new de.gematik.vzd.model.V1_12_6.BaseDirectoryEntry();
+    private BaseDirectoryEntry convertV1_12_7(ModDirEntryCommand modDirEntryCommand) {
+        BaseDirectoryEntry baseDirectoryEntry = new BaseDirectoryEntry();
 
         //id attributes
         baseDirectoryEntry.setTelematikID(modDirEntryCommand.getTelematikId());
         baseDirectoryEntry.setDomainID(modDirEntryCommand.getDomainId());
+        baseDirectoryEntry.setLanr(modDirEntryCommand.getLanr());
+        baseDirectoryEntry.setProvidedBy(modDirEntryCommand.getProvidedBy());
 
         //name attributes
         baseDirectoryEntry.setDisplayName(modDirEntryCommand.getDisplayName());

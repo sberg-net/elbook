@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.12.0]
+
+### Added
+- lanr und providedBy ergänzt
+- apache beanutils version upgrade
+
 ## [2.11.0]
 
 ### Added

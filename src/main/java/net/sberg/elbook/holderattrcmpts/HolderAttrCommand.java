@@ -47,6 +47,8 @@ public class HolderAttrCommand {
         modDirEntryCommand.setUid(directoryEntry.extractDirectoryEntryUid());
         modDirEntryCommand.setTelematikId(telematikID);
         modDirEntryCommand.setDomainId(directoryEntry.extractDirectoryEntryDomainID());
+        modDirEntryCommand.setLanr(directoryEntry.extractDirectoryEntryLanr());
+        modDirEntryCommand.setProvidedBy(directoryEntry.extractDirectoryEntryProvidedBy());
 
         modDirEntryCommand.setSn(directoryEntry.extractDirectoryEntrySn());
         modDirEntryCommand.setGivenName(directoryEntry.extractDirectoryEntryGivenName());

@@ -37,6 +37,8 @@ public class VerzeichnisdienstImportCommand {
     private String vzdUid;
     private String telematikID;
     private List<String> sektorIds;
+    private List<String> lanrs;
+    private String telematikIDMutterOrgEinheit;
 
     // name attributes
     private String vorname;
@@ -84,6 +86,8 @@ public class VerzeichnisdienstImportCommand {
         res.setVzdUid(src.getVzdUid());
         res.setTelematikID(src.getTelematikID());
         res.setSektorIds(src.getSektorIds());
+        res.setLanrs(src.getLanrs());
+        res.setTelematikIDMutterOrgEinheit(src.getTelematikIDMutterOrgEinheit());
 
         res.setStrasseUndHausnummer(src.getStrasseUndHausnummer());
         res.setPlz(src.getPlz());
@@ -123,6 +127,8 @@ public class VerzeichnisdienstImportCommand {
         res.setVzdUid(src.getVzdUid());
         res.setTelematikID(src.getTelematikID());
         res.setSektorIds(src.getSektorIds());
+        res.setLanrs(src.getLanrs());
+        res.setTelematikIDMutterOrgEinheit(src.getTelematikIDMutterOrgEinheit());
 
         res.setStrasseUndHausnummer(src.getStrasseUndHausnummer());
         res.setPlz(src.getPlz());
@@ -166,6 +172,8 @@ public class VerzeichnisdienstImportCommand {
         addDirEntryCommand.setUid(vzdUid);
         addDirEntryCommand.setTelematikId(telematikID);
         addDirEntryCommand.setDomainId(sektorIds);
+        addDirEntryCommand.setLanr(lanrs);
+        addDirEntryCommand.setProvidedBy(telematikIDMutterOrgEinheit);
 
         addDirEntryCommand.setGivenName(vorname);
         addDirEntryCommand.setSn(nachname);
@@ -179,7 +187,15 @@ public class VerzeichnisdienstImportCommand {
         addDirEntryCommand.setPostalCode(plz);
         addDirEntryCommand.setLocalityName(ort);
         addDirEntryCommand.setStateOrProvinceName(bundesland);
-        addDirEntryCommand.setCountryCode(laenderCode);
+
+        if (telematikIdInfo.getProfessionOIDInfos().get(0).isOrganization()) {
+            if (laenderCode == null) {
+                addDirEntryCommand.setCountryCode("DE");
+            }
+            else {
+                addDirEntryCommand.setCountryCode(laenderCode);
+            }
+        }
 
         addDirEntryCommand.setSpecialization(fachrichtungen);
         addDirEntryCommand.setEntryType(eintragsTyp != null?eintragsTyp:entryType);
@@ -214,6 +230,8 @@ public class VerzeichnisdienstImportCommand {
         modDirEntryCommand.setUid(vzdUid);
         modDirEntryCommand.setTelematikId(telematikID);
         modDirEntryCommand.setDomainId(sektorIds != null?sektorIds:directoryEntry.extractDirectoryEntryDomainID());
+        modDirEntryCommand.setLanr(lanrs != null?lanrs:directoryEntry.extractDirectoryEntryLanr());
+        modDirEntryCommand.setProvidedBy(telematikIDMutterOrgEinheit != null?telematikIDMutterOrgEinheit:directoryEntry.extractDirectoryEntryProvidedBy());
 
         modDirEntryCommand.setSn(nachname != null?nachname:directoryEntry.extractDirectoryEntrySn());
         modDirEntryCommand.setGivenName(vorname != null?vorname:directoryEntry.extractDirectoryEntryGivenName());
@@ -313,66 +331,73 @@ public class VerzeichnisdienstImportCommand {
             compareDataCode = compareDataCode + (telematikID.trim().replaceAll(" ", "").hashCode() * 3);
         }
         if (sektorIds != null) {
-            String fachrichtungenStr = sektorIds.stream().map( n -> n.toString() ).collect( Collectors.joining( "," ) );
-            compareDataCode = compareDataCode + (fachrichtungenStr.trim().replaceAll(" ", "").hashCode() * 5);
+            String sektorIdStr = sektorIds.stream().map( n -> n.toString() ).collect( Collectors.joining( "," ) );
+            compareDataCode = compareDataCode + (sektorIdStr.trim().replaceAll(" ", "").hashCode() * 5);
+        }
+        if (lanrs != null) {
+            String lanrStr = lanrs.stream().map( n -> n.toString() ).collect( Collectors.joining( "," ) );
+            compareDataCode = compareDataCode + (lanrStr.trim().replaceAll(" ", "").hashCode() * 7);
+        }
+        if (telematikIDMutterOrgEinheit != null) {
+            compareDataCode = compareDataCode + (telematikIDMutterOrgEinheit.trim().replaceAll(" ", "").hashCode() * 11);
         }
 
         //name
         if (vorname != null) {
-            compareDataCode = compareDataCode + (vorname.trim().replaceAll(" ", "").hashCode() * 7);
+            compareDataCode = compareDataCode + (vorname.trim().replaceAll(" ", "").hashCode() * 13);
         }
         if (nachname != null) {
-            compareDataCode = compareDataCode + (nachname.trim().replaceAll(" ", "").hashCode() * 11);
+            compareDataCode = compareDataCode + (nachname.trim().replaceAll(" ", "").hashCode() * 17);
         }
         if (anzeigeName != null) {
-            compareDataCode = compareDataCode + (anzeigeName.trim().replaceAll(" ", "").hashCode() * 13);
+            compareDataCode = compareDataCode + (anzeigeName.trim().replaceAll(" ", "").hashCode() * 19);
         }
         if (titel != null) {
-            compareDataCode = compareDataCode + (titel.trim().replaceAll(" ", "").hashCode() * 17);
+            compareDataCode = compareDataCode + (titel.trim().replaceAll(" ", "").hashCode() * 23);
         }
         if (andererName != null) {
-            compareDataCode = compareDataCode + (andererName.trim().replaceAll(" ", "").hashCode() * 19);
+            compareDataCode = compareDataCode + (andererName.trim().replaceAll(" ", "").hashCode() * 29);
         }
         if (allgemeinerName != null) {
-            compareDataCode = compareDataCode + (allgemeinerName.trim().replaceAll(" ", "").hashCode() * 23);
+            compareDataCode = compareDataCode + (allgemeinerName.trim().replaceAll(" ", "").hashCode() * 31);
         }
         if (organisation != null) {
-            compareDataCode = compareDataCode + (organisation.trim().replaceAll(" ", "").hashCode() * 29);
+            compareDataCode = compareDataCode + (organisation.trim().replaceAll(" ", "").hashCode() * 37);
         }
 
         //address
         if (strasseUndHausnummer != null) {
-            compareDataCode = compareDataCode + (strasseUndHausnummer.trim().replaceAll(" ", "").hashCode() * 31);
+            compareDataCode = compareDataCode + (strasseUndHausnummer.trim().replaceAll(" ", "").hashCode() * 41);
         }
         if (plz != null) {
-            compareDataCode = compareDataCode + (plz.trim().replaceAll(" ", "").hashCode() * 37);
+            compareDataCode = compareDataCode + (plz.trim().replaceAll(" ", "").hashCode() * 43);
         }
         if (ort != null) {
-            compareDataCode = compareDataCode + (ort.trim().replaceAll(" ", "").hashCode() * 41);
+            compareDataCode = compareDataCode + (ort.trim().replaceAll(" ", "").hashCode() * 47);
         }
         if (bundesland != null) {
-            compareDataCode = compareDataCode + (bundesland.getHrText().trim().replaceAll(" ", "").hashCode() * 43);
+            compareDataCode = compareDataCode + (bundesland.getHrText().trim().replaceAll(" ", "").hashCode() * 53);
         }
         if (laenderCode != null) {
-            compareDataCode = compareDataCode + (laenderCode.trim().replaceAll(" ", "").hashCode() * 47);
+            compareDataCode = compareDataCode + (laenderCode.trim().replaceAll(" ", "").hashCode() * 59);
         }
 
         //profession
         if (fachrichtungen != null) {
             String fachrichtungenStr = fachrichtungen.stream().map( n -> n.toString() ).collect( Collectors.joining( "," ) );
-            compareDataCode = compareDataCode + (fachrichtungenStr.trim().replaceAll(" ", "").hashCode() * 53);
+            compareDataCode = compareDataCode + (fachrichtungenStr.trim().replaceAll(" ", "").hashCode() * 61);
         }
         if (eintragsTyp != null) {
-            compareDataCode = compareDataCode + (eintragsTyp.getId().trim().replaceAll(" ", "").hashCode() * 59);
+            compareDataCode = compareDataCode + (eintragsTyp.getId().trim().replaceAll(" ", "").hashCode() * 67);
         }
 
         //system
         if (maxKomLeAdr != null) {
-            compareDataCode = compareDataCode + (maxKomLeAdr.trim().replaceAll(" ", "").hashCode() * 61);
+            compareDataCode = compareDataCode + (maxKomLeAdr.trim().replaceAll(" ", "").hashCode() * 71);
         }
         //active
         if (aktiv != null && aktiv.getDataValue() != null) {
-            compareDataCode = compareDataCode + (aktiv.getDataValue().hashCode() * 67);
+            compareDataCode = compareDataCode + (aktiv.getDataValue().hashCode() * 73);
         }
 
         return compareDataCode;
@@ -388,81 +413,88 @@ public class VerzeichnisdienstImportCommand {
         }
         //sektorIds
         if (directoryEntry.extractDirectoryEntryDomainID() != null) {
-            String fachrichtungenStr = directoryEntry.extractDirectoryEntryDomainID().stream().map( n -> n.toString() ).collect( Collectors.joining( "," ) );
-            compareDataCode = compareDataCode + (fachrichtungenStr.trim().replaceAll(" ", "").hashCode() * 5);
+            String sektorIdStr = directoryEntry.extractDirectoryEntryDomainID().stream().map( n -> n.toString() ).collect( Collectors.joining( "," ) );
+            compareDataCode = compareDataCode + (sektorIdStr.trim().replaceAll(" ", "").hashCode() * 5);
+        }
+        if (directoryEntry.extractDirectoryEntryLanr() != null) {
+            String lanrStr = directoryEntry.extractDirectoryEntryLanr().stream().map( n -> n.toString() ).collect( Collectors.joining( "," ) );
+            compareDataCode = compareDataCode + (lanrStr.trim().replaceAll(" ", "").hashCode() * 7);
+        }
+        if (directoryEntry.extractDirectoryEntryProvidedBy() != null) {
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryProvidedBy().trim().replaceAll(" ", "").hashCode() * 11);
         }
 
         //name
         //vorname
         if (directoryEntry.extractDirectoryEntryGivenName() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryGivenName().trim().replaceAll(" ", "").hashCode() * 7);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryGivenName().trim().replaceAll(" ", "").hashCode() * 13);
         }
         //nachname
         if (directoryEntry.extractDirectoryEntrySn() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntrySn().trim().replaceAll(" ", "").hashCode() * 11);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntrySn().trim().replaceAll(" ", "").hashCode() * 17);
         }
         //anzeigeName
         if (directoryEntry.extractDirectoryEntryDisplayName() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryDisplayName().trim().replaceAll(" ", "").hashCode() * 13);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryDisplayName().trim().replaceAll(" ", "").hashCode() * 19);
         }
         //titel
         if (directoryEntry.extractDirectoryEntryTitle() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryTitle().trim().replaceAll(" ", "").hashCode() * 17);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryTitle().trim().replaceAll(" ", "").hashCode() * 23);
         }
         //andererName
         if (directoryEntry.extractDirectoryEntryOtherName() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryOtherName().trim().replaceAll(" ", "").hashCode() * 19);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryOtherName().trim().replaceAll(" ", "").hashCode() * 29);
         }
         //allgemeinerName
         if (directoryEntry.extractDirectoryEntryCn() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryCn().trim().replaceAll(" ", "").hashCode() * 23);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryCn().trim().replaceAll(" ", "").hashCode() * 31);
         }
         //organisation
         if (directoryEntry.extractDirectoryEntryOrganization() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryOrganization().trim().replaceAll(" ", "").hashCode() * 29);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryOrganization().trim().replaceAll(" ", "").hashCode() * 37);
         }
 
         //address
         //strasseUndHausnummer
         if (directoryEntry.extractDirectoryEntryStreetAddress() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryStreetAddress().trim().replaceAll(" ", "").hashCode() * 31);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryStreetAddress().trim().replaceAll(" ", "").hashCode() * 41);
         }
         //plz
         if (directoryEntry.extractDirectoryEntryPostalCode() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryPostalCode().trim().replaceAll(" ", "").hashCode() * 37);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryPostalCode().trim().replaceAll(" ", "").hashCode() * 43);
         }
         //ort
         if (directoryEntry.extractDirectoryEntryLocalityName() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryLocalityName().trim().replaceAll(" ", "").hashCode() * 41);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryLocalityName().trim().replaceAll(" ", "").hashCode() * 47);
         }
         //bundesland
         if (directoryEntry.extractDirectoryEntryStateOrProvinceName() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryStateOrProvinceName().trim().replaceAll(" ", "").hashCode() * 43);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryStateOrProvinceName().trim().replaceAll(" ", "").hashCode() * 53);
         }
         //laenderCode
         if (directoryEntry.extractDirectoryEntryCountryCode() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryCountryCode().trim().replaceAll(" ", "").hashCode() * 47);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryCountryCode().trim().replaceAll(" ", "").hashCode() * 59);
         }
 
         //profession
         //fachrichtungen
         if (directoryEntry.extractDirectoryEntrySpecialization() != null) {
             String fachrichtungenStr = directoryEntry.extractDirectoryEntrySpecialization().stream().map( n -> n.toString() ).collect( Collectors.joining( "," ) );
-            compareDataCode = compareDataCode + (fachrichtungenStr.trim().replaceAll(" ", "").hashCode() * 53);
+            compareDataCode = compareDataCode + (fachrichtungenStr.trim().replaceAll(" ", "").hashCode() * 61);
         }
         //eintragsTyp
         if (directoryEntry.extractDirectoryEntryEntryType() != null && !directoryEntry.extractDirectoryEntryEntryType().isEmpty()) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryEntryType().get(0).trim().replaceAll(" ", "").hashCode() * 59);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryEntryType().get(0).trim().replaceAll(" ", "").hashCode() * 67);
         }
 
         //system
         //maxKomLeAdr
         if (directoryEntry.extractDirectoryEntryMaxKOMLEadr() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryMaxKOMLEadr().trim().replaceAll(" ", "").hashCode() * 61);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryMaxKOMLEadr().trim().replaceAll(" ", "").hashCode() * 71);
         }
         //active
         if (directoryEntry.extractDirectoryEntryActive() != null && directoryEntry.extractDirectoryEntryActive().getDataValue() != null) {
-            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryActive().getDataValue().hashCode() * 67);
+            compareDataCode = compareDataCode + (directoryEntry.extractDirectoryEntryActive().getDataValue().hashCode() * 73);
         }
 
         return compareDataCode;

@@ -480,6 +480,26 @@ public class VzdEntryWrapper {
         throw new IllegalStateException("no directory entry found");
     }
 
+    public List<String> extractDirectoryEntryLanr() {
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getLanr();
+        }
+        else if (this.directoryV1_12_6Entry != null) {
+            return null;
+        }
+        throw new IllegalStateException("no directory entry found");
+    }
+
+    public String extractDirectoryEntryProvidedBy() {
+        if (this.directoryV1_12_7Entry != null) {
+            return this.directoryV1_12_7Entry.getDirectoryEntryBase().getProvidedBy();
+        }
+        else if (this.directoryV1_12_6Entry != null) {
+            return this.directoryV1_12_6Entry.getDirectoryEntryBase().getProvidedBy();
+        }
+        throw new IllegalStateException("no directory entry found");
+    }
+
     public List<String> extractDirectoryEntryEntryType() {
         if (this.directoryV1_12_7Entry != null) {
             return this.directoryV1_12_7Entry.getDirectoryEntryBase().getEntryType();
@@ -516,6 +536,15 @@ public class VzdEntryWrapper {
         }
         else if (this.directoryV1_12_6Entry != null && this.directoryV1_12_6Entry.getDirectoryEntryBase() != null) {
             return StringUtils.listToString(directoryV1_12_6Entry.getDirectoryEntryBase().getDomainID());
+        }
+        return "";
+    }
+    public String extractDirectoryEntryLanrAsStr() {
+        if (this.directoryV1_12_7Entry != null && this.directoryV1_12_7Entry.getDirectoryEntryBase() != null) {
+            return StringUtils.listToString(directoryV1_12_7Entry.getDirectoryEntryBase().getLanr());
+        }
+        else if (this.directoryV1_12_6Entry != null && this.directoryV1_12_6Entry.getDirectoryEntryBase() != null) {
+            return "";
         }
         return "";
     }

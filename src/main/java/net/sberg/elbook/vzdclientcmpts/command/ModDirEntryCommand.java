@@ -9,6 +9,8 @@ public class ModDirEntryCommand extends AbstractCommand {
 
     //id attributes
     private List<String> domainId;
+    private List<String> lanr;
+    private String providedBy;
 
     //name attributes
     private String givenName;
@@ -44,6 +46,8 @@ public class ModDirEntryCommand extends AbstractCommand {
         setUid(addDirEntryCommand.getUid());
         setTelematikId(addDirEntryCommand.getTelematikId());
         setDomainId(addDirEntryCommand.getDomainId());
+        setLanr(addDirEntryCommand.getLanr());
+        setProvidedBy(addDirEntryCommand.getProvidedBy());
 
         setCn(addDirEntryCommand.getCn());
         setSn(addDirEntryCommand.getSn());

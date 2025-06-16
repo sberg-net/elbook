@@ -10,6 +10,8 @@ public class ReadDirSyncEntryCommand extends AbstractCommand {
     //id attributes
     private List<String> domainId;
     private String telematikIdSubstr;
+    private List<String> lanr;
+    private String providedBy;
 
     //name attributes
     private String givenName;
@@ -41,7 +43,6 @@ public class ReadDirSyncEntryCommand extends AbstractCommand {
     private EnumTriValue personalEntry = EnumTriValue.UNDEFINED;
     private EnumTriValue dataFromAuthority = EnumTriValue.UNDEFINED;
     private Boolean baseEntryOnly = Boolean.TRUE;
-    private String providedBy;
     private PagingInfo pagingInfo;
 
     @Override

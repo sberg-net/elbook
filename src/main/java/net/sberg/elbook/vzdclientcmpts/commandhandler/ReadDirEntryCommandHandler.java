@@ -56,6 +56,8 @@ public class ReadDirEntryCommandHandler extends AbstractCommandHandler {
         params.add(readDirEntryCommand.getTelematikId());
         params.add(readDirEntryCommand.getTelematikIdSubstr());
         params.add(StringUtils.listToString(readDirEntryCommand.getDomainId()));
+        params.add(StringUtils.listToString(readDirEntryCommand.getLanr()));
+        params.add(readDirEntryCommand.getProvidedBy());
 
         params.add(readDirEntryCommand.getDisplayName());
         params.add(readDirEntryCommand.getGivenName());
@@ -114,6 +116,8 @@ public class ReadDirEntryCommandHandler extends AbstractCommandHandler {
             String telematikID = readDirEntryCommand.getTelematikId();
             String telematikIDSubstr = readDirEntryCommand.getTelematikIdSubstr();
             String domainID = checkOnEmptySearchValue(!StringUtils.listToString(readDirEntryCommand.getDomainId()).equals("")?StringUtils.listToString(readDirEntryCommand.getDomainId()):null);
+            String lanr = checkOnEmptySearchValue(!StringUtils.listToString(readDirEntryCommand.getLanr()).equals("")?StringUtils.listToString(readDirEntryCommand.getLanr()):null);
+            String providedBy = readDirEntryCommand.getProvidedBy();
 
             String givenName = checkOnEmptySearchValue(readDirEntryCommand.getGivenName());
             String sn = checkOnEmptySearchValue(readDirEntryCommand.getSn());
@@ -147,7 +151,7 @@ public class ReadDirEntryCommandHandler extends AbstractCommandHandler {
                 ResponseEntity<List<DirectoryEntry>> response =
                         directoryEntryAdministrationApiV1_12_7.readDirectoryEntryWithHttpInfo(uid, givenName, sn, cn,
                         displayName, streetAddress, postalCode, countryCode, localityName, stateOrProvinceName, title,
-                        organization, otherName, telematikID, telematikIDSubstr, null, null, specialization, domainID, holder, personalEntry,
+                        organization, otherName, telematikID, telematikIDSubstr, lanr, providedBy, specialization, domainID, holder, personalEntry,
                         dataFromAuthority, professionOID, entryType, maxKomLeAdr, changeDateTimeFrom, changeDateTimeTo, baseEntryOnly, active, meta);
                 if (response.getStatusCode() == HttpStatus.OK) {
                     if (response.getBody().isEmpty()) {

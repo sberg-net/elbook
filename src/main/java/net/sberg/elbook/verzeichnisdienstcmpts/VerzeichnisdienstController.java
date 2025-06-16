@@ -284,7 +284,6 @@ public class VerzeichnisdienstController extends AbstractWebController {
                 throw e;
             }
             model.addAttribute("infoObject", tiVZDProperties.getInfoObject());
-            model.addAttribute("showSearchFAAttributes", true);
 
             List<DirectoryEntryContainer> searchResults = new ArrayList<DirectoryEntryContainer>();
             if (initalLoading) {
