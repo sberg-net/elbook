@@ -384,15 +384,14 @@ public class VerzeichnisdienstService {
         for (String newCert : newCerts) {
             VerzeichnisdienstZertifikat verzeichnisdienstZertifikat = erstelle(newCert, null);
             if (!vzdCertMap.containsKey(Objects.requireNonNull(verzeichnisdienstZertifikat).getSerienNummer())) {
-                changed = true;
 
                 if (verzeichnisdienstZertifikat.isBase64Encoded()) {
                     newCert = new String(Base64.getDecoder().decode(newCert), StandardCharsets.UTF_8);
                 }
 
                 try {
-
                     if (verzeichnisdienstZertifikat.isValid()) {
+                        changed = true;
                         List dnNameCertL = speichernZertifikat(tiVZDProperties, newCert, uid);
                         VzdEntryWrapper distinguishedNameCert = (VzdEntryWrapper) dnNameCertL.get(0);
                         verzeichnisdienstImportErgebnis.getLog().add("zertifikat erfolgreich gespeichert: telematikid = "
