@@ -27,4 +27,5 @@ public class VerzeichnisdienstZertifikat {
     private String inhaber;
     private String telematikId;
     private boolean base64Encoded;
+    private boolean valid = false;
 }

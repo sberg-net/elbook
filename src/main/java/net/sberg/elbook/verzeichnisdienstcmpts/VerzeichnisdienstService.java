@@ -391,12 +391,19 @@ public class VerzeichnisdienstService {
                 }
 
                 try {
-                    List dnNameCertL = speichernZertifikat(tiVZDProperties, newCert, uid);
-                    VzdEntryWrapper distinguishedNameCert = (VzdEntryWrapper) dnNameCertL.get(0);
-                    verzeichnisdienstImportErgebnis.getLog().add("zertifikat erfolgreich gespeichert: telematikid = "
-                            + telematikId + ",uid = " + uid + ", certUid= " + distinguishedNameCert.extractDistinguishedNameCn());
-                    logEintragService.handle(mandant, telematikId, verwaltungsId, uid, distinguishedNameCert.extractDistinguishedNameCn(), artikelTyp);
-                    vzdCertMap.put(verzeichnisdienstZertifikat.getSerienNummer(), verzeichnisdienstZertifikat);
+
+                    if (verzeichnisdienstZertifikat.isValid()) {
+                        List dnNameCertL = speichernZertifikat(tiVZDProperties, newCert, uid);
+                        VzdEntryWrapper distinguishedNameCert = (VzdEntryWrapper) dnNameCertL.get(0);
+                        verzeichnisdienstImportErgebnis.getLog().add("zertifikat erfolgreich gespeichert: telematikid = "
+                                + telematikId + ",uid = " + uid + ", certUid= " + distinguishedNameCert.extractDistinguishedNameCn());
+                        logEintragService.handle(mandant, telematikId, verwaltungsId, uid, distinguishedNameCert.extractDistinguishedNameCn(), artikelTyp);
+                        vzdCertMap.put(verzeichnisdienstZertifikat.getSerienNummer(), verzeichnisdienstZertifikat);
+                    }
+                    else {
+                        verzeichnisdienstImportErgebnis.getLog().add("zertifikat ist nicht mehr gültig: " + newCert);
+                    }
+
                 } catch (Exception e) {
                     log.error("error on saving the certificate: telematikId -> " + telematikId + " - uid -> " + uid);
                     verzeichnisdienstImportErgebnis.getLog().add("fehler beim speichern des zertifikats: " + newCert);
@@ -448,6 +455,12 @@ public class VerzeichnisdienstService {
                     .format(new Timestamp(cert.getNotAfter().getTime()).toLocalDateTime()));
             zertifikat.setTelematikId(telematikId);
             zertifikat.setBase64Encoded(base64Encoded);
+
+            zertifikat.setValid(true);
+            if (new Timestamp(cert.getNotAfter().getTime()).toLocalDateTime().isBefore(LocalDateTime.now())) {
+                zertifikat.setValid(false);
+            }
+
             return zertifikat;
         }
         return null;
