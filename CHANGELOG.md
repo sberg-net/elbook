@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.13.0]
+
+### Added
+- Plausiregeln bei den Adressdaten berücksichtigt
+
 ## [2.12.2]
 
 ### Fixed

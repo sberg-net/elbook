@@ -15,11 +15,13 @@
  */
 package net.sberg.elbook.stammdatenzertimportcmpts;
 
-import de.gematik.ws.cm.pers.hba_smc_b.v1.HbaAntragExport;
 import de.gematik.ws.cm.pers.hba_smc_b.v1.SmcbAntragExport;
 import lombok.Data;
+import net.sberg.elbook.common.ICommonConstants;
 import net.sberg.elbook.glossarcmpts.TelematikIdInfo;
+import net.sberg.elbook.mandantcmpts.Mandant;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,11 +44,19 @@ public class VerzeichnisdienstImportCommandContainer {
         }
     }
 
-    public void syncHba(TelematikIdInfo telematikIdInfo, List<HbaAntragExport> hbaAntragExports) throws Exception {
-        for (Iterator<HbaAntragExport> iterator = hbaAntragExports.iterator(); iterator.hasNext(); ) {
-            HbaAntragExport hbaAntragExport = iterator.next();
-            String telematikId = hbaAntragExport.getFreigabedaten().getTelematikID();
-            sync(telematikId, telematikIdInfo, null, hbaAntragExport);
+    public void syncHba(TelematikIdInfo telematikIdInfo, Mandant mandant) throws Exception {
+        String certDirName = ICommonConstants.BASE_DIR + "tspSyncCerts" + File.separator + mandant.getId() + File.separator + telematikIdInfo.getTelematikIdPattern().getSektor();
+        File certDir = new File(certDirName);
+        if (!certDir.exists()) {
+            return;
+        }
+        File[] files = certDir.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            if (!files[i].getName().endsWith(".crt")) {
+                continue;
+            }
+            String telematikId = files[i].getName().split("_")[0];
+            sync(telematikId, telematikIdInfo, null, files[i].getAbsolutePath());
         }
     }
 
@@ -58,7 +68,7 @@ public class VerzeichnisdienstImportCommandContainer {
         }
     }
 
-    private void sync(String telematikId, TelematikIdInfo telematikIdInfo, SmcbAntragExport smcbAntragExport, HbaAntragExport hbaAntragExport) throws Exception {
+    private void sync(String telematikId, TelematikIdInfo telematikIdInfo, SmcbAntragExport smcbAntragExport, String hbaAntragCertFile) throws Exception {
         String businessId = telematikIdInfo.getTelematikIdPattern().getSektor().getBusinessId(telematikId);
 
         List<VerzeichnisdienstImportCommand> c = commands.stream().filter(verzeichnisdienstImportCommand1 -> {
@@ -85,8 +95,8 @@ public class VerzeichnisdienstImportCommandContainer {
         if (smcbAntragExport != null) {
             verzeichnisdienstImportCommand.getHelperSmcbAntragExports().add(smcbAntragExport);
         }
-        else if (hbaAntragExport != null) {
-            verzeichnisdienstImportCommand.getHelperHbaAntragExports().add(hbaAntragExport);
+        else if (hbaAntragCertFile != null) {
+            verzeichnisdienstImportCommand.getHbaAntragCertFiles().add(hbaAntragCertFile);
         }
     }
 }

@@ -16,7 +16,9 @@
 package net.sberg.elbook.stammdatenzertimportcmpts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.gematik.ws.cm.pers.hba_smc_b.v1.ExtCertType;
 import de.gematik.ws.cm.pers.hba_smc_b.v1.HbaAntragExport;
+import de.gematik.ws.cm.pers.hba_smc_b.v1.ProdResultType;
 import de.gematik.ws.cm.pers.hba_smc_b.v1.SmcbAntragExport;
 import de.gematik.ws.sst.v1.GetHbaAntraegeExportResponseType;
 import de.gematik.ws.sst.v1.GetSmcbAntraegeExportResponseType;
@@ -37,6 +39,7 @@ import net.sberg.elbook.tspcmpts.*;
 import net.sberg.elbook.verzeichnisdienstcmpts.VerzeichnisdienstService;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +48,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -123,7 +128,6 @@ public class StammdatenZertImportService {
                 }
             }
 
-            verzeichnisdienstImportCommand.setBundesland(mandant.getBundesland());
             VerzeichnisdienstImportErgebnis verzeichnisdienstImportErgebnis = new VerzeichnisdienstImportErgebnis();
             verzeichnisdienstImportErgebnis.fill(verzeichnisdienstImportCommand);
             verzeichnisdienstImportErgebnis.setSilentMode(verzeichnisdienstImportCommandContainer.isSilentMode());
@@ -217,7 +221,7 @@ public class StammdatenZertImportService {
                 //INSERT
                 if (verzeichnisdienstImportErgebnis.isInsert()) {
                     if (!verzeichnisdienstImportErgebnis.isSilentMode()) {
-                        List dnNameL = verzeichnisdienstService.speichern(tiVZDProperties, verzeichnisdienstImportCommand.createAddDirEntryCommand(tiVZDProperties));
+                        List dnNameL = verzeichnisdienstService.speichern(tiVZDProperties, verzeichnisdienstImportCommand.createAddDirEntryCommand(mandant, tiVZDProperties));
                         VzdEntryWrapper distinguishedName = (VzdEntryWrapper) dnNameL.get(0);
 
                         verzeichnisdienstImportErgebnis.getLog().add("verzeichnisdienseintrag wurde eingefügt mit der id=" + distinguishedName.extractDistinguishedNameUid() + " und der telematikid=" + verzeichnisdienstImportCommand.getTelematikID());
@@ -255,7 +259,7 @@ public class StammdatenZertImportService {
                 }
 
                 //UPDATE
-                if (!verzeichnisdienstImportErgebnis.isDelete() && !verzeichnisdienstImportErgebnis.isInsert() && verzeichnisdienstImportCommand.toUpdate(vzdObject, tiVZDProperties)) {
+                if (!verzeichnisdienstImportErgebnis.isDelete() && !verzeichnisdienstImportErgebnis.isInsert() && verzeichnisdienstImportCommand.toUpdate(vzdObject, mandant, tiVZDProperties)) {
 
                     verzeichnisdienstImportErgebnis.setUpdate(true);
 
@@ -263,7 +267,7 @@ public class StammdatenZertImportService {
                     verzeichnisdienstImportCommand.setTelematikID(vzdObject.extractDirectoryEntryTelematikId());
 
                     if (!verzeichnisdienstImportErgebnis.isSilentMode()) {
-                        verzeichnisdienstService.speichern(tiVZDProperties, verzeichnisdienstImportCommand.createModDirEntryCommand(tiVZDProperties, vzdObject));
+                        verzeichnisdienstService.speichern(tiVZDProperties, verzeichnisdienstImportCommand.createModDirEntryCommand(vzdObject));
                         verzeichnisdienstImportErgebnis.getLog().add("verzeichnisdienseintrag wurde geändert mit der id=" + verzeichnisdienstImportCommand.getVzdUid() + " und der telematikid=" + verzeichnisdienstImportCommand.getTelematikID());
                     }
                     else {
@@ -340,7 +344,7 @@ public class StammdatenZertImportService {
         }
         List<VerzeichnisdienstImportCommand> newCommands = new ArrayList<>();
         verzeichnisdienstImportCommandContainer.getCommands().forEach(verzeichnisdienstImportCommand -> {
-            newCommands.addAll(verzeichnisdienstImportCommand.getTelematikIdInfo().getTelematikIdPattern().getSektor().checkCommand(verzeichnisdienstImportCommand));
+            newCommands.addAll(verzeichnisdienstImportCommand.getTelematikIdInfo().getTelematikIdPattern().getSektor().checkCommand(log, verzeichnisdienstImportCommand));
         });
         verzeichnisdienstImportCommandContainer.getCommands().clear();
         verzeichnisdienstImportCommandContainer.getCommands().addAll(newCommands);
@@ -363,6 +367,18 @@ public class StammdatenZertImportService {
                 new DaoPlaceholderProperty("mandantId", mandant.getId())
             )
         );
+
+        String certDir = ICommonConstants.BASE_DIR + "tspSyncCerts" + File.separator + mandant.getId() + File.separator + telematikIdInfo.getTelematikIdPattern().getSektor();
+        String certLoadInfoFileName = "certLoadFile.json";
+        Map certLoadInfo = null;
+        LocalDate from = null;
+        LocalDate to = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        if (new File(certDir + File.separator + certLoadInfoFileName).exists()) {
+            certLoadInfo = objectMapper.readValue(new File(certDir + File.separator + certLoadInfoFileName), Map.class);
+            from = LocalDate.parse((String)certLoadInfo.get("date"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            to = LocalDate.now();
+        }
 
         for (Iterator<Tsp> iterator = tsps.iterator(); iterator.hasNext(); ) {
             Tsp tsp = iterator.next();
@@ -390,20 +406,60 @@ public class StammdatenZertImportService {
                 TspProperties tspProperties = tsp.create(EnumAntragTyp.HBA);
                 TspConnector tspConnector = new TspConnectorBuilder().build(tspProperties, tsp.getTspName().getQvda(), EnumAntragTyp.HBA);
 
-                int offset = 0;
-                List<HbaAntragExport> hbaAntragExports = new ArrayList<>();
-                while (true) {
-                    GetHbaAntraegeExportResponseType getHbaAntraegeExportResponseType = tspConnector.getHbaAntraegeZertifikateFreigeschaltet(false, limit, offset);
-                    hbaAntragExports.addAll(getHbaAntraegeExportResponseType.getHbaAntraegeExport().getHbaAntragExport());
-                    if (!getHbaAntraegeExportResponseType.isAntraegeExportWeitereTreffer()) {
-                        break;
+                if (certLoadInfo != null) {
+                    GetHbaAntraegeExportResponseType getHbaAntraegeExportResponseType = tspConnector.getHbaAntraegeZertifikateFreigeschaltet(false, from.toString()+"T00:00:00", to.toString()+"T23:59:59");
+                    for (Iterator<HbaAntragExport> iteratored = getHbaAntraegeExportResponseType.getHbaAntraegeExport().getHbaAntragExport().iterator(); iteratored.hasNext(); ) {
+                        HbaAntragExport hbaAntragExport = iteratored.next();
+                        String telematikId = hbaAntragExport.getFreigabedaten().getTelematikID();
+                        for (Iterator<ProdResultType> hbaAntragExportIterator = hbaAntragExport.getProdResult().iterator(); hbaAntragExportIterator.hasNext(); ) {
+                            ProdResultType prodResultType = hbaAntragExportIterator.next();
+                            for (Iterator<ExtCertType> zertIterator = prodResultType.getZertifikate().iterator(); zertIterator.hasNext(); ) {
+                                ExtCertType extCertType = zertIterator.next();
+                                if (extCertType.getCertificateSem().contains(".ENC.")) {
+                                    String fileName = telematikId + "_" + extCertType.getSerialNumber() + ".crt";
+                                    if (!new File(certDir + File.separator + fileName).exists()) {
+                                        FileUtils.writeToFile(Base64.encodeBase64String(extCertType.getCertificateValue()), certDir + File.separator + fileName);
+                                    }
+                                }
+                            }
+                        }
                     }
-                    offset = offset + limit;
                 }
-                verzeichnisdienstImportCommandContainer.syncHba(telematikIdInfo, hbaAntragExports);
-            }
+                else {
+                    int offset = 0;
+                    while (true) {
+                        GetHbaAntraegeExportResponseType getHbaAntraegeExportResponseType = tspConnector.getHbaAntraegeZertifikateFreigeschaltet(false, limit, offset);
+                        for (Iterator<HbaAntragExport> iteratored = getHbaAntraegeExportResponseType.getHbaAntraegeExport().getHbaAntragExport().iterator(); iteratored.hasNext(); ) {
+                            HbaAntragExport hbaAntragExport = iteratored.next();
+                            String telematikId = hbaAntragExport.getFreigabedaten().getTelematikID();
+                            for (Iterator<ProdResultType> hbaAntragExportIterator = hbaAntragExport.getProdResult().iterator(); hbaAntragExportIterator.hasNext(); ) {
+                                ProdResultType prodResultType = hbaAntragExportIterator.next();
+                                for (Iterator<ExtCertType> zertIterator = prodResultType.getZertifikate().iterator(); zertIterator.hasNext(); ) {
+                                    ExtCertType extCertType = zertIterator.next();
+                                    if (extCertType.getCertificateSem().contains(".ENC.")) {
+                                        String fileName = telematikId + "_" + extCertType.getSerialNumber() + ".crt";
+                                        if (!new File(certDir + File.separator + fileName).exists()) {
+                                            FileUtils.writeToFile(Base64.encodeBase64String(extCertType.getCertificateValue()), certDir + File.separator + fileName);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (!getHbaAntraegeExportResponseType.isAntraegeExportWeitereTreffer()) {
+                            break;
+                        }
+                        offset = offset + limit;
+                    }
+                    certLoadInfo = new HashMap();
+                }
 
+                verzeichnisdienstImportCommandContainer.syncHba(telematikIdInfo, mandant);
+            }
         }
+
+        certLoadInfo.put("date", LocalDate.now().toString());
+        objectMapper.writeValue(new File(certDir + File.separator + certLoadInfoFileName), certLoadInfo);
+
         return verzeichnisdienstImportCommandContainer;
     }
 

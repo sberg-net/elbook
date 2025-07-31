@@ -16,10 +16,10 @@
 package net.sberg.elbook.stammdatenzertimportcmpts;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.gematik.ws.cm.pers.hba_smc_b.v1.HbaAntragExport;
 import de.gematik.ws.cm.pers.hba_smc_b.v1.SmcbAntragExport;
 import lombok.Data;
 import net.sberg.elbook.glossarcmpts.TelematikIdInfo;
+import net.sberg.elbook.mandantcmpts.Mandant;
 import net.sberg.elbook.verzeichnisdienstcmpts.DirectoryEntrySaveContainer;
 import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
 import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
@@ -75,7 +75,7 @@ public class VerzeichnisdienstImportCommand {
     @JsonIgnore
     private List<SmcbAntragExport> helperSmcbAntragExports = new ArrayList<>();
     @JsonIgnore
-    private List<HbaAntragExport> helperHbaAntragExports = new ArrayList<>();
+    private List<String> hbaAntragCertFiles = new ArrayList<>();
     @JsonIgnore
     private List<String> helperTelematikIDs = new ArrayList<>();
 
@@ -160,7 +160,7 @@ public class VerzeichnisdienstImportCommand {
         return res;
     }
 
-    public DirectoryEntrySaveContainer createAddDirEntryCommand(TiVZDProperties tiVZDProperties) {
+    public DirectoryEntrySaveContainer createAddDirEntryCommand(Mandant mandant, TiVZDProperties tiVZDProperties) {
         EnumEntryType entryType = telematikIdInfo.getProfessionOIDInfos().get(0).getEntryType();
 
         DirectoryEntrySaveContainer directoryEntrySaveContainer = new DirectoryEntrySaveContainer();
@@ -186,7 +186,13 @@ public class VerzeichnisdienstImportCommand {
         addDirEntryCommand.setStreetAddress(strasseUndHausnummer);
         addDirEntryCommand.setPostalCode(plz);
         addDirEntryCommand.setLocalityName(ort);
-        addDirEntryCommand.setStateOrProvinceName(bundesland);
+
+        if (telematikIdInfo.getProfessionOIDInfos().get(0).isOrganization()) {
+            addDirEntryCommand.setStateOrProvinceName(mandant.getBundesland());
+        }
+        else {
+            addDirEntryCommand.setStateOrProvinceName(bundesland);
+        }
 
         if (telematikIdInfo.getProfessionOIDInfos().get(0).isOrganization()) {
             if (laenderCode == null) {
@@ -195,6 +201,9 @@ public class VerzeichnisdienstImportCommand {
             else {
                 addDirEntryCommand.setCountryCode(laenderCode);
             }
+        }
+        else {
+            addDirEntryCommand.setCountryCode(laenderCode);
         }
 
         addDirEntryCommand.setSpecialization(fachrichtungen);
@@ -218,7 +227,7 @@ public class VerzeichnisdienstImportCommand {
         return directoryEntrySaveContainer;
     }
 
-    public DirectoryEntrySaveContainer createModDirEntryCommand(TiVZDProperties tiVZDProperties, VzdEntryWrapper directoryEntry) {
+    public DirectoryEntrySaveContainer createModDirEntryCommand(VzdEntryWrapper directoryEntry) {
         EnumEntryType entryType = telematikIdInfo.getProfessionOIDInfos().get(0).getEntryType();
 
         DirectoryEntrySaveContainer directoryEntrySaveContainer = new DirectoryEntrySaveContainer();
@@ -244,7 +253,7 @@ public class VerzeichnisdienstImportCommand {
         modDirEntryCommand.setStreetAddress(strasseUndHausnummer != null?strasseUndHausnummer:directoryEntry.extractDirectoryEntryStreetAddress());
         modDirEntryCommand.setPostalCode(plz != null?plz:directoryEntry.extractDirectoryEntryPostalCode());
         modDirEntryCommand.setLocalityName(ort != null?ort:directoryEntry.extractDirectoryEntryLocalityName());
-        modDirEntryCommand.setStateOrProvinceName(bundesland != null?bundesland:EnumStateOrProvinceName.getFromHrText(directoryEntry.extractDirectoryEntryStateOrProvinceName()));
+        modDirEntryCommand.setStateOrProvinceName(bundesland);
         modDirEntryCommand.setCountryCode(laenderCode != null?laenderCode:directoryEntry.extractDirectoryEntryCountryCode());
 
         modDirEntryCommand.setSpecialization(fachrichtungen != null?fachrichtungen:directoryEntry.extractDirectoryEntrySpecialization());
@@ -266,7 +275,7 @@ public class VerzeichnisdienstImportCommand {
         return directoryEntrySaveContainer;
     }
 
-    public boolean toUpdate(VzdEntryWrapper directoryEntry, TiVZDProperties tiVZDProperties) throws Exception {
+    public boolean toUpdate(VzdEntryWrapper directoryEntry, Mandant mandant, TiVZDProperties tiVZDProperties) throws Exception {
         if (directoryEntry == null) {
             return false;
         }
@@ -289,6 +298,77 @@ public class VerzeichnisdienstImportCommand {
             }
             else {
                 setVorname(null);
+            }
+        }
+
+        //handle address data
+        if (telematikIdInfo.getProfessionOIDInfos().get(0).isOrganization()) {
+            setBundesland(mandant.getBundesland());
+        }
+        else {
+            if (getStrasseUndHausnummer() == null
+                ||
+                getStrasseUndHausnummer().trim().isEmpty()
+                ||
+                getPlz() == null
+                ||
+                getPlz().trim().isEmpty()
+                ||
+                getOrt() == null
+                ||
+                getOrt().trim().isEmpty()
+                ||
+                getBundesland() == null
+                ||
+                getLaenderCode() == null
+                ||
+                getLaenderCode().trim().isEmpty()
+            ) {
+                //strasse und hausnummer
+                if (directoryEntry.extractDirectoryEntryStreetAddress() != null
+                    &&
+                    !directoryEntry.extractDirectoryEntryStreetAddress().trim().isEmpty()
+                ) {
+                    setStrasseUndHausnummer("");
+                }
+                else {
+                    setStrasseUndHausnummer(null);
+                }
+
+                //plz
+                if (directoryEntry.extractDirectoryEntryPostalCode() != null
+                    &&
+                    !directoryEntry.extractDirectoryEntryPostalCode().trim().isEmpty()
+                ) {
+                    setPlz("");
+                }
+                else {
+                    setPlz(null);
+                }
+
+                //ort
+                if (directoryEntry.extractDirectoryEntryLocalityName() != null
+                    &&
+                    !directoryEntry.extractDirectoryEntryLocalityName().trim().isEmpty()
+                ) {
+                    setOrt("");
+                }
+                else {
+                    setOrt(null);
+                }
+
+                //ort
+                if (directoryEntry.extractDirectoryEntryCountryCode() != null
+                    &&
+                    !directoryEntry.extractDirectoryEntryCountryCode().trim().isEmpty()
+                ) {
+                    setLaenderCode("");
+                }
+                else {
+                    setLaenderCode(null);
+                }
+
+                setBundesland(null);
             }
         }
 

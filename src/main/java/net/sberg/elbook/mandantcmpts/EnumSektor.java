@@ -16,13 +16,15 @@
 package net.sberg.elbook.mandantcmpts;
 
 import de.gematik.ws.cm.pers.hba_smc_b.v1.ExtCertType;
-import de.gematik.ws.cm.pers.hba_smc_b.v1.HbaAntragExport;
 import de.gematik.ws.cm.pers.hba_smc_b.v1.ProdResultType;
 import de.gematik.ws.cm.pers.hba_smc_b.v1.SmcbAntragExport;
+import net.sberg.elbook.common.FileUtils;
 import net.sberg.elbook.stammdatenzertimportcmpts.EncZertifikat;
 import net.sberg.elbook.stammdatenzertimportcmpts.VerzeichnisdienstImportCommand;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
 
+import java.io.File;
 import java.util.*;
 
 public enum EnumSektor {
@@ -31,7 +33,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             return String.valueOf(Integer.parseInt(telematikId.split("\\.")[2]));
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             if (!verzeichnisdienstImportCommand.getHelperSmcbAntragExports().isEmpty()) {
 
                 Map<String, VerzeichnisdienstImportCommand> hMap = new HashMap<>();
@@ -236,29 +238,25 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             return String.valueOf(Integer.parseInt(telematikId.split("\\.")[2]));
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
-            if (!verzeichnisdienstImportCommand.getHelperHbaAntragExports().isEmpty()) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+            if (!verzeichnisdienstImportCommand.getHbaAntragCertFiles().isEmpty()) {
                 Map<String, VerzeichnisdienstImportCommand> hMap = new HashMap<>();
-                for (Iterator<HbaAntragExport> iterator = verzeichnisdienstImportCommand.getHelperHbaAntragExports().iterator(); iterator.hasNext(); ) {
-
-                    HbaAntragExport hbaAntragExport = iterator.next();
-                    String telematikId = hbaAntragExport.getFreigabedaten().getTelematikID();
-                    verzeichnisdienstImportCommand.setTelematikID(telematikId);
-                    if (!hMap.containsKey(telematikId)) {
-                        hMap.put(telematikId, VerzeichnisdienstImportCommand.copy(verzeichnisdienstImportCommand));
-                    }
-
-                    //save the certs
-                    for (Iterator<ProdResultType> iteratored = hbaAntragExport.getProdResult().iterator(); iteratored.hasNext(); ) {
-                        ProdResultType prodResultType = iteratored.next();
-                        for (Iterator<ExtCertType> zertIterator = prodResultType.getZertifikate().iterator(); zertIterator.hasNext(); ) {
-                            ExtCertType extCertType = zertIterator.next();
-                            if (extCertType.getCertificateSem().contains(".ENC.")) {
-                                EncZertifikat encZertifikat = new EncZertifikat();
-                                encZertifikat.setContent(Base64.encodeBase64String(extCertType.getCertificateValue()));
-                                verzeichnisdienstImportCommand.getEncZertifikat().add(encZertifikat);
-                            }
+                for (Iterator<String> iterator = verzeichnisdienstImportCommand.getHbaAntragCertFiles().iterator(); iterator.hasNext(); ) {
+                    String hbaAntragCertFile = iterator.next();
+                    //read the cert
+                    try {
+                        String certContent = FileUtils.readFileContent(hbaAntragCertFile);
+                        EncZertifikat encZertifikat = new EncZertifikat();
+                        encZertifikat.setContent(certContent);
+                        verzeichnisdienstImportCommand.getEncZertifikat().add(encZertifikat);
+                        String telematikId = new File(hbaAntragCertFile).getName().split("_")[0];
+                        verzeichnisdienstImportCommand.setTelematikID(telematikId);
+                        if (!hMap.containsKey(telematikId)) {
+                            hMap.put(telematikId, VerzeichnisdienstImportCommand.copy(verzeichnisdienstImportCommand));
                         }
+                    }
+                    catch (Exception e) {
+                        log.error("error on reading hbaAntragCertFile: "+hbaAntragCertFile, e);
                     }
                 }
 
@@ -290,7 +288,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -298,7 +296,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -306,7 +304,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -314,7 +312,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -322,7 +320,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -330,7 +328,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -338,7 +336,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -346,7 +344,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -354,7 +352,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -362,7 +360,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -370,7 +368,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -378,7 +376,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -386,7 +384,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     },
@@ -394,7 +392,7 @@ public enum EnumSektor {
         public String getBusinessId(String telematikId) {
             throw new IllegalStateException("not implemented");
         }
-        public List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
+        public List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand) {
             return List.of(verzeichnisdienstImportCommand);
         }
     };
@@ -410,5 +408,5 @@ public enum EnumSektor {
     }
 
     public abstract String getBusinessId(String telematikId);
-    public abstract List<VerzeichnisdienstImportCommand> checkCommand(VerzeichnisdienstImportCommand verzeichnisdienstImportCommand);
+    public abstract List<VerzeichnisdienstImportCommand> checkCommand(Logger log, VerzeichnisdienstImportCommand verzeichnisdienstImportCommand);
 }

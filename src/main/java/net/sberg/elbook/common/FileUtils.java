@@ -19,6 +19,24 @@ import java.io.*;
 
 public class FileUtils {
 
+    public static final String readFileContent(String fileName) throws Exception {
+        return readFileContent(new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "UTF-8")));
+    }
+
+    private static final String readFileContent(BufferedReader reader) throws Exception {
+        StringBuilder stringBuilder = new StringBuilder();
+        String ls = System.getProperty("line.separator");
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            if (stringBuilder.length() > 0) {
+                stringBuilder.append(ls);
+            }
+            stringBuilder.append(line);
+        }
+        reader.close();
+        return stringBuilder.toString();
+    }
+
     public static final File writeToFile(String str, String fileName) throws Exception {
         File file = new File(fileName);
         checkExistsFileDir(fileName);

@@ -15,13 +15,14 @@
  */
 package net.sberg.elbook.tspcmpts;
 
-import de.gematik.ws.cm.pers.hba_smc_b.v1.*;
-import de.gematik.ws.sst.v1.ObjectFactory;
+import de.gematik.ws.cm.pers.hba_smc_b.v1.KartenStatusKey;
 import de.gematik.ws.sst.v1.*;
 import jakarta.xml.bind.JAXBElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+
+import javax.xml.datatype.DatatypeFactory;
 
 public class TspConnector extends WebServiceGatewaySupport {
 
@@ -38,6 +39,15 @@ public class TspConnector extends WebServiceGatewaySupport {
         AntraegeExportRequestType antraegeExportRequest = new AntraegeExportRequestType();
         antraegeExportRequest.setVorgangsNr(vorgangsNr);
         return (GetSmcbAntraegeExportResponseType)getSoapResponse(oFactory.createGetSmcbAntraegeExportRequest(antraegeExportRequest));
+    }
+
+    public GetHbaAntraegeExportResponseType getHbaAntraegeZertifikateFreigeschaltet(boolean overview, String aenderungsdatumVon, String aenderungsdatumBis) throws Exception {
+        AntraegeExportRequestType antraegeExportRequest = new AntraegeExportRequestType();
+        antraegeExportRequest.setUeberblicksanfrage(overview);
+        antraegeExportRequest.setKarteStatus(KartenStatusKey.ZERTIFIKATE_FREIGESCHALTET);
+        antraegeExportRequest.setAenderungsdatumVon(DatatypeFactory.newInstance().newXMLGregorianCalendar(aenderungsdatumVon));
+        antraegeExportRequest.setAenderungsdatumBis(DatatypeFactory.newInstance().newXMLGregorianCalendar(aenderungsdatumBis));
+        return (GetHbaAntraegeExportResponseType)getSoapResponse(oFactory.createGetHbaAntraegeExportRequest(antraegeExportRequest));
     }
 
     public GetHbaAntraegeExportResponseType getHbaAntraegeZertifikateFreigeschaltet(boolean overview, int limit, int offset) {
