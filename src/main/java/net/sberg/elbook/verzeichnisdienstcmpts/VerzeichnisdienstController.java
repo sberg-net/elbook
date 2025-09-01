@@ -93,7 +93,20 @@ public class VerzeichnisdienstController extends AbstractWebController {
 
                     DirectoryEntryContainer directoryEntryContainer = new DirectoryEntryContainer(directoryEntry, kuerzelL, authUserDetails.getMandant());
                     TiVZDProperties tiVZDProperties = authUserDetails.getMandant().getTiVZDProperties();
-                    List<VzdEntryWrapper> logEntries = verzeichnisdienstService.logEntriesForUid(tiVZDProperties, uid);
+
+                    List<VzdEntryWrapper> logEntries = new ArrayList<>();
+                    try {
+                        logEntries = verzeichnisdienstService.logEntriesForTelematikId(tiVZDProperties, directoryEntry.extractDirectoryEntryTelematikId());
+                    }
+                    catch (Exception e) {
+                        try {
+                            logEntries = verzeichnisdienstService.logEntriesForUid(tiVZDProperties, uid);
+                        }
+                        catch (Exception ee) {
+                            log.error("error on loading the log entries with the uid: "+uid+" - mandant: "+authUserDetails.getMandant().getId()+" - "+authUserDetails.getMandant().getName(), ee);
+                        }
+                    }
+
                     for (VzdEntryWrapper logEntry : logEntries) {
                         LogEntryContainer logEntryContainer = new LogEntryContainer(logEntry);
                         directoryEntryContainer.getLogEntries().add(logEntryContainer.createSummary());
