@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.13.2]
+
+### Fixed
+- Mailjob resilient
+- synchronisieren der smcb einträge
+
 ## [2.13.1]
 
 ### Fixed

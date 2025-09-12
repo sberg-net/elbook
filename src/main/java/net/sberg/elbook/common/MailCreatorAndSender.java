@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,9 @@ public class MailCreatorAndSender {
     }
 
     public void send() throws Exception {
+        if (javaMailSender instanceof JavaMailSenderImpl && ((JavaMailSenderImpl)javaMailSender).getHost().equals("notSet")) {
+            return;
+        }
         File f = new File(ICommonConstants.BASE_DIR + "mails");
         if (!f.exists()) {
             return;

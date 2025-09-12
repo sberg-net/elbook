@@ -457,8 +457,10 @@ public class StammdatenZertImportService {
             }
         }
 
-        certLoadInfo.put("date", LocalDate.now().toString());
-        objectMapper.writeValue(new File(certDir + File.separator + certLoadInfoFileName), certLoadInfo);
+        if (certLoadInfo != null) {
+            certLoadInfo.put("date", LocalDate.now().toString());
+            objectMapper.writeValue(new File(certDir + File.separator + certLoadInfoFileName), certLoadInfo);
+        }
 
         return verzeichnisdienstImportCommandContainer;
     }
