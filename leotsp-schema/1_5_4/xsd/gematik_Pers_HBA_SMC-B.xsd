@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Version 1.5 , Stand 14.05.2020 -->
-<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gematik="http://ws.gematik.de/cm/pers/HBA_SMC-B/v1.5" targetNamespace="http://ws.gematik.de/cm/pers/HBA_SMC-B/v1.5" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.5.0">
-	<include schemaLocation="gematik_Pers_HBA.xsd"/>
-	<include schemaLocation="gematik_Pers_SMC-B.xsd"/>
-</schema>
