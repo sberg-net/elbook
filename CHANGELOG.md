@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.14.0]
+
+### Added
+- tsp soap 1.6 schnittstelle integriert
+
 ## [2.13.2]
 
 ### Fixed

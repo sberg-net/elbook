@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Version 1.6 , Stand 27.03.2023 -->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://ws.gematik.de/SST/v1.6" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gematik="http://ws.gematik.de/cm/pers/HBA_SMC-B/v1.6" xmlns:lat="http://xoev.de/latinchars/1_1/datatypes" name="LEO-TSP-SST" targetNamespace="http://ws.gematik.de/SST/v1.6">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://ws.gematik.de/SST/v1.6">
+			<xsd:import namespace="http://ws.gematik.de/cm/pers/HBA_SMC-B/v1.6" schemaLocation="../xsd/gematik_Pers_HBA_SMC-B.xsd"/>
+			<xsd:import namespace="http://xoev.de/latinchars/1_1/datatypes" schemaLocation="../xsd/latinchars.xsd"/>
+			<!-- Request Types -->
+			<xsd:complexType name="AntraegeExportRequestType">
+				<xsd:sequence>
+					<xsd:element name="VorgangsNr" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+					<!--Suche nach AntragsID; "TSP Spezifische ID des Hauptantrags; mit einem Antrag können
+					   mehrere Karten beantragt  werden" -->
+					<xsd:element name="AntragsID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+					<!-- Suche nach KartenAntragsID, "TSP Spezifische ID des zu einer spezifischen Karte
+					              gehörigen Antrags" -->
+					<xsd:element name="KartenAntragsID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+					<!-- Bisheriger elementName Antragsstatus unsystematisch, Änderung in AntragStatus -->
+					<xsd:element name="AntragsStatus" type="gematik:AntragStatusKey" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="NachnameAntragsteller" type="lat:String.Latin" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="VornameAntragsteller" type="lat:String.Latin" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="Institutionsname" type="gematik:String64Type" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="GeburtsdatumAntragsteller" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+					<!-- AenderungsdatumVon/bis
+					Im Ergebnis der Abfrage der beiden Parameter MÜSSEN sowohl Änderungen erfasst werden, die sich auf Anträge beziehen ( z.B. Status Änderung eines Antrags von Bearebitung beendet 
+					auf Freigegeben zu einem bestimmten Zeitpunkt ) wie auch Änderungen, die sich auf einzelene Karten beziehen (zb Zertifkate an Zeitpunkt X freigeschaftet) zurückgegeben werden, falls zutreffend.					
+					-->
+					<xsd:element name="AenderungsdatumVon" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="AenderungsdatumBis" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+					<!--   Definition StartdatumAntragstellung  in der TSP Schnittstelle := "Als  Startdatum der Antragstellung wird   
+					             das Datum der ersten Zwischenspeicherung gespeichert. 
+			                      Hat der keine Zwischenspeicherung stattgefunden, 
+								  so ist es das Datum der (erstmaligen) Antragsannahme."  -->
+					<xsd:element name="StartdatumAntragstellung" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+					<!-- Alstlast=> #EDIT#  Nachfrage: Was ist hier mit Enddatum gemeint? Muss noch definiert werden, scheint unklar-->
+					<xsd:element name="EnddatumAntragstellung" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="TelematikIDAntragsteller" type="gematik:String128Type" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="TelematikIDInstitution" type="gematik:String128Type" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="InstID" type="gematik:String20Type" minOccurs="0" maxOccurs="1"/>
+					<!-- HeilberuflerID, "HeilberuflerID" im XSD, Erstausgabenummer (LEAN), HeilberuflerID, 
+					             lebenslange Arztnummer (LANR), Leistungserbringer-ID, etc. -->
+					<xsd:element name="HeilberuflerID" type="gematik:String45Type" minOccurs="0" maxOccurs="1"/>
+					<!--Elektronische Fortbildungsnummer-->
+					<xsd:element name="EFN" type="gematik:EFN_Type" minOccurs="0" maxOccurs="1"/>
+					<!-- Weitere Infos der Karte -->
+					<xsd:element name="KarteStatus" type="gematik:KartenStatusKey" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="KarteICCSN" type="gematik:ICCSNType" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="KarteProduktionszeitpunktVon" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="KarteProduktionszeitpunktBis" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="KarteAblaufdatumVon" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="KarteAblaufdatumBis" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+					
+					<!-- Wenn Ueberblicksanfrage:=true, dann gelten folgende Lieferbedingung
+						- Alle Elemente mit 'base64Binary'-Inhalten DÜRFEN NICHT geliefert werden; dazu zählen 
+							- AntragPDF 
+							- Passfoto
+							- FreigabePDF
+							- Signaturen
+							- ProdResultType ohne Zertifikate
+							- SperrAuftrag (HBASperrAuftragType) im Element AntragExport soll komplett weggelassen werden, da das untergeordnete SperrPDF ein Pflichtelement ist;
+					-->
+					<xsd:element name="Ueberblicksanfrage" type="xsd:boolean" minOccurs="0" maxOccurs="1" default="false"/>
+					<!-- Standardsortierung "Aenderungsdatum absteigend". 
+					Mögliche Bezeichner für die Sortierung:
+					- Aenderungsdatum
+					- Startdatum
+					- KarteProduktionszeitpunkt
+					- KarteAblaufdatum
+					-->
+					<xsd:element name="SortierungNach" type="tns:SortierkriteriumType" minOccurs="0" maxOccurs="1" default="Aenderungsdatum" />
+					<xsd:element name="SortierungAbsteigend" type="xsd:boolean" minOccurs="0" maxOccurs="1" default="true"/>
+					<!-- Über die Anfrage-Parameter kann die abzufragende Ergebnismenge eingeschränkt bzw an bestimmter Stelle fortgefahren werden.
+					Diese Möglichkeit garantiert keine lückenlosen Ergebnisse. Daher sollte auch auf die Angabe eines sinnvollen Sortierkriteriums geachtet werden.
+					-->
+					<xsd:element name="AnfrageLimit" type="xsd:int" minOccurs="0" maxOccurs="1" default="100" />
+					<xsd:element name="AnfrageOffset" type="xsd:int" minOccurs="0" maxOccurs="1" default="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="SetAntraegeInBearbeitungRequestType">
+				<xsd:sequence>
+					<xsd:element name="AntragsID" type="xsd:string" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<!-- Response Types -->
+			<xsd:complexType name="GeneralResponseType">
+				<xsd:sequence>
+					<xsd:element name="ReturnCode" type="tns:ReturnCodeType" nillable="false"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddSmcbVorbefuellungenResponseType">
+				<xsd:complexContent>
+					<xsd:extension base="tns:GeneralResponseType">
+						<xsd:sequence>
+							<xsd:element ref="gematik:SmcbVorbefuellungen" minOccurs="0"/>
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="AddSmcbNachbefuellungenResponseType">
+				<xsd:complexContent>
+					<xsd:extension base="tns:GeneralResponseType"/>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="GetSmcbAntraegeExportResponseType">
+				<xsd:complexContent>
+					<xsd:extension base="tns:GeneralResponseType">
+						<xsd:sequence>
+							<!-- true falls weitere gefundene Anträge unter Verwendung dieser Suchkriterien abhängig von Limit und Offset vorliegen -->
+						    <xsd:element name="AntraegeExportWeitereTreffer" type="xsd:boolean" />						
+							<xsd:element ref="gematik:SmcbAntraegeExport" minOccurs="0"/>
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="AddHbaVorbefuellungenResponseType">
+				<xsd:complexContent>
+					<xsd:extension base="tns:GeneralResponseType">
+						<xsd:sequence>
+							<xsd:element ref="gematik:HbaVorbefuellungen" minOccurs="0"/>
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="AddHbaNachbefuellungenResponseType">
+				<xsd:complexContent>
+					<xsd:extension base="tns:GeneralResponseType"/>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="GetHbaAntraegeExportResponseType">
+				<xsd:complexContent>
+					<xsd:extension base="tns:GeneralResponseType">
+						<xsd:sequence>
+							<!-- true falls weitere gefundene Anträge unter Verwendung dieser Suchkriterien abhängig von Limit und Offset vorliegen -->
+						    <xsd:element name="AntraegeExportWeitereTreffer" type="xsd:boolean" />
+							<xsd:element ref="gematik:HbaAntraegeExport" minOccurs="0"/>
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:simpleType name="SortierkriteriumType">
+				<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="Aenderungsdatum"/>
+				<xsd:enumeration value="Startdatum"/>
+				<xsd:enumeration value="KarteProduktionszeitpunkt"/>
+				<xsd:enumeration value="KarteAblaufdatum"/>
+				</xsd:restriction>
+			</xsd:simpleType>			
+			<xsd:simpleType name="ReturnCode">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="OK"/>
+					<xsd:enumeration value="ERROR_TECHNISCH"/>
+					<xsd:enumeration value="ERROR_LOGISCH"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:complexType name="ReturnCodeType">
+				<xsd:sequence>
+					<xsd:element name="Code" type="tns:ReturnCode" nillable="false"/>
+					<xsd:element name="Number" type="xsd:int" nillable="true"/>
+					<xsd:element name="Description" type="xsd:string" nillable="true"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<!--#EDIT# tns:AntragStatusKey entfernt; MUSS noch überarbeitet werden: Vorgehensweise Zeitpunkt abstimmen! 
+			     LEO TSP AG führt  bereits Arbeitsauftrag zur Konsolidierung durch -->
+			<!-- Response Elemente -->
+			<xsd:element name="AddSmcbVorbefuellungenResponse" type="tns:AddSmcbVorbefuellungenResponseType"/>
+			<xsd:element name="AddSmcbNachbefuellungenResponse" type="tns:AddSmcbNachbefuellungenResponseType"/>
+			<xsd:element name="AddSmcbSperrAuftraegeResponse" type="tns:GeneralResponseType"/>
+			<xsd:element name="AddSmcbFreigabenResponse" type="tns:GeneralResponseType"/>
+			<xsd:element name="AddHbaVorbefuellungenResponse" type="tns:AddHbaVorbefuellungenResponseType"/>
+			<xsd:element name="AddHbaNachbefuellungenResponse" type="tns:AddHbaNachbefuellungenResponseType"/>
+			<xsd:element name="AddHbaSperrAuftraegeResponse" type="tns:GeneralResponseType"/>
+			<xsd:element name="AddHbaFreigabenResponse" type="tns:GeneralResponseType"/>
+			<xsd:element name="GetSmcbAntraegeExportResponse" type="tns:GetSmcbAntraegeExportResponseType"/>
+			<xsd:element name="GetHbaAntraegeExportResponse" type="tns:GetHbaAntraegeExportResponseType"/>
+			<xsd:element name="SetAntraegeInBearbeitungResponse" type="tns:GeneralResponseType"/>
+			<!-- Requests -->
+			<xsd:element name="GetSmcbAntraegeExportRequest" type="tns:AntraegeExportRequestType"/>
+			<xsd:element name="GetHbaAntraegeExportRequest" type="tns:AntraegeExportRequestType"/>
+			<xsd:element name="SetAntraegeInBearbeitungRequest" type="tns:SetAntraegeInBearbeitungRequestType"/>
+		</xsd:schema>
+	</wsdl:types>
+	<!-- Festlegung:  in den folgenden Requests zur Vorbefüllung, Nachbefüllung, Freigabe und Sperrung
+	darf entgegen der Festlegung in den jeweiligen XSD's nur maximal je ein Vorbefüllungs-, Nachbefüllungs-,Freigabe- oder Sperrelement
+	enthalten sein.
+	-->
+	<wsdl:message name="addSmcbVorbefuellungenRequest">
+		<wsdl:part name="SmcbVorbefuellungen" element="gematik:SmcbVorbefuellungen"/>
+	</wsdl:message>
+	<wsdl:message name="addSmcbVorbefuellungenResponse">
+		<wsdl:part name="Response" element="tns:AddSmcbVorbefuellungenResponse"/>
+	</wsdl:message>
+	<wsdl:message name="addSmcbNachbefuellungenRequest">
+		<wsdl:part name="SmcbNachbefuellungen" element="gematik:SmcbNachbefuellungen"/>
+	</wsdl:message>
+	<wsdl:message name="addSmcbNachbefuellungenResponse">
+		<wsdl:part name="Response" element="tns:AddSmcbNachbefuellungenResponse"/>
+	</wsdl:message>
+	<wsdl:message name="addSmcbSperrAuftraegeRequest">
+		<wsdl:part name="SmcbSperrAutraege" element="gematik:SmcbSperrAuftraege"/>
+	</wsdl:message>
+	<wsdl:message name="addSmcbSperrAuftraegeResponse">
+		<wsdl:part name="Response" element="tns:AddSmcbSperrAuftraegeResponse"/>
+	</wsdl:message>
+	<wsdl:message name="addSmcbFreigabenRequest">
+		<wsdl:part name="SmcbFreigaben" element="gematik:SmcbFreigaben"/>
+	</wsdl:message>
+	<wsdl:message name="addSmcbFreigabenResponse">
+		<wsdl:part name="Response" element="tns:AddSmcbFreigabenResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getSmcbAntraegeExportRequest">
+		<wsdl:part name="Request" element="tns:GetSmcbAntraegeExportRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getSmcbAntraegeExportResponse">
+		<wsdl:part name="SmcbAntraegeExport" element="tns:GetSmcbAntraegeExportResponse"/>
+	</wsdl:message>
+	<wsdl:message name="addHbaVorbefuellungenRequest">
+		<wsdl:part name="HbaVorbefuellungen" element="gematik:HbaVorbefuellungen"/>
+	</wsdl:message>
+	<wsdl:message name="addHbaVorbefuellungenResponse">
+		<wsdl:part name="Response" element="tns:AddHbaVorbefuellungenResponse"/>
+	</wsdl:message>
+	<wsdl:message name="addHbaNachbefuellungenRequest">
+		<wsdl:part name="HbaNachbefuellungen" element="gematik:HbaNachbefuellungen"/>
+	</wsdl:message>
+	<wsdl:message name="addHbaNachbefuellungenResponse">
+		<wsdl:part name="Response" element="tns:AddHbaNachbefuellungenResponse"/>
+	</wsdl:message>
+	<wsdl:message name="addHbaSperrAuftraegeRequest">
+		<wsdl:part name="HbaSperrAuftraege" element="gematik:HbaSperrAuftraege"/>
+	</wsdl:message>
+	<wsdl:message name="addHbaSperrAuftraegeResponse">
+		<wsdl:part name="Response" element="tns:AddHbaSperrAuftraegeResponse"/>
+	</wsdl:message>
+	<wsdl:message name="addHbaFreigabenRequest">
+		<wsdl:part name="HbaFreigaben" element="gematik:HbaFreigaben"/>
+	</wsdl:message>
+	<wsdl:message name="addHbaFreigabenResponse">
+		<wsdl:part name="Response" element="tns:AddHbaFreigabenResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getHbaAntraegeExportRequest">
+		<wsdl:part name="Request" element="tns:GetHbaAntraegeExportRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getHbaAntraegeExportResponse">
+		<wsdl:part name="HbaAntraegeExport" element="tns:GetHbaAntraegeExportResponse"/>
+	</wsdl:message>
+	<wsdl:message name="setAntraegeInBearbeitungRequest">
+		<wsdl:part name="Request" element="tns:SetAntraegeInBearbeitungRequest"/>
+	</wsdl:message>
+	<wsdl:message name="setAntraegeInBearbeitungResponse">
+		<wsdl:part name="Response" element="tns:SetAntraegeInBearbeitungResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="LEO-TSP-SST-PortType">
+		<wsdl:operation name="addSmcbVorbefuellungen">
+			<wsdl:input message="tns:addSmcbVorbefuellungenRequest"/>
+			<wsdl:output message="tns:addSmcbVorbefuellungenResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="addSmcbNachbefuellungen">
+			<wsdl:input message="tns:addSmcbNachbefuellungenRequest"/>
+			<wsdl:output message="tns:addSmcbNachbefuellungenResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="addSmcbSperrAuftraege">
+			<wsdl:input message="tns:addSmcbSperrAuftraegeRequest"/>
+			<wsdl:output message="tns:addSmcbSperrAuftraegeResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="addSmcbFreigaben">
+			<wsdl:input message="tns:addSmcbFreigabenRequest"/>
+			<wsdl:output message="tns:addSmcbFreigabenResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getSmcbAntraegeExport">
+			<wsdl:input message="tns:getSmcbAntraegeExportRequest"/>
+			<wsdl:output message="tns:getSmcbAntraegeExportResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="addHbaVorbefuellungen">
+			<wsdl:input message="tns:addHbaVorbefuellungenRequest"/>
+			<wsdl:output message="tns:addHbaVorbefuellungenResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="addHbaNachbefuellungen">
+			<wsdl:input message="tns:addHbaNachbefuellungenRequest"/>
+			<wsdl:output message="tns:addHbaNachbefuellungenResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="addHbaSperrAuftraege">
+			<wsdl:input message="tns:addHbaSperrAuftraegeRequest"/>
+			<wsdl:output message="tns:addHbaSperrAuftraegeResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="addHbaFreigaben">
+			<wsdl:input message="tns:addHbaFreigabenRequest"/>
+			<wsdl:output message="tns:addHbaFreigabenResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getHbaAntraegeExport">
+			<wsdl:input message="tns:getHbaAntraegeExportRequest"/>
+			<wsdl:output message="tns:getHbaAntraegeExportResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="setAntraegeInBearbeitung">
+			<wsdl:input message="tns:setAntraegeInBearbeitungRequest"/>
+			<wsdl:output message="tns:setAntraegeInBearbeitungResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="LEO-TSP-SST-Binding" type="tns:LEO-TSP-SST-PortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="addSmcbVorbefuellungen">
+			<soap:operation soapAction="addSmcbVorbefuellungen" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addSmcbNachbefuellungen">
+			<soap:operation soapAction="addSmcbNachbefuellungen" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addSmcbSperrAuftraege">
+			<soap:operation soapAction="addSmcbSperrAuftraege" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addSmcbFreigaben">
+			<soap:operation soapAction="addSmcbFreigaben" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getSmcbAntraegeExport">
+			<soap:operation soapAction="getSmcbAntraegeExport" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addHbaVorbefuellungen">
+			<soap:operation soapAction="addHbaVorbefuellungen" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addHbaNachbefuellungen">
+			<soap:operation soapAction="addHbaNachbefuellungen" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addHbaSperrAuftraege">
+			<soap:operation soapAction="addHbaSperrAuftraege" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addHbaFreigaben">
+			<soap:operation soapAction="addHbaFreigaben" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getHbaAntraegeExport">
+			<soap:operation soapAction="getHbaAntraegeExport" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setAntraegeInBearbeitung">
+			<soap:operation soapAction="setAntraegeInBearbeitung" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="LEO-TSP-SST-Service">
+		<wsdl:port name="LEO-TSP-SST-ServicePort" binding="tns:LEO-TSP-SST-Binding">
+			<soap:address location="https://URL_NOT_SPECIFIED"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

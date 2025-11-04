@@ -63,11 +63,11 @@ public class VerzeichnisdienstService {
     @PostConstruct
     private void markBatchjobAsSystemEndedByStart() throws Exception {
         genericDao.update(
-                "update BatchJob set beendetAm = ?, statusCode = '" + EnumBatchJobStatusCode.SYSTEMENDED
-                        + "' where batchJobName = '" + EnumBatchJobName.STAMMDATEN_CERT_IMPORT
-                        + "' and statusCode = '" + EnumBatchJobStatusCode.RUNNING + "'",
-                BatchJob.class.getName(),
-                List.of(new DaoPlaceholderProperty("beendetAm", LocalDateTime.now()))
+        "update BatchJob set beendetAm = ?, statusCode = '" + EnumBatchJobStatusCode.SYSTEMENDED
+            + "' where batchJobName = '" + EnumBatchJobName.STAMMDATEN_CERT_IMPORT
+            + "' and statusCode = '" + EnumBatchJobStatusCode.RUNNING + "'",
+            BatchJob.class.getName(),
+            List.of(new DaoPlaceholderProperty("beendetAm", LocalDateTime.now()))
         );
     }
 

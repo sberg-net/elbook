@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Version 1.6 , Stand 27.03.2023 -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gematik="http://ws.gematik.de/cm/pers/HBA_SMC-B/v1.6" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:lat="http://xoev.de/latinchars/1_1/datatypes" targetNamespace="http://ws.gematik.de/cm/pers/HBA_SMC-B/v1.6" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.6.0">
+	<annotation>
+		<documentation xml:lang="de">
+			Definition der Datentypen für die Datenübergabe zwischen attributebestätigender Stelle und TSP
+		</documentation>
+	</annotation>
+	<import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
+	<import namespace="http://xoev.de/latinchars/1_1/datatypes" schemaLocation="latinchars.xsd"/>
+	<include schemaLocation="gematik_HBA_SMC-B_Typen.xsd"/>
+	<element name="HbaVorbefuellung">
+		<annotation>
+			<documentation>Vorbefüllungsdaten für einen einzelnen Antragsteller</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element name="VorgangsNr" type="string" minOccurs="0"/>
+				<element name="Antragsteller" type="gematik:AntragstellerType" minOccurs="0">
+					<annotation>
+						<documentation>persönliche Daten des Antragstellers</documentation>
+					</annotation>
+				</element>
+				<element name="InstAnschrift" type="gematik:InstAnschriftType" minOccurs="0"/>
+				<element name="VorabIdentifikation" type="gematik:IdentifikationType" minOccurs="0">
+					<annotation>
+						<documentation>Beschreibt eine vorliegende Identifikation</documentation>
+					</annotation>
+				</element>
+				<element name="Druckzeilen" type="gematik:DruckzeilenType" minOccurs="0"/>
+				<element name="AnzahlKarten" type="int" minOccurs="0">
+					<annotation>
+						<documentation>Anzahl der zu produzierenden Karten</documentation>
+					</annotation>
+				</element>
+				<element name="Antragstyp" type="gematik:AntragsArt" minOccurs="0">
+					<annotation>
+						<documentation>Erstantrag/Folgeantrag</documentation>
+					</annotation>
+				</element>
+				<element name="AttrBestStelle" type="gematik:AttrBSType">
+					<annotation>
+						<documentation>Attributbestätigende Stelle</documentation>
+					</annotation>
+				</element>
+				<element name="Konfigurationen" type="gematik:KeyValue" minOccurs="0" maxOccurs="unbounded">
+					<annotation>
+						<documentation>Für die Vorbefüllungsdaten spezifische Konfigurationen.
+							Beispielsweise kann für einen vorbefüllten, nicht vorhandenen akademischen Grad als Value ein "vne" übermittelt werden um auch diesen leeren Wert nicht editierbar zu setzen. Das Element des akademischen Grades muss dabei via XPath-Ausdruck im Key angegeben werden.
+							Weitere Informationen und Beispiele sind im Wiki unter https://gitlab.com/leo_tsp_wsdl_xsd/leotsp-schema/-/wikis/xml/konfigurationen zu finden.</documentation>
+					</annotation>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="HbaVorbefuellungen">
+		<annotation>
+			<documentation>zur Übertragung der Vorbefüllungsdaten von mehreren HBA-Anträgen</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element ref="gematik:HbaVorbefuellung" maxOccurs="unbounded">
+					<annotation>
+						<documentation>Vorbefüllungsdaten für einen einzelnen Antrag</documentation>
+					</annotation>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="HbaNachbefuellung">
+		<complexType>
+			<sequence>
+				<choice>
+					<annotation>
+						<documentation>Varianten zur Identifikatiton des nachzubefüllenden Antrags</documentation>
+					</annotation>
+					<element name="VorgangsNr" type="string" minOccurs="0">
+						<annotation>
+							<documentation>Vorgangsnummer ( Vorgangsnummer initial erzeugt von Attr_BS. Sofern nicht von Attr_BS vorbefüllt, alternativ durch TSP erzeugt)</documentation>
+						</annotation>
+					</element>
+					<element name="AntragsID" type="string" minOccurs="0">
+						<annotation>
+							<documentation>TSP spezifische ID des Hauptantrags </documentation>
+						</annotation>
+					</element>
+				</choice>
+				<element name="EFN" type="gematik:EFN_Type" minOccurs="0"/>
+				<element name="HeilberuflerID" type="gematik:String45Type" minOccurs="0"/>
+				<element name="TelematikID" type="gematik:String128Type" minOccurs="0"/>
+				<element name="Druckzeilen" type="gematik:DruckzeilenType" minOccurs="0"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="HbaNachbefuellungen">
+		<complexType>
+			<sequence>
+				<element ref="gematik:HbaNachbefuellung" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="HbaFreigabe">
+		<annotation>
+			<documentation>Freigabe eines einzelnen Antrags</documentation>
+		</annotation>
+		<complexType>
+			<annotation>
+				<documentation>für Freigabe der Antragsdaten</documentation>
+			</annotation>
+			<sequence>
+				<choice>
+					<annotation>
+						<documentation>Varianten zur Identifikatiton des freizugebenden Antrags</documentation>
+					</annotation>
+					<element name="VorgangsNr" type="string" minOccurs="0">
+						<annotation>
+							<documentation>Vorgangsnummer Attr_BS oder TSP </documentation>
+						</annotation>
+					</element>
+					<element name="AntragsID" type="string" minOccurs="0">
+						<annotation>
+							<documentation>TSP spezifische ID des Hauptantrags </documentation>
+						</annotation>
+					</element>
+				</choice>
+				<element name="AttrBestStelle" type="gematik:AttrBSType"/>
+				<element name="Mitarbeiter" type="gematik:HNameType" minOccurs="0">
+					<annotation>
+						<documentation>Name des Mitarbeiters bei der AttrBS, der die Freigabe autorisiert</documentation>
+					</annotation>
+				</element>
+				<choice>
+					<element name="Freigabedaten">
+						<annotation>
+							<documentation>Bestätitung von Berufs- gruppe(n) und Druckzeilen für den  Heilberufler </documentation>
+						</annotation>
+						<complexType>
+							<sequence>
+								<element name="Namensdaten" type="gematik:HNameType"/>
+								<element name="Geburtsdaten" type="gematik:GeburtsDatenType"/>
+								<element name="Anschrift" type="gematik:StrassenAdressType" minOccurs="0"/>
+								<element name="ProfessionItem" type="gematik:ProfessionItemKey" maxOccurs="unbounded"/>
+								<element name="EFN" type="gematik:EFN_Type" minOccurs="0"/>
+								<element name="TelematikID" type="gematik:String128Type"/>
+								<element name="HeilberuflerID" type="gematik:String45Type"/>
+								<element name="AnzahlKarten" type="int" minOccurs="0">
+									<annotation>
+										<documentation>Anzahl der zu produzierenden Karten</documentation>
+									</annotation>
+								</element>
+								<element name="Druckzeilen" type="gematik:DruckzeilenType" minOccurs="0"/>
+							</sequence>
+						</complexType>
+					</element>
+					<element name="Ablehnung">
+						<complexType>
+							<attribute name="Ablehnungsgrund" type="string" use="optional"/>
+						</complexType>
+					</element>
+				</choice>
+				<choice>
+					<element name="FreigabePDF" type="gematik:FileTransferType"/>
+					<element ref="ds:Signature"/>
+				</choice>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="HbaFreigaben">
+		<annotation>
+			<documentation>zur Übertragung der Freigabedatensätze für mehrere Antragsteller</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element ref="gematik:HbaFreigabe" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="HbaAntragExport">
+		<complexType>
+			<annotation>
+				<documentation>für Export aller Daten eines Antrags, inklusive Zertifikaten</documentation>
+			</annotation>
+			<sequence>
+				<element name="TSPID" type="gematik:String02Type" minOccurs="1" maxOccurs="1"/>
+				<element name="VorgangsNr" type="string" minOccurs="0"/>
+				<element name="AntragsID" type="string" minOccurs="0"/>
+				<element name="Antragsteller" type="gematik:AntragstellerType">
+					<annotation>
+						<documentation>persönliche Daten </documentation>
+					</annotation>
+				</element>
+				<element name="InstAnschrift" type="gematik:InstAnschriftType" minOccurs="0">
+					<annotation>
+						<documentation>Institution, für die der Antragsteller tätig ist</documentation>
+					</annotation>
+				</element>
+				<element name="AttrBestStelle" type="gematik:AttrBSType"/>
+				<element name="Antragstyp" type="gematik:AntragsArt" minOccurs="0">
+					<annotation>
+						<documentation>Erst- / Folgeantrag</documentation>
+					</annotation>
+				</element>
+				<element name="kontaktlos" type="boolean" default="false">
+					<annotation>
+						<documentation>kontaktlose Schnitt- stelle gewünscht j/n</documentation>
+					</annotation>
+				</element>
+				<element name="AnzahlKarten" type="int" minOccurs="0">
+					<annotation>
+						<documentation>Anzahl der zu produzierenden Karten</documentation>
+					</annotation>
+				</element>				
+				<element name="AntragPDF" type="gematik:FileTransferType" minOccurs="0">
+					<annotation>
+						<documentation>eingescannter Antrag</documentation>
+					</annotation>
+				</element>
+				<element name="Passfoto" type="gematik:FileTransferType" minOccurs="0"/>
+				<element name="Aenderungen" type="gematik:ChangesType" minOccurs="0" maxOccurs="unbounded">
+					<annotation>
+						<documentation>gegenüber der Vorbefüllung</documentation>
+					</annotation>
+				</element>
+				<element name="AntragsStatus" type="gematik:AntragStatusKey"/>
+				<element name="AntragsStatusHistorie" type="gematik:AntragsStatusHistoryType"/>
+				<element name="ErklaerungAntragsteller" type="gematik:ErklaerungType" minOccurs="0" maxOccurs="unbounded"/>
+				<choice minOccurs="0">
+					<element name="Freigabedaten">
+						<annotation>
+							<documentation>von AttrBS bestätigte Daten</documentation>
+						</annotation>
+						<complexType>
+							<sequence>
+								<element name="ProfessionItem" type="gematik:ProfessionItemKey" maxOccurs="unbounded"/>
+								<element name="EFN" type="gematik:EFN_Type" minOccurs="0"/>
+								<element name="TelematikID" type="gematik:String128Type"/>
+								<element name="HeilberuflerID" type="gematik:String45Type"/>
+								<element name="Druckzeilen" type="gematik:DruckzeilenType" minOccurs="0"/>
+							</sequence>
+						</complexType>
+					</element>
+					<element name="Ablehnung">
+						<complexType>
+							<attribute name="Ablehnungsgrund" type="string" use="optional"/>
+						</complexType>
+					</element>
+				</choice>
+				<choice minOccurs="0">
+					<element name="FreigabePDF" type="gematik:FileTransferType"/>
+					<element ref="ds:Signature"/>
+				</choice>
+				<element name="ProdResult" type="gematik:ProdResultType" minOccurs="0" maxOccurs="unbounded">
+					<annotation>
+						<documentation>Infos ab Beginn der Kartenproduktion</documentation>
+					</annotation>
+				</element>
+				<element name="SperrAuftrag" type="gematik:HbaSperrAuftragType" minOccurs="0" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="HbaAntraegeExport">
+		<annotation>
+			<documentation>für Sammel-Download von Anträgen, Freigabesätzen und X.509-Zertifikaten</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element ref="gematik:HbaAntragExport" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="HbaSperrAuftrag" type="gematik:HbaSperrAuftragType"/>
+	<complexType name="HbaSperrAuftragType">
+		<annotation>
+			<documentation>Sperrauftrag</documentation>
+		</annotation>
+		<sequence>
+			<element name="Sperrung">
+				<complexType>
+					<sequence>
+						<element name="AttrBestStelle" type="gematik:AttrBSType">
+							<annotation>
+								<documentation>attributbestätigende Stelle, die den Sperrauftrag ausgelöst hat.</documentation>
+							</annotation>
+						</element>
+						<element name="Mitarbeiter" type="gematik:HNameType">
+							<annotation>
+								<documentation>Name des Mitarbeiters bei der AttrBS, der den Sperrauftrag autorisiert</documentation>
+							</annotation>
+						</element>
+						<element name="Name" type="lat:String.Latin">
+							<annotation>
+								<documentation>Name des Heilberuflers</documentation>
+							</annotation>
+						</element>
+						<element name="Vornamen" type="lat:String.Latin">
+							<annotation>
+								<documentation>mind. ein Vorname des Heilberuflers</documentation>
+							</annotation>
+						</element>
+						<choice>
+							<annotation>
+								<documentation>Identifikatiton der zusperrenden Zertifikate</documentation>
+							</annotation>
+							<element name="HeilberuflerID" type="gematik:String45Type">
+								<annotation>
+									<documentation>ID des Heilberuflers zur Sperrung ALLER Zertifikate des Heilberuflers: </documentation>
+								</annotation>
+							</element>
+							<sequence>
+								<annotation>
+									<documentation>zur selektiven Sperrung einzelner HBAs</documentation>
+								</annotation>
+								<choice>
+									<element name="Geburtsdaten" type="gematik:GeburtsDatenType">
+										<annotation>
+											<documentation>zur Sperrung ALLER Zertifikate des Heilberuflers</documentation>
+										</annotation>
+									</element>
+									<element name="ICCSN" type="gematik:ICCSNType">
+										<annotation>
+											<documentation>ICCSN der Karte, die zu sperren ist</documentation>
+										</annotation>
+									</element>
+									<sequence>
+										<element name="SerialNumber" type="string">
+											<annotation>
+												<documentation>Seriennummer des Signatur- oder Attributzertifikats des zu sperrenden Arztausweises</documentation>
+											</annotation>
+										</element>
+										<element name="Issuer" type="string"/>
+									</sequence>
+									<!--#EDIT# Als Vorschlag auch KartenAntragsID eingefügt-->
+									<element name="KartenAntragsID" type="string" minOccurs="1">
+										<annotation>
+											<documentation>Selektion durch spezifische KartenAntragsID</documentation>
+										</annotation>
+									</element>
+								</choice>
+								<element name="HeilberuflerID" type="gematik:String45Type" minOccurs="0">
+									<annotation>
+										<documentation>ID des Heilberuflers, dessen Karten zu sperren sind</documentation>
+									</annotation>
+								</element>
+							</sequence>
+						</choice>
+						<element name="Sperrgrund" type="string" minOccurs="0">
+							<annotation>
+								<documentation>Signatur der Sperrung durch den Mitarbeiter der attributbestätigenden Stelle</documentation>
+							</annotation>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+			<choice>
+				<element name="SperrPDF" type="gematik:FileTransferType"/>
+				<element ref="ds:Signature">
+					<annotation>
+						<documentation>Signatur der Sperrung durch den Mitarbeiter der attributbestätigenden Stelle</documentation>
+					</annotation>
+				</element>
+			</choice>
+		</sequence>
+	</complexType>
+	<element name="HbaSperrAuftraege">
+		<complexType>
+			<sequence>
+				<element ref="gematik:HbaSperrAuftrag" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

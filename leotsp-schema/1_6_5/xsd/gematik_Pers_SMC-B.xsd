@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Version 1.6 , Stand 27.03.2023 -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gematik="http://ws.gematik.de/cm/pers/HBA_SMC-B/v1.6" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" targetNamespace="http://ws.gematik.de/cm/pers/HBA_SMC-B/v1.6" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.6.0">
+	<include schemaLocation="gematik_HBA_SMC-B_Typen.xsd"/>
+	<import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
+	<annotation>
+		<documentation xml:lang="de">
+			Definition der Datentypen für die Datenübergabe zwischen attribubestätigender Stelle und TSP
+		</documentation>
+	</annotation>
+	<element name="SmcbVorbefuellung">
+		<complexType>
+			<sequence>
+				<element name="VorgangsNr" type="string" minOccurs="0"/>
+				<element name="Antragsteller" type="gematik:AntragstellerType" minOccurs="0">
+					<annotation>
+						<documentation>pers.Daten Antragsteller</documentation>
+					</annotation>
+				</element>
+				<element name="Institution" type="gematik:InstitutionType" minOccurs="0">
+					<annotation>
+						<documentation>Stammdaten der Betriebsstätte</documentation>
+					</annotation>
+				</element>
+				<element name="CommonName" type="string" minOccurs="0">
+					<annotation>
+						<documentation>Vorbefüllungsmöglichkeit SunbjectDN CommonName </documentation>
+					</annotation>
+				</element>
+				<element name="SubjectAltName" type="string" minOccurs="0">
+					<annotation>
+						<documentation>alternativer Institutionsname,Als SubjectAltName ist hier keine Struktur aus type-id und value anzugeben, sondern ein „langer Institutsname“, d.h. kein RFC-822 und auch keine OID. Diese Daten sind im gegebenen Kontext fixe Werte
+						und werden bei der Generierung der Zertifikate automatisch ergänzt.</documentation>
+					</annotation>
+				</element>
+				<element name="EmpfaengerInfo" type="gematik:VPersonType" minOccurs="0">
+					<annotation>
+						<documentation>Empfänger, falls abweichend vom Antragsteller</documentation>
+					</annotation>
+				</element>
+				<element name="AnzahlKarten" type="int" minOccurs="0">
+					<annotation>
+						<documentation>Anzahl der zu produzierenden Karten</documentation>
+					</annotation>
+				</element>
+				<element name="Antragstyp" type="gematik:AntragsArt" minOccurs="0">
+					<annotation>
+						<documentation>Erstantrag/Folgeantrag</documentation>
+					</annotation>
+				</element>
+				<element name="AttrBestStelle" type="gematik:AttrBSType">
+					<annotation>
+						<documentation>Attributbestätigende Stelle</documentation>
+					</annotation>
+				</element>
+				<element name="Konfigurationen" type="gematik:KeyValue" minOccurs="0" maxOccurs="unbounded">
+				  <annotation>
+						<documentation>Für die Vorbefüllungsdaten spezifische Konfigurationen.
+							Beispielsweise kann für einen vorbefüllten, nicht vorhandenen akademischen Grad als Value ein "vne" übermittelt werden um auch diesen leeren Wert nicht editierbar zu setzen. Das Element des akademischen Grades muss dabei via XPath-Ausdruck im Key angegeben werden.
+							Weitere Informationen und Beispiele sind im Wiki unter https://gitlab.com/leo_tsp_wsdl_xsd/leotsp-schema/-/wikis/xml/konfigurationen zu finden.</documentation>
+					</annotation>
+				</element>				
+			</sequence>
+		</complexType>
+	</element>
+	<element name="SmcbVorbefuellungen">
+		<annotation>
+			<documentation>zur Übertragung der Vorbefüllungsdaten von mehreren SMC-B-Anträgen</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element ref="gematik:SmcbVorbefuellung" maxOccurs="unbounded">
+					<annotation>
+						<documentation>Vorbefüllungsdaten für einen einzelnen Antrag</documentation>
+					</annotation>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="SmcbNachbefuellung">
+		<complexType>
+			<sequence>
+				<choice>
+					<annotation>
+						<documentation>Varianten zur Identifikatiton des nachzubefüllenden Antrags</documentation>
+					</annotation>
+					<element name="VorgangsNr" type="string" minOccurs="0">
+						<annotation>
+							<documentation>Vorgangsnummer ( Vorgangsnummer initial erzeugt von Attr_BS. Sofern nicht von Attr_BS vorbefüllt, alternativ durch TSP erzeugt) </documentation>
+						</annotation>
+					</element>
+					<element name="AntragsID" type="string" minOccurs="0">
+						<annotation>
+							<documentation>TSP spezifische ID des Hauptantrags </documentation>
+						</annotation>
+					</element>
+				</choice>
+				<element name="CommonName" type="gematik:String64Type" minOccurs="0"/>
+				<element name="SubjectAltName" type="string" minOccurs="0">
+					<annotation>
+						<documentation>alternativer Institutionsname,Als SubjectAltName ist hier keine Struktur aus type-id und value anzugeben, sondern ein „langer Institutsname“, d.h. kein RFC-822 und auch keine OID. Diese Daten sind im gegebenen Kontext fixe Werte
+						und werden bei der Generierung der Zertifikate automatisch ergänzt.</documentation>
+					</annotation>
+				</element>
+				<element name="TelematikID" type="gematik:String128Type" minOccurs="0"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="SmcbNachbefuellungen">
+		<complexType>
+			<sequence>
+				<element ref="gematik:SmcbNachbefuellung" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="SmcbFreigabe">
+		<complexType>
+			<sequence>
+				<choice>
+					<annotation>
+						<documentation>Varianten zur Identifikatiton des nachzubefüllenden Antrags</documentation>
+					</annotation>
+					<element name="VorgangsNr" type="string" minOccurs="0">
+						<annotation>
+							<documentation>Vorgangsnummer Attr_BS oder TSP </documentation>
+						</annotation>
+					</element>
+					<element name="AntragsID" type="string" minOccurs="0">
+						<annotation>
+							<documentation>TSP spezifische ID des Hauptantrags </documentation>
+						</annotation>
+					</element>
+				</choice>
+				<element name="AttrBestStelle" type="gematik:AttrBSType">
+					<annotation>
+						<documentation>Attributbestätigende Stelle</documentation>
+					</annotation>
+				</element>
+				<element name="Mitarbeiter" type="gematik:HNameType" minOccurs="0">
+					<annotation>
+						<documentation>Name des Mitarbeiters bei der AttrBS, der die Freigabe autorisiert</documentation>
+					</annotation>
+				</element>
+				<choice>
+					<element name="Freigabedaten">
+						<annotation>
+							<documentation>von der AttrBS zu bestätigende Daten</documentation>
+						</annotation>
+						<complexType>
+							<sequence>
+								<element name="AntragstellerInfo" type="gematik:VPersonType">
+									<annotation>
+										<documentation>Name und Anschrift des Antragstellers</documentation>
+									</annotation>
+								</element>
+								<element name="InstNameAnschrift" type="gematik:InstAnschriftType">
+									<annotation>
+										<documentation>Name und Anschrift der Betriebsstätte, Institution etc</documentation>
+									</annotation>
+								</element>
+								<element name="EmpfaengerInfo" type="gematik:VPersonType" minOccurs="0">
+									<annotation>
+										<documentation>Name und Anschrift des Empfängers </documentation>
+									</annotation>
+								</element>
+								<element name="SubjectDN" type="gematik:SubjectDNType" minOccurs="0"/>
+								<element name="SubjectAltName" type="string" minOccurs="0">
+									<annotation>
+										<documentation>Gemäß Freigabedaten der AttrBS; Inhalt: alternativer Institutionsname,Als SubjectAltName ist hier keine Struktur aus type-id und value anzugeben, sondern ein „langer Institutsname“, d.h. kein RFC-822 und auch keine OID. Diese Daten sind im gegebenen Kontext fixe Werte
+						und werden bei der Generierung der Zertifikate automatisch ergänzt.</documentation>
+									</annotation>
+								</element>
+								<element name="InstProfessionItem" type="gematik:InstProfessionItemKey">
+									<annotation>
+										<documentation>ProfessionItem der Institution</documentation>
+									</annotation>
+								</element>
+								<element name="TelematikID" type="gematik:String128Type" minOccurs="0"/>
+								<element name="AnzahlKarten" type="int" minOccurs="0"/>
+							</sequence>
+						</complexType>
+					</element>
+					<element name="Ablehnung">
+						<complexType>
+							<attribute name="Ablehnungsgrund" type="string" use="optional"/>
+						</complexType>
+					</element>
+				</choice>
+				<choice minOccurs="0">
+					<element name="FreigabePDF" type="gematik:FileTransferType"/>
+					<element ref="ds:Signature">
+						<annotation>
+							<documentation>Signatur der frei- zugebenden Daten</documentation>
+						</annotation>
+					</element>
+				</choice>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="SmcbFreigaben">
+		<annotation>
+			<documentation>zur Übertragung der Freigabesätze mehrerer SMC-B-Anträge</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element ref="gematik:SmcbFreigabe" maxOccurs="unbounded">
+					<annotation>
+						<documentation>Freigabedaten für einen einzelnen Antrag</documentation>
+					</annotation>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="SmcbAntragExport">
+		<complexType>
+			<annotation>
+				<documentation>für den Export aller zum Antrag vorhandenen Daten, inkl. Freigabedatensatz und Zertifikaten</documentation>
+			</annotation>
+			<sequence>
+				<element name="TSPID" type="gematik:String02Type" minOccurs="1" maxOccurs="1"/>
+				<element name="VorgangsNr" type="string" minOccurs="0"/>
+				<element name="AntragsID" type="string" minOccurs="0"/>
+				<element name="Antragsteller" type="gematik:AntragstellerType">
+					<annotation>
+						<documentation>persönliche Daten des Antragstellers</documentation>
+					</annotation>
+				</element>
+				<element name="Institution" type="gematik:InstitutionType">
+					<annotation>
+						<documentation>Betriebsstättenart (BAG,EP,MVZ,...) </documentation>
+					</annotation>
+				</element>
+				<element name="EmpfaengerInfo" type="gematik:VPersonType" minOccurs="0"/>
+				<element name="AnzahlKarten" type="int">
+					<annotation>
+						<documentation>Anzahl der zu prod. Karten</documentation>
+					</annotation>
+				</element>
+				<element name="AttrBestStelle" type="gematik:AttrBSType">
+					<annotation>
+						<documentation>Attributbestätigende Stelle</documentation>
+					</annotation>
+				</element>
+				<element name="Antragstyp" type="gematik:AntragsArt" minOccurs="0">
+					<annotation>
+						<documentation>Erstantrag/Folgeantrag</documentation>
+					</annotation>
+				</element>
+				<element name="Aenderungen" type="gematik:ChangesType" minOccurs="0" maxOccurs="unbounded">
+					<annotation>
+						<documentation>Änd. gegenüber Vorbefüllg.</documentation>
+					</annotation>
+				</element>
+				<element name="AntragsStatus" type="gematik:AntragStatusKey">
+					<annotation>
+						<documentation>aktueller Status d. Antrags</documentation>
+					</annotation>
+				</element>
+				<element name="AntragsStatusHistorie" type="gematik:AntragsStatusHistoryType">
+					<annotation>
+						<documentation>Bearbeitungshistorie</documentation>
+					</annotation>
+				</element>
+				<element name="ErklaerungAntragsteller" type="gematik:ErklaerungType" minOccurs="0" maxOccurs="unbounded"/>
+				<choice minOccurs="0">
+					<element name="Freigabedaten">
+						<annotation>
+							<documentation>von der AttrBS bestätigte Daten</documentation>
+						</annotation>
+						<complexType>
+							<sequence>
+								<element name="SubjectDN" type="gematik:SubjectDNType">
+									<annotation>
+										<documentation>zur Kontrolle der korrekten Umsetzung der sektorspezifischen Regeln</documentation>
+									</annotation>
+								</element>
+								<element name="SubjectAltNames" type="string" minOccurs="0">
+									<annotation>
+										<documentation>Gemäß Freigabedaten der AttrBS</documentation>
+									</annotation>
+								</element>
+								<element name="InstProfessionItem" type="gematik:InstProfessionItemKey"/>
+								<element name="RegistrationNumber" type="gematik:String128Type">
+									<annotation>
+										<documentation>TelematikID, Online-Kennung der Person / der Institution</documentation>
+									</annotation>
+								</element>
+							</sequence>
+						</complexType>
+					</element>
+					<element name="Ablehnung">
+						<complexType>
+							<attribute name="Ablehnungsgrund" type="string" use="optional"/>
+						</complexType>
+					</element>
+				</choice>
+				<choice minOccurs="0">
+					<element name="FreigabePDF" type="gematik:FileTransferType"/>
+					<element ref="ds:Signature"/>
+				</choice>
+				<element name="ProdResult" type="gematik:ProdResultType" minOccurs="0" maxOccurs="unbounded">
+					<annotation>
+						<documentation>für Rückmeldungen ab Zuordnung der ICCSNs</documentation>
+					</annotation>
+				</element>
+				<element name="Sperrung" type="gematik:SmcbSperrAuftragType" minOccurs="0" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="SmcbAntraegeExport">
+		<annotation>
+			<documentation>für Sammel-Download von Anträgen, Freigabesätzen und X.509-Zertifikaten</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element ref="gematik:SmcbAntragExport" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="SmcbSperrAuftrag" type="gematik:SmcbSperrAuftragType"/>
+	<complexType name="SmcbSperrAuftragType">
+		<sequence>
+			<element name="Sperrung">
+				<complexType>
+					<sequence>
+						<element name="AttrBestStelle" type="gematik:AttrBSType">
+							<annotation>
+								<documentation>attributbestätigende Stelle, die den Sperrauftrag ausgelöst hat.</documentation>
+							</annotation>
+						</element>
+						<element name="Mitarbeiter" type="gematik:HNameType" minOccurs="0">
+							<annotation>
+								<documentation>Name des Mitarbeiters, der die Sperrung autorisiert</documentation>
+							</annotation>
+						</element>
+						<element name="InstNameAnschrift" type="gematik:InstAnschriftType" minOccurs="0">
+							<annotation>
+								<documentation>Praxis, Krankenhaus, Betriebsstätte etc., deren Zertifikate zu sperren sind.</documentation>
+							</annotation>
+						</element>
+						<element name="InstID" type="gematik:String20Type" minOccurs="0">
+							<annotation>
+								<documentation>Institutskennzei- chen, Betriebs- stättennummer,  Abrechnungsnummer, PraxisID o.ä.</documentation>
+							</annotation>
+						</element>
+						<choice>
+							<annotation>
+								<documentation>Varianten zur Identifikatiton der zu sperrenden Karten</documentation>
+							</annotation>
+							<element name="ICCSN" type="gematik:ICCSNType">
+								<annotation>
+									<documentation>ICCSN der Karte, die zu sperren ist</documentation>
+								</annotation>
+							</element>
+							<sequence>
+								<element name="SerialNumber" type="string">
+									<annotation>
+										<documentation>Seriennummer eines X.509-Zertifikats der zu sperrenden Karte</documentation>
+									</annotation>
+								</element>
+								<element name="Issuer" type="string"/>
+							</sequence>
+							<element name="All" type="boolean" fixed="true">
+								<annotation>
+									<documentation>Angabe, ob ALLE Karten der Institution zu sperren sind</documentation>
+								</annotation>
+							</element>
+							<element name="KartenAntragsID" type="string" minOccurs="1">
+								<annotation>
+									<documentation>Selektion durch spezifische KartenAntragsID</documentation>
+								</annotation>
+							</element>
+						</choice>
+						<element name="Sperrgrund" type="string" minOccurs="0"/>
+					</sequence>
+				</complexType>
+			</element>
+			<choice minOccurs="0">
+				<element name="SperrPDF" type="gematik:FileTransferType"/>
+				<element ref="ds:Signature"/>
+			</choice>
+		</sequence>
+	</complexType>
+	<element name="SmcbSperrAuftraege">
+		<annotation>
+			<documentation>zur Übertragung mehrerer SMC-B-Sperraufträge</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element ref="gematik:SmcbSperrAuftrag" maxOccurs="unbounded">
+					<annotation>
+						<documentation> einzelner Sperrauftrag</documentation>
+					</annotation>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>
