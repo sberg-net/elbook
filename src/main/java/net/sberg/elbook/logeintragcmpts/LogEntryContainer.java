@@ -17,8 +17,8 @@ package net.sberg.elbook.logeintragcmpts;
 
 import lombok.Data;
 import net.sberg.elbook.common.DateTimeUtils;
-import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
-import net.sberg.elbook.vzdclientcmpts.command.EnumCommand;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.VzdEntryWrapper;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

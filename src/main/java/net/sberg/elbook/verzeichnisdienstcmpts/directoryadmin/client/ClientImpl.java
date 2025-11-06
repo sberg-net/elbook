@@ -5,6 +5,8 @@ import com.google.gson.JsonParser;
 import de.gematik.vzd.api.ApiClient;
 import de.gematik.vzd.api.auth.HttpBasicAuth;
 import de.gematik.vzd.api.auth.OAuth;
+import de.gematik.vzd.holderauth.api.V1_0_1.DefaultApi;
+import net.sberg.elbook.verzeichnisdienstcmpts.fhir.client.TiFhirProperties;
 import org.apache.oltu.oauth2.client.OAuthClient;
 import org.apache.oltu.oauth2.client.URLConnectionClient;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
@@ -21,6 +23,7 @@ public class ClientImpl extends ApiClient {
     private static final Logger log = LoggerFactory.getLogger(ClientImpl.class);
 
     private TiVZDProperties tiVZDProperties;
+    private TiFhirProperties tiFhirProperties;
     private LocalDateTime tokenvalidationDate;
     private String id;
     private int usedCount;
@@ -69,6 +72,8 @@ public class ClientImpl extends ApiClient {
         details.setTokenvalidationDate(tokenvalidationDate);
         details.setUsedCount(usedCount);
         details.setInUse(inUse);
+        details.setFhirConnected(tiFhirProperties.isFhirConnected());
+        details.setFhirTokenvalidationDate(tiFhirProperties.getTokenvalidationDate());
         return details;
     }
 
@@ -104,6 +109,25 @@ public class ClientImpl extends ApiClient {
         oAuth.setAccessToken(jObj.get("access_token").toString().replaceAll("\"", ""));
         setTokenValidation(jObj.get("expires_in").toString());
         log.debug(id+" -> requesting new oauth2 token successful");
+        createFhirProperties(oAuth);
+    }
+
+    private void createFhirProperties(OAuth oAuth) throws Exception {
+        tiFhirProperties = new TiFhirProperties(tiVZDProperties.determineEnvironment());
+
+        try {
+            de.gematik.vzd.holderauth.api.ApiClient defaultClient = new de.gematik.vzd.holderauth.api.ApiClient();
+            defaultClient.setBasePath(tiFhirProperties.getTokenUri());
+            defaultClient.setAccessToken(oAuth.getAccessToken());
+
+            DefaultApi apiInstance = new DefaultApi(defaultClient);
+            tiFhirProperties.setHolderAccessToken(apiInstance.getHolderAuthenticate());
+            tiFhirProperties.setTokenValidation();
+        }
+        catch (Exception e) {
+            tiFhirProperties.setFhirConnectException(e);
+            log.debug("error on fhir connect", e);
+        }
     }
 
     /**
@@ -125,6 +149,9 @@ public class ClientImpl extends ApiClient {
      */
     public boolean validateToken() {
         if (LocalDateTime.now().isBefore(tokenvalidationDate)) {
+            return true;
+        }
+        if (tiFhirProperties.isFhirConnected() && tiFhirProperties.validateToken()) {
             return true;
         }
         try {

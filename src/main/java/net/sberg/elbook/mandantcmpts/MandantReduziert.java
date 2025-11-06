@@ -18,7 +18,7 @@ package net.sberg.elbook.mandantcmpts;
 import lombok.Data;
 import net.sberg.elbook.jdbc.DaoDescriptorClass;
 import net.sberg.elbook.jdbc.DaoDescriptorElement;
-import net.sberg.elbook.vzdclientcmpts.command.EnumStateOrProvinceName;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumStateOrProvinceName;
 import org.springframework.stereotype.Component;
 
 @Data

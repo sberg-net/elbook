@@ -12,4 +12,6 @@ public class ClientDetails {
     private int usedCount;
     private LocalDateTime lastUsed;
     private boolean inUse = false;
+    private LocalDateTime fhirTokenvalidationDate;
+    private boolean fhirConnected;
 }

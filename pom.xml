@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sberg</groupId>
     <artifactId>elbook</artifactId>
-    <version>2.14.0</version>
+    <version>2.15.0</version>
     <name>elbook</name>
     <description>elBook</description>
 
@@ -350,7 +350,11 @@
                                 <sourceFolder>/</sourceFolder>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useJakartaEe>true</useJakartaEe>
+                                <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                             </configOptions>
+                            <additionalProperties>
+                                <useEnumCaseInsensitive>true</useEnumCaseInsensitive>
+                            </additionalProperties>
                         </configuration>
                     </execution>
                 </executions>

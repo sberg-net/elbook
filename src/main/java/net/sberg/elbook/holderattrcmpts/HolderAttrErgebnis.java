@@ -16,9 +16,6 @@
 package net.sberg.elbook.holderattrcmpts;
 
 import lombok.Data;
-import net.sberg.elbook.vzdclientcmpts.command.EnumEntryType;
-import net.sberg.elbook.vzdclientcmpts.command.EnumStateOrProvinceName;
-import net.sberg.elbook.vzdclientcmpts.command.EnumTriValue;
 
 import java.util.ArrayList;
 import java.util.List;

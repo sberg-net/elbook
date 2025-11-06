@@ -20,10 +20,10 @@ import de.gematik.ws.cm.pers.hba_smc_b.v1.SmcbAntragExport;
 import lombok.Data;
 import net.sberg.elbook.glossarcmpts.TelematikIdInfo;
 import net.sberg.elbook.mandantcmpts.Mandant;
-import net.sberg.elbook.verzeichnisdienstcmpts.DirectoryEntrySaveContainer;
-import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
-import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
-import net.sberg.elbook.vzdclientcmpts.command.*;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.DirectoryEntrySaveContainer;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.VzdEntryWrapper;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.TiVZDProperties;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.*;
 
 import java.util.ArrayList;
 import java.util.List;

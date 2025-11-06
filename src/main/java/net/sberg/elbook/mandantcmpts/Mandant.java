@@ -28,11 +28,11 @@ import lombok.extern.slf4j.Slf4j;
 import net.sberg.elbook.common.StringUtils;
 import net.sberg.elbook.jdbc.DaoDescriptorClass;
 import net.sberg.elbook.jdbc.DaoDescriptorElement;
-import net.sberg.elbook.verzeichnisdienstcmpts.VerzeichnisdienstService;
-import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
-import net.sberg.elbook.vzdclientcmpts.command.EnumStateOrProvinceName;
-import net.sberg.elbook.vzdclientcmpts.command.GetInfoCommand;
-import net.sberg.elbook.vzdclientcmpts.command.resultcallbackhandler.DefaultCommandResultCallbackHandler;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.VerzeichnisdienstService;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.TiVZDProperties;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumStateOrProvinceName;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.GetInfoCommand;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.resultcallbackhandler.DefaultCommandResultCallbackHandler;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -189,10 +189,10 @@ public class Mandant {
             if (tiVZDProperties.getInfoObject().getVersion().equals("1.12.6")) {
                 tiVZDProperties.setApiVersion(TiVZDProperties.API_VERSION_V1_12_6);
             }
-            else if (tiVZDProperties.getInfoObject().getVersion().equals("1.12.5")) {
-                tiVZDProperties.setApiVersion(TiVZDProperties.API_VERSION_V1_12_6);
-            }
             else if (tiVZDProperties.getInfoObject().getVersion().equals("1.12.7")) {
+                tiVZDProperties.setApiVersion(TiVZDProperties.API_VERSION_V1_12_7);
+            }
+            else if (tiVZDProperties.getInfoObject().getVersion().equals("1.12.8")) {
                 tiVZDProperties.setApiVersion(TiVZDProperties.API_VERSION_V1_12_7);
             }
             else {

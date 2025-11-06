@@ -9,7 +9,6 @@ import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.VzdEntryWrapper;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.ClientImpl;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.TiVZDProperties;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.*;
-import net.sberg.elbook.vzdclientcmpts.command.*;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.resultcallbackhandler.AbstractCommandResultCallbackHandler;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.resultcallbackhandler.ICommandResultCallbackHandler;
 import org.apache.commons.lang3.StringUtils;

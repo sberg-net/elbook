@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import net.sberg.elbook.mandantcmpts.EnumSektor;
 import net.sberg.elbook.tspcmpts.EnumAntragTyp;
-import net.sberg.elbook.vzdclientcmpts.command.EnumEntryType;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumEntryType;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

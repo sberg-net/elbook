@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.15.0]
+
+### Added
+- integration der api version 1.12.8
+- integration des fhir holderauth token handlings
+
 ## [2.14.0]
 
 ### Added

@@ -41,6 +41,8 @@
       <th>in Benutzung</th>
       <th>letzte Benutzung</th>
       <th>Token gültig bis</th>
+      <th>Verbunden mit dem FHIR-VZD?</th>
+      <th>FHIR-VZD-Token gültig bis</th>
       <th>Aktion</th>
     </tr>
     </thead>
@@ -54,6 +56,13 @@
       <td><span th:text="${n.inUse}">inUse</span></td>
       <td><span th:text="${#temporals.format(n.lastUsed, 'dd-MM-yyyy HH:mm:ss')}">lastUsed</span></td>
       <td><span th:text="${#temporals.format(n.tokenvalidationDate, 'dd-MM-yyyy HH:mm:ss')}">tokenvalidationDate</span></td>
+
+      <td th:if="${n.isFhirConnected()}">Ja</td>
+      <td th:if="${n.isFhirConnected()}"><span th:text="${#temporals.format(n.fhirTokenvalidationDate, 'dd-MM-yyyy HH:mm:ss')}">fhirTokenvalidationDate</span></td>
+
+      <td th:if="${!n.isFhirConnected()}">Nein</td>
+      <td th:if="${!n.isFhirConnected()}"></td>
+
       <td>&nbsp;&nbsp;
         <button th:if="${!n.inUse}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.id}" th:attrappend="data-mutex=${n.mutex}" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteVzdConnection" onclick="elbookContext.toDeleteConnectionId=$(this).attr('data-id');elbookContext.toDeleteConnectionMutex=$(this).attr('data-mutex');" >
           <span data-feather="delete"></span>

@@ -18,12 +18,12 @@ package net.sberg.elbook.holderattrcmpts;
 import lombok.Data;
 import net.sberg.elbook.glossarcmpts.GlossarService;
 import net.sberg.elbook.glossarcmpts.TelematikIdInfo;
-import net.sberg.elbook.verzeichnisdienstcmpts.DirectoryEntrySaveContainer;
-import net.sberg.elbook.verzeichnisdienstcmpts.VzdEntryWrapper;
-import net.sberg.elbook.vzdclientcmpts.TiVZDProperties;
-import net.sberg.elbook.vzdclientcmpts.command.EnumEntryType;
-import net.sberg.elbook.vzdclientcmpts.command.EnumStateOrProvinceName;
-import net.sberg.elbook.vzdclientcmpts.command.ModDirEntryCommand;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.DirectoryEntrySaveContainer;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.VzdEntryWrapper;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.TiVZDProperties;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumEntryType;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumStateOrProvinceName;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.ModDirEntryCommand;
 import org.slf4j.Logger;
 
 import java.util.Iterator;

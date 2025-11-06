@@ -2,7 +2,7 @@ package net.sberg.elbook.glossarcmpts;
 
 import lombok.Data;
 import net.sberg.elbook.tspcmpts.EnumAntragTyp;
-import net.sberg.elbook.vzdclientcmpts.command.EnumEntryType;
+import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumEntryType;
 
 @Data
 public class ProfessionOIDInfoReduced {
