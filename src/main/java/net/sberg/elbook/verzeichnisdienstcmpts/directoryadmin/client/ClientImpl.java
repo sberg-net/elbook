@@ -149,10 +149,12 @@ public class ClientImpl extends ApiClient {
      */
     public boolean validateToken() {
         if (LocalDateTime.now().isBefore(tokenvalidationDate)) {
-            return true;
-        }
-        if (tiFhirProperties.isFhirConnected() && tiFhirProperties.validateToken()) {
-            return true;
+            if (tiFhirProperties.isFhirConnected() && tiFhirProperties.validateToken()) {
+                return true;
+            }
+            else if (!tiFhirProperties.isFhirConnected()) {
+                return true;
+            }
         }
         try {
             createAndSetNewOAuth2Token();

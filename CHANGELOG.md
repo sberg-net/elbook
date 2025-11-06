@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.15.1]
+
+### Fixed
+- tokenvalidierung gefixt
+
 ## [2.15.0]
 
 ### Added
