@@ -618,6 +618,13 @@ function vzdZertifikatEintragLoeschen() {
   });
 }
 
+function vzdEintragFhirDatenLaden(telematikId, personalentry, aTagId) {
+  var aHrefTag = $('#'+aTagId).attr("href");
+  aHrefTag = aHrefTag + "/" + personalentry + "/" + telematikId;
+  $('#'+aTagId).attr("href", aHrefTag);
+  document.getElementById(aTagId).click();
+}
+
 function vzdEintragZertifikateLaden(uid,telematikId,addNewZert,zertSize) {
   $("#vzdOverlay").attr("style", "display:block");
 

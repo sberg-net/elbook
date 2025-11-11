@@ -1,0 +1,111 @@
+<!--
+  ~  Copyright (C) 2023 sberg it-systeme GmbH
+  ~
+  ~  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+  ~  European Commission - subsequent versions of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ https://joinup.ec.europa.eu/software/page/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the Licence for the specific language governing permissions and limitations under the Licence.
+  -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="sberg">
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+  <title>ElBook - Verzeichnisdienst</title>
+  <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+  <script type="text/javascript" th:src="@{/js/script_1_8_20.js}"></script>
+  <script type="text/javascript" th:src="@{/webjars/feather-icons/dist/feather.min.js}"></script>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" th:href="@{/css/dashboard.css}"/>
+</head>
+<body>
+  <b th:if="${HealthcareService == null}">Im Fhir VZD sind für diese Organisation keine Daten hinterlegt</b>
+  <table th:if="${HealthcareService != null}" class="table caption-top" xmlns:th="http://www.thymeleaf.org">
+    <caption>Daten der Organisation</caption>
+    <thead>
+      <tr>
+        <th scope="col">Merkmal</th>
+        <th scope="col">Wert</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Name</th>
+        <td><span th:text="${Organization.name}">Name</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Adresse / Standort</th>
+        <td>
+          <div th:each="l : ${Location}">
+            <span th:text="${l.address.text}"></span><br/>
+            <a th:href="'https://www.google.com/maps?q=' + ${l.position.latitude} + ',' + ${l.position.longitude}" target="_blank">Auf Google Maps ansehen</a>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Kontaktdaten</th>
+        <td>
+          <div th:each="t : ${HealthcareService.telecom}">
+            <span th:text="${t.system}"></span>&nbsp;&nbsp;
+            <span th:text="${t.value}"></span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Öffnungszeiten</th>
+        <td>
+          <div th:each="a : ${HealthcareService.availableTime}">
+            <div th:if="${a.allDay.booleanValue()}">
+              <div th:each="b : ${a.daysOfWeek}">
+                <span th:text="${b.value.getDisplay()}"></span>
+              </div>
+            </div>
+            <div th:if="${!a.allDay.booleanValue()}">
+              <div th:each="b : ${a.daysOfWeek}">
+                <span th:text="${b.value.getDisplay()}"></span>
+              </div>
+              <span th:text="${a.availableStartTime}"></span>
+              &nbsp;-&nbsp;
+              <span th:text="${a.availableEndTime}"></span>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Typ</th>
+        <td>
+          <div th:each="a : ${HealthcareService.type}">
+            <div th:each="c : ${a.coding}">
+              <span th:text="${c.display}"></span>
+            </div>
+            <span th:text="${a.text}"></span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Services</th>
+        <td>
+          <div th:each="a : ${HealthcareService.specialty}">
+            <div th:each="c : ${a.coding}">
+              <span th:text="${c.display}"></span>
+            </div>
+            <span th:text="${a.text}"></span>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
