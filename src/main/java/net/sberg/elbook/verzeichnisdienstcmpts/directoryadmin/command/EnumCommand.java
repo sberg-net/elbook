@@ -17,7 +17,9 @@ public enum EnumCommand {
     ADD_DIR_ENTRY_FA_ATTRIBUTES("add_Directory_FA-Attributes", "VZD-Eintrag - Fachdienst-Attr. hinzugefügt"),
     MOD_DIR_ENTRY_FA_ATTRIBUTES("modify_Directory_FA-Attributes", "VZD-Eintrag - Fachdienst-Attr. geändert"),
     DEL_DIR_ENTRY_FA_ATTRIBUTES("delete_Directory_FA-Attributes", "VZD-Eintrag - Fachdienst-Attr. gelöscht"),
-    GET_INFO("get_Info", "VZD-Informationen gelesen");
+    GET_INFO("get_Info", "VZD-Informationen gelesen"),
+    MARK_DIR_ENTRY_CERTLESS("mark_Directory_Entry_Certless", "VZD-Eintrag - Markieren 'ohne Zertifikat'"),
+    UNMARK_DIR_ENTRY_CERTLESS("unmark_Directory_Entry_Certless", "VZD-Eintrag - Markieren 'ohne Zertifikat' aufheben");
 
     private final String specName;
     private final String hrText;

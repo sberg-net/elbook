@@ -1,7 +1,7 @@
 package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.commandhandler;
 
-import de.gematik.vzd.api.V1_12_7.DirectoryEntryAdministrationApi;
-import de.gematik.vzd.model.V1_12_7.DirectoryEntry;
+import de.gematik.vzd.api.V1_12_8.DirectoryEntryAdministrationApi;
+import de.gematik.vzd.model.V1_12_8.DirectoryEntry;
 import net.sberg.elbook.common.StringUtils;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.VzdEntryWrapper;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.ClientImpl;
@@ -24,16 +24,12 @@ public class ReadDirEntryCommandHandler extends AbstractCommandHandler {
     private static final String CHECK_EMPTY_STRING = "**";
 
     private Logger log = LoggerFactory.getLogger(ReadDirEntryCommandHandler.class);
-    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_7;
-    private de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_6;
+    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_8;
 
     public ReadDirEntryCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
-            directoryEntryAdministrationApiV1_12_7 = new DirectoryEntryAdministrationApi(client);
-        }
-        else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
-            directoryEntryAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_8)) {
+            directoryEntryAdministrationApiV1_12_8 = new DirectoryEntryAdministrationApi(client);
         }
         else {
             throw new IllegalStateException("unknown api version: "+client.getTiVZDProperties().getInfoObject().getVersion());
@@ -147,9 +143,9 @@ public class ReadDirEntryCommandHandler extends AbstractCommandHandler {
             String changeDateTimeFrom = checkOnEmptySearchValue(readDirEntryCommand.getChangeDateTimeFrom());
             String changeDateTimeTo = checkOnEmptySearchValue(readDirEntryCommand.getChangeDateTimeTo());
 
-            if (directoryEntryAdministrationApiV1_12_7 != null) {
+            if (directoryEntryAdministrationApiV1_12_8 != null) {
                 ResponseEntity<List<DirectoryEntry>> response =
-                        directoryEntryAdministrationApiV1_12_7.readDirectoryEntryWithHttpInfo(uid, givenName, sn, cn,
+                        directoryEntryAdministrationApiV1_12_8.readDirectoryEntryWithHttpInfo(uid, givenName, sn, cn,
                         displayName, streetAddress, postalCode, countryCode, localityName, stateOrProvinceName, title,
                         organization, otherName, telematikID, telematikIDSubstr, lanr, providedBy, specialization, domainID, holder, personalEntry,
                         dataFromAuthority, professionOID, entryType, maxKomLeAdr, changeDateTimeFrom, changeDateTimeTo, baseEntryOnly, active, meta);
@@ -159,29 +155,6 @@ public class ReadDirEntryCommandHandler extends AbstractCommandHandler {
                     } else {
                         for (Iterator<DirectoryEntry> iterator = response.getBody().iterator(); iterator.hasNext(); ) {
                             DirectoryEntry directoryEntry = iterator.next();
-                            commandResultCallbackHandler.handleDirectoryEntry(command, new VzdEntryWrapper(directoryEntry));
-                        }
-                    }
-                } else {
-                    commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ServerResult(response.getStatusCode().value(), response.getHeaders()));
-                    log.error("read directory entry execution failed. Response status was: "
-                            + response.getStatusCode() + "\n" + command);
-                    commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(false, "read directory entry execution failed. Response status was: "
-                            + response.getStatusCode() + command));
-                }
-            }
-            else if (directoryEntryAdministrationApiV1_12_6 != null) {
-                ResponseEntity<List<de.gematik.vzd.model.V1_12_6.DirectoryEntry>> response =
-                    directoryEntryAdministrationApiV1_12_6.readDirectoryEntryWithHttpInfo(uid, givenName, sn, cn,
-                        displayName, streetAddress, postalCode, countryCode, localityName, stateOrProvinceName, title,
-                        organization, otherName, telematikID, telematikIDSubstr, readDirEntryCommand.getProvidedBy(), specialization, domainID, holder, personalEntry,
-                        dataFromAuthority, professionOID, entryType, maxKomLeAdr, changeDateTimeFrom, changeDateTimeTo, baseEntryOnly, active, meta);
-                if (response.getStatusCode() == HttpStatus.OK) {
-                    if (response.getBody().isEmpty()) {
-                        commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(false, AbstractCommandResultCallbackHandler.ResultReason.NO_SEARCH_RESULTS));
-                    } else {
-                        for (Iterator<de.gematik.vzd.model.V1_12_6.DirectoryEntry> iterator = response.getBody().iterator(); iterator.hasNext(); ) {
-                            de.gematik.vzd.model.V1_12_6.DirectoryEntry directoryEntry = iterator.next();
                             commandResultCallbackHandler.handleDirectoryEntry(command, new VzdEntryWrapper(directoryEntry));
                         }
                     }

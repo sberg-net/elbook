@@ -1,8 +1,8 @@
 package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.commandhandler;
 
-import de.gematik.vzd.api.V1_12_7.DirectoryEntryAdministrationApi;
-import de.gematik.vzd.model.V1_12_7.BaseDirectoryEntry;
-import de.gematik.vzd.model.V1_12_7.DistinguishedName;
+import de.gematik.vzd.api.V1_12_8.DirectoryEntryAdministrationApi;
+import de.gematik.vzd.model.V1_12_8.BaseDirectoryEntry;
+import de.gematik.vzd.model.V1_12_8.DistinguishedName;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.ClientImpl;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.TiVZDProperties;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.*;
@@ -21,16 +21,12 @@ import java.util.Arrays;
 public class ModDirEntryCommandHandler extends AbstractCommandHandler {
 
     private Logger log = LoggerFactory.getLogger(ModDirEntryCommandHandler.class);
-    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_7;
-    private de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_6;
+    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_8;
 
     public ModDirEntryCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
-            directoryEntryAdministrationApiV1_12_7 = new DirectoryEntryAdministrationApi(client);
-        }
-        else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
-            directoryEntryAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_8)) {
+            directoryEntryAdministrationApiV1_12_8 = new DirectoryEntryAdministrationApi(client);
         }
         else {
             throw new IllegalStateException("unknown api version: "+client.getTiVZDProperties().getInfoObject().getVersion());
@@ -64,32 +60,14 @@ public class ModDirEntryCommandHandler extends AbstractCommandHandler {
 
             ModDirEntryCommand modDirEntryCommand = (ModDirEntryCommand)command;
 
-            if (directoryEntryAdministrationApiV1_12_7 != null) {
-                BaseDirectoryEntry baseDirectoryEntry = convertV1_12_7(modDirEntryCommand);
+            if (directoryEntryAdministrationApiV1_12_8 != null) {
+                BaseDirectoryEntry baseDirectoryEntry = convertV1_12_8(modDirEntryCommand);
 
                 if (!CommandHandlerUtils.isEntryPresent(null, command.getTelematikId(), client, log)) {
                     throw new IllegalStateException("entry with the telematikId is not present: " + command.getTelematikId());
                 }
 
-                ResponseEntity<DistinguishedName> response = directoryEntryAdministrationApiV1_12_7.modifyDirectoryEntryWithHttpInfo(command.getUid(), baseDirectoryEntry);
-                if (response.getStatusCode() == HttpStatus.OK) {
-                    log.debug("Modify directory entry execution successful operated\n" + response.getBody());
-                    commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(true, ""));
-                } else {
-                    commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ServerResult(response.getStatusCode().value(), response.getHeaders()));
-                    commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(false, "modify directory entry execution failed. Response-Status was: "
-                            + response.getStatusCode() + "\n"
-                            + baseDirectoryEntry));
-                }
-            }
-            if (directoryEntryAdministrationApiV1_12_6 != null) {
-                de.gematik.vzd.model.V1_12_6.BaseDirectoryEntry baseDirectoryEntry = convertV1_12_6(modDirEntryCommand);
-
-                if (!CommandHandlerUtils.isEntryPresent(null, command.getTelematikId(), client, log)) {
-                    throw new IllegalStateException("entry with the telematikId is not present: " + command.getTelematikId());
-                }
-
-                ResponseEntity<de.gematik.vzd.model.V1_12_6.DistinguishedName> response = directoryEntryAdministrationApiV1_12_6.modifyDirectoryEntryWithHttpInfo(command.getUid(), baseDirectoryEntry);
+                ResponseEntity<DistinguishedName> response = directoryEntryAdministrationApiV1_12_8.modifyDirectoryEntryWithHttpInfo(command.getUid(), baseDirectoryEntry);
                 if (response.getStatusCode() == HttpStatus.OK) {
                     log.debug("Modify directory entry execution successful operated\n" + response.getBody());
                     commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(true, ""));
@@ -113,43 +91,7 @@ public class ModDirEntryCommandHandler extends AbstractCommandHandler {
         }
     }
 
-    private de.gematik.vzd.model.V1_12_6.BaseDirectoryEntry convertV1_12_6(ModDirEntryCommand modDirEntryCommand) {
-        de.gematik.vzd.model.V1_12_6.BaseDirectoryEntry baseDirectoryEntry = new de.gematik.vzd.model.V1_12_6.BaseDirectoryEntry();
-
-        //id attributes
-        baseDirectoryEntry.setTelematikID(modDirEntryCommand.getTelematikId());
-        baseDirectoryEntry.setDomainID(modDirEntryCommand.getDomainId());
-
-        //name attributes
-        baseDirectoryEntry.setDisplayName(modDirEntryCommand.getDisplayName());
-        baseDirectoryEntry.setTitle(modDirEntryCommand.getTitle());
-        baseDirectoryEntry.setOrganization(modDirEntryCommand.getOrganization());
-        baseDirectoryEntry.setOtherName(modDirEntryCommand.getOtherName());
-        baseDirectoryEntry.setSn(modDirEntryCommand.getSn());
-        baseDirectoryEntry.setCn(modDirEntryCommand.getCn());
-        baseDirectoryEntry.setGivenName(modDirEntryCommand.getGivenName());
-
-        //address attributes
-        baseDirectoryEntry.setStreetAddress(modDirEntryCommand.getStreetAddress());
-        baseDirectoryEntry.setPostalCode(modDirEntryCommand.getPostalCode());
-        baseDirectoryEntry.setLocalityName(modDirEntryCommand.getLocalityName());
-        baseDirectoryEntry.setStateOrProvinceName((modDirEntryCommand.getStateOrProvinceName() != null && !modDirEntryCommand.getStateOrProvinceName().equals(EnumStateOrProvinceName.UNKNOWN))?modDirEntryCommand.getStateOrProvinceName().getHrText():null);
-        baseDirectoryEntry.setCountryCode(modDirEntryCommand.getCountryCode());
-
-        // profession attributes
-        baseDirectoryEntry.setSpecialization(modDirEntryCommand.getSpecialization());
-        baseDirectoryEntry.setEntryType((modDirEntryCommand.getEntryType() != null && !modDirEntryCommand.getEntryType().equals(EnumEntryType.UNKNOWN))?new ArrayList<>(Arrays.asList(modDirEntryCommand.getEntryType().getId())):null);
-
-        // system attributes
-        baseDirectoryEntry.setHolder(modDirEntryCommand.getHolder());
-        baseDirectoryEntry.setMaxKOMLEadr(modDirEntryCommand.getMaxKomLeAdr());
-        baseDirectoryEntry.setActive(modDirEntryCommand.getActive() != null?modDirEntryCommand.getActive().getDataValue():null);
-        baseDirectoryEntry.setMeta(modDirEntryCommand.getMeta());
-
-        return baseDirectoryEntry;
-    }
-
-    private BaseDirectoryEntry convertV1_12_7(ModDirEntryCommand modDirEntryCommand) {
+    private BaseDirectoryEntry convertV1_12_8(ModDirEntryCommand modDirEntryCommand) {
         BaseDirectoryEntry baseDirectoryEntry = new BaseDirectoryEntry();
 
         //id attributes

@@ -1,7 +1,7 @@
 package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.commandhandler;
 
-import de.gematik.vzd.api.V1_12_7.CertificateAdministrationApi;
-import de.gematik.vzd.model.V1_12_7.UserCertificate;
+import de.gematik.vzd.api.V1_12_8.CertificateAdministrationApi;
+import de.gematik.vzd.model.V1_12_8.UserCertificate;
 import net.sberg.elbook.common.StringUtils;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.VzdEntryWrapper;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.ClientImpl;
@@ -23,17 +23,13 @@ import java.util.List;
 
 public class ReadDirCertCommandHandler extends AbstractCommandHandler {
 
-    private CertificateAdministrationApi certificateAdministrationApiV1_12_7;
-    private de.gematik.vzd.api.V1_12_6.CertificateAdministrationApi certificateAdministrationApiV1_12_6;
+    private CertificateAdministrationApi certificateAdministrationApiV1_12_8;
     private Logger log = LoggerFactory.getLogger(ReadDirCertCommandHandler.class);
 
     public ReadDirCertCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
-            certificateAdministrationApiV1_12_7 = new CertificateAdministrationApi(client);
-        }
-        else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
-            certificateAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.CertificateAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_8)) {
+            certificateAdministrationApiV1_12_8 = new CertificateAdministrationApi(client);
         }
         else {
             throw new IllegalStateException("unknown api version: "+client.getTiVZDProperties().getInfoObject().getVersion());
@@ -96,8 +92,8 @@ public class ReadDirCertCommandHandler extends AbstractCommandHandler {
             String entryType = readDirCertCommand.getEntryType() != null?readDirCertCommand.getEntryType().getId():null;
             Boolean active = readDirCertCommand.getActive() != null?readDirCertCommand.getActive().getDataValue():null;
 
-            if (certificateAdministrationApiV1_12_7 != null) {
-                ResponseEntity<List<UserCertificate>> response = certificateAdministrationApiV1_12_7.readDirectoryCertificatesWithHttpInfo(
+            if (certificateAdministrationApiV1_12_8 != null) {
+                ResponseEntity<List<UserCertificate>> response = certificateAdministrationApiV1_12_8.readDirectoryCertificatesWithHttpInfo(
                         uid, certUid, entryType, telematikID, professionOID, active, serialNumber, issuer, publicKeyAlgorithm
                 );
 
@@ -107,26 +103,6 @@ public class ReadDirCertCommandHandler extends AbstractCommandHandler {
                     } else {
                         for (Iterator<UserCertificate> iterator = response.getBody().iterator(); iterator.hasNext(); ) {
                             UserCertificate userCertificate = iterator.next();
-                            commandResultCallbackHandler.handleUserCertificate(command, new VzdEntryWrapper(userCertificate));
-                        }
-                    }
-                } else {
-                    commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ServerResult(response.getStatusCode().value(), response.getHeaders()));
-                    log.error("read cert entry execution failed. Response status was: " + response.getStatusCode());
-                    commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(false, "read cert entry execution failed. Response status was: " + response.getStatusCode()));
-                }
-            }
-            else if (certificateAdministrationApiV1_12_6 != null) {
-                ResponseEntity<List<de.gematik.vzd.model.V1_12_6.UserCertificate>> response = certificateAdministrationApiV1_12_6.readDirectoryCertificatesWithHttpInfo(
-                        uid, certUid, entryType, telematikID, professionOID, active, serialNumber, issuer, publicKeyAlgorithm
-                );
-
-                if (response.getStatusCode() == HttpStatus.OK) {
-                    if (response.getBody().isEmpty()) {
-                        commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(false, AbstractCommandResultCallbackHandler.ResultReason.NO_SEARCH_RESULTS));
-                    } else {
-                        for (Iterator<de.gematik.vzd.model.V1_12_6.UserCertificate> iterator = response.getBody().iterator(); iterator.hasNext(); ) {
-                            de.gematik.vzd.model.V1_12_6.UserCertificate userCertificate = iterator.next();
                             commandResultCallbackHandler.handleUserCertificate(command, new VzdEntryWrapper(userCertificate));
                         }
                     }

@@ -22,7 +22,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import de.gematik.vzd.model.V1_12_7.InfoObject;
+import de.gematik.vzd.model.V1_12_8.InfoObject;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.sberg.elbook.common.StringUtils;
@@ -186,14 +186,8 @@ public class Mandant {
         }
         else {
             tiVZDProperties.setInfoObject(infoObjects.get(0));
-            if (tiVZDProperties.getInfoObject().getVersion().equals("1.12.6")) {
-                tiVZDProperties.setApiVersion(TiVZDProperties.API_VERSION_V1_12_6);
-            }
-            else if (tiVZDProperties.getInfoObject().getVersion().equals("1.12.7")) {
-                tiVZDProperties.setApiVersion(TiVZDProperties.API_VERSION_V1_12_7);
-            }
-            else if (tiVZDProperties.getInfoObject().getVersion().equals("1.12.8")) {
-                tiVZDProperties.setApiVersion(TiVZDProperties.API_VERSION_V1_12_7);
+            if (tiVZDProperties.getInfoObject().getVersion().equals("1.12.8")) {
+                tiVZDProperties.setApiVersion(TiVZDProperties.API_VERSION_V1_12_8);
             }
             else {
                 throw new IllegalStateException("unknown api version: "+tiVZDProperties.getInfoObject().getVersion());

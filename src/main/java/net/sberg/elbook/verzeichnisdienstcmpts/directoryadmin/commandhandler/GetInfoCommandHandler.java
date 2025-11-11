@@ -1,7 +1,7 @@
 package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.commandhandler;
 
-import de.gematik.vzd.api.V1_12_7.GetInfoDirectoryEntryAdministrationApi;
-import de.gematik.vzd.model.V1_12_7.InfoObject;
+import de.gematik.vzd.api.V1_12_8.GetInfoDirectoryEntryAdministrationApi;
+import de.gematik.vzd.model.V1_12_8.InfoObject;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.ClientImpl;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumCommand;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.AbstractCommand;

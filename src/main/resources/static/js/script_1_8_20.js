@@ -619,7 +619,7 @@ function vzdZertifikatEintragLoeschen() {
 }
 
 function vzdEintragFhirDatenLaden(telematikId, personalentry, aTagId) {
-  var aHrefTag = $('#'+aTagId).attr("href");
+  var aHrefTag = $('#'+aTagId).attr("src");
   aHrefTag = aHrefTag + "/" + personalentry + "/" + telematikId;
   $('#'+aTagId).attr("href", aHrefTag);
   document.getElementById(aTagId).click();
@@ -1468,7 +1468,7 @@ function tspSpeichern() {
 }
 
 function tspLoadAllRequest(tspId, antragTyp, aTagId) {
-  var aHrefTag = $('#'+aTagId).attr("href");
+  var aHrefTag = $('#'+aTagId).attr("src");
   aHrefTag = aHrefTag + "/" + tspId + "/" + antragTyp;
   $('#'+aTagId).attr("href", aHrefTag);
   document.getElementById(aTagId).click();

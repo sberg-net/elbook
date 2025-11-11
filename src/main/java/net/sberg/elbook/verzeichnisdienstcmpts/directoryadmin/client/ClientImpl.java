@@ -55,6 +55,10 @@ public class ClientImpl extends ApiClient {
         return tiVZDProperties;
     }
 
+    public TiFhirProperties getTiFhirProperties() {
+        return tiFhirProperties;
+    }
+
     public LocalDateTime getLastUsed() {
         return lastUsed;
     }

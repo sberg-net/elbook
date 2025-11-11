@@ -1,6 +1,6 @@
 package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client;
 
-import de.gematik.vzd.model.V1_12_7.InfoObject;
+import de.gematik.vzd.model.V1_12_8.InfoObject;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -9,8 +9,7 @@ import java.util.Map;
 @Data
 public class TiVZDProperties {
 
-    public static final String API_VERSION_V1_12_6 = "V1_12_6";
-    public static final String API_VERSION_V1_12_7 = "V1_12_7";
+    public static final String API_VERSION_V1_12_8 = "V1_12_8";
 
     private static final String RU_RESOURCE_URI = "https://vzdpflege-ref.vzd.ti-dienste.de";
     private static final String PU_RESOURCE_URI = "https://vzdpflege.vzd.ti-dienste.de";

@@ -2,6 +2,7 @@ package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client;
 
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.AbstractCommand;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.resultcallbackhandler.DefaultCommandResultCallbackHandler;
+import net.sberg.elbook.verzeichnisdienstcmpts.fhir.client.TiFhirProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -69,5 +70,11 @@ public class TiVZDConnector {
         DefaultCommandResultCallbackHandler defaultCommandResultCallbackHandler = new DefaultCommandResultCallbackHandler(client).execute(commands);
         releaseConnection(lTiVZDProperties, client);
         return defaultCommandResultCallbackHandler;
+    }
+
+    public TiFhirProperties extractTiFhirProperties(TiVZDProperties lTiVZDProperties) throws Exception {
+        ClientImpl client = getConnection(lTiVZDProperties);
+        releaseConnection(lTiVZDProperties, client);
+        return client.getTiFhirProperties();
     }
 }

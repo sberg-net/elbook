@@ -33,8 +33,11 @@ import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.TiVZDProper
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.*;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.resultcallbackhandler.AbstractCommandResultCallbackHandler;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.resultcallbackhandler.DefaultCommandResultCallbackHandler;
+import net.sberg.elbook.verzeichnisdienstcmpts.fhir.FhirResource;
+import net.sberg.elbook.verzeichnisdienstcmpts.fhir.VerzeichnisdienstFhirService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +56,7 @@ public class VerzeichnisdienstController extends AbstractWebController {
 
     private final LogEintragService logEintragService;
     private final VerzeichnisdienstService verzeichnisdienstService;
+    private final VerzeichnisdienstFhirService verzeichnisdienstFhirService;
     private final JdbcGenericDao genericDao;
 
     @Value("${elbook.encryptionKeys}")
@@ -130,6 +134,34 @@ public class VerzeichnisdienstController extends AbstractWebController {
         }
 
         return "verzeichnisdienst/verzeichnisdienstFormular";
+    }
+
+    @RequestMapping(value = "/verzeichnisdienst/fhir/lade/resource/{name}/{uid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public Map lade(Authentication authentication, @PathVariable String name, @PathVariable String uid) throws Exception {
+        AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
+        return verzeichnisdienstFhirService.lade(authUserDetails.getMandant(), name, uid);
+    }
+
+    @RequestMapping(value = "/verzeichnisdienst/fhir/lade/{personalEntry}/{telematikId}", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    public String lade(Authentication authentication, Model model, @PathVariable EnumTriValue personalEntry, @PathVariable String telematikId) {
+        AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
+        try {
+            List<FhirResource> result = verzeichnisdienstFhirService.lade(authUserDetails.getMandant(), personalEntry, telematikId);
+            model.addAttribute("resources", result);
+        }
+        catch (Exception e) {
+            log.error("error on loading the fhir entry with the telematikId: "+telematikId+" - mandant: "+authUserDetails.getMandant().getId()+" - "+authUserDetails.getMandant().getName(), e);
+            if (e.getCause() != null) {
+                model.addAttribute("fehlernachricht", "Fehler beim Laden des Fhir Eintrages mit der TelematikId=" + telematikId + " - " + e.getMessage() + " - " + e.getCause().getMessage());
+            }
+            else {
+                model.addAttribute("fehlernachricht", "Fehler beim Laden des Fhir Eintrages mit der TelematikId=" + telematikId + " - " + e.getMessage());
+            }
+        }
+        return "verzeichnisdienst/verzeichnisdienstFhirDetails";
     }
 
     @RequestMapping(value = "/verzeichnisdienst/zertifikate/speichern/{uid}/{telematikId}", method = RequestMethod.POST)
@@ -298,6 +330,7 @@ public class VerzeichnisdienstController extends AbstractWebController {
                 throw e;
             }
             model.addAttribute("infoObject", tiVZDProperties.getInfoObject());
+            model.addAttribute("isFhirConnected", verzeichnisdienstFhirService.isFhirConnected(tiVZDProperties));
 
             List<DirectoryEntryContainer> searchResults = new ArrayList<DirectoryEntryContainer>();
             if (initalLoading) {

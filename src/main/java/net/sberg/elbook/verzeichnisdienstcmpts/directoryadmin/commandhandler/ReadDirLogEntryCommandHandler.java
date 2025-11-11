@@ -1,7 +1,7 @@
 package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.commandhandler;
 
-import de.gematik.vzd.api.V1_12_7.LogApi;
-import de.gematik.vzd.model.V1_12_7.LogEntry;
+import de.gematik.vzd.api.V1_12_8.LogApi;
+import de.gematik.vzd.model.V1_12_8.LogEntry;
 import net.sberg.elbook.common.StringUtils;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.VzdEntryWrapper;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.ClientImpl;
@@ -24,16 +24,12 @@ import java.util.List;
 public class ReadDirLogEntryCommandHandler extends AbstractCommandHandler {
 
     private Logger log = LoggerFactory.getLogger(ReadDirLogEntryCommandHandler.class);
-    private LogApi logApiV1_12_7;
-    private de.gematik.vzd.api.V1_12_6.LogApi logApiV1_12_6;
+    private LogApi logApiV1_12_8;
 
     public ReadDirLogEntryCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
-            logApiV1_12_7 = new LogApi(client);
-        }
-        else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
-            logApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.LogApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_8)) {
+            logApiV1_12_8 = new LogApi(client);
         }
         else {
             throw new IllegalStateException("unknown api version: "+client.getTiVZDProperties().getInfoObject().getVersion());
@@ -93,8 +89,8 @@ public class ReadDirLogEntryCommandHandler extends AbstractCommandHandler {
             Boolean noDataChanged = readDirLogEntryCommand.getNoDataChanged();
             String holder = !StringUtils.listToString(readDirLogEntryCommand.getHolder()).equals("")?StringUtils.listToString(readDirLogEntryCommand.getHolder()):null;
 
-            if (logApiV1_12_7 != null) {
-                ResponseEntity<List<LogEntry>> response = logApiV1_12_7.readLogWithHttpInfo(uid, telematikId, holder, logtimeFrom, logtimeTo, operation, noDataChanged);
+            if (logApiV1_12_8 != null) {
+                ResponseEntity<List<LogEntry>> response = logApiV1_12_8.readLogWithHttpInfo(uid, telematikId, holder, logtimeFrom, logtimeTo, operation, noDataChanged);
 
                 if (response.getStatusCode() == HttpStatus.OK) {
                     if (response.getBody().isEmpty()) {
@@ -102,26 +98,6 @@ public class ReadDirLogEntryCommandHandler extends AbstractCommandHandler {
                     } else {
                         for (Iterator<LogEntry> iterator = response.getBody().iterator(); iterator.hasNext(); ) {
                             LogEntry logEntry = iterator.next();
-                            commandResultCallbackHandler.handleLogEntry(command, new VzdEntryWrapper(logEntry));
-                        }
-                    }
-                } else {
-                    commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ServerResult(response.getStatusCode().value(), response.getHeaders()));
-                    log.error("read directory log entry execution failed. Response status was: "
-                            + response.getStatusCode() + "\n" + command);
-                    commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(false, "read directory log entry execution failed. Response status was: "
-                            + response.getStatusCode() + "\n" + command));
-                }
-            }
-            else if (logApiV1_12_6 != null) {
-                ResponseEntity<List<de.gematik.vzd.model.V1_12_6.LogEntry>> response = logApiV1_12_6.readLogWithHttpInfo(uid, telematikId, holder, logtimeFrom, logtimeTo, operation, noDataChanged);
-
-                if (response.getStatusCode() == HttpStatus.OK) {
-                    if (response.getBody().isEmpty()) {
-                        commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(false, AbstractCommandResultCallbackHandler.ResultReason.NO_SEARCH_RESULTS));
-                    } else {
-                        for (Iterator<de.gematik.vzd.model.V1_12_6.LogEntry> iterator = response.getBody().iterator(); iterator.hasNext(); ) {
-                            de.gematik.vzd.model.V1_12_6.LogEntry logEntry = iterator.next();
                             commandResultCallbackHandler.handleLogEntry(command, new VzdEntryWrapper(logEntry));
                         }
                     }

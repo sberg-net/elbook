@@ -1,8 +1,8 @@
 package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.commandhandler;
 
-import de.gematik.vzd.api.V1_12_7.CertificateAdministrationApi;
-import de.gematik.vzd.model.V1_12_7.DistinguishedName;
-import de.gematik.vzd.model.V1_12_7.UserCertificate;
+import de.gematik.vzd.api.V1_12_8.CertificateAdministrationApi;
+import de.gematik.vzd.model.V1_12_8.DistinguishedName;
+import de.gematik.vzd.model.V1_12_8.UserCertificate;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.VzdEntryWrapper;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.ClientImpl;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.TiVZDProperties;
@@ -22,18 +22,14 @@ import java.util.Iterator;
 
 public class AddDirCertCommandHandler extends AbstractCommandHandler {
 
-    private CertificateAdministrationApi certificateAdministrationApiV1_12_7;
-    private de.gematik.vzd.api.V1_12_6.CertificateAdministrationApi certificateAdministrationApiV1_12_6;
+    private CertificateAdministrationApi certificateAdministrationApiV1_12_8;
 
     private Logger log = LoggerFactory.getLogger(AddDirCertCommandHandler.class);
 
     protected AddDirCertCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
-            certificateAdministrationApiV1_12_7 = new CertificateAdministrationApi(client);
-        }
-        else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
-            certificateAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.CertificateAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_8)) {
+            certificateAdministrationApiV1_12_8 = new CertificateAdministrationApi(client);
         }
         else {
             throw new IllegalStateException("unknown api version: "+client.getTiVZDProperties().getInfoObject().getVersion());
@@ -79,7 +75,7 @@ public class AddDirCertCommandHandler extends AbstractCommandHandler {
                 String certContent = iterator.next();
                 try {
 
-                    if (this.certificateAdministrationApiV1_12_7 != null) {
+                    if (this.certificateAdministrationApiV1_12_8 != null) {
                         UserCertificate userCertificate = new UserCertificate();
                         userCertificate.setUserCertificate(certContent);
 
@@ -87,7 +83,7 @@ public class AddDirCertCommandHandler extends AbstractCommandHandler {
                         dn.setUid(addDirCertCommand.getUid());
                         userCertificate.setDn(dn);
 
-                        ResponseEntity<DistinguishedName> response = certificateAdministrationApiV1_12_7.addDirectoryEntryCertificateWithHttpInfo(addDirCertCommand.getUid(), userCertificate);
+                        ResponseEntity<DistinguishedName> response = certificateAdministrationApiV1_12_8.addDirectoryEntryCertificateWithHttpInfo(addDirCertCommand.getUid(), userCertificate);
 
                         if (response.getStatusCode() == HttpStatus.CREATED) {
                             log.debug("Certificate successful added: \n" + userCertificate);
@@ -97,25 +93,6 @@ public class AddDirCertCommandHandler extends AbstractCommandHandler {
                                     .getStatusCode() + "\n" + command.getUid()));
                         }
                     }
-                    else if (this.certificateAdministrationApiV1_12_6 != null) {
-                        de.gematik.vzd.model.V1_12_6.UserCertificate userCertificate = new de.gematik.vzd.model.V1_12_6.UserCertificate();
-                        userCertificate.setUserCertificate(certContent);
-
-                        de.gematik.vzd.model.V1_12_6.DistinguishedName dn = new de.gematik.vzd.model.V1_12_6.DistinguishedName();
-                        dn.setUid(addDirCertCommand.getUid());
-                        userCertificate.setDn(dn);
-
-                        ResponseEntity<de.gematik.vzd.model.V1_12_6.DistinguishedName> response = certificateAdministrationApiV1_12_6.addDirectoryEntryCertificateWithHttpInfo(addDirCertCommand.getUid(), userCertificate);
-
-                        if (response.getStatusCode() == HttpStatus.CREATED) {
-                            log.debug("Certificate successful added: \n" + userCertificate);
-                            commandResultCallbackHandler.handleDistinguishedName(command, new VzdEntryWrapper(response.getBody()));
-                        } else {
-                            commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(false, "Add directory cert entry execution failed. Response-Status was: " + response
-                                    .getStatusCode() + "\n" + command.getUid()));
-                        }
-                    }
-
                 }
                 catch (RestClientResponseException e) {
                     AbstractCommandResultCallbackHandler.ServerResult serverResult = new AbstractCommandResultCallbackHandler.ServerResult(e.getStatusCode().value(), e.getResponseHeaders());

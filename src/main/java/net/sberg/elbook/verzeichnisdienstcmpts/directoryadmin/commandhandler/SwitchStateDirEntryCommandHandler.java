@@ -1,6 +1,6 @@
 package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.commandhandler;
 
-import de.gematik.vzd.api.V1_12_7.DirectoryEntryAdministrationApi;
+import de.gematik.vzd.api.V1_12_8.DirectoryEntryAdministrationApi;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.ClientImpl;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.TiVZDProperties;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumCommand;
@@ -17,17 +17,13 @@ import org.springframework.web.client.RestClientResponseException;
 
 public class SwitchStateDirEntryCommandHandler extends AbstractCommandHandler {
 
-    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_9_5;
-    private de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_6;
+    private DirectoryEntryAdministrationApi directoryEntryAdministrationApiV1_12_8;
     private Logger log = LoggerFactory.getLogger(SwitchStateDirEntryCommandHandler.class);
 
     public SwitchStateDirEntryCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
-            directoryEntryAdministrationApiV1_9_5 = new DirectoryEntryAdministrationApi(client);
-        }
-        else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
-            directoryEntryAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.DirectoryEntryAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_8)) {
+            directoryEntryAdministrationApiV1_12_8 = new DirectoryEntryAdministrationApi(client);
         }
         else {
             throw new IllegalStateException("unknown api version: "+client.getTiVZDProperties().getInfoObject().getVersion());
@@ -62,11 +58,8 @@ public class SwitchStateDirEntryCommandHandler extends AbstractCommandHandler {
             SwitchStateDirEntryCommand switchStateDirEntryCommand = (SwitchStateDirEntryCommand)command;
 
             ResponseEntity<Object> response = null;
-            if (directoryEntryAdministrationApiV1_9_5 != null) {
-                response = directoryEntryAdministrationApiV1_9_5.stateSwitchDirectoryEntryWithHttpInfo(switchStateDirEntryCommand.getUid(), switchStateDirEntryCommand.getActive());
-            }
-            else if (directoryEntryAdministrationApiV1_12_6 != null) {
-                response = directoryEntryAdministrationApiV1_12_6.stateSwitchDirectoryEntryWithHttpInfo(switchStateDirEntryCommand.getUid(), switchStateDirEntryCommand.getActive());
+            if (directoryEntryAdministrationApiV1_12_8 != null) {
+                response = directoryEntryAdministrationApiV1_12_8.stateSwitchDirectoryEntryWithHttpInfo(switchStateDirEntryCommand.getUid(), switchStateDirEntryCommand.getActive());
             }
 
             if (response.getStatusCode() == HttpStatus.OK) {

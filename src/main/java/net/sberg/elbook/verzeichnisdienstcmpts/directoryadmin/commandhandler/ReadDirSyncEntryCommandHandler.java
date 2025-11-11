@@ -1,8 +1,8 @@
 package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.commandhandler;
 
-import de.gematik.vzd.api.V1_12_7.DirectoryEntrySynchronizationApi;
-import de.gematik.vzd.model.V1_12_7.DirectoryEntry;
-import de.gematik.vzd.model.V1_12_7.ReadDirectoryEntryforSyncResponse;
+import de.gematik.vzd.api.V1_12_8.DirectoryEntrySynchronizationApi;
+import de.gematik.vzd.model.V1_12_8.DirectoryEntry;
+import de.gematik.vzd.model.V1_12_8.ReadDirectoryEntryforSyncResponse;
 import net.sberg.elbook.common.StringUtils;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.VzdEntryWrapper;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.ClientImpl;
@@ -25,16 +25,12 @@ public class ReadDirSyncEntryCommandHandler extends AbstractCommandHandler {
     private static final String CHECK_EMPTY_STRING = "**";
 
     private Logger log = LoggerFactory.getLogger(ReadDirSyncEntryCommandHandler.class);
-    private DirectoryEntrySynchronizationApi directoryEntrySynchronizationApiV1_12_7;
-    private de.gematik.vzd.api.V1_12_6.DirectoryEntrySynchronizationApi directoryEntrySynchronizationApiV1_12_6;
+    private DirectoryEntrySynchronizationApi directoryEntrySynchronizationApiV1_12_8;
 
     public ReadDirSyncEntryCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
-            directoryEntrySynchronizationApiV1_12_7 = new DirectoryEntrySynchronizationApi(client);
-        }
-        else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
-            directoryEntrySynchronizationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.DirectoryEntrySynchronizationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_8)) {
+            directoryEntrySynchronizationApiV1_12_8 = new DirectoryEntrySynchronizationApi(client);
         }
         else {
             throw new IllegalStateException("unknown api version: "+client.getTiVZDProperties().getInfoObject().getVersion());
@@ -153,17 +149,17 @@ public class ReadDirSyncEntryCommandHandler extends AbstractCommandHandler {
             boolean searchResultsAvailable = false;
             int size = 0;
             while (true) {
-                if (directoryEntrySynchronizationApiV1_12_7 != null) {
+                if (directoryEntrySynchronizationApiV1_12_8 != null) {
                     ResponseEntity response = null;
                     boolean pagingMode = true;
                     if (pagingInfo == null || pagingInfo.getPagingCookie() == null) {
-                        response = directoryEntrySynchronizationApiV1_12_7.readDirectoryEntryForSyncWithHttpInfo(uid, givenName, sn, cn,
+                        response = directoryEntrySynchronizationApiV1_12_8.readDirectoryEntryForSyncWithHttpInfo(uid, givenName, sn, cn,
                             displayName, streetAddress, postalCode, countryCode, localityName, stateOrProvinceName, title,
                             organization, otherName, telematikID, telematikIDSubstr, lanr,  providedBy, specialization, domainID, holder, personalEntry,
                             dataFromAuthority, professionOID, entryType, maxKomLeAdr, changeDateTimeFrom, changeDateTimeTo, baseEntryOnly, active, meta);
                         pagingMode = false;
                     } else {
-                        response = directoryEntrySynchronizationApiV1_12_7.readDirectoryEntryForSyncPagingWithHttpInfo(uid, givenName, sn, cn,
+                        response = directoryEntrySynchronizationApiV1_12_8.readDirectoryEntryForSyncPagingWithHttpInfo(uid, givenName, sn, cn,
                             displayName, streetAddress, postalCode, countryCode, localityName, stateOrProvinceName, title,
                             organization, otherName, telematikID, telematikIDSubstr, null, null, specialization, domainID, holder, personalEntry,
                             dataFromAuthority, professionOID, entryType, maxKomLeAdr, changeDateTimeFrom, changeDateTimeTo, baseEntryOnly, active, meta, pagingInfo.getPagingSize(), pagingInfo.getPagingCookie());
@@ -198,72 +194,6 @@ public class ReadDirSyncEntryCommandHandler extends AbstractCommandHandler {
                             searchResultsAvailable = true;
                             for (Iterator<DirectoryEntry> iterator = directoryEntries.iterator(); iterator.hasNext(); ) {
                                 DirectoryEntry directoryEntry = iterator.next();
-                                commandResultCallbackHandler.handleDirectoryEntry(command, new VzdEntryWrapper(directoryEntry));
-                                size++;
-                                if (pagingInfo.getMaxSize() != -1 && size > pagingInfo.getMaxSize()) {
-                                    commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(false, AbstractCommandResultCallbackHandler.ResultReason.TOO_MANY_RESULTS));
-                                    pagingMode = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!pagingMode) {
-                            break;
-                        }
-                    } else {
-                        commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ServerResult(response.getStatusCode().value(), response.getHeaders()));
-                        log.error("read directory entry execution failed. Response status was: "
-                                + response.getStatusCode() + "\n" + command);
-                        commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(false, "read directory entry execution failed. Response status was: "
-                                + response.getStatusCode() + "\n" + command));
-                        break;
-                    }
-                }
-                else if (directoryEntrySynchronizationApiV1_12_6 != null) {
-                    ResponseEntity response = null;
-                    boolean pagingMode = true;
-                    if (pagingInfo == null || pagingInfo.getPagingCookie() == null) {
-                        response = directoryEntrySynchronizationApiV1_12_6.readDirectoryEntryForSyncWithHttpInfo(uid, givenName, sn, cn,
-                                displayName, streetAddress, postalCode, countryCode, localityName, stateOrProvinceName, title,
-                                organization, otherName, telematikID, telematikIDSubstr, readDirSyncEntryCommand.getProvidedBy(), specialization, domainID, holder, personalEntry,
-                                dataFromAuthority, professionOID, entryType, maxKomLeAdr, changeDateTimeFrom, changeDateTimeTo, baseEntryOnly, active, meta);
-                        pagingMode = false;
-                    } else {
-                        response = directoryEntrySynchronizationApiV1_12_6.readDirectoryEntryForSyncPagingWithHttpInfo(uid, givenName, sn, cn,
-                                displayName, streetAddress, postalCode, countryCode, localityName, stateOrProvinceName, title,
-                                organization, otherName, telematikID, telematikIDSubstr, readDirSyncEntryCommand.getProvidedBy(), specialization, domainID, holder, personalEntry,
-                                dataFromAuthority, professionOID, entryType, maxKomLeAdr, changeDateTimeFrom, changeDateTimeTo, baseEntryOnly, active, meta, pagingInfo.getPagingSize(), pagingInfo.getPagingCookie());
-                    }
-                    if (response.getStatusCode() == HttpStatus.OK) {
-                        List<de.gematik.vzd.model.V1_12_6.DirectoryEntry> directoryEntries = null;
-                        if (response.getBody() instanceof de.gematik.vzd.model.V1_12_6.ReadDirectoryEntryforSyncResponse) {
-                            directoryEntries = ((de.gematik.vzd.model.V1_12_6.ReadDirectoryEntryforSyncResponse) response.getBody()).getDirectoryEntries();
-                            String pagingCookie = ((de.gematik.vzd.model.V1_12_6.ReadDirectoryEntryforSyncResponse) response.getBody()).getSearchControlValue().getCookie();
-                            int pagingSize = ((de.gematik.vzd.model.V1_12_6.ReadDirectoryEntryforSyncResponse) response.getBody()).getSearchControlValue().getSize();
-                            if (pagingInfo == null) {
-                                pagingInfo = new PagingInfo();
-                            }
-                            pagingInfo.setPagingSize(pagingSize);
-                            pagingInfo.setPagingCookie(pagingCookie);
-                            if (pagingCookie.equals("")) {
-                                pagingMode = false;
-                            }
-                            if (pagingInfo.isOneTimePaging()) {
-                                pagingMode = false;
-                                commandResultCallbackHandler.handlePagingInfo(command, pagingInfo);
-                            }
-                        } else {
-                            directoryEntries = (List<de.gematik.vzd.model.V1_12_6.DirectoryEntry>) response.getBody();
-                        }
-                        if (directoryEntries.isEmpty()) {
-                            if (!searchResultsAvailable) {
-                                commandResultCallbackHandler.handle(command, new AbstractCommandResultCallbackHandler.ResultReason(false, AbstractCommandResultCallbackHandler.ResultReason.NO_SEARCH_RESULTS));
-                            }
-                            break;
-                        } else {
-                            searchResultsAvailable = true;
-                            for (Iterator<de.gematik.vzd.model.V1_12_6.DirectoryEntry> iterator = directoryEntries.iterator(); iterator.hasNext(); ) {
-                                de.gematik.vzd.model.V1_12_6.DirectoryEntry directoryEntry = iterator.next();
                                 commandResultCallbackHandler.handleDirectoryEntry(command, new VzdEntryWrapper(directoryEntry));
                                 size++;
                                 if (pagingInfo.getMaxSize() != -1 && size > pagingInfo.getMaxSize()) {

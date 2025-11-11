@@ -816,6 +816,10 @@
           <button type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Bearbeiten" th:attr="data-id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}" onclick="vzdEintragLaden($(this).attr('data-id'))">
             <span data-feather="edit"></span>
           </button>&nbsp;&nbsp;&nbsp;
+          <button title="Laden der Fhir Daten" th:if="${isFhirConnected}" th:attr="data-telematikId=${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()}" th:attrappend="data-personalentry=${n.vzdEntryWrapper.extractDirectoryEntryPersonalEntry()}" class="btn btn-sm btn-primary" onclick="vzdEintragFhirDatenLaden($(this).attr('data-telematikId'), $(this).attr('data-personalentry'), 'loadFhirData')">
+            <span data-feather="info"></span>
+          </button>
+          <span th:if="${isFhirConnected}">&nbsp;&nbsp;&nbsp;</span>
           <button th:if="${n.editable}" type="button" class="btn btn-sm btn-primary" style="cursor: pointer" title="Löschen" th:attr="data-id=${n.vzdEntryWrapper.extractDirectoryEntryUid()}" th:attrappend="data-telematikId=${n.vzdEntryWrapper.extractDirectoryEntryTelematikId()}" data-bs-toggle="modal" data-bs-target="#confirmDialog4DeleteVzdEintrag" onclick="elbookContext.toDeleteVzdEintrag=$(this).attr('data-id');elbookContext.telematikId=$(this).attr('data-telematikId');" >
             <span data-feather="delete"></span>
           </button>
@@ -828,6 +832,7 @@
       </tr>
     </tbody>
   </table>
+  <a th:if="${isFhirConnected}" th:src="@{/verzeichnisdienst/fhir/lade}" target="_blank" id="loadFhirData"></a>
 </div>
 <script>
   feather.replace();

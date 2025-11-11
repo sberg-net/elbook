@@ -1,6 +1,6 @@
 package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.commandhandler;
 
-import de.gematik.vzd.api.V1_12_7.CertificateAdministrationApi;
+import de.gematik.vzd.api.V1_12_8.CertificateAdministrationApi;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.ClientImpl;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.TiVZDProperties;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumCommand;
@@ -19,17 +19,13 @@ import java.util.Iterator;
 
 public class DelDirCertCommandHandler extends AbstractCommandHandler {
 
-    private CertificateAdministrationApi certificateAdministrationApiV1_12_7;
-    private de.gematik.vzd.api.V1_12_6.CertificateAdministrationApi certificateAdministrationApiV1_12_6;
+    private CertificateAdministrationApi certificateAdministrationApiV1_12_8;
     private Logger log = LoggerFactory.getLogger(DelDirCertCommandHandler.class);
 
     public DelDirCertCommandHandler(AbstractCommand command, ClientImpl client, ICommandResultCallbackHandler commandResultCallbackHandler) {
         super(command, client, commandResultCallbackHandler);
-        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_7)) {
-            certificateAdministrationApiV1_12_7 = new CertificateAdministrationApi(client);
-        }
-        else if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_6)) {
-            certificateAdministrationApiV1_12_6 = new de.gematik.vzd.api.V1_12_6.CertificateAdministrationApi(client);
+        if (client.getTiVZDProperties().getApiVersion().equals(TiVZDProperties.API_VERSION_V1_12_8)) {
+            certificateAdministrationApiV1_12_8 = new CertificateAdministrationApi(client);
         }
         else {
             throw new IllegalStateException("unknown api version: "+client.getTiVZDProperties().getInfoObject().getVersion());
@@ -67,11 +63,8 @@ public class DelDirCertCommandHandler extends AbstractCommandHandler {
                 try {
                     ResponseEntity<Void> response = null;
 
-                    if (certificateAdministrationApiV1_12_7 != null) {
-                        response = certificateAdministrationApiV1_12_7.deleteDirectoryEntryCertificateWithHttpInfo(delDirCertCommand.getUid(), certUid);
-                    }
-                    else if (certificateAdministrationApiV1_12_6 != null) {
-                        response = certificateAdministrationApiV1_12_6.deleteDirectoryEntryCertificateWithHttpInfo(delDirCertCommand.getUid(), certUid);
+                    if (certificateAdministrationApiV1_12_8 != null) {
+                        response = certificateAdministrationApiV1_12_8.deleteDirectoryEntryCertificateWithHttpInfo(delDirCertCommand.getUid(), certUid);
                     }
 
                     if (response.getStatusCode() == HttpStatus.OK) {

@@ -98,11 +98,11 @@
           </div>
           <div class="col-12 col-md-6 col-lg-4">
             <button th:attr="data-id=${tsp.id}" class="btn btn-primary" onclick="tspLoadAllRequest($(this).attr('data-id'), 'SMCB', 'loadAllSmcb')">Alle SMCB - Daten (Zertifikate freigeschaltet) laden</button>
-            <a th:href="@{/tsp/loadallrequest}" target="_blank" id="loadAllSmcb"></a>
+            <a th:src="@{/tsp/loadallrequest}" target="_blank" id="loadAllSmcb"></a>
           </div>
           <div class="col-12 col-md-6 col-lg-4">
             <button th:attr="data-id=${tsp.id}" class="btn btn-primary" onclick="tspLoadAllRequest($(this).attr('data-id'), 'HBA', 'loadAllHba')">Alle HBA - Daten (Zertifikate freigeschaltet) laden</button>
-            <a th:href="@{/tsp/loadallrequest}" target="_blank" id="loadAllHba"></a>
+            <a th:src="@{/tsp/loadallrequest}" target="_blank" id="loadAllHba"></a>
           </div>
         </div>
       </div>

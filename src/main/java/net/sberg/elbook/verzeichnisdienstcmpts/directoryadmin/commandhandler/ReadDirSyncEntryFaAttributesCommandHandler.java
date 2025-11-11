@@ -1,8 +1,8 @@
 package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.commandhandler;
 
-import de.gematik.vzd.api.V1_12_6.DirectoryEntrySynchronizationApi;
-import de.gematik.vzd.model.V1_12_6.DirectoryEntry;
-import de.gematik.vzd.model.V1_12_6.ReadDirectoryEntryforSyncResponse;
+import de.gematik.vzd.api.V1_12_8.DirectoryEntrySynchronizationApi;
+import de.gematik.vzd.model.V1_12_8.DirectoryEntry;
+import de.gematik.vzd.model.V1_12_8.ReadDirectoryEntryforSyncResponse;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.VzdEntryWrapper;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.ClientImpl;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumCommand;
