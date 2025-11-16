@@ -33,34 +33,26 @@
 <body>
   <b th:if="${resources.isEmpty()}">Im Fhir VZD sind keine Daten hinterlegt</b>
   <div th:if="${!resources.isEmpty()}">
-    <table th:each="resource : ${resources}" class="table caption-top" xmlns:th="http://www.thymeleaf.org">
-      <caption th:text="${resource.name}">Daten der Resource</caption>
-      <thead>
-      <tr>
-        <th scope="col">Merkmal</th>
-        <th scope="col">Wert</th>
-      </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">Link zu der Resource</th>
-          <td><a th:href="@{/verzeichnisdienst/fhir/lade/resource/{name}/{uid}(name=${resource.resourceName},uid=${resource.uid})}" target="_blank">Details als json laden</a></td>
-        </tr>
-        <tr th:each="attribute : ${resource.getAttributes()}">
-          <th scope="row">
-            <span th:text="${attribute.name}">Name</span>
-          </th>
-          <td>
+    <div class="card" th:each="resource : ${resources}">
+      <div class="card-body">
+        <h5 class="card-title" th:text="${resource.name}"></h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <span class="fw-bold">Link zu der Resource</span>
+            <div><a th:href="@{/verzeichnisdienst/fhir/lade/resource/{name}/{uid}(name=${resource.resourceName},uid=${resource.uid})}" target="_blank">Details als json laden</a></div>
+          </li>
+          <li class="list-group-item" th:each="attribute : ${resource.getAttributes()}">
+            <span class="fw-bold" th:text="${attribute.name}">Attributname</span>
             <div th:each="val : ${attribute.getValues()}">
               <span th:text="${val}">val</span>
             </div>
             <div th:each="val : ${attribute.getHtmlValues()}">
               <span th:utext="${val}">val</span>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </body>
 </html>
