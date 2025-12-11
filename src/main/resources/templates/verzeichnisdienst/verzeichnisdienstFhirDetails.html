@@ -31,8 +31,9 @@
   <link rel="stylesheet" th:href="@{/css/dashboard.css}"/>
 </head>
 <body>
-  <b th:if="${resources.isEmpty()}">Im Fhir VZD sind keine Daten hinterlegt</b>
-  <div th:if="${!resources.isEmpty()}">
+  <div th:if="${fehlernachricht != null}" class="alert alert-danger" role="alert" xmlns:th="http://www.thymeleaf.org" th:text="${fehlernachricht}"></div>
+  <b th:if="${fehlernachricht == null && resources.isEmpty()}">Im Fhir VZD sind keine Daten hinterlegt</b>
+  <div th:if="${fehlernachricht == null && !resources.isEmpty()}">
     <div class="card" th:each="resource : ${resources}">
       <div class="card-body">
         <h5 class="card-title" th:text="${resource.name}"></h5>

@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.16.3]
+
+### Fixed
+- Darstellen und Laden der Fhir-Daten angepasst
+
 ## [2.16.2]
 
 ### Fixed
