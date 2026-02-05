@@ -29,9 +29,6 @@ import net.sberg.elbook.common.ICommonConstants;
 import net.sberg.elbook.jdbc.DaoPlaceholderProperty;
 import net.sberg.elbook.jdbc.JdbcGenericDao;
 import net.sberg.elbook.tspcmpts.EnumAntragTyp;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -42,7 +39,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -52,58 +48,11 @@ public class KartendatenTransferController extends AbstractWebController {
 
     private final JdbcGenericDao genericDao;
     private final KartendatenTransferService kartendatenTransferService;
-    @Qualifier("hbakartendatenPdf")
-    private final JasperReport hbakartendatenPdf;
 
     @RequestMapping(value = "/hbakartendatentransfer", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public String hbaKartenDatenTransferView() {
         return "hbakartendatentransfer/hbakartendatentransfer";
-    }
-
-    @SuppressWarnings("resource")
-    @RequestMapping(value = "/hbakartendaten/report/{hashCode}/{aktivierungsCode}", method = RequestMethod.GET)
-    @ResponseStatus(value = HttpStatus.OK)
-    public void hbakartendatenReport(HttpServletResponse response, @PathVariable String aktivierungsCode, @PathVariable int hashCode) throws Exception {
-
-        KartendatenTransfer kartendatenTransfer = (KartendatenTransfer) genericDao.selectOne(
-                KartendatenTransfer.class.getName(),
-                null,
-                Arrays.asList(
-                        new DaoPlaceholderProperty("aktivierungsCode", aktivierungsCode),
-                        new DaoPlaceholderProperty("hashCode", hashCode)
-                )
-        );
-        if (kartendatenTransfer.getGueltigBis().isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Daten sind nicht mehr gültig");
-        }
-
-        File datentransferF = new File(ICommonConstants.BASE_DIR + "datentransfer" + File.separator + "hba_" + kartendatenTransfer.getMandantId() + "_" + kartendatenTransfer.getId() + ".json");
-        HbaKartendatenTransferCommandContainer hbaKartendatenTransferCommandContainer = new ObjectMapper().readValue(datentransferF, HbaKartendatenTransferCommandContainer.class);
-        JRDataSource dataSource = new JRBeanCollectionDataSource(hbaKartendatenTransferCommandContainer.getCommands());
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("absender", hbaKartendatenTransferCommandContainer.getAbsender());
-        params.put("empfaenger", hbaKartendatenTransferCommandContainer.getEmpfaenger());
-        params.put("empfaengerKartenherausgeber", hbaKartendatenTransferCommandContainer.getEmpfaengerKartenherausgeber().getHrText());
-        params.put("absenderKartenherausgeber", hbaKartendatenTransferCommandContainer.getAbsenderKartenherausgeber().getHrText());
-        params.put("versendetAm", kartendatenTransfer.getVersendetAm().format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm:ss")));
-        params.put("gueltigBis", kartendatenTransfer.getGueltigBis().format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm:ss")));
-
-        String fileNameStr = "datentransfer"+ "_" + kartendatenTransfer.getId() + ".pdf";
-        String longFileNameStr = System.getProperty("java.io.tmpdir") + File.separator + fileNameStr;
-
-        JasperPrint jasperPrint = JasperFillManager.fillReport(hbakartendatenPdf, params, dataSource);
-        File longFileName = new File(longFileNameStr);
-
-        JasperExportManager.exportReportToPdfFile(jasperPrint, longFileName.getAbsolutePath());
-        response.setHeader("Content-Disposition", "attachment; filename=" + fileNameStr);
-        response.setContentType("application/pdf");
-
-        InputStream inputStream = new FileInputStream(longFileName);
-        inputStream.transferTo(response.getOutputStream());
-        response.flushBuffer();
-
     }
 
     @RequestMapping(value = "/hbakartendaten/{hashCode}", method = RequestMethod.GET)

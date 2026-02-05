@@ -17,6 +17,7 @@ package net.sberg.elbook.logeintragcmpts;
 
 import lombok.Data;
 import net.sberg.elbook.common.DateTimeUtils;
+import net.sberg.elbook.verzeichnisdienstcmpts.EnumFachdienst;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.VzdEntryWrapper;
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumCommand;
 import org.slf4j.Logger;
@@ -51,9 +52,17 @@ public class LogEntryContainer {
     }
 
     public String createSummary() {
+        String clientId = logEntry.extractLogEntryClientID();
+        try {
+            EnumFachdienst fd = EnumFachdienst.valueOf(clientId);
+            if (fd != null) {
+                clientId = clientId + " (" + fd.getHrText() + ")";
+            }
+        }
+        catch (Exception e) {}
         StringBuilder resultBuilder = new StringBuilder();
         resultBuilder.append(logDateTime+": ");
-        resultBuilder.append(logEntry.extractLogEntryClientID()+", ");
+        resultBuilder.append(clientId+", ");
         resultBuilder.append(operation+", ");
         resultBuilder.append("noDataChanged - "+logEntry.extractLogEntryNoDataChanged());
         return resultBuilder.toString();

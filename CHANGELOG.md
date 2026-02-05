@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.16.4]
+
+### Fixed
+- Erweiterung der Logeinträge und der clientId um Fachdienste
+- Entfernen von JasperReports
+
 ## [2.16.3]
 
 ### Fixed
