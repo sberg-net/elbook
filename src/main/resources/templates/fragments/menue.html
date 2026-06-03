@@ -57,7 +57,7 @@
                 Logeinträge
               </a>
             </li>
-            <li class="nav-item" sec:authorize="hasRole('PHARMACIST')">
+            <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','PHARMACIST')">
               <a class="nav-link" th:classappend="${requestPath.endsWith('/hbakartendatentransfer') ? 'active':''}" th:href="@{/hbakartendatentransfer}">
                 <span data-feather="globe"></span>
                 HBA Kartendatentransfer

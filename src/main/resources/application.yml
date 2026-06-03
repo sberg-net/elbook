@@ -48,6 +48,7 @@ mailCreatorAndSenderService:
   scheduledDef: 0 0 0/1 * * ?
   testMode: false
   testRecipients: ch.dethloff@sberg.net
+  expiredDays: 2
 
 kartendatenTransferService:
   gueltigBisTage: 90

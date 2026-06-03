@@ -15,15 +15,25 @@
  */
 package net.sberg.elbook.job;
 
+import net.sberg.elbook.common.ICommonConstants;
 import net.sberg.elbook.jdbc.JdbcGenericDao;
 import net.sberg.elbook.kartendatentransfer.KartendatenTransfer;
 import net.sberg.elbook.kartendatentransfer.KartendatenTransferService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,6 +46,8 @@ public class HbaKartendatenTransferJob {
     private JdbcGenericDao genericDao;
     @Autowired
     private KartendatenTransferService kartendatenTransferService;
+    @Value("${kartendatenTransferService.gueltigBisTage}")
+    private int gueltigBisTage;
 
     @Scheduled(cron="${hbaKartendatenTransferJob.scheduledDef}")
     public void execute() {
@@ -57,6 +69,24 @@ public class HbaKartendatenTransferJob {
         for (Iterator<KartendatenTransfer> iterator = daten.iterator(); iterator.hasNext(); ) {
             KartendatenTransfer kartendatenTransfer =  iterator.next();
             kartendatenTransferService.delete(kartendatenTransfer);
+        }
+        /*
+        context filesystem
+         */
+        LocalDateTime dt = LocalDateTime.now().minusDays(gueltigBisTage);
+        File f = new File(ICommonConstants.BASE_DIR + "datentransfer");
+        File[] files = f.listFiles();
+        if (files == null || files.length == 0) {
+            return;
+        }
+        for (int i = 0; i < files.length; i++) {
+            Path path = Paths.get(files[i].getAbsolutePath());
+            BasicFileAttributes attr = Files.readAttributes(path, BasicFileAttributes.class);
+            FileTime fileTime = attr.creationTime();
+            LocalDateTime convertedFileTime = LocalDateTime.ofInstant(fileTime.toInstant(), ZoneId.systemDefault());
+            if (!convertedFileTime.isAfter(dt)) {
+                files[i].delete();
+            }
         }
     }
 

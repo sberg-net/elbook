@@ -313,27 +313,50 @@ public class KartendatenTransferController extends AbstractWebController {
     public String hbakartendatentransferUebersicht(Authentication authentication, Model model, String searchValue) throws Exception {
         AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
         List<KartendatenTransferReduziert> daten = null;
-        if (searchValue.equals("")) {
-            daten = genericDao.selectMany(
+        if (!authUserDetails.isAdmin()) {
+            if (searchValue.equals("")) {
+                daten = genericDao.selectMany(
                     "select id,mandantId,count,aktivierungsCode,empfaengerKartenherausgeber,erstelltAm,gelesenAm,versendetAm,gueltigBis,(gueltigBis < CURRENT_TIMESTAMP) abgelaufen from KartendatenTransfer where mandantId = ?",
                     KartendatenTransferReduziert.class.getName(),
                     null,
                     Arrays.asList(
-                            new DaoPlaceholderProperty("mandantId", authUserDetails.getMandant().getId())
+                       new DaoPlaceholderProperty("mandantId", authUserDetails.getMandant().getId())
                     )
-            );
-        }
-        else {
-            daten = genericDao.selectMany(
+                );
+            }
+            else {
+                daten = genericDao.selectMany(
                     "select id,mandantId,count,aktivierungsCode,empfaengerKartenherausgeber,erstelltAm,gelesenAm,versendetAm,gueltigBis,(gueltigBis < CURRENT_TIMESTAMP) abgelaufen from KartendatenTransfer where mandantId = ? and (aktivierungsCode like ? or hashCode like ?)",
                     KartendatenTransferReduziert.class.getName(),
                     null,
                     Arrays.asList(
-                            new DaoPlaceholderProperty("mandantId", authUserDetails.getMandant().getId()),
-                            new DaoPlaceholderProperty("aktivierungsCode", "%"+searchValue+"%"),
-                            new DaoPlaceholderProperty("hashCode", "%"+searchValue+"%")
+                        new DaoPlaceholderProperty("mandantId", authUserDetails.getMandant().getId()),
+                        new DaoPlaceholderProperty("aktivierungsCode", "%"+searchValue+"%"),
+                        new DaoPlaceholderProperty("hashCode", "%"+searchValue+"%")
                     )
-            );
+                );
+            }
+        }
+        else {
+            if (searchValue.equals("")) {
+                daten = genericDao.selectMany(
+                    "select id,mandantId,count,aktivierungsCode,empfaengerKartenherausgeber,erstelltAm,gelesenAm,versendetAm,gueltigBis,(gueltigBis < CURRENT_TIMESTAMP) abgelaufen from KartendatenTransfer",
+                    KartendatenTransferReduziert.class.getName(),
+                    null,
+                    null
+                );
+            }
+            else {
+                daten = genericDao.selectMany(
+                    "select id,mandantId,count,aktivierungsCode,empfaengerKartenherausgeber,erstelltAm,gelesenAm,versendetAm,gueltigBis,(gueltigBis < CURRENT_TIMESTAMP) abgelaufen from KartendatenTransfer where aktivierungsCode like ? or hashCode like ?",
+                    KartendatenTransferReduziert.class.getName(),
+                    null,
+                    Arrays.asList(
+                        new DaoPlaceholderProperty("aktivierungsCode", "%"+searchValue+"%"),
+                        new DaoPlaceholderProperty("hashCode", "%"+searchValue+"%")
+                    )
+                );
+            }
         }
 
         //load persons
@@ -341,13 +364,18 @@ public class KartendatenTransferController extends AbstractWebController {
             StringBuilder personBuilder = new StringBuilder();
             KartendatenTransferReduziert kartendatenTransferReduziert = iterator.next();
             File f = new File(ICommonConstants.BASE_DIR + "datentransfer" + File.separator + "hba_"+kartendatenTransferReduziert.getMandantId()+"_"+kartendatenTransferReduziert.getId()+".json");
-            HbaKartendatenTransferCommandContainer hbaKartendatenTransferCommandContainer = new ObjectMapper().readValue(f, HbaKartendatenTransferCommandContainer.class);
-            for (Iterator<HbaKartendatenTransferCommand> iterator2 = hbaKartendatenTransferCommandContainer.getCommands().iterator(); iterator2.hasNext(); ) {
-                HbaKartendatenTransferCommand command = iterator2.next();
-                if (personBuilder.length() > 0) {
-                    personBuilder.append(", ");
+            if (!f.exists()) {
+                personBuilder.append("Daten nicht mehr vorhanden");
+            }
+            else {
+                HbaKartendatenTransferCommandContainer hbaKartendatenTransferCommandContainer = new ObjectMapper().readValue(f, HbaKartendatenTransferCommandContainer.class);
+                for (Iterator<HbaKartendatenTransferCommand> iterator2 = hbaKartendatenTransferCommandContainer.getCommands().iterator(); iterator2.hasNext(); ) {
+                    HbaKartendatenTransferCommand command = iterator2.next();
+                    if (personBuilder.length() > 0) {
+                        personBuilder.append(", ");
+                    }
+                    personBuilder.append(command.getVorname() + " " + command.getNachname());
                 }
-                personBuilder.append(command.getVorname()+" "+command.getNachname());
             }
             kartendatenTransferReduziert.setPersonen(personBuilder.toString());
         }
@@ -370,25 +398,27 @@ public class KartendatenTransferController extends AbstractWebController {
     public String hbakartendatentransferPersonenUebersicht(Model model, @PathVariable int id) throws Exception {
         KartendatenTransfer kartendatenTransfer = (KartendatenTransfer) genericDao.selectOne(KartendatenTransfer.class.getName(), null, Arrays.asList(new DaoPlaceholderProperty("id", id)));
 
-        File f = new File(ICommonConstants.BASE_DIR + "datentransfer" + File.separator + "hba_"+kartendatenTransfer.getMandantId()+"_"+kartendatenTransfer.getId()+".json");
-        HbaKartendatenTransferCommandContainer hbaKartendatenTransferCommandContainer = new ObjectMapper().readValue(f, HbaKartendatenTransferCommandContainer.class);
-
         List<HbaKartendatenTransferCommandReduziert> personen = new ArrayList<>();
-        int idx = 0;
-        for (Iterator<HbaKartendatenTransferCommand> iterator = hbaKartendatenTransferCommandContainer.getCommands().iterator(); iterator.hasNext(); ) {
-            HbaKartendatenTransferCommand command =  iterator.next();
-            HbaKartendatenTransferCommandReduziert hbaKartendatenTransferCommandReduziert = new HbaKartendatenTransferCommandReduziert();
-            hbaKartendatenTransferCommandReduziert.setPerson(command.getVorname()+" "+command.getNachname());
-            hbaKartendatenTransferCommandReduziert.setId(idx);
-            hbaKartendatenTransferCommandReduziert.setTyp(command.getTyp().getHrText());
-            if (command.isUnbekanntVerzogen()) {
-                hbaKartendatenTransferCommandReduziert.setAnschrift("Unbekannt verzogen");
+
+        File f = new File(ICommonConstants.BASE_DIR + "datentransfer" + File.separator + "hba_"+kartendatenTransfer.getMandantId()+"_"+kartendatenTransfer.getId()+".json");
+        if (f.exists()) {
+            HbaKartendatenTransferCommandContainer hbaKartendatenTransferCommandContainer = new ObjectMapper().readValue(f, HbaKartendatenTransferCommandContainer.class);
+
+            int idx = 0;
+            for (Iterator<HbaKartendatenTransferCommand> iterator = hbaKartendatenTransferCommandContainer.getCommands().iterator(); iterator.hasNext(); ) {
+                HbaKartendatenTransferCommand command = iterator.next();
+                HbaKartendatenTransferCommandReduziert hbaKartendatenTransferCommandReduziert = new HbaKartendatenTransferCommandReduziert();
+                hbaKartendatenTransferCommandReduziert.setPerson(command.getVorname() + " " + command.getNachname());
+                hbaKartendatenTransferCommandReduziert.setId(idx);
+                hbaKartendatenTransferCommandReduziert.setTyp(command.getTyp().getHrText());
+                if (command.isUnbekanntVerzogen()) {
+                    hbaKartendatenTransferCommandReduziert.setAnschrift("Unbekannt verzogen");
+                } else {
+                    hbaKartendatenTransferCommandReduziert.setAnschrift(command.getStrasse() + " " + command.getHausnummer() + ", " + command.getPostleitzahl() + " " + command.getWohnort());
+                }
+                personen.add(hbaKartendatenTransferCommandReduziert);
+                idx++;
             }
-            else {
-                hbaKartendatenTransferCommandReduziert.setAnschrift(command.getStrasse() + " " + command.getHausnummer() + ", " + command.getPostleitzahl() + " " + command.getWohnort());
-            }
-            personen.add(hbaKartendatenTransferCommandReduziert);
-            idx++;
         }
 
         model.addAttribute("personen", personen);

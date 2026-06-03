@@ -126,7 +126,7 @@ public class WebSecurityConfig {
 
                         .requestMatchers(
                                 antMatcher("/hbakartendatentransfer/**")
-                        ).hasAnyRole(EnumAuthRole.ROLE_PHARMACIST.getSuffix())
+                        ).hasAnyRole(EnumAuthRole.ROLE_ADMIN.getSuffix(), EnumAuthRole.ROLE_PHARMACIST.getSuffix())
                 )
                 .httpBasic(Customizer.withDefaults())
                 .formLogin((form) -> form

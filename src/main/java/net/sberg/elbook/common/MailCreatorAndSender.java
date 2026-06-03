@@ -33,6 +33,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Properties;
 
 @Service
@@ -44,6 +51,8 @@ public class MailCreatorAndSender {
     private boolean testMode;
     @Value("${mailCreatorAndSenderService.testRecipients}")
     private String testRecipients;
+    @Value("${mailCreatorAndSenderService.expiredDays}")
+    private long expiredDays;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -64,17 +73,29 @@ public class MailCreatorAndSender {
         if (!f.exists()) {
             return;
         }
+
+        LocalDateTime dt = LocalDateTime.now().minusDays(expiredDays);
+
         File[] mails = f.listFiles();
         MimeMessage msg;
         FileInputStream fileInputStream;
         Session sess = Session.getDefaultInstance(new Properties());
         for (int i = 0; i < mails.length; i++) {
             try {
-                fileInputStream = new FileInputStream(mails[i].getAbsolutePath());
-                msg = new MimeMessage(sess, fileInputStream);
-                javaMailSender.send(msg);
-                fileInputStream.close();
-                mails[i].delete();
+                Path path = Paths.get(mails[i].getAbsolutePath());
+                BasicFileAttributes attr = Files.readAttributes(path, BasicFileAttributes.class);
+                FileTime fileTime = attr.creationTime();
+                LocalDateTime convertedFileTime = LocalDateTime.ofInstant(fileTime.toInstant(), ZoneId.systemDefault());
+                if (!convertedFileTime.isAfter(dt)) {
+                    mails[i].delete();
+                }
+                else {
+                    fileInputStream = new FileInputStream(mails[i].getAbsolutePath());
+                    msg = new MimeMessage(sess, fileInputStream);
+                    javaMailSender.send(msg);
+                    fileInputStream.close();
+                    mails[i].delete();
+                }
             }
             catch (Exception e) {
                 log.error("error on sending mail: "+mails[i].getAbsolutePath(), e);

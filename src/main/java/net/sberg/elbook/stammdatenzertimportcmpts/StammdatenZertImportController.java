@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sberg.elbook.authcomponents.AuthUserDetails;
@@ -30,16 +31,12 @@ import net.sberg.elbook.common.AbstractWebController;
 import net.sberg.elbook.common.ICommonConstants;
 import net.sberg.elbook.jdbc.DaoPlaceholderProperty;
 import net.sberg.elbook.jdbc.JdbcGenericDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -68,22 +65,22 @@ public class StammdatenZertImportController extends AbstractWebController {
         AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
         if (!authUserDetails.isAdmin()) {
             List<BatchJobReduziert> jobs = genericDao.selectMany(
-                    "SELECT \n" +
-                            "    b.id,\n" +
-                            "    b.mandantId,\n" +
-                            "    m.name as mandantName,\n" +
-                            "    b.batchJobName,\n" +
-                            "    b.statusCode,\n" +
-                            "    b.anzahlDatensaetze,\n" +
-                            "    b.anzahlDatensaetzeAbgearbeitet,\n" +
-                            "    b.gestartetAm,\n" +
-                            "    b.beendetAm\n" +
-                            "FROM BatchJob b inner join Mandant m on b.mandantId = m.id where m.id = ? and b.batchJobName = ? order by b.gestartetAm desc",
+                "SELECT \n" +
+                    "    b.id,\n" +
+                    "    b.mandantId,\n" +
+                    "    m.name as mandantName,\n" +
+                    "    b.batchJobName,\n" +
+                    "    b.statusCode,\n" +
+                    "    b.anzahlDatensaetze,\n" +
+                    "    b.anzahlDatensaetzeAbgearbeitet,\n" +
+                    "    b.gestartetAm,\n" +
+                    "    b.beendetAm\n" +
+                    "FROM BatchJob b inner join Mandant m on b.mandantId = m.id where m.id = ? and b.batchJobName = ? order by b.gestartetAm desc",
                     BatchJobReduziert.class.getName(),
                     null,
                     Arrays.asList(
-                            new DaoPlaceholderProperty("mandantId", authUserDetails.getMandant().getId()),
-                            new DaoPlaceholderProperty("batchJobName", EnumBatchJobName.STAMMDATEN_CERT_IMPORT.name())
+                        new DaoPlaceholderProperty("mandantId", authUserDetails.getMandant().getId()),
+                        new DaoPlaceholderProperty("batchJobName", EnumBatchJobName.STAMMDATEN_CERT_IMPORT.name())
                     )
             );
 

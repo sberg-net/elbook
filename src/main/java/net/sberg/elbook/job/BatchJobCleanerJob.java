@@ -18,7 +18,6 @@ package net.sberg.elbook.job;
 import net.sberg.elbook.batchjobcmpts.BatchJob;
 import net.sberg.elbook.common.ICommonConstants;
 import net.sberg.elbook.jdbc.DaoPlaceholderProperty;
-import net.sberg.elbook.jdbc.DaoProjectionBean;
 import net.sberg.elbook.jdbc.JdbcGenericDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,21 +88,12 @@ public class BatchJobCleanerJob {
         if (files == null || files.length == 0) {
             return;
         }
-        DaoProjectionBean daoProjectionBean = new DaoProjectionBean(null, null, true);
         for (int i = 0; i < files.length; i++) {
             Path path = Paths.get(files[i].getAbsolutePath());
             BasicFileAttributes attr = Files.readAttributes(path, BasicFileAttributes.class);
             FileTime fileTime = attr.creationTime();
             LocalDateTime convertedFileTime = LocalDateTime.ofInstant(fileTime.toInstant(), ZoneId.systemDefault());
-            int mandantId = Integer.parseInt(files[i].getName().split("_")[1]);
-            int id = Integer.parseInt(files[i].getName().split("_")[2].split("\\.")[0]);
-            Long count = (Long)genericDao.selectOne(
-                "select count(*) from BatchJob where id = ? and mandantId = ?",
-                null,
-                daoProjectionBean,
-                List.of(new DaoPlaceholderProperty("id", id), new DaoPlaceholderProperty("mandantId", mandantId))
-            );
-            if ((count == null || count.intValue() == 0) && !convertedFileTime.isAfter(dt)) {
+            if (!convertedFileTime.isAfter(dt)) {
                 files[i].delete();
             }
         }
