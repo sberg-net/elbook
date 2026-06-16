@@ -90,7 +90,8 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 antMatcher("/api/holderattr/**"),
                                 antMatcher("/api/hbakartendaten/**"),
-                                antMatcher("/api/stammdatencertimport/**")
+                                antMatcher("/api/stammdatencertimport/**"),
+                                antMatcher("/api/verzeichnisdienst/**")
                         ).hasAnyRole(EnumAuthRole.ROLE_ADMIN.getSuffix(), EnumAuthRole.ROLE_GOLD_LICENCE_HEAD_OF_DEPT.getSuffix())
 
                         .requestMatchers(

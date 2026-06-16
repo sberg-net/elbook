@@ -16,6 +16,10 @@
 package net.sberg.elbook.verzeichnisdienstcmpts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.gematik.vzd.model.V1_12_8.DirectoryEntry;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -649,6 +653,20 @@ public class VerzeichnisdienstController extends AbstractWebController {
         InputStream inputStream = new FileInputStream(file);
         inputStream.transferTo(response.getOutputStream());
         response.flushBuffer();
+    }
+
+    @Operation(security = @SecurityRequirement(name = "basicAuth"), description = "Laden des kompletten Verzeichnisdiensteintrages (Basiseintrag + Zertifikate + Fachdaten)",
+            responses = { @ApiResponse( responseCode = "200", description = "Der Request wird synchron gestartet. Sie erhalten ein Datenobjekt zurück."  )})
+    @RequestMapping(value = "/api/verzeichnisdienst/lade/sync/{telematikId}", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public DirectoryEntry apiLadeSync(Authentication authentication, @PathVariable String telematikId) throws Exception {
+        AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
+        VzdEntryWrapper directoryEntry = verzeichnisdienstService.ladeByTelematikId(authUserDetails.getMandant(), telematikId);
+        if (directoryEntry == null || directoryEntry.extractDirectoryEntry() == null) {
+            return null;
+        }
+        return directoryEntry.extractDirectoryEntry();
     }
 
 }

@@ -198,6 +198,13 @@ public class VzdEntryWrapper {
         throw new IllegalStateException("no directory entry found");
     }
 
+    public DirectoryEntry extractDirectoryEntry() {
+        if (this.directoryV1_12_8Entry != null) {
+            return this.directoryV1_12_8Entry;
+        }
+        throw new IllegalStateException("no directory entry found");
+    }
+
     public String extractDirectoryEntryTelematikId() {
         if (this.directoryV1_12_8Entry != null) {
             return this.directoryV1_12_8Entry.getDirectoryEntryBase().getTelematikID();
