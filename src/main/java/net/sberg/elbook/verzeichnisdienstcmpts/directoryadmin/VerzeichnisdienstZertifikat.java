@@ -17,6 +17,9 @@ package net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin;
 
 import lombok.Data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Data
 public class VerzeichnisdienstZertifikat {
     private String gueltigVon;
@@ -28,4 +31,5 @@ public class VerzeichnisdienstZertifikat {
     private String telematikId;
     private boolean base64Encoded;
     private boolean valid = false;
+    private Map<String, String> inhaberRDNValues = new HashMap<>();
 }

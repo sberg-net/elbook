@@ -8,8 +8,7 @@ import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.client.TiVZDProper
 import net.sberg.elbook.verzeichnisdienstcmpts.directoryadmin.command.EnumTriValue;
 
 import java.io.File;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Data
 public class VzdEntryWrapper {
@@ -156,6 +155,15 @@ public class VzdEntryWrapper {
         throw new IllegalStateException("no usercertificate entry found");
     }
 
+    public Map<String, String> extractUserCertificateContents() {
+        if (this.directoryV1_12_8Entry != null) {
+            Map<String, String> res = new HashMap<>();
+            this.directoryV1_12_8Entry.getUserCertificates().forEach(userCertificate -> res.put(userCertificate.getDn().getCn(), userCertificate.getUserCertificate()));
+            return res;
+        }
+        throw new IllegalStateException("no directory entry found");
+    }
+
     public String extractUserCertificateNotAfter() {
         if (this.userV1_12_8Certificate != null) {
             return this.userV1_12_8Certificate.getNotAfter();
@@ -198,9 +206,9 @@ public class VzdEntryWrapper {
         throw new IllegalStateException("no directory entry found");
     }
 
-    public DirectoryEntry extractDirectoryEntry() {
+    public Map extractDirectoryEntryAsMap() {
         if (this.directoryV1_12_8Entry != null) {
-            return this.directoryV1_12_8Entry;
+            return new ObjectMapper().convertValue(this.directoryV1_12_8Entry, Map.class);
         }
         throw new IllegalStateException("no directory entry found");
     }

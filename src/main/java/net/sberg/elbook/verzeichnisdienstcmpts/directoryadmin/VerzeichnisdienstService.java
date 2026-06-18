@@ -423,7 +423,7 @@ public class VerzeichnisdienstService {
 
     }
 
-    private VerzeichnisdienstZertifikat erstelle(String content, String telematikId) throws Exception {
+    public VerzeichnisdienstZertifikat erstelle(String content, String telematikId) throws Exception {
         CertificateFactory factory = CertificateFactory.getInstance("X.509");
         X509Certificate cert = null;
         boolean base64Encoded = false;
@@ -458,6 +458,13 @@ public class VerzeichnisdienstService {
             zertifikat.setValid(true);
             if (new Timestamp(cert.getNotAfter().getTime()).toLocalDateTime().isBefore(LocalDateTime.now())) {
                 zertifikat.setValid(false);
+            }
+
+            //handle inhaber rdn details
+            String subjectX500PrincipalDN = cert.getSubjectX500Principal().toString();
+            String[] arr = subjectX500PrincipalDN.split(",");
+            for (int i = 0; i < arr.length; i++) {
+                zertifikat.getInhaberRDNValues().put(arr[i].split("=")[0].trim(), arr[i].split("=")[1].trim());
             }
 
             return zertifikat;

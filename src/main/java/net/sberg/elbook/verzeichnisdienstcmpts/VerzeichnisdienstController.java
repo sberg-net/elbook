@@ -16,7 +16,6 @@
 package net.sberg.elbook.verzeichnisdienstcmpts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.gematik.vzd.model.V1_12_8.DirectoryEntry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -660,13 +659,26 @@ public class VerzeichnisdienstController extends AbstractWebController {
     @RequestMapping(value = "/api/verzeichnisdienst/lade/sync/{telematikId}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public DirectoryEntry apiLadeSync(Authentication authentication, @PathVariable String telematikId) throws Exception {
+    public Map apiLadeSync(Authentication authentication, @PathVariable String telematikId) throws Exception {
         AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
         VzdEntryWrapper directoryEntry = verzeichnisdienstService.ladeByTelematikId(authUserDetails.getMandant(), telematikId);
-        if (directoryEntry == null || directoryEntry.extractDirectoryEntry() == null) {
+        if (directoryEntry == null || directoryEntry.extractDirectoryEntryAsMap() == null) {
             return null;
         }
-        return directoryEntry.extractDirectoryEntry();
+
+        String tId = directoryEntry.extractDirectoryEntryTelematikId();
+        Map<String, Map<String, String>> userCertificateDetails = new HashMap<>();
+        Map<String, String> certContents = directoryEntry.extractUserCertificateContents();
+        for (Iterator<String> iterator = certContents.keySet().iterator(); iterator.hasNext(); ) {
+            String uid = iterator.next();
+            String certContent = certContents.get(uid);
+            VerzeichnisdienstZertifikat verzeichnisdienstZertifikat = verzeichnisdienstService.erstelle(certContent, tId);
+            userCertificateDetails.put(uid, verzeichnisdienstZertifikat.getInhaberRDNValues());
+        }
+
+        Map res = directoryEntry.extractDirectoryEntryAsMap();
+        res.put("userCertificateSubjectX500PrincipalDetails", userCertificateDetails);
+        return res;
     }
 
 }
