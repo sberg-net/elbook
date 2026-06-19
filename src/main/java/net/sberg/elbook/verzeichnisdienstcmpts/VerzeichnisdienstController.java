@@ -667,7 +667,7 @@ public class VerzeichnisdienstController extends AbstractWebController {
         }
 
         String tId = directoryEntry.extractDirectoryEntryTelematikId();
-        Map<String, Map<String, String>> userCertificateDetails = new HashMap<>();
+        Map<String, Map<String, List<String>>> userCertificateDetails = new HashMap<>();
         Map<String, String> certContents = directoryEntry.extractUserCertificateContents();
         for (Iterator<String> iterator = certContents.keySet().iterator(); iterator.hasNext(); ) {
             String uid = iterator.next();
