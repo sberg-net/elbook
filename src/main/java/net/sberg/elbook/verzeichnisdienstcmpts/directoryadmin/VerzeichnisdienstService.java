@@ -460,31 +460,6 @@ public class VerzeichnisdienstService {
                 zertifikat.setValid(false);
             }
 
-            //handle inhaber rdn details
-            //Bsp.: STREET="Winterbeker Weg, 44", OID.2.5.4.17=24114, CN=Apotheke im Plaza, SERIALNUMBER=16.80276001011612004057, O=3-15.2.0107470000.941, L=Kiel, ST=Schleswig-Holstein, C=DE
-            String subjectX500Principal = cert.getSubjectX500Principal().toString();
-            String arr[] = subjectX500Principal.split(", ");
-            String lastKey = null;
-            for (int i = 0; i < arr.length; i++) {
-                String[] tuple = arr[i].split("=");
-                if (tuple.length == 1) {
-                    if (lastKey == null) {
-                        continue;
-                    }
-                    String v = zertifikat.getInhaberRDNValues().get(lastKey).get(zertifikat.getInhaberRDNValues().get(lastKey).size() - 1);
-                    v = v + ", " + arr[i];
-                    zertifikat.getInhaberRDNValues().get(lastKey).remove(zertifikat.getInhaberRDNValues().get(lastKey).size() - 1);
-                    zertifikat.getInhaberRDNValues().get(lastKey).add(v);
-                }
-                else if (tuple.length == 2) {
-                    zertifikat.getInhaberRDNValues().computeIfAbsent(tuple[0], k -> new ArrayList<>()).add(tuple[1]);
-                    lastKey = tuple[0];
-                }
-                else {
-                    continue;
-                }
-            }
-
             return zertifikat;
         }
         return null;

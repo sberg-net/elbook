@@ -57,6 +57,53 @@ public class VzdEntryWrapper {
     public VzdEntryWrapper(DistinguishedName distinguishedNameV1_12_8) {
         this.distinguishedNameV1_12_8 = distinguishedNameV1_12_8;
     }
+
+    public VzdEntryResult generateResult(VerzeichnisdienstService verzeichnisdienstService) throws Exception {
+        VzdEntryResult vzdEntryResult = new VzdEntryResult();
+        vzdEntryResult.setAktiv(extractDirectoryEntryActive().getDataValue());
+        vzdEntryResult.setHolder(extractDirectoryEntryHolder());
+        vzdEntryResult.setOrt(extractDirectoryEntryLocalityName());
+        vzdEntryResult.setStrasse(extractDirectoryEntryStreetAddress());
+        vzdEntryResult.setPlz(extractDirectoryEntryPostalCode());
+        vzdEntryResult.setBundesland(extractDirectoryEntryStateOrProvinceName());
+        vzdEntryResult.setTelematikId(extractDirectoryEntryTelematikId());
+        vzdEntryResult.setSpezialisierung(extractDirectoryEntrySpecialization());
+        vzdEntryResult.setAenderungsDatum(extractDirectoryEntryChangeDateTime());
+
+        List<String> fadMailAttrs = new ArrayList<>();
+        List<String> fadKomLeDataAttrs = new ArrayList<>();
+        List<String> fadKimDataAttrs = new ArrayList<>();
+        extractDirectoryEntryKimMailInfos(fadMailAttrs, fadKomLeDataAttrs, fadKimDataAttrs);
+        vzdEntryResult.setKimAdressen(fadMailAttrs);
+
+        vzdEntryResult.setAnzeigeName(extractDirectoryEntryDisplayName());
+
+        if (this.directoryV1_12_8Entry != null) {
+            List<UserCertificate> userCertificates = this.directoryV1_12_8Entry.getUserCertificates();
+            for (Iterator<UserCertificate> iterator = userCertificates.iterator(); iterator.hasNext(); ) {
+                UserCertificate userCertificate = iterator.next();
+                VerzeichnisdienstZertifikat verzeichnisdienstZertifikat = verzeichnisdienstService.erstelle(userCertificate.getUserCertificate(), userCertificate.getTelematikID());
+
+                VzdCertificateEntryResult vzdCertificateEntryResult = new VzdCertificateEntryResult();
+                vzdEntryResult.getZertifikate().add(vzdCertificateEntryResult);
+                vzdCertificateEntryResult.setAlgorithmus(userCertificate.getPublicKeyAlgorithm());
+                vzdCertificateEntryResult.setAnbieter(verzeichnisdienstZertifikat.getAussteller());
+                vzdCertificateEntryResult.setAktiv(userCertificate.getActive().booleanValue());
+                vzdCertificateEntryResult.setInhaber(verzeichnisdienstZertifikat.getInhaber());
+                vzdCertificateEntryResult.setGueltigBis(verzeichnisdienstZertifikat.getGueltigBis());
+                vzdCertificateEntryResult.setGueltigVon(verzeichnisdienstZertifikat.getGueltigVon());
+                vzdCertificateEntryResult.setGueltig(verzeichnisdienstZertifikat.isValid());
+                vzdCertificateEntryResult.setProfessionOid(userCertificate.getProfessionOID());
+                vzdCertificateEntryResult.setSerienNummer(verzeichnisdienstZertifikat.getSerienNummer());
+                vzdCertificateEntryResult.setTelematikId(verzeichnisdienstZertifikat.getTelematikId());
+            }
+        }
+        else {
+            throw new IllegalStateException("no directory entry found");
+        }
+
+        return vzdEntryResult;
+    }
     
     public void writeDirectoryEntry(File f) throws Exception {
         if (this.directoryV1_12_8Entry != null) {
@@ -155,15 +202,6 @@ public class VzdEntryWrapper {
         throw new IllegalStateException("no usercertificate entry found");
     }
 
-    public Map<String, String> extractUserCertificateContents() {
-        if (this.directoryV1_12_8Entry != null) {
-            Map<String, String> res = new HashMap<>();
-            this.directoryV1_12_8Entry.getUserCertificates().forEach(userCertificate -> res.put(userCertificate.getDn().getCn(), userCertificate.getUserCertificate()));
-            return res;
-        }
-        throw new IllegalStateException("no directory entry found");
-    }
-
     public String extractUserCertificateNotAfter() {
         if (this.userV1_12_8Certificate != null) {
             return this.userV1_12_8Certificate.getNotAfter();
@@ -202,13 +240,6 @@ public class VzdEntryWrapper {
     public EnumTriValue extractDirectoryEntryActive() {
         if (this.directoryV1_12_8Entry != null) {
             return EnumTriValue.getFromBool(this.directoryV1_12_8Entry.getDirectoryEntryBase().getActive());
-        }
-        throw new IllegalStateException("no directory entry found");
-    }
-
-    public Map extractDirectoryEntryAsMap() {
-        if (this.directoryV1_12_8Entry != null) {
-            return new ObjectMapper().convertValue(this.directoryV1_12_8Entry, Map.class);
         }
         throw new IllegalStateException("no directory entry found");
     }

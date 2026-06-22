@@ -659,26 +659,10 @@ public class VerzeichnisdienstController extends AbstractWebController {
     @RequestMapping(value = "/api/verzeichnisdienst/lade/sync/{telematikId}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public Map apiLadeSync(Authentication authentication, @PathVariable String telematikId) throws Exception {
+    public VzdEntryResult apiLadeSync(Authentication authentication, @PathVariable String telematikId) throws Exception {
         AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
         VzdEntryWrapper directoryEntry = verzeichnisdienstService.ladeByTelematikId(authUserDetails.getMandant(), telematikId);
-        if (directoryEntry == null || directoryEntry.extractDirectoryEntryAsMap() == null) {
-            return null;
-        }
-
-        String tId = directoryEntry.extractDirectoryEntryTelematikId();
-        Map<String, Map<String, List<String>>> userCertificateDetails = new HashMap<>();
-        Map<String, String> certContents = directoryEntry.extractUserCertificateContents();
-        for (Iterator<String> iterator = certContents.keySet().iterator(); iterator.hasNext(); ) {
-            String uid = iterator.next();
-            String certContent = certContents.get(uid);
-            VerzeichnisdienstZertifikat verzeichnisdienstZertifikat = verzeichnisdienstService.erstelle(certContent, tId);
-            userCertificateDetails.put(uid, verzeichnisdienstZertifikat.getInhaberRDNValues());
-        }
-
-        Map res = directoryEntry.extractDirectoryEntryAsMap();
-        res.put("userCertificateSubjectX500PrincipalDetails", userCertificateDetails);
-        return res;
+        return directoryEntry.generateResult(verzeichnisdienstService);
     }
 
 }

@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.17.3]
+
+### Fixed
+- integration eines neuen api-calls (/api/verzeichnisdienst/lade/sync/{telematikId}) -> Laden des kompletten Verzeichnisdiensteintrages (Basiseintrag + Zertifikate + Fachdaten)
+
 ## [2.17.2]
 
 ### Fixed
