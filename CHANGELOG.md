@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.18.0]
+
+### Added
+- beim import/transfer der objekte richtung VZD wird vom System der Versuch des Speicherns von RSA-Zertifikaten unterbunden
+
 ## [2.17.3]
 
 ### Fixed

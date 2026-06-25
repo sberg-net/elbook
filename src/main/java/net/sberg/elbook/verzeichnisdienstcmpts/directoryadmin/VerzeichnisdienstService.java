@@ -391,13 +391,21 @@ public class VerzeichnisdienstService {
 
                 try {
                     if (verzeichnisdienstZertifikat.isValid()) {
-                        changed = true;
-                        List dnNameCertL = speichernZertifikat(tiVZDProperties, newCert, uid);
-                        VzdEntryWrapper distinguishedNameCert = (VzdEntryWrapper) dnNameCertL.get(0);
-                        verzeichnisdienstImportErgebnis.getLog().add("zertifikat erfolgreich gespeichert: telematikid = "
-                                + telematikId + ",uid = " + uid + ", certUid= " + distinguishedNameCert.extractDistinguishedNameCn());
-                        logEintragService.handle(mandant, telematikId, verwaltungsId, uid, distinguishedNameCert.extractDistinguishedNameCn(), artikelTyp);
-                        vzdCertMap.put(verzeichnisdienstZertifikat.getSerienNummer(), verzeichnisdienstZertifikat);
+                        if (verzeichnisdienstZertifikat.getPublicKeyAlgorithm() == null || verzeichnisdienstZertifikat.getPublicKeyAlgorithm().trim().isEmpty()) {
+                            verzeichnisdienstImportErgebnis.getLog().add("der public key algorithmus des zertifikates ist nicht gesetzt - wird ignoriert: " + newCert);
+                        }
+                        else if (verzeichnisdienstZertifikat.getPublicKeyAlgorithm().equals(VerzeichnisdienstZertifikat.RSA_PUBLIC_KEY_ALG)) {
+                            verzeichnisdienstImportErgebnis.getLog().add("der public key algorithmus des zertifikates ist RSA - wird ignoriert: " + newCert);
+                        }
+                        else {
+                            changed = true;
+                            List dnNameCertL = speichernZertifikat(tiVZDProperties, newCert, uid);
+                            VzdEntryWrapper distinguishedNameCert = (VzdEntryWrapper) dnNameCertL.get(0);
+                            verzeichnisdienstImportErgebnis.getLog().add("zertifikat erfolgreich gespeichert: telematikid = "
+                                    + telematikId + ",uid = " + uid + ", certUid= " + distinguishedNameCert.extractDistinguishedNameCn());
+                            logEintragService.handle(mandant, telematikId, verwaltungsId, uid, distinguishedNameCert.extractDistinguishedNameCn(), artikelTyp);
+                            vzdCertMap.put(verzeichnisdienstZertifikat.getSerienNummer(), verzeichnisdienstZertifikat);
+                        }
                     }
                     else {
                         verzeichnisdienstImportErgebnis.getLog().add("zertifikat ist nicht mehr gültig: " + newCert);
@@ -454,6 +462,9 @@ public class VerzeichnisdienstService {
                     .format(new Timestamp(cert.getNotAfter().getTime()).toLocalDateTime()));
             zertifikat.setTelematikId(telematikId);
             zertifikat.setBase64Encoded(base64Encoded);
+            if (cert.getPublicKey() != null) {
+                zertifikat.setPublicKeyAlgorithm(cert.getPublicKey().getAlgorithm());
+            }
 
             zertifikat.setValid(true);
             if (new Timestamp(cert.getNotAfter().getTime()).toLocalDateTime().isBefore(LocalDateTime.now())) {

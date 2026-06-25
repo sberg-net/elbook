@@ -19,6 +19,9 @@ import lombok.Data;
 
 @Data
 public class VerzeichnisdienstZertifikat {
+
+    public static final String RSA_PUBLIC_KEY_ALG = "RSA";
+
     private String gueltigVon;
     private String gueltigBis;
     private String serienNummer;
@@ -26,6 +29,7 @@ public class VerzeichnisdienstZertifikat {
     private String aussteller;
     private String inhaber;
     private String telematikId;
+    private String publicKeyAlgorithm;
     private boolean base64Encoded;
     private boolean valid = false;
 }
