@@ -48,6 +48,35 @@ public class VerzeichnisdienstFhirService {
         return tiFhirProperties.isFhirConnected();
     }
 
+    private String getGermanDisplay(HealthcareService.DaysOfWeek daysOfWeek) {
+        switch (daysOfWeek) {
+            case FRI -> {
+                return "Freitag";
+            }
+            case SAT -> {
+                return "Samstag";
+            }
+            case SUN -> {
+                return "Sonntag";
+            }
+            case MON -> {
+                return "Montag";
+            }
+            case TUE -> {
+                return "Dienstag";
+            }
+            case WED -> {
+                return "Mittwoch";
+            }
+            case THU -> {
+                return "Donnerstag";
+            }
+            default -> {
+                return "";
+            }
+        }
+    }
+
     public Map lade(Mandant mandant, String resourceName, String uid) throws Exception {
         TiVZDProperties tiVZDProperties = mandant.createAndGetTiVZDProperties(verzeichnisdienstService);
         TiFhirProperties tiFhirProperties = tiVZDConnector.extractTiFhirProperties(tiVZDProperties);
@@ -139,15 +168,17 @@ public class VerzeichnisdienstFhirService {
                 fhirResourceAttribute4.getValues().add("Ganztägig von "+healthcareServiceAvailableTimeComponent.getAvailableStartTime()+" bis "+healthcareServiceAvailableTimeComponent.getAvailableEndTime());
             }
             else {
-                StringBuilder contentBuilder = new StringBuilder();
-                contentBuilder.append("Am ");
-                healthcareServiceAvailableTimeComponent.getDaysOfWeek().forEach(daysOfWeekEnumeration -> {
-                    if (!contentBuilder.toString().equals("Am ")) {
-                        contentBuilder.append(", ");
-                    }
-                    contentBuilder.append(daysOfWeekEnumeration.getValue().getDisplay());
-                });
-                fhirResourceAttribute4.getValues().add(contentBuilder.toString()+" von "+healthcareServiceAvailableTimeComponent.getAvailableStartTime()+" bis "+healthcareServiceAvailableTimeComponent.getAvailableEndTime());
+                if (healthcareServiceAvailableTimeComponent.getAvailableStartTime() != null && healthcareServiceAvailableTimeComponent.getAvailableEndTime() != null) {
+                    StringBuilder contentBuilder = new StringBuilder();
+                    contentBuilder.append("Am ");
+                    healthcareServiceAvailableTimeComponent.getDaysOfWeek().forEach(daysOfWeekEnumeration -> {
+                        if (!contentBuilder.toString().equals("Am ")) {
+                            contentBuilder.append(", ");
+                        }
+                        contentBuilder.append(getGermanDisplay(daysOfWeekEnumeration.getValue()));
+                    });
+                    fhirResourceAttribute4.getValues().add(contentBuilder.toString()+" von "+healthcareServiceAvailableTimeComponent.getAvailableStartTime()+" bis "+healthcareServiceAvailableTimeComponent.getAvailableEndTime());
+                }
             }
         });
 

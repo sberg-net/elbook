@@ -656,7 +656,7 @@ public class VerzeichnisdienstController extends AbstractWebController {
 
     @Operation(security = @SecurityRequirement(name = "basicAuth"), description = "Laden des kompletten Verzeichnisdiensteintrages (Basiseintrag + Zertifikate + Fachdaten)",
             responses = { @ApiResponse( responseCode = "200", description = "Der Request wird synchron gestartet. Sie erhalten ein Datenobjekt zurück."  )})
-    @RequestMapping(value = "/api/verzeichnisdienst/lade/sync/{telematikId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/verzeichnisdienst/lade/sync/{telematikId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public VzdEntryResult apiLadeSync(Authentication authentication, @PathVariable String telematikId) throws Exception {
@@ -665,4 +665,13 @@ public class VerzeichnisdienstController extends AbstractWebController {
         return directoryEntry.generateResult(verzeichnisdienstService);
     }
 
+    @Operation(security = @SecurityRequirement(name = "basicAuth"), description = "Laden des kompletten Fhir-Verzeichnisdiensteintrages",
+            responses = { @ApiResponse( responseCode = "200", description = "Der Request wird synchron gestartet. Sie erhalten ein Datenobjekt zurück."  )})
+    @RequestMapping(value = "/api/verzeichnisdienst/fhir/lade/sync/{personalEntry}/{telematikId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public List<FhirResource> apiLadeFhirSync(Authentication authentication, @PathVariable EnumTriValue personalEntry, @PathVariable String telematikId) throws Exception {
+        AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
+        return verzeichnisdienstFhirService.lade(authUserDetails.getMandant(), personalEntry, telematikId);
+    }
 }

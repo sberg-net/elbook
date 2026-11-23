@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.19.0]
+
+### Added
+- neue API Schnittstelle zum Abrufen eines Fhir-Eintrages für eine übergebene TelematikId
+
 ## [2.18.0]
 
 ### Added
